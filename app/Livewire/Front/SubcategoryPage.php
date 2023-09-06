@@ -4,14 +4,15 @@ declare(strict_types=1);
 
 namespace App\Livewire\Front;
 
-use App\Models\Product;
 use App\Models\Brand;
 use App\Models\Subcategory;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Livewire\Attributes\Layout;
 
+#[Layout('components.layouts.guest')]
 class SubcategoryPage extends Component
 {
     use WithPagination;
@@ -59,9 +60,9 @@ class SubcategoryPage extends Component
         $this->resetPage();
     }
 
-    public function mount($subcategory)
+    public function mount($slug)
     {
-        $this->subcategory = Subcategory::findOrFail($subcategory->id);
+        $this->subcategory = Subcategory::whereSlug($slug)->firstOrFail();
 
         $this->sortingOptions = [
             'name-asc'   => __('Order Alphabetic, A-Z'),
@@ -80,7 +81,7 @@ class SubcategoryPage extends Component
 
     public function render(): View|Factory
     {
-        $query = Product::active()
+        $query = \App\Helpers::getEcommerceProducts()
             ->where('subcategories', 'like', '%"'.$this->subcategory->id.'"%')
             ->when($this->brand_id, function ($query) {
                 return $query->where('brand_id', $this->brand_id);

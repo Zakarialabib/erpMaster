@@ -7,6 +7,8 @@ namespace Database\Seeders;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class SuperUserSeeder extends Seeder
 {
@@ -18,20 +20,24 @@ class SuperUserSeeder extends Seeder
     public function run()
     {
         $user = User::create([
-            'id'                => 1,
-            'uuid'              => Str::uuid()->toString(),
-            'name'              => 'Admin',
-            'email'             => 'admin@gmail.com',
-            'password'          => bcrypt('password'),
-            'avatar'            => 'avatar.png',
-            'phone'             => '0123456789',
-            'role_id'           => 1,
-            'status'            => 1,
-            'is_all_warehouses' => 1,
-            'remember_token'    => null,
-            'created_at'        => now(),
+            'id'                   => Str::uuid(),
+            'name'                 => 'Admin',
+            'email'                => 'admin@mail.com',
+            'password'             => bcrypt('password'),
+            'avatar'               => 'avatar.png',
+            'phone'                => '0123456789',
+            'role_id'              => 1,
+            'status'               => 1,
+            'is_all_warehouses'    => 1,
+            'default_client_id'    => 1, // 'id' => 1, 'name' => 'Walk-in Client'
+            'default_warehouse_id' => 1, // 'id' => 1, 'name' => 'Main Warehouse'
+            'remember_token'       => null,
+            'created_at'           => now(),
         ]);
 
-        $user->assignRole('Super Admin');
+        $role = Role::create(['name' => 'admin']);
+        $role->givePermissionTo(Permission::all());
+
+        $user->assignRole('admin');
     }
 }

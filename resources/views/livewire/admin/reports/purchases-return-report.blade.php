@@ -106,7 +106,7 @@
                                     </x-table.td>
                                     <x-table.td>{{ $purchase_return->reference }}</x-table.td>
                                     <x-table.td>
-                                        <a href="{{ route('supplier.details', $purchase_return->supplier->uuid) }}"
+                                        <a href="{{ route('admin.supplier.details', $purchase_return->supplier->id) }}"
                                             class="text-indigo-500 hover:text-indigo-600 
                                             font-bold tracking-wide">
                                             {{ $purchase_return->supplier->name }}

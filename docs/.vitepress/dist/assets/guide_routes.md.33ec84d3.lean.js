@@ -1,0 +1,1 @@
+import{_ as e,o as i,c as t,Q as s}from"./chunks/framework.24a6b8d1.js";const g=JSON.parse('{"title":"","description":"","frontmatter":{},"headers":[],"relativePath":"guide/routes.md","filePath":"guide/routes.md"}'),r={name:"guide/routes.md"},l=s("",1),o=[l];function a(n,p,c,u,d,A){return i(),t("div",null,o)}const w=e(r,[["render",a]]);export{g as __pageData,w as default};

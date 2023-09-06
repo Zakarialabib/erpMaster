@@ -28,12 +28,12 @@
                                 {{ __('Company Info') }}:
                             </div>
                             <div class="panel-body">
-                                <p><strong>{{ settings()->company_name }}</strong></p>
-                                <p>{{ settings()->company_address }}</p>
-                                @if (settings()->show_email == true)
-                                    <p>{{ __('Email') }}: {{ settings()->company_email }}</p>
+                                <p><strong>{{ settings('company_name') }}</strong></p>
+                                <p>{{ settings('company_address') }}</p>
+                                @if (settings('show_email') == true)
+                                    <p>{{ __('Email') }}: {{ settings('company_email') }}</p>
                                 @endif
-                                <p>{{ __('Phone') }}: {{ settings()->company_phone }}</p>
+                                <p>{{ __('Phone') }}: {{ settings('company_phone') }}</p>
 
                             </div>
                         </div>
@@ -46,10 +46,10 @@
                             </div>
                             <div class="panel-body">
                                 <p><strong>{{ $customer->name }}</strong></p>
-                                @if (settings()->show_address == true)
+                                @if (settings('show_address') == true)
                                     <p>{{ $customer->address }}</p>
                                 @endif
-                                @if (settings()->show_email == true)
+                                @if (settings('show_email') == true)
                                     <p>{{ __('Email') }}: {{ $customer->email }}</p>
                                 @endif
                                 <p>{{ __('Phone') }}: {{ $customer->phone }}</p>
@@ -141,7 +141,7 @@
                                         <td class="right">{{ format_currency($quotation->tax_amount) }}</td>
                                     </tr>
                                 @endif
-                                @if (settings()->show_shipping == true)
+                                @if (settings('show_shipping') == true)
                                     <tr>
                                         <td class="left"><strong>{{ __('Shipping') }}</strong></td>
                                         <td class="right">{{ format_currency($quotation->shipping_amount) }}
@@ -161,7 +161,7 @@
 
                 <div class="row" style="margin-top: 25px;">
                     <div class="col-12">
-                        <p style="font-style: italic;text-align: center">{{ settings()->company_name }} &copy;
+                        <p style="font-style: italic;text-align: center">{{ settings('company_name') }} &copy;
                             {{ date('Y') }}</p>
                     </div>
                 </div>

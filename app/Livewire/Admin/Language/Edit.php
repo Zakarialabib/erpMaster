@@ -4,18 +4,16 @@ declare(strict_types=1);
 
 namespace App\Livewire\Admin\Language;
 
-use App;
-use App\Models\Language;
-use File;
-use Jantinnerezo\LivewireAlert\LivewireAlert;
+use Livewire\Attributes\On;
 use Livewire\Component;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\App;
+use App\Models\Language;
+use Jantinnerezo\LivewireAlert\LivewireAlert;
 
 class Edit extends Component
 {
     use LivewireAlert;
-
-    /** @var array<string> */
-    public $listeners = ['editLanguage'];
 
     public array $languages = [];
 
@@ -27,9 +25,10 @@ class Edit extends Component
 
     protected $rules = [
         'language.name' => 'required|max:191',
-        'language.code' => 'required|max:255',
+        'language.code' => 'required',
     ];
 
+    #[On('editLanguage')]
     public function editLanguage($id)
     {
         $this->language = Language::findOrFail($id);
@@ -39,15 +38,15 @@ class Edit extends Component
 
     public function update()
     {
-        $validatedData = $this->validate();
+        $this->validate();
 
-        $this->language->save($validatedData);
+        $this->language->save();
 
-        File::copy(App::langPath().'/en.json', App::langPath().('/'.$this->code.'.json'));
+        File::copy(App::langPath() . ('/en.json'), App::langPath() . ('/' . $this->code . '.json'));
 
         $this->alert('success', __('Data created successfully!'));
 
-        $this->dispatch('refreshIndex');
+        $this->dispatch('refreshIndex')->to(Index::class);
 
         $this->editLanguage = false;
     }

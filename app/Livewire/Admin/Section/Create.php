@@ -6,70 +6,61 @@ namespace App\Livewire\Admin\Section;
 
 use App\Models\Language;
 use App\Models\Section;
-use Illuminate\Contracts\View\Factory;
-use Illuminate\Contracts\View\View;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
+use Livewire\Attributes\Computed;
 use Livewire\Component;
 use Livewire\WithFileUploads;
-use App\Http\Livewire\Quill;
+use Livewire\Attributes\On;
 
 class Create extends Component
 {
     use LivewireAlert;
     use WithFileUploads;
 
-    public $section;
+    public Section $section;
 
     public $image;
-
-    public $createSection = false;
-
+    public $page_id;
+    public $title;
+    public $featured_title;
+    public $subtitle;
     public $description;
 
-    public $listeners = [
-        'createSection',
-        Quill::EVENT_VALUE_UPDATED,
+    public $label;
+    public $link;
+    public $bg_color;
+    public $text_color;
+    public $embeded_video;
+
+    public $createModal = false;
+
+    protected $rules = [
+        'page_id'        => 'required',
+        'title'          => 'nullable',
+        'featured_title' => 'nullable',
+        'subtitle'       => 'nullable',
+        'label'          => 'nullable',
+        'link'           => 'nullable',
+        'bg_color'       => 'nullable',
+        'text_color'     => 'nullable',
+        'embeded_video'  => 'nullable',
+        'description'    => 'nullable',
     ];
 
-    public array $rules = [
-        'section.language_id'    => ['required'],
-        'section.page'           => ['required'],
-        'section.title'          => ['required', 'string', 'max:255'],
-        'section.featured_title' => ['nullable', 'string', 'max:255'],
-        'section.subtitle'       => ['nullable', 'string', 'max:255'],
-        'section.label'          => ['nullable', 'string', 'max:255'],
-        'section.description'    => ['nullable'],
-        'section.bg_color'       => ['nullable'],
-        'section.position'       => ['nullable'],
-        'section.link'           => ['nullable'],
-    ];
-
-    public function QuillValueUpdated($value)
-    {
-        $this->section->description = $value;
-    }
-
-    public function createSection()
+    #[On('createModal')]
+    public function createModal()
     {
         $this->resetErrorBag();
 
         $this->resetValidation();
 
-        $this->section = new Section();
-
-        $this->createSection = true;
+        $this->createModal = true;
     }
 
-    public function render(): View|Factory
+    public function render()
     {
         return view('livewire.admin.section.create');
-    }
-
-    public function getLanguagesProperty(): Collection
-    {
-        return Language::select('name', 'id')->get();
     }
 
     public function save()
@@ -77,17 +68,23 @@ class Create extends Component
         $this->validate();
 
         if ($this->image) {
-            $imageName = Str::slug($this->section->title).'-'.Str::random(3).'.'.$this->image->extension();
+            $imageName = Str::slug($this->title).'.'.$this->image->extension();
             $this->image->storeAs('sections', $imageName);
-            $this->section->image = $imageName;
+            $this->image = $imageName;
         }
 
-        $this->section->save();
+        Section::create($this->all());
 
-        $this->emit('refreshIndex');
+        $this->dispatch('refreshIndex')->to(Index::class);
 
         $this->alert('success', __('Section created successfully!'));
 
-        $this->createSection = false;
+        $this->createModal = false;
+    }
+
+    #[Computed]
+    public function languages()
+    {
+        return Language::pluck('name', 'id')->toArray();
     }
 }

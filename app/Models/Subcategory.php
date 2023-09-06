@@ -6,6 +6,8 @@ namespace App\Models;
 
 use App\Support\HasAdvancedFilter;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Subcategory extends Model
 {
@@ -37,12 +39,17 @@ class Subcategory extends Model
         $query->where('status', 1);
     }
 
-    public function category()
+    /** @return BelongsTo<Category> */
+    public function category(): BelongsTo
     {
-        return $this->belongsTo(Category::class);
+        return $this->belongsTo(
+            related: Category::class,
+            foreignKey: 'category_id'    
+        );
     }
 
-    public function products()
+    /** @return HasMany<Product> */
+    public function products(): HasMany
     {
         return $this->hasMany(Product::class);
     }

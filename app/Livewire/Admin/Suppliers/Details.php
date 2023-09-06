@@ -8,70 +8,84 @@ use App\Livewire\Utils\Datatable;
 use App\Models\Purchase;
 use App\Models\PurchaseReturn;
 use App\Models\Supplier;
+use Livewire\Attributes\Computed;
+use Livewire\Attributes\Layout;
 use Livewire\Component;
 
+#[Layout('components.layouts.dashboard')]
 class Details extends Component
 {
     use Datatable;
 
     public $supplier_id;
 
-    /** @var mixed */
     public $supplier;
 
-    public function mount($supplier): void
+    public function mount($id): void
     {
-        $this->supplier = $supplier;
+        $this->supplier = Supplier::findOrFail($id);
         $this->supplier_id = $this->supplier->id;
-        $this->selectPage = false;
         $this->orderable = (new Supplier())->orderable;
     }
 
-    public function getTotalPurchasesProperty()
+    #[Computed]
+    public function TotalPurchases(): float
     {
         return $this->supplierSum('total_amount');
     }
 
-    public function getTotalPurchaseReturnsProperty()
+    #[Computed]
+    public function TotalPurchaseReturns(): float
     {
         return PurchaseReturn::where('supplier_id', $this->supplier_id)
             ->sum('total_amount');
     }
 
-    // total due amount
-    public function getTotalDueProperty()
+    #[Computed]
+    public function TotalDue(): float
     {
         return $this->supplierSum('due_amount');
     }
 
-    // show totalPayments
-    public function getTotalPaymentsProperty()
+    #[Computed]
+    public function TotalPayments(): float
     {
         return $this->supplierSum('paid_amount');
     }
 
-    // show Debit
-    public function getDebitProperty()
+    #[Computed]
+    public function Debit(): float
     {
-        $purchases = Purchase::where('supplier_id', $this->supplier_id)
-            ->completed()->sum('total_amount');
-        $purchase_returns = PurchaseReturn::where('supplier_id', $this->supplier_id)
-            ->completed()->sum('total_amount');
+        // Step 1: Calculate total purchases revenue for completed purchases
+        $purchasesTotal = Purchase::where('customer_id', $this->customer_id)
+            ->completed()
+            ->sum('total_amount');
 
-        $product_costs = 0;
+        // Step 2: Calculate total purchases returns
+        $purchaseReturnsTotal = PurchaseReturn::where('customer_id', $this->customer_id)
+            ->completed()
+            ->sum('total_amount');
 
-        foreach (Purchase::completed()->with('purchaseDetails', 'purchaseDetails.product')->get() as $purchase) {
+        // Step 3: Calculate the total product cost from the pivot table
+        $productCosts = 0;
+
+        foreach ($this->purchases as $purchase) {
             foreach ($purchase->purchaseDetails as $purchaseDetail) {
-                $product_costs += $purchaseDetail->product->cost;
+                // Assuming you have a warehouses relationship defined on the Product model
+                $productWarehouse = $purchaseDetail->product->warehouses->where('warehouse_id', $this->warehouse_id)->first();
+                if ($productWarehouse) {
+                    $productCosts += $productWarehouse->cost * $purchaseDetail->quantity;
+                }
             }
         }
 
-        $debt = ($purchases - $purchase_returns) / 100;
+        // Step 4: Calculate profit
+        $debit = ($purchasesTotal - $purchaseReturnsTotal) - $productCosts;
 
-        return $debt - $product_costs;
+        return $debit;
     }
 
-    public function getPurchasesProperty(): mixed
+    public function getPurchasesProperty()
     {
         $query = Purchase::where('supplier_id', $this->supplier_id)
             ->with('supplier')
@@ -84,7 +98,7 @@ class Details extends Component
         return $query->paginate($this->perPage);
     }
 
-    public function getSupplierPaymentsProperty(): mixed
+    public function getSupplierPaymentsProperty()
     {
         $query = Purchase::where('supplier_id', $this->supplier_id)
             ->with('purchasepayments.purchase')

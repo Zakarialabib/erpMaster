@@ -6,7 +6,7 @@
             <div class="mb-5 lg:mb-0">
                 <h2 class="mb-1 text-2xl font-bold">{{ __('Purchases') }}</h2>
                 <div class="flex items-center">
-                    <a class="flex items-center text-sm text-gray-500" href="{{ route('home') }}">
+                    <a class="flex items-center text-sm text-gray-500" href="{{ route('admin.dashboard') }}">
                         <span class="inline-block mx-2">
                             <svg class="h-4 w-4 text-gray-500" viewBox="0 0 16 18" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
@@ -24,7 +24,7 @@
                                 fill="currentColor"></path>
                         </svg>
                     </span>
-                    <a class="flex items-center text-sm" href="{{ route('purchases.index') }}">
+                    <a class="flex items-center text-sm" href="{{ URL::Current() }}">
                         <span class="inline-block mx-2">
                             <svg class="h-4 w-4 text-indigo-500" viewBox="0 0 20 20" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
@@ -37,11 +37,7 @@
                 </div>
             </div>
             <div class="float-right">
-                @can('purchase_create')
-                    <x-button primary href="{{ route('purchases.create') }}" wire:loading.attr="disabled">
-                        {{ __('Create Purchase order') }}
-                    </x-button>
-                @endcan
+            
             </div>
         </div>
     </section>

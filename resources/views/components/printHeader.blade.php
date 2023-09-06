@@ -4,9 +4,9 @@
             <td style="width:100%; text-align:center;">
                 <img src="{{ $logo }}" style="max-height:60px;" />
                 <div style="font-size:10pt;">
-                    {{ settings()->company_name }}<br />
-                    {{ settings()->company_address }}<br />
-                    {{ settings()->company_phone }}<br />
+                    {{ settings('company_name') }}<br />
+                    {{ settings('company_address') }}<br />
+                    {{ settings('company_phone') }}<br />
                 </div>
             </td>
         @elseif($style === 'right')
@@ -15,17 +15,17 @@
             </td>
             <td class="text-right" style="width:50%;">
                 <div style="font-size:10pt;">
-                    {{ settings()->company_name }}<br />
-                    {{ settings()->company_address }}<br />
-                    {{ settings()->company_phone }}<br />
+                    {{ settings('company_name') }}<br />
+                    {{ settings('company_address') }}<br />
+                    {{ settings('company_phone') }}<br />
                 </div>
             </td>
         @elseif($style === 'left')
             <td style="width:50%">
                 <div style="font-size:10pt;">
-                    {{ settings()->company_name }}<br />
-                    {{ settings()->company_address }}<br />
-                    {{ settings()->company_phone }}<br />
+                    {{ settings('company_name') }}<br />
+                    {{ settings('company_address') }}<br />
+                    {{ settings('company_phone') }}<br />
                 </div>
             </td>
             <td style="width:50%; text-align:right;">

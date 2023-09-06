@@ -2,7 +2,7 @@
     <div class="flex flex-wrap justify-center">
         <div class="lg:w-1/2 md:w-1/2 sm:w-full flex flex-wrap my-2">
             <select wire:model.live="perPage"
-                class="w-20 block p-3 leading-5 bg-white dark:bg-dark-eval-2 text-gray-700 dark:text-gray-300 rounded border border-gray-300 mb-1 text-sm focus:shadow-outline-blue focus:border-blue-300 mr-3">
+                class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-auto sm:text-sm border-gray-300 rounded-md focus:outline-none focus:shadow-outline-blue transition duration-150 ease-in-out">
                 @foreach ($paginationOptions as $value)
                     <option value="{{ $value }}">{{ $value }}</option>
                 @endforeach
@@ -15,7 +15,7 @@
         </div>
         <div class="lg:w-1/2 md:w-1/2 sm:w-full my-2">
             <div class="my-2">
-                <x-input wire:model.live.debounce.500ms="search" placeholder="{{ __('Search') }}" autofocus />
+                <x-input wire:model.live="search" placeholder="{{ __('Search') }}" autofocus />
             </div>
         </div>
     </div>
@@ -58,7 +58,7 @@
                         {{ $salereturn->date }}
                     </x-table.td>
                     <x-table.td>
-                        <a href="{{ route('customer.details', $salereturn->customer->uuid) }}"
+                        <a href="{{ route('admin.customer.details', $salereturn->customer->id) }}"
                             class="text-indigo-500 hover:text-indigo-600">
                             {{ $salereturn->customer->name }}
                         </a>
@@ -158,7 +158,7 @@
     </div>
 
     {{-- Show SaleReturn --}}
-    <x-modal wire:model.live="showModal">
+    <x-modal wire:model="showModal">
         <x-slot name="title">
             {{ __('Show SaleReturn') }} - {{ __('Reference') }}:
             <strong>{{ $salereturn?->reference }}</strong>
@@ -181,21 +181,21 @@
                                 <div class="flex flex-row mb-4">
                                     <div class="w-1/4 mb-3">
                                         <h5 class="mb-2 border-bottom pb-2">{{ __('Company Info') }}:</h5>
-                                        <div><strong>{{ settings()->company_name }}</strong></div>
-                                        <div>{{ settings()->company_address }}</div>
-                                        @if (settings()->show_email == true)
-                                            <div>{{ __('Email') }}: {{ settings()->company_email }}</div>
+                                        <div><strong>{{ settings('company_name') }}</strong></div>
+                                        <div>{{ settings('company_address') }}</div>
+                                        @if (settings('show_email') == true)
+                                            <div>{{ __('Email') }}: {{ settings('company_email') }}</div>
                                         @endif
-                                        <div>{{ __('Phone') }}: {{ settings()->company_phone }}</div>
+                                        <div>{{ __('Phone') }}: {{ settings('company_phone') }}</div>
                                     </div>
 
                                     <div class="w-1/4 mb-3">
                                         <h5 class="mb-2 border-bottom pb-2">{{ __('Customer Info') }}:</h5>
                                         <div><strong>{{ $salereturn?->customer->name }}</strong></div>
-                                        @if (settings()->show_address == true)
+                                        @if (settings('show_address') == true)
                                             <div>{{ $salereturn?->customer->address }}</div>
                                         @endif
-                                        @if (settings()->show_email == true)
+                                        @if (settings('show_email') == true)
                                             <div>{{ $salereturn?->customer->email }}</div>
                                         @endif
                                         <div>{{ __('Phone') }}: {{ $salereturn?->customer->phone }}
@@ -336,7 +336,7 @@
 
     @if (!empty($paymentModal))
         <div>
-            <x-modal wire:model.live="paymentModal">
+            <x-modal wire:model="paymentModal">
                 <x-slot name="title">
                     <h2 class="text-lg font-medium text-gray-900">
                         {{ __('SaleReturn Payment') }}

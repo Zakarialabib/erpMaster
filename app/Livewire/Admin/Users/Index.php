@@ -5,39 +5,54 @@ declare(strict_types=1);
 namespace App\Livewire\Admin\Users;
 
 use App\Livewire\Utils\Datatable;
+use App\Models\Role;
 use App\Models\User;
-
 use Illuminate\Support\Facades\Gate;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
-use Livewire\WithPagination;
+use Livewire\Attributes\Layout;
 
+#[Layout('components.layouts.dashboard')]
 class Index extends Component
 {
-    use WithPagination;
     use Datatable;
     use LivewireAlert;
-    use Datatable;
 
-    /** @var mixed */
+    public $showModal = false;
+
     public $user;
 
-    /** @var array<string> */
-    public $listeners = [
-        'refreshIndex' => '$refresh',
-        'delete',
+    public $role;
+
+    public $filterRole;
+
+    public array $rules = [
+        'user.name'       => 'required|string|max:255',
+        'user.email'      => 'required|email|unique:users,email',
+        'user.password'   => 'required|string|min:8',
+        'user.phone'      => 'required|numeric',
+        'user.city'       => 'nullable',
+        'user.country'    => 'nullable',
+        'user.address'    => 'nullable',
+        'user.tax_number' => 'nullable',
     ];
 
-    public function mount(): void
+    public function filterRole($role)
+    {
+        $this->filterRole = $role;
+        $this->resetPage(); // Reset pagination to the first page
+    }
+
+    public function mount()
     {
         $this->orderable = (new User())->orderable;
     }
 
     public function render()
     {
-        abort_if(Gate::denies('user_access'), 403);
+        abort_if(Gate::denies('user access'), 403);
 
-        $query = User::with(['roles'])->advancedFilter([
+        $query = User::with('roles')->advancedFilter([
             's'               => $this->search ?: null,
             'order_column'    => $this->sortBy,
             'order_direction' => $this->sortDirection,
@@ -46,6 +61,18 @@ class Index extends Component
         $users = $query->paginate($this->perPage);
 
         return view('livewire.admin.users.index', compact('users'));
+    }
+
+    // getrolesproperty
+    public function getRolesProperty()
+    {
+        return Role::pluck('name', 'id');
+    }
+
+    // assign or change user role
+    public function assignRole(User $user, $role)
+    {
+        $user->assignRole($role);
     }
 
     public function deleteSelected()
@@ -64,5 +91,12 @@ class Index extends Component
         $user->delete();
 
         $this->alert('warning', __('User deleted successfully!'));
+    }
+
+    public function showModal(User $user)
+    {
+        $this->user = $user;
+
+        $this->showModal = true;
     }
 }

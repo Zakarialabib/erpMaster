@@ -4,86 +4,66 @@ declare(strict_types=1);
 
 namespace App\Livewire\Admin\Role;
 
-use App\Models\Role;
-use App\Models\Permission;
-use Illuminate\Support\Facades\Gate;
-use Livewire\Component;
+// use App\Models\Permission;
+use Spatie\Permission\Models\Permission;
+// use App\Models\Role;
+use Spatie\Permission\Models\Role;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
+use Livewire\Component;
 
 class Create extends Component
 {
     use LivewireAlert;
 
-    public $role;
-    public $selectedPermissions = [];
-    public $createModal = false;
+    public Role $role;
 
-    public $listeners = [
-        'createModal',
-    ];
+    public array $permissions = [];
 
-    protected function rules(): array
+    public array $listsForFields = [];
+
+    public function mount()
     {
-        return [
-            'role.name'             => 'required|string|min:3|max:255',
-            'selectedPermissions.*' => 'exists:permissions,id',
-        ];
-    }
-
-    public function selectAllPermissions()
-    {
-        $this->selectedPermissions = $this->permissions->pluck('id')->toArray();
-    }
-
-    public function getIsAllSelectedProperty()
-    {
-        return count($this->selectedPermissions) === count($this->permissions->pluck('id')->toArray());
-    }
-
-    public function getIsNoneSelectedProperty()
-    {
-        return count($this->selectedPermissions) === 0;
-    }
-
-    public function deselectAllPermissions()
-    {
-        $this->selectedPermissions = [];
-    }
-
-    public function createModal()
-    {
-        abort_if(Gate::denies('role_create'), 403);
-
-        $this->resetErrorBag();
-        $this->resetValidation();
-
-        $this->role = new Role();
-        $this->selectedPermissions = [];
-
-        $this->createModal = true;
-    }
-
-    public function store(): void
-    {
-        $this->validate();
-
-        $this->role->save();
-        $this->role->syncPermissions($this->selectedPermissions);
-
-        $this->alert('success', __('Role created successfully.'));
-
-        $this->dispatch('refreshIndex');
-
-        $this->createModal = false;
-    }
-
-    public function getPermissionsProperty()
-    {
-        return Permission::all();
+        $this->initListsForFields();
     }
 
     public function render()
     {
         return view('livewire.admin.role.create');
+    }
+
+    public function submit()
+    {
+        $this->validate();
+
+        $this->role->save();
+
+        $this->role->givePermissionTo($this->permissions);
+
+        // $this->alert('success', __('Role created successfully!') );
+
+        return redirect()->route('admin.roles.index');
+    }
+
+    protected function rules(): array
+    {
+        return [
+            'role.title' => [
+                'string',
+                'required',
+            ],
+            'permissions' => [
+                'required',
+                'array',
+            ],
+            'permissions.*.id' => [
+                'integer',
+                'exists:permissions,id',
+            ],
+        ];
+    }
+
+    protected function initListsForFields(): void
+    {
+        $this->listsForFields['permissions'] = Permission::pluck('title', 'id')->toArray();
     }
 }

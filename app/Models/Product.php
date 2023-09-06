@@ -6,15 +6,16 @@ namespace App\Models;
 
 use App\Scopes\ProductScope;
 use App\Support\HasAdvancedFilter;
-use App\Traits\GetModelByUuid;
-use App\Traits\UuidGenerator;
+use App\Traits\HasUuid;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Product extends Model
 {
@@ -22,9 +23,10 @@ class Product extends Model
     use Notifiable;
     use ProductScope;
     use HasFactory;
-    use GetModelByUuid;
-    use UuidGenerator;
+    use HasUuid;
+    use SoftDeletes;
 
+    /** @var array<int, string> */
     public const ATTRIBUTES = [
         'id',
         'category_id',
@@ -42,21 +44,10 @@ class Product extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'category_id',
-        'featured',
-        'uuid',
-        'name',
-        'code',
-        'barcode_symbology',
-        'quantity',
-        'cost',
-        'price',
-        'unit',
-        'stock_alert',
-        'status',
-        'order_tax',
-        'tax_type',
-        'note',
+        'id', 'name', 'code', 'barcode_symbology', 'quantity', 'slug',
+        'image', 'gallery', 'unit', 'order_tax', 'description', 'status',
+        'tax_type', 'featured', 'condition', 'embeded_video', 'subcategories',
+        'options', 'meta_title', 'meta_description', 'best', 'hot',
     ];
 
     public function __construct(array $attributes = [])
@@ -69,28 +60,38 @@ class Product extends Model
         parent::__construct($attributes);
     }
 
+    public function scopeActive($query): void
+    {
+        $query->where('status', true);
+    }
+
+    /** @return BelongsTo<Category> */
     public function category(): BelongsTo
     {
-        return $this->belongsTo(Category::class, 'category_id', 'id');
+        return $this->belongsTo(Category::class, 'category_id');
     }
 
+    /** @return BelongsTo<Brand> */
     public function brand(): BelongsTo
     {
-        return $this->belongsTo(Brand::class, 'brand_id', 'id');
+        return $this->belongsTo(Brand::class, 'brand_id');
     }
 
+    /** @return MorphMany<Movement> */
     public function movements(): MorphMany
     {
         return $this->morphMany(Movement::class, 'movable');
     }
 
+    /** @return BelongsToMany<Warehouse> */
     public function warehouses()
     {
         return $this->belongsToMany(Warehouse::class)->using(ProductWarehouse::class)
-            ->withPivot('price', 'qty', 'cost');
+            ->withPivot('qty', 'price', 'cost', 'old_price', 'stock_alert', 'is_discount', 'discount_date');
     }
 
-    public function priceHistory()
+    /** @return HasMany<PriceHistory> */
+    public function priceHistory(): HasMany
     {
         return $this->hasMany(PriceHistory::class);
     }
@@ -121,17 +122,17 @@ class Product extends Model
         );
     }
 
-    public function getTotalQuantityAttribute()
+    public function getTotalQuantityAttribute(): int|float|null
     {
         return $this->warehouses->sum('pivot.qty');
     }
 
-    public function getAveragePriceAttribute()
+    public function getAveragePriceAttribute(): int|float|null
     {
         return $this->warehouses->avg('pivot.price');
     }
 
-    public function getAverageCostAttribute()
+    public function getAverageCostAttribute(): int|float|null
     {
         return $this->warehouses->avg('pivot.cost');
     }

@@ -25,9 +25,9 @@ return new class () extends Migration {
             $table->foreignIdFor(Warehouse::class)->nullable()->constrained()->restrictOnDelete();
 
             $table->date('date');
-            $table->string('reference', 192);
-            $table->string('details', 192)->nullable();
-            $table->float('amount', 10, 0);
+            $table->string('reference')->nullable();
+            $table->string('description')->nullable();
+            $table->float('amount');
             $table->string('document')->nullable();
             $table->softDeletes();
             $table->timestamps();

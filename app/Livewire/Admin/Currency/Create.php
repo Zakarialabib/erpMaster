@@ -14,13 +14,9 @@ class Create extends Component
 {
     use LivewireAlert;
 
-    /** @var array<string> */
-    public $listeners = ['createModal'];
-
     public $createModal = false;
 
-    /** @var mixed */
-    public $currency;
+    public Currency $currency;
 
     /** @var array */
     protected $rules = [
@@ -37,27 +33,21 @@ class Create extends Component
         'currency.exchange_rate.required' => 'The exchange rate field cannot be empty.',
     ];
 
-    public function updated($propertyName): void
-    {
-        $this->validateOnly($propertyName);
-    }
-
     public function render()
     {
-        abort_if(Gate::denies('currency_create'), 403);
+        abort_if(Gate::denies('currency create'), 403);
 
         return view('livewire.admin.currency.create');
     }
 
+    #[On('createModal')]
     public function createModal(): void
     {
-        abort_if(Gate::denies('currency_create'), 403);
+        abort_if(Gate::denies('currency create'), 403);
 
         $this->resetErrorBag();
 
         $this->resetValidation();
-
-        $this->currency = new Currency();
 
         $this->createModal = true;
     }
@@ -71,7 +61,7 @@ class Create extends Component
 
             $this->alert('success', __('Currency created successfully.'));
 
-            $this->dispatch('refreshIndex');
+            $this->dispatch('refreshIndex')->to(Index::class);
 
             $this->createModal = false;
         } catch (Throwable $th) {

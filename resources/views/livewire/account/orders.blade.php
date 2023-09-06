@@ -9,21 +9,7 @@
                         <p class="text-gray-700 font-bold">{{ __('Reference') }}:</p>
                         <p class="text-gray-600">{{ $order->reference }}</p>
                     </div>
-                    @if ($order->race)
-                        <div class="flex justify-between items-center mb-4">
-                            <p class="text-gray-700 font-bold">{{ __('Race') }}:</p>
-                            <p class="text-gray-600">
-                                <a
-                                    href="{{ route('front.raceDetails', $order->race->slug) }}">{{ $order->race->name }}</a>
-                            </p>
-                        </div>
-                    @endif
-                    @if ($order->service)
-                        <div class="flex justify-between items-center mb-4">
-                            <p class="text-gray-700 font-bold">{{ __('Service') }}:</p>
-                            <p class="text-gray-600">{{ $order->service->name }}</p>
-                        </div>
-                    @endif
+
                     @if ($order->product)
                         <div class="flex justify-between items-center mb-4">
                             <p class="text-gray-700 font-bold">{{ __('Product') }}:</p>
@@ -51,7 +37,7 @@
                     </div>
                     <div class="flex justify-between items-center">
                         <p class="text-gray-700 font-bold">{{ __('Order Date') }}:</p>
-                        <p class="text-gray-600">{{ Helpers::format_date($order->created_at) }}</p>
+                        <p class="text-gray-600">{{ format_date($order->created_at) }}</p>
                     </div>
                 </div>
             @empty

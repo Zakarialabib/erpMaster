@@ -112,10 +112,10 @@
     <div>
         <htmlpageheader name="page-header">
             <div class="centered">
-                <h2 style="margin-bottom: 5px;font-size: 16px;">{{ settings()->company_name }}</h2>
+                <h2 style="margin-bottom: 5px;font-size: 16px;">{{ settings('company_name') }}</h2>
                 <p>
-                    {{ settings()->company_phone }} <br>
-                    {{ settings()->company_address }} <br>
+                    {{ settings('company_phone') }} <br>
+                    {{ settings('company_address') }} <br>
                     {{ __('Date') }}: {{ format_date($sale->date) }}<br>
                     {{ __('Reference') }}: {{ $sale->reference }}<br>
                     {{ __('Name') }}: {{ $sale->customer->name }}
@@ -143,21 +143,21 @@
                         </tr>
                     @endforeach
 
-                    @if (settings()->show_order_tax == true)
+                    @if (settings('show_order_tax') == true)
                         <tr>
                             <th colspan="3" style="text-align:left">{{ __('Tax') }}
                                 ({{ $sale->tax_percentage }}%)</th>
                             <th style="text-align:right">{{ format_currency($sale->tax_amount) }}</th>
                         </tr>
                     @endif
-                    @if (settings()->show_discount == true)
+                    @if (settings('show_discount') == true)
                         <tr>
                             <th colspan="3" style="text-align:left">{{ __('Discount') }}
                                 ({{ $sale->discount_percentage }}%)</th>
                             <th style="text-align:right">{{ format_currency($sale->discount_amount) }}</th>
                         </tr>
                     @endif
-                    @if (settings()->show_shipping == true)
+                    @if (settings('show_shipping') == true)
                         <tr>
                             <th colspan="3" style="text-align:left">{{ __('Shipping') }}</th>
                             <th style="text-align:right">{{ format_currency($sale->shipping_amount) }}</th>

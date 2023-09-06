@@ -5,7 +5,7 @@ lang: en-US
 
 # Installation
 
-To get started with MystockMaster, follow these steps:
+To get started with ERPMASTER, follow these steps:
 
 1. Clone the repository.
 2. Run `composer install`.

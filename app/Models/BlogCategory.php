@@ -11,49 +11,53 @@ class BlogCategory extends Model
 {
     use HasAdvancedFilter;
 
-    public $orderable = [
+    /** @var array<int, string> */
+    public const ATTRIBUTES = [
         'id',
         'title',
-        'description',
-        'meta_tag',
-        'meta_description',
         'featured',
+        'status',
         'language_id',
     ];
 
-    public $timestamps = false;
+    public $orderable = self::ATTRIBUTES;
+    public $filterable = self::ATTRIBUTES;
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
     protected $fillable = [
         'title',
         'description',
-        'meta_tag',
+        'meta_title',
         'meta_description',
         'featured',
+        'status',
         'language_id',
     ];
 
-    protected $filterable = [
-        'id',
-        'title',
-        'description',
-        'meta_tag',
-        'meta_description',
-        'featured',
-        'language_id',
-    ];
-
+    /** @return hasMany<Blog> */
     public function blogs()
     {
-        return $this->hasMany('App\Models\Blog', 'category_id');
+        return $this->hasMany(Blog::class);
     }
 
+    /** @return BelongsTo<Language> */
     public function language()
     {
-        return $this->belongsTo('App\Models\Language', 'language_id')->withDefault();
+        return $this->belongsTo(Language::class, 'language_id')->withDefault();
     }
 
     public function setSlugAttribute($value)
     {
         $this->attributes['slug'] = str_replace(' ', '-', $value);
+    }
+
+
+    public function scopeActive($query)
+    {
+        return $query->where('status', true);
     }
 }

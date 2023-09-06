@@ -14,10 +14,6 @@ class Edit extends Component
 {
     use LivewireAlert;
 
-    public $listeners = [
-        'editModal',
-    ];
-
     /** @var bool */
     public $editModal = false;
 
@@ -35,19 +31,15 @@ class Edit extends Component
         'customergroup.percentage.required' => 'The percentage field cannot be empty.',
     ];
 
-    public function updated($propertyName): void
-    {
-        $this->validateOnly($propertyName);
-    }
-
     public function render()
     {
         return view('livewire.admin.customer-group.edit');
     }
 
+    #[On('editModal')]
     public function editModal($id): void
     {
-        // abort_if(Gate::denies('expense_category_edit'), 403);
+        // abort_if(Gate::denies('expense_category edit'), 403);
 
         $this->resetErrorBag();
 
@@ -67,7 +59,7 @@ class Edit extends Component
 
             $this->alert('success', __('Customer group Updated Successfully.'));
 
-            $this->dispatch('refreshIndex');
+            $this->dispatch('refreshIndex')->to(Index::class);
 
             $this->editModal = false;
         } catch (Throwable $th) {

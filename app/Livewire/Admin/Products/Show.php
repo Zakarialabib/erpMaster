@@ -6,18 +6,16 @@ namespace App\Livewire\Admin\Products;
 
 use App\Models\Product;
 use Illuminate\Support\Facades\Gate;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class Show extends Component
 {
     public $product;
 
-    public $listeners = [
-        'showModal',
-    ];
-
     public $showModal = false;
 
+    #[On('showModal')]
     public function showModal($id)
     {
         $this->product = Product::findOrFail($id);
@@ -27,7 +25,7 @@ class Show extends Component
 
     public function render()
     {
-        abort_if(Gate::denies('product_show'), 403);
+        abort_if(Gate::denies('product show'), 403);
 
         return view('livewire.admin.products.show');
     }

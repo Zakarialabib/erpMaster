@@ -10,68 +10,19 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Gate;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
-use Livewire\WithPagination;
+use Livewire\Attributes\Layout;
+use App\Livewire\Utils\Datatable;
 
+#[Layout('components.layouts.dashboard')]
 class Index extends Component
 {
-    use WithPagination;
     use Datatable;
     use LivewireAlert;
 
     public $faq;
 
-    public $listeners = [
-        'refreshIndex' => '$refresh',
-    ];
-
-    public int $perPage;
-
-    public array $orderable;
-
-    public string $search = '';
-
-    public array $selected = [];
-
-    public array $paginationOptions;
-
-    protected $queryString = [
-        'search' => [
-            'except' => '',
-        ],
-        'sortBy' => [
-            'except' => 'id',
-        ],
-        'sortDirection' => [
-            'except' => 'desc',
-        ],
-    ];
-
-    public function getSelectedCountProperty()
-    {
-        return count($this->selected);
-    }
-
-    public function updatingSearch()
-    {
-        $this->resetPage();
-    }
-
-    public function updatingPerPage()
-    {
-        $this->resetPage();
-    }
-
-    public function resetSelected()
-    {
-        $this->selected = [];
-    }
-
     public function mount()
     {
-        $this->sortBy = 'id';
-        $this->sortDirection = 'desc';
-        $this->perPage = 100;
-        $this->paginationOptions = [25, 50, 100];
         $this->orderable = (new Faq())->orderable;
     }
 
@@ -85,7 +36,7 @@ class Index extends Component
 
         $faqs = $query->paginate($this->perPage);
 
-        return view('livewire.admin.faq.index', compact('faqs'))->extends('layouts.dashboard');
+        return view('livewire.admin.faq.index', compact('faqs'));
     }
 
     public function deleteSelected()

@@ -8,6 +8,7 @@ use App\Enums\MovementType;
 use App\Enums\PaymentStatus;
 use App\Enums\PurchaseStatus;
 use App\Jobs\UpdateProductCostHistory;
+use App\Livewire\Utils\Admin\WithModels;
 use App\Models\Movement;
 use App\Models\Warehouse;
 use App\Models\Product;
@@ -16,56 +17,50 @@ use App\Models\ProductWarehouse;
 use App\Models\Purchase;
 use App\Models\PurchaseDetail;
 use App\Models\PurchasePayment;
-use App\Models\Supplier;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Support\Facades\Auth;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
 use Illuminate\Support\Facades\DB;
+use Livewire\Attributes\Layout;
+use Livewire\Attributes\Rule;
+
+#[Layout('components.layouts.dashboard')]
 
 class Create extends Component
 {
     use LivewireAlert;
-
-    /** @var array<string> */
-    public $listeners = [
-        'refreshIndex' => '$refresh',
-    ];
-
-    public $cart_instance;
+    use WithModels;
+    public $cart_instance = 'purchase';
     public $cart_item;
-
+    #[Rule('required')]
+    public $warehouse_id;
+    #[Rule('required')]
     public $supplier_id;
-
-    public $supplier;
+    #[Rule('required|integer|min:0|max:100')]
+    public $tax_percentage;
+    #[Rule('required|integer|min:0|max:100')]
+    public $discount_percentage;
+    #[Rule('required|numeric')]
+    public $shipping_amount;
+    #[Rule('required|numeric')]
+    public $total_amount;
+    #[Rule('required|numeric')]
+    public $paid_amount;
+    #[Rule('required|string|max:50')]
+    public $status;
+    #[Rule('required|string|max:50')]
+    public $payment_method;
+    #[Rule('nullable|string|max:1000')]
+    public $note;
 
     public $product;
 
     public $quantity;
 
-    public $warehouse_id;
-
-    public $total_amount;
-
     public $check_quantity;
 
     public $price;
-
-    public $tax_percentage;
-
-    public $discount_percentage;
-
-    public $shipping_amount;
-
-    public $shipping;
-
-    public $paid_amount;
-
-    public $note;
-
-    public $status;
-
-    public $payment_method;
 
     public $payment_status;
 
@@ -77,25 +72,8 @@ class Create extends Component
 
     public $listsForFields = [];
 
-    public function rules(): array
+    public function mount(): void
     {
-        return [
-            'warehouse_id'        => 'required|integer',
-            'supplier_id'         => 'required|integer',
-            'tax_percentage'      => 'required|integer|min:0|max:100',
-            'discount_percentage' => 'required|integer|min:0|max:100',
-            'shipping_amount'     => 'required|numeric',
-            'total_amount'        => 'required|numeric',
-            'paid_amount'         => 'required|numeric',
-            'status'              => 'required|string|max:50',
-            'payment_method'      => 'required|string|max:50',
-            'note'                => 'nullable|string|max:1000',
-        ];
-    }
-
-    public function mount($cartInstance): void
-    {
-        $this->cart_instance = $cartInstance;
         $this->tax_percentage = 0;
         $this->discount_percentage = 0;
         $this->shipping_amount = 0;
@@ -121,9 +99,18 @@ class Create extends Component
         $this->total_amount = $this->calculateTotal();
     }
 
+    public function proceed()
+    {
+        if ($this->supplier_id !== null) {
+            $this->store();
+        } else {
+            $this->alert('error', __('Please select a supplier!'));
+        }
+    }
+
     public function store()
     {
-        if ( ! $this->warehouse_id) {
+        if (!$this->warehouse_id) {
             $this->alert('error', __('Please select a warehouse'));
 
             return;
@@ -186,7 +173,7 @@ class Create extends Component
                     ->where('warehouse_id', $this->warehouse_id)
                     ->first();
 
-                if ( ! $product_warehouse) {
+                if (!$product_warehouse) {
                     $product_warehouse = new ProductWarehouse([
                         'product_id'   => $cart_item->id,
                         'warehouse_id' => $this->warehouse_id,
@@ -237,7 +224,7 @@ class Create extends Component
 
             Cart::instance('purchase')->destroy();
 
-            return redirect()->route('purchases.index');
+            return redirect()->route('admin.purchases.index');
         });
     }
 
@@ -251,16 +238,6 @@ class Create extends Component
         Cart::instance($this->cart_instance)->destroy();
     }
 
-    protected function initListsForFields(): void
-    {
-        $this->listsForFields['suppliers'] = Supplier::pluck('name', 'id')->toArray();
-    }
-
-    public function getWarehousesProperty()
-    {
-        return  Warehouse::pluck('name', 'id')->toArray();
-    }
-
     public function updatedWarehouseId($warehouse_id)
     {
         $this->warehouse_id = $warehouse_id;
@@ -269,7 +246,7 @@ class Create extends Component
 
     public function updatedStatus($value)
     {
-        if ($value === PurchaseStatus::COMPLETED->value) {
+        if ($value === PurchaseStatus::COMPLETED) {
             $this->paid_amount = $this->total_amount;
         }
     }

@@ -9,8 +9,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAdjustedProductsTable extends Migration
-{
+return new class () extends Migration {
     /**
      * Run the migrations.
      *
@@ -41,4 +40,4 @@ class CreateAdjustedProductsTable extends Migration
     {
         Schema::dropIfExists('adjusted_products');
     }
-}
+};

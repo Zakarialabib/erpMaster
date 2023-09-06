@@ -20,45 +20,42 @@ class Create extends Component
     use LivewireAlert;
     use WithFileUploads;
 
-    public $createFeaturedBanner = false;
+    public $createModal = false;
 
     public $image;
 
-    public $featuredbanner;
-
-    public $listeners = ['createFeaturedBanner'];
+    public FeaturedBanner $featuredbanner;
 
     public array $listsForFields = [];
 
     protected $rules = [
         'featuredbanner.title'         => ['required', 'string', 'max:255'],
-        'featuredbanner.details'       => ['nullable', 'string'],
+        'featuredbanner.description'   => ['nullable', 'string'],
         'featuredbanner.link'          => ['nullable', 'string'],
         'featuredbanner.product_id'    => ['nullable', 'integer'],
         'featuredbanner.language_id'   => ['nullable', 'integer'],
         'featuredbanner.embeded_video' => ['nullable'],
     ];
 
-    public function mount(FeaturedBanner $featuredbanner)
+    public function mount()
     {
-        $this->featuredbanner = $featuredbanner;
         $this->initListsForFields();
     }
 
     public function render(): View|Factory
     {
-        abort_if(Gate::denies('featuredbanner_create'), 403);
+        abort_if(Gate::denies('featuredbanner create'), 403);
 
         return view('livewire.admin.featured-banner.create');
     }
 
-    public function createFeaturedBanner()
+    public function createModal()
     {
         $this->resetErrorBag();
 
         $this->resetValidation();
 
-        $this->createFeaturedBanner = true;
+        $this->createModal = true;
     }
 
     public function create()
@@ -75,9 +72,7 @@ class Create extends Component
 
         $this->alert('success', __('FeaturedBanner created successfully.'));
 
-        $this->emit('refreshIndex');
-
-        $this->createFeaturedBanner = false;
+        $this->createModal = false;
     }
 
     public function initListsForFields()

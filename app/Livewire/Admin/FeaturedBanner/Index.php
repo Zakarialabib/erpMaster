@@ -13,11 +13,12 @@ use Illuminate\Support\Str;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
 use Livewire\WithFileUploads;
-use Livewire\WithPagination;
+use Livewire\Attributes\Layout;
+use App\Livewire\Utils\Datatable;
 
+#[Layout('components.layouts.dashboard')]
 class Index extends Component
 {
-    use WithPagination;
     use Datatable;
     use LivewireAlert;
     use WithFileUploads;
@@ -27,76 +28,27 @@ class Index extends Component
     public $image;
 
     public $listeners = [
-        'refreshIndex' => '$refresh',
-        'showModal', 'editModal', 'delete',
+        'showModal',
+        'delete',
     ];
 
     public $showModal = false;
 
-    public $refreshIndex;
-
     public $editModal = false;
-
-    public int $perPage;
-
-    public array $orderable;
-
-    public string $search = '';
-
-    public array $selected = [];
-
-    public array $paginationOptions;
 
     public array $listsForFields = [];
 
-    protected $queryString = [
-        'search' => [
-            'except' => '',
-        ],
-        'sortBy' => [
-            'except' => 'id',
-        ],
-        'sortDirection' => [
-            'except' => 'desc',
-        ],
-    ];
-
     protected $rules = [
         'featuredbanner.title'         => ['required', 'string', 'max:255'],
-        'featuredbanner.details'       => ['nullable', 'string'],
+        'featuredbanner.description'   => ['nullable', 'string'],
         'featuredbanner.link'          => ['nullable', 'string'],
         'featuredbanner.product_id'    => ['nullable', 'integer'],
         'featuredbanner.language_id'   => ['nullable', 'integer'],
         'featuredbanner.embeded_video' => ['nullable'],
     ];
 
-    public function getSelectedCountProperty()
-    {
-        return count($this->selected);
-    }
-
-    public function updatingSearch()
-    {
-        $this->resetPage();
-    }
-
-    public function updatingPerPage()
-    {
-        $this->resetPage();
-    }
-
-    public function resetSelected()
-    {
-        $this->selected = [];
-    }
-
     public function mount()
     {
-        $this->sortBy = 'id';
-        $this->sortDirection = 'desc';
-        $this->perPage = 25;
-        $this->paginationOptions = [25, 50, 100];
-        $this->orderable = (new FeaturedBanner())->orderable;
         $this->initListsForFields();
     }
 
@@ -123,6 +75,7 @@ class Index extends Component
         $this->alert('success', __('Featuredbanner featured successfully!'));
     }
 
+    #[On('editModal')]
     public function editModal(FeaturedBanner $featuredbanner)
     {
         $this->resetErrorBag();

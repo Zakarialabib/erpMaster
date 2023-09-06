@@ -24,7 +24,7 @@
                     </li>
                     <li class="inline-flex">
                         <p class="lg:text-2xl sm:text-xl font-bold text-gray-600 hover:text-blue-500">
-                            {{ $products->count() }} {{ __('Watches') }}
+                            {{ $products->count() }} {{ __('Products') }}
                         </p>
                     </li>
                     <li>
@@ -50,7 +50,7 @@
 
                 <div class="w-full sm:w-auto flex justify-center my-2">
                     <select
-                        class="px-4 py-2 mr-2 leading-4 bg-white text-gray-700 rounded border border-zinc-300 mb-1 text-xs focus:shadow-outline-blue focus:border-blue-500"
+                        class="px-4 py-2 mr-2 leading-4 bg-white text-gray-700 rounded border border-gray-300 mb-1 text-xs focus:shadow-outline-blue focus:border-blue-500"
                         id="sortBy" wire:model="sorting">
                         <option disabled>{{ __('Best Selling') }}</option>
                         <option value="name">{{ __('Order Alphabetic, A-Z') }}</option>
@@ -61,8 +61,8 @@
                         <option value="date-desc">{{ __('Date, old to new') }}</option>
                     </select>
 
-                    <select wire:model="perPage" name="perPage"
-                        class="px-4 py-2 leading-4 bg-white text-gray-700 rounded border border-zinc-300 mb-1 text-xs focus:shadow-outline-blue focus:border-blue-500">
+                    <select wire:model.live="perPage" name="perPage"
+                        class="px-4 py-2 leading-4 bg-white text-gray-700 rounded border border-gray-300 mb-1 text-xs focus:shadow-outline-blue focus:border-blue-500">
                         @foreach ($paginationOptions as $value)
                             <option value="{{ $value }}">{{ $value }}</option>
                         @endforeach

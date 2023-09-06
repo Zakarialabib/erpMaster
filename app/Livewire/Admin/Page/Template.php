@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Livewire\Admin\Page;
 
 use App\Models\Page;
-use App\Models\PageSetting;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -46,35 +45,30 @@ class Template extends Component
         $this->selectedTemplate = $this->templates[$this->selectTemplate];
     }
 
-    public function create()
+    public function store()
     {
-        // try {
-        $pageTemplate = [
-            'title'            => $this->selectedTemplate['title'],
-            'slug'             => $this->selectedTemplate['slug'],
-            'details'          => $this->selectedTemplate['details'],
-            'meta_title'       => $this->selectedTemplate['meta_title'],
-            'meta_description' => $this->selectedTemplate['meta_description'],
-            'photo'            => $this->selectedTemplate['image'],
-        ];
+        try {
+            $page = [
+                'title'            => $this->selectedTemplate['title'],
+                'slug'             => $this->selectedTemplate['slug'],
+                'description'      => $this->selectedTemplate['description'],
+                'meta_title'       => $this->selectedTemplate['meta_title'],
+                'meta_description' => $this->selectedTemplate['meta_description'],
+                'image'            => $this->selectedTemplate['image'],
+            ];
 
-        $page = Page::create($pageTemplate);
+            Page::create($page);
 
-        // dd($page);
+            $this->pages[] = $page;
 
-        $pageSettings = new PageSetting([
-            'page_id' => $page->id,
-            // 'language_id' => $page->language_id ?? null,
-        ]);
+            $this->dispatch('refreshIndex')->to(Index::class);
 
-        $this->emit('refreshIndex');
+            $this->createTemplate = false;
 
-        $this->createTemplate = false;
-
-        $this->alert('success', __('Page created successfully!'));
-        // } catch (Throwable $th) {
-        //     $this->alert('warning', __('Page Was not created!'));
-        // }
+            $this->alert('success', __('Page created successfully!'));
+        } catch (Throwable $th) {
+            $this->alert('warning', __('Page Was not created!'));
+        }
     }
 
     public function render()

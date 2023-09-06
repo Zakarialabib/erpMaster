@@ -1,31 +1,35 @@
 <div>
+    @section('title', __('Slider'))
+    <x-theme.breadcrumb :title="__('Slider List')" :parent="route('admin.sliders.index')" :parentName="__('Slider List')">
+        <x-button primary type="button" wire:click="dispatchTo('admin.slider.create', 'createModal')">
+            {{ __('Create Slider') }}
+        </x-button>
+    </x-theme.breadcrumb>
+
     <div class="flex flex-wrap justify-center">
-        <div class="lg:w-1/2 md:w-1/2 sm:w-full flex flex-wrap my-md-0 my-2">
-            <select wire:model="perPage"
-                class="w-20 block p-3 leading-5 bg-white text-gray-700 rounded border border-gray-300 mb-1 text-sm focus:shadow-outline-blue focus:border-blue-300 mr-3">
-                @foreach ($paginationOptions as $value)
-                    <option value="
-                {{ $value }}">{{ $value }}</option>
-                @endforeach
-            </select>
-            @if ($this->selected)
-                <x-button danger type="button" wire:click="deleteSelected" class="ml-3">
-                    <i class="fas fa-trash-alt"></i>
-                </x-button>
-            @endif
-            @if ($this->selectedCount)
-                <p class="text-sm leading-5">
-                    <span class="font-medium">
-                        {{ $this->selectedCount }}
-                    </span>
-                    {{ __('Entries selected') }}
-                </p>
-            @endif
+        <div class="lg:w-1/2 md:w-1/2 sm:w-full flex flex-col my-md-0 my-2">
+            <div class="my-2 my-md-0">
+                <select wire:model.live="perPage" name="perPage"
+                    class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-auto sm:text-sm border-gray-300 rounded-md focus:outline-none focus:shadow-outline-blue transition duration-150 ease-in-out">
+                    @foreach ($paginationOptions as $value)
+                        <option value="{{ $value }}">{{ $value }}</option>
+                    @endforeach
+                </select>
+
+                @if ($this->selectedCount)
+                    <p class="text-sm leading-5">
+                        <span class="font-medium">
+                            {{ $this->selectedCount }}
+                        </span>
+                        {{ __('Entries selected') }}
+                    </p>
+                @endif
+            </div>
         </div>
         <div class="lg:w-1/2 md:w-1/2 sm:w-full my-2 my-md-0">
             <div class="my-2 my-md-0">
                 <input type="text" wire:model.debounce.300ms="search"
-                    class="p-3 leading-5 bg-white text-gray-500 rounded border border-zinc-300 mb-1 text-sm w-full focus:shadow-outline-blue focus:border-blue-500"
+                    class="p-3 leading-5 bg-white text-gray-500 rounded border border-gray-300 mb-1 text-sm w-full focus:shadow-outline-blue focus:border-blue-500"
                     placeholder="{{ __('Search') }}" />
             </div>
         </div>
@@ -54,46 +58,39 @@
             @forelse($sliders as $slider)
                 <x-table.tr>
                     <x-table.td>
-                        <input type="checkbox" value="{{ $slider->id }}" wire:model="selected">
+                        {{-- {{ $id }} --}}
                     </x-table.td>
                     <x-table.td>
-                        @if ($slider->photo)
-                            <img src="{{ asset('images/sliders/' . $slider->photo) }}" alt="{{ $slider->title }}"
+                        {{-- @if ($slider->omage)
+                            <img src="{{ asset('images/sliders/' . $slider->) }}" alt="{{ $slider->title }}"
                                 class="w-10 h-10 rounded-full">
                         @else
                             {{ __('No image') }}
-                        @endif
+                        @endif --}}
                     </x-table.td>
                     <x-table.td>
                         {{ $slider->title }}
                     </x-table.td>
                     <x-table.td>
-                        {{-- StatusInactive - StatusActive --}}
-                        @if (\App\Models\Slider::StatusInactive)
-                            <x-badge danger>
-                                {{ __('Inactive') }}
-                            </x-badge>
-                        @elseif(\App\Models\Slider::StatusActive)
-                            <x-badge info>
-                                {{ __('Active') }}
-                            </x-badge>
-                        @endif
+                        <livewire:utils.toggle-button :model="$slider" field="status" key="{{ $slider->id }}"
+                            lazy />
                     </x-table.td>
                     <x-table.td>
-                        @if ($slider['featured'] == false)
-                            <a class="bg-green-500 py-3 px-2 text-white" title="{{ __('Set as featured') }}"
-                                wire:click="setFeatured( {{ $slider['id'] }} )">
+                        @if ($slider->featured == false)
+                            <x-button success type="button" wire:click="setFeatured( {{ $slider->id }} )">
                                 {{ __('Set as featured') }}
-                            </a>
+                            </x-button>
                         @endif
                     </x-table.td>
                     <x-table.td>
                         <div class="flex justify-start space-x-2">
-                            <x-button primary type="button" wire:click="$emit('editModal', {{ $slider->id }})"
+                            <x-button primary type="button"
+                                wire:click="$dispatch('editModal', { id:  {{ $slider->id }} })"
                                 wire:loading.attr="disabled">
                                 <i class="fas fa-edit"></i>
                             </x-button>
-                            <x-button danger type="button" wire:click="deleteModal({{ $slider->id }})"
+                            <x-button danger type="button"
+                                wire:click="$dispatch('deleteModal', { id ; {{ $slider->id }} })"
                                 wire:loading.attr="disabled">
                                 <i class="fas fa-trash-alt"></i>
                             </x-button>
@@ -124,11 +121,7 @@
         </div>
     </div>
 
-    <!-- Edit Modal -->
-    @livewire('admin.slider.edit', ['slider' => $slider])
-    <!-- End Edit Modal -->
+    <livewire:admin.slider.edit :slider="$slider" lazy />
 
-
-    <livewire:admin.slider.create />
-
+    <livewire:admin.slider.create lazy />
 </div>

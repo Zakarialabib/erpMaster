@@ -21,6 +21,7 @@ class Template extends Component
     public $createTemplate = null;
     public $sections = [];
     public $selectTemplate;
+    public $description;
 
     public $listeners = [
         'createTemplate',
@@ -53,7 +54,7 @@ class Template extends Component
                 'subtitle'       => $this->selectedTemplate['subtitle'],
                 'featured_title' => $this->selectedTemplate['featured_title'],
                 'label'          => $this->selectedTemplate['label'],
-                'description'    => $this->selectedTemplate['description'],
+                'description'    => $this->description,
                 'bg_color'       => $this->selectedTemplate['bg_color'],
                 'position'       => $this->selectedTemplate['position'],
                 'link'           => $this->selectedTemplate['link'],
@@ -63,7 +64,7 @@ class Template extends Component
 
             $this->sections[] = $section;
 
-            $this->emit('refreshIndex');
+            $this->dispatch('refreshIndex')->to(Index::class);
 
             $this->createTemplate = false;
 

@@ -1,3 +1,4 @@
+
 <div>
     <div class="grid gap-4 grid-cols-3 px-4">
         <x-button primary type="button" wire:click="generate">
@@ -137,7 +138,7 @@
         </div>
     </div>
 
-    <x-modal wire:model.live="settingsModal">
+    <x-modal wire:model="settingsModal">
         <x-slot name="title">
             {{ __('Backup settings') }}
         </x-slot>

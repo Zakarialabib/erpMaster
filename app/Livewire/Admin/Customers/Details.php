@@ -7,9 +7,13 @@ namespace App\Livewire\Admin\Customers;
 use App\Livewire\Utils\Datatable;
 use App\Models\Customer;
 use App\Models\Sale;
+use App\Models\SaleDetails;
 use App\Models\SaleReturn;
+use Livewire\Attributes\Computed;
 use Livewire\Component;
+use Livewire\Attributes\Layout;
 
+#[Layout('components.layouts.dashboard')]
 class Details extends Component
 {
     use Datatable;
@@ -18,16 +22,15 @@ class Details extends Component
 
     public $customer;
 
-    public function mount($customer): void
+    public function mount($id): void
     {
         // dd($customer);
-        $this->customer = $customer;
+        $this->customer = Customer::where('id', $id)->first();
         $this->customer_id = $this->customer->id;
-        $this->selectPage = false;
         $this->orderable = (new Customer())->orderable;
     }
 
-    public function getSalesProperty(): mixed
+    public function getSalesProperty()
     {
         $query = Sale::where('customer_id', $this->customer_id)
             ->with('customer')
@@ -40,7 +43,7 @@ class Details extends Component
         return $query->paginate($this->perPage);
     }
 
-    public function getCustomerPaymentsProperty(): mixed
+    public function getCustomerPaymentsProperty()
     {
         $query = Sale::where('customer_id', $this->customer_id)
             ->with('salepayments.sale')
@@ -53,48 +56,62 @@ class Details extends Component
         return $query->paginate($this->perPage);
     }
 
-    public function getTotalSalesProperty(): int|float
+    #[Computed]
+    public function TotalSales(): int|float
     {
         return $this->customerSum('total_amount');
     }
 
-    public function getTotalSaleReturnsProperty(): int|float
+    #[Computed]
+    public function TotalSaleReturns(): int|float
     {
         return SaleReturn::whereBelongsTo($this->customer)
             ->completed()->sum('total_amount');
     }
 
-    public function getTotalPaymentsProperty(): int|float
+    #[Computed]
+    public function TotalPayments(): int|float
     {
         return $this->customerSum('paid_amount');
     }
 
     // total due amount
-    public function getTotalDueProperty(): int|float
+    #[Computed]
+    public function TotalDue(): int|float
     {
         return $this->customerSum('due_amount');
     }
 
-    // show profit
-    public function getProfitProperty(): int|float
+    #[Computed]
+    public function Profit()
     {
-        $sales = Sale::where('customer_id', $this->customer_id)
-            ->completed()->sum('total_amount');
+        // Step 1: Calculate total sales revenue for completed sales
+        $salesTotal = Sale::where('customer_id', $this->customer_id)
+            ->completed()
+            ->sum('total_amount');
 
-        $sale_returns = SaleReturn::whereBelongsTo($this->customer)
-            ->completed()->sum('total_amount');
+        // Step 2: Calculate total sales returns
+        $saleReturnsTotal = SaleReturn::where('customer_id', $this->customer_id)
+            ->completed()
+            ->sum('total_amount');
 
-        $product_costs = 0;
+        // Step 3: Calculate the total product cost from the pivot table
+        $productCosts = 0;
 
-        foreach (Sale::where('customer_id', $this->customer_id)->saleDetails()->with('product')->get() as $sale) {
+        foreach ($this->sales as $sale) {
             foreach ($sale->saleDetails as $saleDetail) {
-                $product_costs += $saleDetail->product->cost;
+                // Assuming you have a warehouses relationship defined on the Product model
+                $productWarehouse = $saleDetail->product->warehouses->where('warehouse_id', $this->warehouse_id)->first();
+                if ($productWarehouse) {
+                    $productCosts += $productWarehouse->cost * $saleDetail->quantity;
+                }
             }
         }
 
-        $revenue = ($sales - $sale_returns) / 100;
+        // Step 4: Calculate profit
+        $profit = ($salesTotal - $saleReturnsTotal) - $productCosts;
 
-        return $revenue - $product_costs;
+        return $profit;
     }
 
     public function render()

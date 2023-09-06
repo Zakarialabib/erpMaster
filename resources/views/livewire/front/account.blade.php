@@ -1,6 +1,6 @@
 <div>
     <div class="bg-white py-6 px-4 rounded-md">
-        <form wire:submit.prevent="save">
+        <form wire:submit="save">
             <div class="flex flex-wrap">
                 <div class="w-full px-2 md:w-1/2">
                     <label class="font-bold font-heading text-gray-600" for="">{{ __('First Name') }}</label>

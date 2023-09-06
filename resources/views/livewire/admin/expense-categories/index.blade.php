@@ -1,8 +1,14 @@
 <div>
+    @section('title', __('Expense Category'))
+    <x-theme.breadcrumb :title="__('Expense Category List')" :parent="route('admin.expense-categories.index')" :parentName="__('Expense Category List')">
+        <x-button primary type="button" wire:click="dispatchTo('admin.expense-categories.create', 'createModal')">
+            {{ __('Create Expense Category') }}
+        </x-button>
+    </x-theme.breadcrumb>
     <div class="flex flex-wrap justify-center">
-        <div class="lg:w-1/2 md:w-1/2 sm:w-full flex flex-wrap my-2">
+        <div class="lg:w-1/2 md:w-1/2 sm:w-full flex flex-wrap gap-6 w-full">
             <select wire:model.live="perPage"
-                class="w-20 block p-3 leading-5 bg-white dark:bg-dark-eval-2 text-gray-700 dark:text-gray-300 rounded border border-gray-300 mb-1 text-sm focus:shadow-outline-blue focus:border-blue-300 mr-3">
+                class="w-auto shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block sm:text-sm border-gray-300 rounded-md focus:outline-none focus:shadow-outline-blue transition duration-150 ease-in-out">
                 @foreach ($paginationOptions as $value)
                     <option value="{{ $value }}">{{ $value }}</option>
                 @endforeach
@@ -13,7 +19,7 @@
                 </x-button>
             @endif
             @if ($this->selectedCount)
-                <p class="text-sm leading-5">
+                <p class="text-sm  my-auto">
                     <span class="font-medium">
                         {{ $this->selectedCount }}
                     </span>
@@ -21,10 +27,8 @@
                 </p>
             @endif
         </div>
-        <div class="lg:w-1/2 md:w-1/2 sm:w-full my-2">
-            <div class="my-2">
-                <x-input wire:model.live.debounce.500ms="search" placeholder="{{ __('Search') }}" autofocus />
-            </div>
+        <div class="lg:w-1/2 md:w-1/2 sm:w-full ">
+            <x-input wire:model.live="search" placeholder="{{ __('Search') }}" autofocus />
         </div>
     </div>
 
@@ -58,18 +62,17 @@
                     </x-table.td>
                     <x-table.td>
                         <div class="flex justify-start space-x-2">
-                            <x-button info type="button" 
-                                wire:click="showModal({{ $expenseCategory->id }})"
+                            <x-button info type="button" wire:click="showModal({{ $expenseCategory->id }})"
                                 wire:loading.attr="disabled">
                                 <i class="fas fa-eye"></i>
                             </x-button>
                             <x-button primary type="button"
-                                wire:click="$dispatch('editModal', {{ $expenseCategory->id }})"
+                                wire:click="$dispatch('editModal',{ id : {{ $expenseCategory->id }}})"
                                 wire:loading.attr="disabled">
                                 <i class="fas fa-edit"></i>
                             </x-button>
                             <x-button danger type="button"
-                                wire:click="$dispatch('deleteModal', {{ $expenseCategory->id }})"
+                                wire:click="$dispatch('deleteModal', {id : {{ $expenseCategory->id }}})"
                                 wire:loading.attr="disabled">
                                 <i class="fas fa-trash"></i>
                             </x-button>
@@ -102,9 +105,9 @@
         </div>
     </div>
 
-    @livewire('admin.expense-categories.edit', ['expenseCategory' => $expenseCategory])
+    <livewire:admin.expense-categories.edit :expenseCategory="$expenseCategory" />
 
-    <x-modal wire:model.live="showModal">
+    <x-modal wire:model="showModal">
         <x-slot name="title">
             {{ __('Show Expense Category') }}
         </x-slot>
@@ -123,8 +126,8 @@
         </x-slot>
     </x-modal>
 
-    <livewire:admin.expense-categories.create />
-    
-    
-    
+    <livewire:admin.expense-categories.create lazy />
+
+
+
 </div>

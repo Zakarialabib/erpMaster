@@ -5,6 +5,8 @@ declare(strict_types=1);
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Models\Warehouse;
+use App\Models\User;
 
 return new class () extends Migration {
     /**
@@ -18,6 +20,10 @@ return new class () extends Migration {
             $table->id();
             $table->date('date');
             $table->string('reference');
+
+            $table->foreignIdFor(Warehouse::class)->nullable()->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(User::class)->nullable()->constrained()->cascadeOnDelete();
+
             $table->text('note')->nullable();
             $table->softDeletes();
             $table->timestamps();

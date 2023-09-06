@@ -6,8 +6,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Support\HasAdvancedFilter;
-use App\Traits\GetModelByUuid;
-use App\Traits\UuidGenerator;
+use App\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -24,11 +23,9 @@ class User extends Authenticatable
     use HasApiTokens;
     use HasAdvancedFilter;
     use HasFactory;
-    use GetModelByUuid;
-    use UuidGenerator;
+    use HasUuid;
 
     public const ATTRIBUTES = [
-
         'id', 'name', 'email', 'password', 'avatar',
         'phone', 'role_id', 'status', 'is_all_warehouses',
         'created_at', 'updated_at',
@@ -43,9 +40,9 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'uuid', 'id', 'name', 'email', 'password', 'avatar',
+        'id', 'name', 'email', 'password', 'avatar',
         'phone', 'role_id', 'status', 'is_all_warehouses',
-        'created_at', 'updated_at', 'wallet_id',
+        'wallet_id', 'default_client_id', 'default_warehouse_id',
     ];
 
     /**
@@ -78,9 +75,10 @@ class User extends Authenticatable
     }
 
     /** @return BelongsToMany<Warehouse> */
-    public function assignedWarehouses(): BelongsToMany
+    public function warehouses()
     {
-        return $this->belongsToMany(Warehouse::class);
+        return $this->belongsToMany(Warehouse::class)->using(UserWarehouse::class)
+            ->withPivot('user_id', 'warehouse_id', 'is_default');
     }
 
     /** @return HasOne<Wallet> */

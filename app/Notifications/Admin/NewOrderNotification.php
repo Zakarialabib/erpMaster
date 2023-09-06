@@ -5,14 +5,12 @@ declare(strict_types=1);
 namespace App\Notifications\Admin;
 
 use App\Enums\NotificationType;
-use App\Traits\MakeNotification;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 
 class NewOrderNotification extends Notification
 {
     use Queueable;
-    use MakeNotification;
 
     /** New order instance */
     private $order;

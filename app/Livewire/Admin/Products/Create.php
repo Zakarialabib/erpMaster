@@ -12,137 +12,129 @@ use App\Models\Warehouse;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
+use Livewire\Attributes\Computed;
+use Livewire\Attributes\On;
+use Livewire\Attributes\Rule;
 use Livewire\Component;
 use Livewire\WithFileUploads;
-use Throwable;
 
 class Create extends Component
 {
     use LivewireAlert;
     use WithFileUploads;
 
-    /** @var array<string> */
-    public $listeners = ['createModal'];
-
     /** @var bool */
     public $createModal = null;
 
     public $image;
+    public $gallery = [];
 
-    /** @var mixed */
-    public $product;
+    public Product $product;
+
+    #[Rule('required|string|min:3|max:255')]
+    public string $name;
+
+    public string $barcode_symbology;
+
+    public string $slug;
+
+    public string $unit;
+
+    public int $order_tax;
+
+    public $description;
+    public int $tax_type;
+    public bool $featured;
+    public string $condition;
+    public $embeded_video;
+    public $category_id;
+    public $brand_id;
+    public array $subcategories = [];
+    public array $options = [];
+    public string $meta_title;
+    public string $meta_description;
+    public bool $best;
+    public bool $hot;
 
     public $productWarehouse = [];
 
     /** @var array */
     protected $rules = [
-        'product.name'                => 'required|string|min:3|max:255',
-        'product.code'                => 'required|string|max:255',
-        'product.barcode_symbology'   => 'required|string|max:255',
-        'product.unit'                => 'required|string|max:255',
-        'productWarehouse.*.quantity' => 'integer|min:1',
-        'productWarehouse.*.price'    => 'numeric',
-        'productWarehouse.*.cost'     => 'numeric',
-        'product.stock_alert'         => 'required|integer|min:0|max:192',
-        'product.order_tax'           => 'nullable|integer|min:0|max:1192',
-        'product.tax_type'            => 'nullable|integer|min:0|max:100',
-        'product.note'                => 'nullable|string|max:1000',
-        'product.category_id'         => 'required|integer|min:0|max:100',
-        'product.brand_id'            => 'nullable|integer|min:0|max:100',
-        'product.featured'            => 'boolean',
-
+        'productWarehouse.*.quantity'    => 'integer|min:1',
+        'productWarehouse.*.price'       => 'numeric',
+        'productWarehouse.*.cost'        => 'numeric',
+        'productWarehouse.*.stock_alert' => 'required|integer|min:0|max:192',
     ];
-
-    public function updated($propertyName): void
-    {
-        $this->validateOnly($propertyName);
-    }
-
-    public function mount(): void
-    {
-        $this->product = new Product();
-        $this->product->stock_alert = 10;
-        $this->product->order_tax = 0;
-        $this->product->unit = 'pcs';
-        $this->product->featured = false;
-        $this->product->barcode_symbology = 'C128';
-    }
 
     public function render()
     {
-        abort_if(Gate::denies('product_create'), 403);
+        abort_if(Gate::denies('product create'), 403);
 
         return view('livewire.admin.products.create');
     }
 
+    #[On('createModal')]
     public function createModal(): void
     {
         $this->resetErrorBag();
 
         $this->resetValidation();
-
-        $this->product = new Product();
-        $this->product->stock_alert = 10;
-        $this->product->order_tax = 0;
-        $this->product->unit = 'pcs';
-        $this->product->featured = false;
-        $this->product->barcode_symbology = 'C128';
-
+        $this->order_tax = 0;
+        $this->unit = 'pcs';
+        $this->featured = false;
+        $this->barcode_symbology = 'C128';
         $this->createModal = true;
     }
 
     public function create(): void
     {
-        try {
-            $validatedData = $this->validate();
+        $this->validate();
 
-            if ($this->image) {
-                $imageName = Str::slug($this->product->name).'-'.date('Y-m-d H:i:s').'.'.$this->image->extension();
-                $this->image->store('products', $imageName);
-                $this->product->image = $imageName;
-            }
+        $this->slug = Str::slug($this->name);
 
-            $this->product->price = 0;
-            $this->product->cost = 0;
-            $this->product->quantity = 0;
-
-            $this->product->save($validatedData);
-
-            foreach ($this->productWarehouse as $warehouseId => $warehouse) {
-                $quantity = $warehouse['quantity'] ?? 0;
-                $price = $warehouse['price'];
-                $cost = $warehouse['cost'];
-
-                ProductWarehouse::create([
-                    'product_id'   => $this->product->id,
-                    'warehouse_id' => $warehouseId,
-                    'price'        => $price,
-                    'cost'         => $cost,
-                    'qty'          => $quantity,
-                ]);
-            }
-
-            $this->alert('success', __('Product created successfully'));
-
-            $this->dispatch('refreshIndex');
-
-            $this->createModal = false;
-        } catch (Throwable $th) {
-            $this->alert('error', $th->getMessage());
+        if ($this->image) {
+            $imageName = Str::slug($this->name).'-'.$this->image->extension();
+            $this->image->store('products', $imageName);
+            $this->image = $imageName;
         }
+
+        Product::create($this->all());
+
+        foreach ($this->productWarehouse as $warehouseId => $warehouse) {
+            $quantity = $warehouse['quantity'] ?? 0;
+            $price = $warehouse['price'];
+            $cost = $warehouse['cost'];
+
+            ProductWarehouse::create([
+                'product_id'   => $this->product->id,
+                'warehouse_id' => $warehouseId,
+                'price'        => $price,
+                'cost'         => $cost,
+                'qty'          => $quantity,
+            ]);
+        }
+
+        $this->alert('success', __('Product created successfully'));
+
+        $this->dispatch('refreshIndex')->to(Index::class);
+
+        $this->createModal = false;
     }
 
-    public function getCategoriesProperty()
+    #[Computed]
+    public function categories()
     {
         return Category::pluck('name', 'id')->toArray();
     }
 
-    public function getBrandsProperty()
+    #[Computed]
+    public function brands()
     {
         return Brand::pluck('name', 'id')->toArray();
     }
 
-    public function getWarehousesProperty()
+    #[Computed]
+    public function warehouses()
     {
         return Warehouse::select(['name', 'id'])->get();
     }

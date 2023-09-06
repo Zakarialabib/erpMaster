@@ -5,7 +5,7 @@
                 <h2 class="text-lg font-medium mb-4">{{ __('Messaging Configuration') }}</h2>
                 <div class="mb-4">
                     <label for="type">{{ __('Message Type') }}:</label>
-                    <select id="type" wire:model.blur="type" class="w-full">
+                    <select id="type" wire:model="type" class="w-full">
                         <option value="">{{ __('Select Message Type') }}</option>
                         <option value="whatsapp">WhatsApp</option>
                         <option value="telegram">Telegram</option>
@@ -14,7 +14,7 @@
                 @if ($type == 'telegram')
                     <div class="mb-4" x-data="{ showTooltip: false }">
                         <label for="bot-token" class="block font-medium items-center mb-1">{{ __('Bot Token') }}
-                            <button class="mr-1 text-gray-500 hover:text-gray-700" @mouseover="showTooltip = true"
+                            <button class="mr-1 text-gray-200 hover:text-gray-700" @mouseover="showTooltip = true"
                                 @mouseout="showTooltip = false">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24"
                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -38,13 +38,13 @@
                     </div>
                     <div class="mb-4">
                         <label for="chat-id" class="block font-medium mb-1">{{ __('Chat ID') }}:</label>
-                        <input type="text" wire:model.blur="chatId" id="chat-id"
+                        <input type="text" wire:model="chatId" id="chat-id"
                             class="w-full p-2 border rounded-lg">
                     </div>
                 @elseif($type == 'whatsapp')
                     <div class="mb-4">
                         <label for="chat-id" class="block font-medium mb-1">{{ __('Phone') }}:</label>
-                        <input type="text" wire:model.blur="chatId" id="chat-id"
+                        <input type="text" wire:model="chatId" id="chat-id"
                             class="w-full p-2 border rounded-lg">
                     </div>
                     <div class="px-4 pb-2">
@@ -68,7 +68,7 @@
                 <h2 class="text-lg font-medium mb-4">{{ __('Message Content') }}</h2>
                 @if ($type == 'whatsapp' || $type == 'telegram')
                     <div class="mb-4">
-                        <x-input.textarea id="message" wire:model.blur="message" />
+                        <x-input.textarea id="message" wire:model="message" />
                     </div>
                     <div class="px-4">
                         <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full"
@@ -82,7 +82,7 @@
 
 
         <!-- Message templates modal -->
-        <x-modal wire:model.live="openTemplate">
+        <x-modal wire:model="openTemplate">
             <x-slot name="title">
                 {{ __('Message Templates') }}
             </x-slot>
@@ -117,7 +117,7 @@
 
 
         <!-- Product selection modal -->
-        <x-modal wire:model.live="openProductModal">
+        <x-modal wire:model="openProductModal">
             <x-slot name="title">
                 {{ __('Select a Product') }}
             </x-slot>
@@ -135,8 +135,8 @@
                 </div>
             </x-slot>
         </x-modal>
-        
-        <x-modal wire:model.live="openClientModal">
+
+        <x-modal wire:model="openClientModal">
             <x-slot name="title">
                 {{ __('Select a Client') }}
             </x-slot>
@@ -147,7 +147,7 @@
                             <li class="flex justify-between items-center py-2 px-3">
                                 <span class="font-bold">{{ $customer->name }}</span>
                                 <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded"
-                                    wire:click="selectCustomer({{ $customer->id }})">{{__('Select')}}</button>
+                                    wire:click="selectCustomer({{ $customer->id }})">{{ __('Select') }}</button>
                             </li>
                         @endforeach
                     </ul>
@@ -157,13 +157,13 @@
 
         {{-- selectCustomer --}}
     </div>
+    
+    @push('scripts')
+        <script>
+            Livewire.on('openUrl', url => {
+                window.open(url, '_blank');
+            });
+        </script>
+    @endpush
 </div>
 
-
-@push('scripts')
-    <script>
-        Livewire.on('openUrl', url => {
-            window.open(url, '_blank');
-        });
-    </script>
-@endpush

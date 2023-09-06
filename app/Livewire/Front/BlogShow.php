@@ -8,7 +8,9 @@ use Livewire\Component;
 use App\Models\Blog;
 use App\Models\BlogCategory;
 use Livewire\Attributes\Computed;
+use Livewire\Attributes\Layout;
 
+#[Layout('components.layouts.guest')]
 class BlogShow extends Component
 {
     public $blog;
@@ -21,7 +23,7 @@ class BlogShow extends Component
     #[Computed]
     public function featuredBlogs()
     {
-        return Blog::active()->where('featured', true)->get();
+        return Blog::active()->where('featured', true)->take(3)->get();
     }
 
     #[Computed]

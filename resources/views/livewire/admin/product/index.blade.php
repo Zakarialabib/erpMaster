@@ -1,7 +1,37 @@
 <div>
+    @section('title', __('Sales'))
+
+    <x-theme.breadcrumb :title="__('Sales List')" :parent="route('admin.sales.index')" :parentName="__('Sales List')">
+
+        <x-dropdown align="right" width="48" class="w-auto mr-2">
+            <x-slot name="trigger" class="inline-flex">
+                <x-button secondary type="button" class="text-white flex items-center">
+                    <i class="fas fa-angle-double-down w-4 h-4"></i>
+                </x-button>
+            </x-slot>
+            <x-slot name="content">
+                <x-dropdown-link wire:click="dispatch('importModal')" wire:loading.attr="disabled">
+                    {{ __('Import') }}
+                </x-dropdown-link>
+                {{-- use livewire - coming soon --}}
+                {{-- <x-dropdown-link wire:click="dispatch('exportAll')" 
+                wire:loading.attr="disabled">
+                {{ __('PDF') }}
+            </x-dropdown-link>
+            <x-dropdown-link wire:click="dispatch('downloadAll')" 
+                wire:loading.attr="disabled">
+                {{ __('Excel') }}
+            </x-dropdown-link> --}}
+            </x-slot>
+        </x-dropdown>
+        @can('sale_create')
+            <x-button primary href="{{ route('admin.sale.create') }}">{{ __('Create Invoice') }}</x-button>
+        @endcan
+
+    </x-theme.breadcrumb>
     <div class="flex flex-wrap justify-center">
         <div class="lg:w-1/2 md:w-1/2 sm:w-full flex flex-wrap items-center gap-2 my-2">
-            <select wire:model="perPage" name="perPage"
+            <select wire:model.live="perPage" name="perPage"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-32 p-1">
                 @foreach ($paginationOptions as $value)
                     <option value="{{ $value }}">{{ $value }}</option>
@@ -34,7 +64,7 @@
         </div>
         <div class="lg:w-1/2 md:w-1/2 sm:w-full my-2 my-md-0">
             <input type="text" wire:model.debounce.300ms="search"
-                class="p-3 leading-5 bg-white text-gray-500 rounded border border-zinc-300 mb-1 text-sm w-full focus:shadow-outline-blue focus:border-blue-500"
+                class="p-3 leading-5 bg-white text-gray-500 rounded border border-gray-300 mb-1 text-sm w-full focus:shadow-outline-blue focus:border-blue-500"
                 placeholder="{{ __('Search') }}" />
         </div>
     </div>
@@ -129,8 +159,11 @@
                         </div>
 
                         <br>
-                        <span class="text-red-500 text-xs">{{ $product->category ? $product->category->name : 'Not linked, please enter a category' }}</span> - 
-                        <span class="text-red-500 text-xs">{{ $product->brand ? $product->brand->name : 'Not linked, please enter a brand' }}</span>
+                        <span
+                            class="text-red-500 text-xs">{{ $product->category ? $product->category->name : 'Not linked, please enter a category' }}</span>
+                        -
+                        <span
+                            class="text-red-500 text-xs">{{ $product->brand ? $product->brand->name : 'Not linked, please enter a brand' }}</span>
 
                     </x-table.td>
 
@@ -142,7 +175,7 @@
                     </x-table.td>
 
                     <x-table.td>
-                        <livewire:toggle-button :model="$product" field="status" key="{{ $product->id }}" />
+                        <livewire:utils.toggle-button :model="$product" field="status" key="{{ $product->id }}" />
                     </x-table.td>
 
                     <x-table.td>
@@ -164,12 +197,12 @@
                                     <i class="fas fa-clone"></i>
                                     {{ __('Clone') }}
                                 </x-dropdown-link>
-                                <x-dropdown-link wire:click="$emit('showModal',{{ $product->id }})"
+                                <x-dropdown-link wire:click="$dispatch('showModal', { id : {{ $product->id }} })"
                                     wire:loading.attr="disabled">
                                     <i class="fas fa-eye"></i>
                                     {{ __('View') }}
                                 </x-dropdown-link>
-                                <x-dropdown-link wire:click="$emit('editModal', {{ $product->id }})"
+                                <x-dropdown-link wire:click="$dispatch('editModal', { id : {{ $product->id }} })"
                                     wire:loading.attr="disabled">
                                     <i class="fas fa-edit"></i>
                                     {{ __('Edit') }}
@@ -223,7 +256,7 @@
             {{ __('Promo Selected Products') }}
         </x-slot>
         <x-slot name="content">
-            <form wire:submit.prevent="discountSelected">
+            <form wire:submit="discountSelected">
                 <div class="w-full mx-auto">
                     <div class="flex flex-wrap px-4">
 

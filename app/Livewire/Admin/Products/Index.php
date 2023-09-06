@@ -6,74 +6,118 @@ namespace App\Livewire\Admin\Products;
 
 use App\Exports\ProductExport;
 use App\Livewire\Utils\Datatable;
-use App\Imports\ProductImport;
 use App\Models\Product;
+use App\Models\ProductWarehouse;
 use App\Notifications\ProductTelegram;
-
 use Illuminate\Support\Facades\Gate;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
 use Livewire\WithFileUploads;
-use Livewire\WithPagination;
-use Storage;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Livewire\Attributes\Layout;
+use Livewire\Attributes\On;
 
+#[Layout('components.layouts.dashboard')]
 class Index extends Component
 {
-    use Datatable;
     use LivewireAlert;
-    use WithPagination;
     use WithFileUploads;
     use Datatable;
 
     /** @var mixed */
-    public $product;
-
-    public $productIds;
+    public $productWarehouse;
 
     /** @var array<string> */
     public $listeners = [
-        'refreshIndex' => '$refresh',
-        'importModal', 'sendTelegram',
+        'sendTelegram',
         'downloadAll', 'exportAll',
-        'delete',
     ];
 
     public $importModal = false;
 
     public $sendTelegram;
 
-    public $selectAll;
+    public $promoAllProducts;
+    public $copyPriceToOldPrice;
+    public $copyOldPriceToPrice;
+    public $percentage;
+    public $product;
 
     public function mount(): void
     {
         $this->orderable = (new Product())->orderable;
     }
 
+    public function deleteModal($product)
+    {
+        $confirmationMessage = __('Are you sure you want to delete this product? if something happens you can be recover it.');
+
+        $this->confirm($confirmationMessage, [
+            'toast'             => false,
+            'position'          => 'center',
+            'showConfirmButton' => true,
+            'cancelButtonText'  => __('Cancel'),
+            'onConfirmed'       => 'delete',
+        ]);
+
+        $this->product = $product;
+    }
+
+    public function deleteSelectedModal(): void
+    {
+        $confirmationMessage = __('Are you sure you want to delete the selected products? items can be recovered.');
+
+        $this->confirm($confirmationMessage, [
+            'toast'             => false,
+            'position'          => 'center',
+            'showConfirmButton' => true,
+            'cancelButtonText'  => __('Cancel'),
+            'onConfirmed'       => 'deleteSelected',
+        ]);
+    }
+
+    #[On('deleteSelected')]
     public function deleteSelected(): void
     {
-        abort_if(Gate::denies('product_delete'), 403);
+        abort_if(Gate::denies('product delete'), 403);
 
         Product::whereIn('id', $this->selected)->delete();
+        ProductWarehouse::whereIn('product_id', $this->selected)->delete();
+
+        $deletedCount = count($this->selected);
+
+        if ($deletedCount > 0) {
+            $this->alert(
+                'success',
+                __(':count selected products and related warehouses deleted successfully! These items can be recovered.', ['count' => $deletedCount])
+            );
+        }
 
         $this->resetSelected();
     }
 
-    public function delete(Product $product): void
+    #[On('delete')]
+    public function delete(): void
     {
-        abort_if(Gate::denies('product_delete'), 403);
+        abort_if(Gate::denies('product delete'), 403);
 
+        $product = Product::findOrFail($this->product);
+        $productWarehouse = ProductWarehouse::where('product_id', $product->id)->first();
+        if ($productWarehouse) {
+            $productWarehouse->delete();
+        }
         $product->delete();
+        $this->alert('success', __('Product and related warehouse deleted successfully!'));
     }
 
     public function render()
     {
-        abort_if(Gate::denies('product_access'), 403);
+        abort_if(Gate::denies('product access'), 403);
 
         $query = Product::query()
             ->with([
-                'category' => fn ($query) => $query->select('id', 'name'),
-                'brand'    => fn ($query) => $query->select('id', 'name'),
+                'category',
+                'brand',
                 'movements',
                 'warehouses',
             ])
@@ -84,85 +128,36 @@ class Index extends Component
                 'order_direction' => $this->sortDirection,
             ]);
 
+
         $products = $query->paginate($this->perPage);
 
         return view('livewire.admin.products.index', compact('products'));
     }
 
-    public function selectAll()
-    {
-        if (count(array_intersect($this->selected, Product::pluck('id')->toArray())) === count(Product::pluck('id')->toArray())) {
-            $this->selected = [];
-        } else {
-            $this->selected = Product::pluck('id')->toArray();
-        }
-    }
-
-    public function selectPage()
-    {
-        if (count(array_intersect($this->selected, Product::paginate($this->perPage)->pluck('id')->toArray())) === count(Product::paginate($this->perPage)->pluck('id')->toArray())) {
-            $this->selected = [];
-        } else {
-            $this->selected = $this->productIds;
-        }
-    }
-
     public function sendTelegram($product): void
     {
-        $this->product = Product::find($product);
+        $this->productWarehouse = ProductWarehouse::find($product->id);
 
         // Specify Telegram channel
-        $telegramChannel = settings()->telegram_channel;
+        $telegramChannel = settings('telegram_channel');
 
         // Pass in product details
-        $productName = $this->product->name;
-        $productPrice = $this->product->price;
+        $productName = $this->productWarehouse->product->name;
+        $productPrice = $this->productWarehouse->product->price;
 
         $this->product->notify(new ProductTelegram($telegramChannel, $productName, $productPrice));
     }
 
-    public function importModal(): void
-    {
-        abort_if(Gate::denies('product_access'), 403);
-
-        $this->resetErrorBag();
-
-        $this->resetValidation();
-
-        $this->importModal = true;
-    }
-
-    public function downloadSample()
-    {
-        return Storage::disk('exports')->download('products_import_sample.xls');
-    }
-
-    public function import(): void
-    {
-        $this->validate([
-            'import_file' => [
-                'required',
-                'file',
-            ],
-        ]);
-
-        Product::import(new ProductImport(), $this->file('import_file'));
-
-        $this->alert('success', __('Products imported successfully'));
-
-        $this->importModal = false;
-    }
-
     public function downloadAll(): BinaryFileResponse
     {
-        abort_if(Gate::denies('product_access'), 403);
+        abort_if(Gate::denies('product access'), 403);
 
         return $this->callExport()->download('products.xlsx');
     }
 
     public function exportSelected(): BinaryFileResponse
     {
-        abort_if(Gate::denies('product_access'), 403);
+        abort_if(Gate::denies('product access'), 403);
 
         // $customers = Product::whereIn('id', $this->selected)->get();
 
@@ -171,7 +166,7 @@ class Index extends Component
 
     public function exportAll(): BinaryFileResponse
     {
-        abort_if(Gate::denies('product_access'), 403);
+        abort_if(Gate::denies('product access'), 403);
 
         return $this->callExport()->download('products.pdf', \Maatwebsite\Excel\Excel::MPDF);
     }
@@ -179,5 +174,68 @@ class Index extends Component
     private function callExport(): ProductExport
     {
         return new ProductExport();
+    }
+
+    public function downloadSelected()
+    {
+        $products = Product::whereIn('id', $this->selected)->get();
+
+        return (new ProductExport($products))->download('products.xls', \Maatwebsite\Excel\Excel::XLS);
+    }
+
+    public function clone(Product $product)
+    {
+        $product_details = Product::find($product->id);
+        // dd($product_details);
+        Product::create([
+            'code'             => $product_details->code,
+            'slug'             => $product_details->slug,
+            'name'             => $product_details->name,
+            'price'            => $product_details->price,
+            'description'      => $product_details->description,
+            'meta_title'       => $product_details->meta_title,
+            'meta_description' => $product_details->meta_description,
+            'category_id'      => $product_details->category_id,
+            'subcategories'    => $product_details->subcategories,
+            'image'            => $product_details->image,
+            'brand_id'         => $product_details->brand_id,
+            'status'           => 0,
+        ]);
+
+        $this->alert('success', __('Product Cloned successfully!'));
+    }
+
+    public function promoAllProducts()
+    {
+        $this->promoAllProducts = true;
+    }
+
+    public function discountSelected()
+    {
+        $warehouseProducts = ProductWarehouse::whereIn('product_id', $this->selected)->get();
+
+        foreach ($warehouseProducts as $warehouse) {
+            if ($this->copyPriceToOldPrice) {
+                $warehouse->old_price = $warehouse->price;
+            } elseif ($this->copyOldPriceToPrice) {
+                $warehouse->price = $warehouse->old_price;
+                $warehouse->old_price = null;
+            } elseif ($this->percentageMethod === '+') {
+                $warehouse->price = round(floatval($warehouse->price) * (1 + $this->percentage / 100));
+            } else {
+                $warehouse->price = round(floatval($warehouse->price) * (1 - $this->percentage / 100));
+            }
+            $warehouse->save();
+        }
+
+        $this->alert('success', __('Product Prices changed successfully!'));
+
+        $this->resetSelected();
+
+        $this->promoAllProducts = false;
+
+        $this->copyPriceToOldPrice = '';
+        $this->copyOldPriceToPrice = '';
+        $this->percentage = '';
     }
 }

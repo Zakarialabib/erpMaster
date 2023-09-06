@@ -1,7 +1,19 @@
 <div>
+    @section('title', __('Edit Sale'))
+
+    <x-theme.breadcrumb :title="__('Edit Sale')" :parent="route('admin.sales.index')" :parentName="__('Sales List')" :children="URL::Current()" :childrenName="__('Edit Sale')">
+
+        @can('create customer')
+            <x-button primary type="button" wire:click="dispatchTo('admin.customer.create', 'createModal')">
+                {{ __('Create Customer') }}
+            </x-button>
+        @endcan
+
+    </x-theme.breadcrumb>
+
     <div class="flex flex-wrap">
         <div class="lg:w-1/2 sm:w-full h-full">
-            <livewire:search-product />
+            <livewire:search-product :$warehouse_id="$this->adjustment->warehouse_id" lazy />
         </div>
         <div class="lg:w-1/2 sm:w-full h-full">
             <x-validation-errors class="mb-4" :errors="$errors" />
@@ -9,13 +21,13 @@
             <form wire:submit="update">
                 <div class="flex flex-wrap -mx-2 mb-3">
                     <div class="w-full md:w-1/2 px-3 mb-4 md:mb-0">
-
                         <label for="reference">{{ __('Reference') }} <span class="text-red-500">*</span></label>
                         <x-input type="text" wire:model.live="reference" name="reference" required readonly />
                     </div>
                     <div class="w-full md:w-1/2 px-3 mb-4 md:mb-0">
                         <label for="customer_id">{{ __('Customer') }} <span class="text-red-500">*</span></label>
-                        <x-select-list :options="$this->customers" name="customer_id" id="customer_id" wire:model.live="customer_id" />
+                        <x-select-list :options="$this->customers" name="customer_id" id="customer_id"
+                            wire:model.live="customer_id" />
                         <x-input-error :messages="$errors->get('customer_id')" class="mt-2" />
 
                     </div>
@@ -36,7 +48,7 @@
                     </div>
                 </div>
 
-                <livewire:product-cart :cartInstance="'sale'" :data="$sale" />
+                <livewire:product-cart :cartInstance="'sale'" :data="$sale" lazy />
 
                 <div class="flex flex-wrap -mx-2 mb-3">
                     <div class="w-full md:w-1/3 px-3 mb-4 md:mb-0">

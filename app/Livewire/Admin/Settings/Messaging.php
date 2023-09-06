@@ -33,12 +33,12 @@ class Messaging extends Component
 
     public function mount()
     {
-        $this->botToken = settings()->telegram_channel;
+        $this->botToken = settings('telegram_channel');
     }
 
     public function getProductsProperty()
     {
-        return Product::select('id', 'name', 'price', 'image')->take(10)->get();
+        return Product::select('id', 'name', 'image')->take(10)->get();
     }
 
     public function getCustomersProperty()
@@ -100,7 +100,7 @@ class Messaging extends Component
 
         $message = "Due Amount for Sale {$sale->id}: ".format_currency($sale->due_amount);
 
-        $this->chatId = settings()->telegram_channel; // Use your Telegram channel chat ID here
+        $this->chatId = settings('telegram_channel'); // Use your Telegram channel chat ID here
         $this->message = $message;
         $this->type = 'telegram';
 
@@ -179,8 +179,6 @@ class Messaging extends Component
             $url = "https://api.telegram.org/bot{$this->botToken}/sendMessage?chat_id={$this->chatId}&text={$message}";
 
             $response = Http::post($url);
-
-            dd($response);
 
             // Check if the API call was successful
             if ( ! $response->ok()) {

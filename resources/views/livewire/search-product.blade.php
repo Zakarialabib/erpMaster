@@ -6,7 +6,7 @@
                     <i class="fas fa-camera"></i>
                 </a>
             </span>
-            <x-input wire:keydown.escape="resetQuery" wire:model.live.debounce.500ms="query" type="search" class="pl-10"
+            <x-input wire:keydown.escape="resetQuery" wire:model.live="query" type="search" class="pl-10"
                 minlength="4" placeholder="{{ __('Search for products with code, reference or name') }}" autofocus />
             <div class="absolute right-0 top-0 mt-2 mr-4 text-purple-lighter">
                 <button wire:click="resetQuery" type="button">X</button>

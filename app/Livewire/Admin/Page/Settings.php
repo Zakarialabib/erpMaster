@@ -5,143 +5,131 @@ declare(strict_types=1);
 namespace App\Livewire\Admin\Page;
 
 use Livewire\Component;
-use Jantinnerezo\LivewireAlert\LivewireAlert;
 use App\Models\PageSetting;
-
+use App\Models\Section;
+use Illuminate\Support\Str;
+use Jantinnerezo\LivewireAlert\LivewireAlert;
+use Livewire\Attributes\Layout;
+use Livewire\Attributes\On;
+use Livewire\Attributes\Rule;
 use Livewire\WithPagination;
 
+#[Layout('components.layouts.dashboard')]
 class Settings extends Component
 {
     use LivewireAlert;
     use WithPagination;
-    use Datatable;
 
-    public $header;
-    public $footer;
-    public $bottomBar;
-    public $topHeader;
-    public $bottomFooter;
+    public PageSetting $setting;
 
-    public $themeColor;
-    public $popularProducts;
-    public $flashDeal;
-    public $bestSellers;
-    public $topBrands;
+    public bool $is_sliders = false;
+    public bool $is_contact = false;
+    public bool $is_offer = false;
+    public bool $is_partners = false;
+    public bool $is_title = true;
+    public bool $is_description = true;
+    public bool $is_package = false;
+    public bool $is_visible = true;
+    public bool $darkMode = false;
+    public $colorOptions = [];
 
+    public $colors;
+    public $selectedColor;
+
+
+    public $section_order;
+    public $bg_color;
+    public $text_color;
+    public $font_size;
+    public $custom_properties = [];
     public $status;
-
-    public $featured_banner_id;
+    #[Rule('nullable')]
     public $page_id;
-    public $language_id;
 
-    public $settings;
-
-    public $createSettingsModal = false;
-    public $showHeaderModal = false;
-    public $showFooterModal = false;
-    public $topHeaderModal = false;
-    public $bottomFooterModal = false;
-
-    public int $perPage;
-
-    public array $orderable;
-
-    public string $search = '';
-
-    public array $selected = [];
-
-    public array $paginationOptions;
-
-    public array $listsForFields = [];
-
-    protected $queryString = [
-        'search' => [
-            'except' => '',
-        ],
-        'sortBy' => [
-            'except' => 'id',
-        ],
-        'sortDirection' => [
-            'except' => 'desc',
-        ],
-    ];
-
-    public function getSelectedCountProperty()
-    {
-        return count($this->selected);
-    }
-
-    public function updatingSearch()
-    {
-        $this->resetPage();
-    }
-
-    public function updatingPerPage()
-    {
-        $this->resetPage();
-    }
-
-    public function resetSelected()
-    {
-        $this->selected = [];
-    }
-
-    public function topHeaderModal()
-    {
-        $this->topHeaderModal = ! $this->topHeaderModal;
-    }
-
-    public function bottomFooterModal()
-    {
-        $this->bottomFooterModal = ! $this->bottomFooterModal;
-    }
-
-    public function updatePageSettings($id)
-    {
-        $this->settings = PageSetting::where('page_id', $id)->first();
-
-        $this->validate([
-            'settings.header'             => 'nullable|string',
-            'settings.footer'             => 'nullable|string',
-            'settings.bottomBar'          => 'nullable|string',
-            'settings.topHeader'          => 'nullable|string',
-            'settings.bottomFooter'       => 'nullable|string',
-            'settings.themeColor'         => 'nullable|string',
-            'settings.popularProducts'    => 'nullable|string',
-            'settings.flashDeal'          => 'nullable|string',
-            'settings.bestSellers'        => 'nullable|string',
-            'settings.topBrands'          => 'nullable|string',
-            'settings.status'             => 'nullable|string',
-            'settings.featured_banner_id' => 'nullable|string',
-            'settings.page_id'            => 'nullable|string',
-            'settings.language_id'        => 'nullable|string',
-
-        ]);
-
-        $this->settings->save();
-
-        $this->alert('success', 'Settings updated successfully.');
-    }
-
-    public function mount()
-    {
-        $this->sortBy = 'id';
-        $this->sortDirection = 'desc';
-        $this->perPage = 25;
-        $this->paginationOptions = [25, 50, 100];
-        $this->orderable = (new Pagesetting())->orderable;
-    }
 
     public function render()
     {
-        $query = Pagesetting::advancedFilter([
-            's'               => $this->search ?: null,
-            'order_column'    => $this->sortBy,
-            'order_direction' => $this->sortDirection,
-        ]);
+        $settings = PageSetting::orderBy('section_order')->paginate(10);
+        return view('livewire.admin.page.settings', compact('settings'));
+    }
 
-        $pagesettings = $query->paginate($this->perPage);
+    public $selectedTemplate;
+    public $sectionTemplates;
 
-        return view('livewire.admin.page.settings', compact('pagesettings'));
+    public function mount()
+    {
+        // Load section templates from the database
+        $this->sectionTemplates = Section::all();
+        $this->colors = ['gray', 'red', 'green', 'blue', 'indigo'];
+        $this->colorOptions = [100, 200, 300, 400, 500, 600, 700, 800, 900];
+    }
+
+    public function selectedColor($color)
+    {
+        $this->bg_color = $color;
+    }
+
+    public function selectedBgColor($color)
+    {
+        $this->bg_color = $color;
+    }
+
+    public function applyTemplate()
+    {
+        if ($this->selectedTemplate) {
+            $template = Section::find($this->selectedTemplate);
+            $newPreviewContent = $template->preview_content;
+            $this->dispatch('updatePreview', $newPreviewContent);
+        }
+    }
+
+    public function updateSectionOrder($newSectionOrder)
+    {
+        // Update the section order in the database
+        foreach ($newSectionOrder as $section) {
+            $sectionToUpdate = PageSetting::find($section['value']);
+            $sectionToUpdate->update(['section_order' => $section['order']]);
+        }
+
+        // Emit an event to notify the JavaScript that the order is updated
+        $this->dispatch('sectionOrderUpdated');
+    }
+
+    public function create()
+    {
+        $this->setting = new PageSetting();
+        $this->section_order = $this->settings->max('section_order') + 1;
+    }
+
+    public function edit(PageSetting $setting)
+    {
+        $this->setting = $setting;
+    }
+
+    public function save()
+    {
+        $this->validate();
+
+        if ($this->setting->id) {
+            $this->setting->update($this->all());
+        } else {
+            PageSetting::create($this->all());
+        }
+        $this->alert('success', 'Page setting successfully saved.');
+
+        $this->resetForm();
+    }
+
+    public function delete(PageSetting $setting)
+    {
+        $setting->delete();
+        $this->resetForm();
+    }
+
+    private function resetForm()
+    {
+        $this->setting = null;
+        $this->resetValidation();
+        $this->reset();
     }
 }

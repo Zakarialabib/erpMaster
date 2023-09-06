@@ -31,51 +31,22 @@ class Section extends Model
 
     public $table = 'sections';
 
-    public $orderable = [
+    public const ATTRIBUTES = [
         'id',
         'featured_title',
         'label',
         'status',
         'subtitle',
         'title',
-        'description',
-        'image',
-        'bg_color',
         'position',
         'page',
-        'link',
-        'language_id',
     ];
 
-    public $filterable = [
-        'id',
-        'featured_title',
-        'label',
-        'status',
-        'subtitle',
-        'title',
-        'description',
-        'image',
-        'bg_color',
-        'position',
-        'page',
-        'link',
-        'language_id',
-    ];
+    public $orderable = self::ATTRIBUTES;
+    public $filterable = self::ATTRIBUTES;
 
     protected $fillable = [
-        'featured_title',
-        'label',
-        'status',
-        'subtitle',
-        'title',
-        'description',
-        'image',
-        'bg_color',
-        'position',
-        'page',
-        'link',
-        'language_id',
+        'title', 'image', 'featured_title', 'subtitle', 'label', 'link', 'description', 'status', 'bg_color', 'page', 'position', 'language_id',
     ];
 
     /**

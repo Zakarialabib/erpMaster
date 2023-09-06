@@ -8,7 +8,7 @@ return [
          * The name of this application. You can use this name to monitor
          * the backups.
          */
-        'name' => env('APP_NAME', 'myStockMaster'),
+        'name' => env('APP_NAME', 'ERPMASTER'),
         'status' => env('BACKUP_STATUS',0),
         'schedule' => 1, // make 2 or 3 
         'source' => [

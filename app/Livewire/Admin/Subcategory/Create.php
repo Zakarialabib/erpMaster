@@ -12,6 +12,9 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
+use Livewire\Attributes\Computed;
+use Livewire\Attributes\On;
+use Livewire\Attributes\Rule;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
@@ -20,65 +23,73 @@ class Create extends Component
     use LivewireAlert;
     use WithFileUploads;
 
-    public $createSubcategory;
+    public $createModal = false;
 
-    public $listeners = ['createSubcategory'];
+    public Subcategory $subcategory;
 
-    public $subcategory;
+    #[Rule('required', message: 'Please provide a name')]
+    #[Rule('min:3', message: 'This name is too short')]
+    public string $name;
+
+    #[Rule('nullable')]
+    public string $slug;
+
+    #[Rule('nullable')]
+    public int $category_id;
+
+    #[Rule('nullable')]
+    public int $language_id;
 
     public $image;
 
-    public array $rules = [
-        'subcategory.name'        => ['required', 'string', 'max:255'],
-        'subcategory.category_id' => ['nullable', 'integer'],
-        'subcategory.language_id' => ['nullable'],
-    ];
-
     public function render(): View|Factory
     {
-        abort_if(Gate::denies('subcategory_create'), 403);
+        abort_if(Gate::denies('subcategory create'), 403);
 
         return view('livewire.admin.subcategory.create');
     }
 
-    public function createSubcategory()
+    #[On('createModal')]
+    public function createModal()
     {
         $this->resetErrorBag();
 
         $this->resetValidation();
 
-        $this->subcategory = new Subcategory();
-
-        $this->createSubcategory = true;
+        $this->createModal = true;
     }
 
     public function create()
     {
         $this->validate();
 
+        $this->slug = Str::slug($this->name);
+
         if ($this->image) {
-            $imageName = Str::slug($this->subcategory->name).'-'.Str::random(3).'.'.$this->image->extension();
+            $imageName = Str::slug($this->name).'-'.$this->image->extension();
             $this->image->storeAs('subcategories', $imageName);
-            $this->subcategory->image = $imageName;
+            $this->image = $imageName;
         }
 
-        $this->subcategory->slug = Str::slug($this->subcategory->name);
-
-        $this->subcategory->save();
+        Subcategory::create($this->all());
 
         $this->alert('success', __('Subcategory created successfully.'));
 
-        $this->emit('refreshIndex');
+        $this->dispatch('refreshIndex')->to(Index::class);
 
-        $this->createSubcategory = false;
+        $this->reset('name', 'slug', 'category_id', 'language_id', 'image');
+
+        $this->createModal = false;
     }
 
-    public function getCategoriesProperty()
+    #[Computed]
+    public function categories()
     {
         return Category::select('name', 'id')->get();
     }
 
-    public function getLanguagesProperty()
+    #[Computed]
+    public function languages()
     {
         return Language::select('name', 'id')->get();
     }

@@ -1,5 +1,5 @@
 <div>
-    <x-modal wire:model.live="showModal">
+    <x-modal wire:model="showModal">
         <x-slot name="title">
             {{ __('Show Sale') }} - {{ __('Reference') }}: <strong>{{ $sale?->reference }}</strong>
 
@@ -87,7 +87,7 @@
                 <div class="w-full mb-4">
                     <table class="table">
                         <tbody>
-                            @if (settings()->show_order_tax == true)
+                            @if (settings('show_order_tax') == true)
                                 <tr>
                                     <td class="left"><strong>{{ __('Discount') }}
                                             ({{ $sale?->discount_percentage }}%)</strong></td>
@@ -97,7 +97,7 @@
                                 </tr>
                             @endif
 
-                            @if (settings()->show_discount == true)
+                            @if (settings('show_discount') == true)
                                 <tr>
                                     <td class="left"><strong>{{ __('Tax') }}
                                             ({{ $sale?->tax_percentage }}%)</strong></td>
@@ -106,7 +106,7 @@
                                     </td>
                                 </tr>
                             @endif
-                            @if (settings()->show_shipping == true)
+                            @if (settings('show_shipping') == true)
                                 <tr>
                                     <td class="left"><strong>{{ __('Shipping') }}</strong>
                                     </td>

@@ -1,5 +1,5 @@
 <div>
-    <div class="w-full px-4 mx-auto">
+    <div class="w-full mt-4 px-4 mx-auto">
         <div class="mb-10 items-center justify-between bg-white py-4">
             <div class="w-full md:px-4 sm:px-2 flex flex-wrap justify-between">
                 <ul class="flex flex-wrap items-center gap-2 py-4 md:py-2 ">
@@ -23,7 +23,7 @@
                     </li>
                     <li class="inline-flex">
                         <p class="lg:text-2xl sm:text-xl font-bold text-gray-600 hover:text-blue-500">
-                            {{ $products->count() }} {{ __('Watches') }}
+                            {{ $products->count() }} {{ __('Products') }}
                         </p>
                     </li>
                     <li>
@@ -48,7 +48,7 @@
                 </ul>
                 <div class="w-full sm:w-auto flex justify-center my-2 overflow-x-scroll">
                     <select
-                        class="px-5 py-3 mr-2 leading-5 bg-white text-gray-700 rounded border border-zinc-300 mb-1 text-sm focus:shadow-outline-blue focus:border-blue-500"
+                        class="px-5 py-3 mr-2 leading-5 bg-white text-gray-700 rounded border border-gray-300 mb-1 text-sm focus:shadow-outline-blue focus:border-blue-500"
                         id="sortBy" wire:model="sorting">
                         <option disabled>{{ __('Choose filters') }}</option>
                         @foreach ($sortingOptions as $value => $label)
@@ -56,8 +56,8 @@
                         @endforeach
                     </select>
                     <select
-                        class="px-5 py-3 mr-3 leading-5 bg-white text-gray-700 rounded border border-zinc-300 mb-1 text-sm focus:shadow-outline-blue focus:border-blue-500"
-                        id="perPage" wire:model="perPage">
+                        class="px-5 py-3 mr-3 leading-5 bg-white text-gray-700 rounded border border-gray-300 mb-1 text-sm focus:shadow-outline-blue focus:border-blue-500"
+                        id="perPage" wire:model.live="perPage">
                         <option value="20" selected>20 {{ __('Items') }}</option>
                         <option value="50">50 {{ __('Items') }}</option>
                         <option value="100">100 {{ __('Items') }}</option>

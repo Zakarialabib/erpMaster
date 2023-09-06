@@ -14,27 +14,21 @@ class Create extends Component
 {
     use LivewireAlert;
 
-    public $listeners = ['createModal'];
+    public $createModal = false;
 
-    public $createModal;
-
-    public $faq;
+    public Faq $faq;
 
     protected $rules = [
         'faq.name'        => ['required', 'max:255'],
         'faq.description' => ['required'],
     ];
 
-    public function mount(Faq $faq)
-    {
-        $this->faq = $faq;
-    }
-
     public function render(): View|Factory
     {
         return view('livewire.admin.faq.create');
     }
 
+    #[On('createModal')]
     public function createModal()
     {
         $this->resetErrorBag();
@@ -49,8 +43,6 @@ class Create extends Component
         $this->validate();
 
         $this->faq->save();
-
-        $this->emit('refreshIndex');
 
         $this->alert('success', __('Faq created successfully.'));
 

@@ -26,22 +26,22 @@
                             <div class="col-xs-4 mb-3 mb-md-0">
                                 <h4 class="mb-2" style="border-bottom: 1px solid #dddddd;padding-bottom: 10px;">
                                     Company Info:</h4>
-                                <div><strong>{{ settings()->company_name }}</strong></div>
-                                <div>{{ settings()->company_address }}</div>
-                                @if (settings()->show_email == true)
-                                    <div>{{ __('Email') }}: {{ settings()->company_email }}</div>
+                                <div><strong>{{ settings('company_name') }}</strong></div>
+                                <div>{{ settings('company_address') }}</div>
+                                @if (settings('show_email') == true)
+                                    <div>{{ __('Email') }}: {{ settings('company_email') }}</div>
                                 @endif
-                                <div>{{ __('Phone') }}: {{ settings()->company_phone }}</div>
+                                <div>{{ __('Phone') }}: {{ settings('company_phone') }}</div>
                             </div>
 
                             <div class="col-xs-4 mb-3 mb-md-0">
                                 <h4 class="mb-2" style="border-bottom: 1px solid #dddddd;padding-bottom: 10px;">
                                     Customer Info:</h4>
                                 <div><strong>{{ $customer->name }}</strong></div>
-                                @if (settings()->show_address == true)
+                                @if (settings('show_address') == true)
                                     <div>{{ $customer->address }}</div>
                                 @endif
-                                @if (settings()->show_email == true)
+                                @if (settings('show_email') == true)
                                     <div>{{ __('Email') }}: {{ $customer->email }}</div>
                                 @endif
                                 <div>{{ __('Phone') }}: {{ $customer->phone }}</div>
@@ -134,7 +134,7 @@
                                                 <td class="right">{{ format_currency($sale_return->tax_amount) }}</td>
                                             </tr>
                                         @endif
-                                        @if (settings()->show_shipping == true)
+                                        @if (settings('show_shipping') == true)
                                             <tr>
                                                 <td class="left"><strong>{{ __('Shipping') }}</strong></td>
                                                 <td class="right">{{ format_currency($sale_return->shipping_amount) }}
@@ -153,7 +153,7 @@
                         </div>
                         <div class="row" style="margin-top: 25px;">
                             <div class="col-xs-12">
-                                <p style="font-style: italic;text-align: center">{{ settings()->company_name }} &copy;
+                                <p style="font-style: italic;text-align: center">{{ settings('company_name') }} &copy;
                                     {{ date('Y') }}.</p>
                             </div>
                         </div>

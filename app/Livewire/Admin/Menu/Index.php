@@ -6,20 +6,17 @@ namespace App\Livewire\Admin\Menu;
 
 use App\Models\Menu;
 use Livewire\Component;
-use Livewire\WithPagination;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
+use Livewire\Attributes\Layout;
+use Livewire\WithPagination;
 
+#[Layout('components.layouts.dashboard')]
 class Index extends Component
 {
     use WithPagination;
-    use Datatable;
     use LivewireAlert;
 
-    public string $perPage = '100';
-
-    protected $listeners = [
-        'refreshIndex' => '$refresh',
-    ];
+    public int $perPage = 100;
 
     public $menu;
     public $menus;
@@ -50,7 +47,7 @@ class Index extends Component
     {
         $menus = $this->getMenus();
 
-        return view('livewire.admin.menu.index', compact('menus'))->extends('layouts.dashboard');
+        return view('livewire.admin.menu.index', compact('menus'));
     }
 
     protected function getMenus()

@@ -56,11 +56,11 @@
                   <tbody>
                      <tr>
                         <td>
-                           <div id="comp">{{settings()->company_name}}</div>
-                           <div><strong>{{ __('Tax number') }}</strong> {{ settings()->company_tax }}</div>
-                           <div><strong>{{__('Address')}}:</strong>{{settings()->company_address}}</div>
-                           <div><strong>{{__('Phone')}}:</strong>{{settings()->company_phone}}</div>
-                           <div><strong>{{__('Email')}}:</strong>{{settings()->company_email}}</div>
+                           <div id="comp">{{settings('company_name')}}</div>
+                           <div><strong>{{ __('Tax number') }}</strong> {{ settings('company_tax') }}</div>
+                           <div><strong>{{__('Address')}}:</strong>{{settings('company_address')}}</div>
+                           <div><strong>{{__('Phone')}}:</strong>{{settings('company_phone')}}</div>
+                           <div><strong>{{__('Email')}}:</strong>{{settings('company_email')}}</div>
                         </td>
                      </tr>
                   </tbody>
@@ -126,8 +126,8 @@
             </table>
          </div>
          <div>
-            @if (settings()->invoice_footer_text)
-                <p>{{ settings()->invoice_footer_text }}</p>
+            @if (settings('invoice_footer_text'))
+                <p>{{ settings('invoice_footer_text') }}</p>
             @endif
         </div>
       </main>

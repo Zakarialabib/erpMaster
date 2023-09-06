@@ -1,9 +1,23 @@
 <div>
+    @section('title', __('Sections'))
+
+    <x-theme.breadcrumb :title="__('Sections List')" :parent="route('admin.sections.index')" :parentName="__('Sections List')">
+
+        <!-- Button trigger livewire modal -->
+        <x-button primary type="button" wire:click="$dispatch('admin.section.template','createTemplate')">
+            {{ __('Create from template') }}
+        </x-button>
+        <!-- Button trigger livewire modal -->
+        <x-button primary type="button" wire:click="dispatchTo('admin.section.create', 'createModal')">
+            {{ __('Create Section') }}
+        </x-button>
+
+    </x-theme.breadcrumb>
     <div class="flex flex-wrap justify-center">
         <div class="lg:w-1/2 md:w-1/2 sm:w-full flex flex-col my-md-0 my-2">
             <div class="my-2 my-md-0">
-                <select wire:model="perPage" name="perPage"
-                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-32 p-1">
+                <select wire:model.live="perPage" name="perPage"
+                    class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-auto sm:text-sm border-gray-300 rounded-md focus:outline-none focus:shadow-outline-blue transition duration-150 ease-in-out">
                     @foreach ($paginationOptions as $value)
                         <option value="{{ $value }}">{{ $value }}</option>
                     @endforeach
@@ -22,7 +36,7 @@
         <div class="lg:w-1/2 md:w-1/2 sm:w-full my-2 my-md-0">
             <div class="my-2 my-md-0">
                 <input type="text" wire:model.debounce.300ms="search"
-                    class="p-3 leading-5 bg-white text-gray-500 rounded border border-zinc-300 mb-1 text-sm w-full focus:shadow-outline-blue focus:border-blue-500"
+                    class="p-3 leading-5 bg-white text-gray-500 rounded border border-gray-300 mb-1 text-sm w-full focus:shadow-outline-blue focus:border-blue-500"
                     placeholder="{{ __('Search') }}" />
             </div>
         </div>
@@ -51,58 +65,19 @@
                         <input type="checkbox" value="{{ $section->id }}" wire:model="selected">
                     </x-table.td>
                     <x-table.td>
-                        @if ($section->page == \App\Models\Section::ABOUT_PAGE)
-                            <a href="{{ route('front.about') }}"
-                                class="bg-blue-100 text-blue-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-900">
-                                {{ __('About') }}
-                            </a>
-                        @elseif($section->page == \App\Models\Section::HOME_PAGE)
-                            <a href="{{ route('front.index') }}"
-                                class="bg-blue-100 text-blue-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-900">
-                                {{ __('Home') }}
-                            </a>
-                        @elseif($section->page == \App\Models\Section::BRAND_PAGE)
-                            <a href=""
-                                class="bg-blue-100 text-blue-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-900">
-                                {{ __('Brand') }}
-                            </a>
-                        @elseif($section->page == \App\Models\Section::BLOG_PAGE)
-                            <a href="{{ route('front.blogs') }}"
-                                class="bg-blue-100 text-blue-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-900">
-                                {{ __('Blog') }}
-                            </a>
-                        @elseif($section->page == \App\Models\Section::CATALOG_PAGE)
-                            <a href=""
-                                class="bg-blue-100 text-blue-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-900">
-                                {{ __('Catalog') }}
-                            </a>
-                        @elseif($section->page == \App\Models\Section::BRANDS_PAGE)
-                            <a href=""
-                                class="bg-blue-100 text-blue-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-900">
-                                {{ __('Brands') }}
-                            </a>
-                        @elseif($section->page == \App\Models\Section::PRODUCT_PAGE)
-                            <a href=""
-                                class="bg-blue-100 text-blue-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-900">
-                                {{ __('Products') }}
-                            </a>
-                        @elseif($section->page == \App\Models\Section::CONTACT_PAGE)
-                            <a href="{{ route('front.contact') }}"
-                                class="bg-blue-100 text-blue-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-900">
-                                {{ __('Contact') }}
-                            </a>
-                        @endif
+                        {{ $section->page }}
                     </x-table.td>
                     <x-table.td>
                         {{ $section->title }}
                     </x-table.td>
 
                     <x-table.td>
-                        <livewire:toggle-button :model="$section" field="status" key="{{ $section->id }}" />
+                        <livewire:utils.toggle-button :model="$section" field="status" key="{{ $section->id }}"  lazy/>
                     </x-table.td>
                     <x-table.td>
-                        <div class="inline-flex">
-                            <x-button info type="button" wire:click="$emit('editModal', {{ $section->id }})"
+                        <div class="inline-flex space-x-2">
+                            <x-button info type="button"
+                                wire:click="$dispatch('editModal', { id : {{ $section->id }} })"
                                 wire:loading.attr="disabled">
                                 <i class="fas fa-edit"></i>
                             </x-button>
@@ -110,7 +85,7 @@
                                 wire:loading.attr="disabled">
                                 <i class="fas fa-trash-alt"></i>
                             </x-button>
-                            <x-button warning type="button" wire:click="confirm('clone', {{ $section->id }})"
+                            <x-button warning type="button" wire:click="clone({{ $section->id }})"
                                 wire:loading.attr="disabled">
                                 {{ __('Clone') }}
                             </x-button>
@@ -133,10 +108,10 @@
         </div>
     </div>
 
+    <livewire:admin.section.edit :section="$section" />
 
-    @livewire('admin.section.edit', ['section' => $section])
+    <livewire:admin.section.create lazy />
 
+    <livewire:admin.section.template lazy />
 
-    <livewire:admin.section.create />
 </div>
-

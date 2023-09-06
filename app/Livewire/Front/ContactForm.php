@@ -15,16 +15,12 @@ class ContactForm extends Component
 {
     use LivewireAlert;
 
-    public $contact;
+    public Contact $contact;
 
     public $name;
     public $email;
     public $phone_number;
     public $message;
-
-    protected $listeners = [
-        'submit',
-    ];
 
     protected $rules = [
         'contact.name'         => 'required',
@@ -32,11 +28,6 @@ class ContactForm extends Component
         'contact.phone_number' => 'required',
         'contact.message'      => 'required',
     ];
-
-    public function mount(Contact $contact)
-    {
-        $this->contact = $contact;
-    }
 
     public function render()
     {
@@ -55,7 +46,7 @@ class ContactForm extends Component
 
         $user = User::find(1);
         $user_email = $user->email;
-        Mail::to($user_email)->send(new MailContactForm($contact));
+        Mail::to($user_email)->send(new MailContactForm($this->contact));
     }
 
     /**

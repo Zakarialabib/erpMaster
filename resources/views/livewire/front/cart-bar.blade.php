@@ -116,7 +116,7 @@
                                     {{ $this->cartTotal }}DH
                                 </span>
                             </div>
-                            <a class="block w-full py-4 bg-beige-200 hover:bg-beige-400 text-center text-white font-bold font-heading uppercase rounded-md transition duration-200 shadow-md"
+                            <a class="block w-full py-4 bg-green-200 hover:bg-green-400 text-center text-white font-bold font-heading uppercase rounded-md transition duration-200 shadow-md"
                                 href="{{ route('front.checkout') }}">{{ __('Go to Checkout') }}</a>
                         </div>
                     </div>

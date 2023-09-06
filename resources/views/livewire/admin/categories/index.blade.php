@@ -1,19 +1,28 @@
 <div>
+    @section('title', __('Categories'))
+    <x-theme.breadcrumb :title="__('Categories List')" :parent="route('admin.product-categories.index')" :parentName="__('Categories List')">
+        <x-button primary type="button" wire:click="dispatchTo('admin.categories.import', 'importModal')">
+            {{ __('Import Category') }}
+        </x-button>
+        <x-button primary type="button" wire:click="dispatchTo('admin.categories.create', 'createModal')">
+            {{ __('Create Category') }}
+        </x-button>
+    </x-theme.breadcrumb>
     <div class="flex flex-wrap justify-center">
-        <div class="lg:w-1/2 md:w-1/2 sm:w-full flex flex-wrap my-2">
+        <div class="lg:w-1/2 md:w-1/2 sm:w-full flex flex-wrap gap-6 w-full">
             <select wire:model.live="perPage"
-                class="w-20 border border-gray-300 rounded-md shadow-sm py-2 px-4 bg-white text-sm leading-5 font-medium text-gray-700 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out">
+                class="w-auto shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block sm:text-sm border-gray-300 rounded-md focus:outline-none focus:shadow-outline-blue transition duration-150 ease-in-out">
                 @foreach ($paginationOptions as $value)
                     <option value="{{ $value }}">{{ $value }}</option>
                 @endforeach
             </select>
-            @if ($this->selected)
+            @if ($selected)
                 <x-button danger type="button" wire:click="deleteSelected" class="ml-3">
                     <i class="fas fa-trash"></i>
                 </x-button>
             @endif
             @if ($this->selectedCount)
-                <p class="text-sm leading-5">
+                <p class="text-sm  my-auto">
                     <span class="font-medium">
                         {{ $this->selectedCount }}
                     </span>
@@ -21,12 +30,11 @@
                 </p>
             @endif
         </div>
-        <div class="lg:w-1/2 md:w-1/2 sm:w-full my-2">
-            <div class="my-2">
-                <x-input wire:model.live.debounce.500ms="search" placeholder="{{ __('Search') }}" autofocus />
-            </div>
+        <div class="lg:w-1/2 md:w-1/2 sm:w-full ">
+            <x-input wire:model.live="search" placeholder="{{ __('Search') }}" autofocus />
         </div>
     </div>
+
 
     <x-table>
         <x-slot name="thead">
@@ -75,12 +83,12 @@
                                     <i class="fas fa-eye"></i>
                                     {{ __('Show') }}
                                 </x-dropdown-link>
-                                <x-dropdown-link wire:click="$dispatch('editModal', {{ $category->id }})"
+                                <x-dropdown-link wire:click="$dispatch('editModal',{ id :  {{ $category->id }}})"
                                     wire:loading.attr="disabled">
                                     <i class="fas fa-edit"></i>
                                     {{ __('Edit') }}
                                 </x-dropdown-link>
-                                <x-dropdown-link wire:click="$dispatch('deleteModal', {{ $category->id }})"
+                                <x-dropdown-link wire:click="$dispatch('deleteModal',{ id :  {{ $category->id }}})"
                                     wire:loading.attr="disabled">
                                     <i class="fas fa-trash"></i>
                                     {{ __('Delete') }}
@@ -113,10 +121,10 @@
         </div>
     </div>
 
-    @livewire('admin.categories.edit', ['category' => $category])
+    <livewire:admin.categories.edit :category="$category" />
 
     <!-- Show Modal -->
-    <x-modal wire:model.live="showModal">
+    <x-modal wire:model="showModal">
         <x-slot name="title">
             {{ __('Show Category') }} {{ $category?->name }}
         </x-slot>
@@ -136,61 +144,31 @@
     </x-modal>
     <!-- End Show Modal -->
 
-    {{-- Import modal --}}
-    <x-modal wire:model.live="importModal">
-        <x-slot name="title">
-            <div class="flex justify-between items-center">
-                {{ __('Import Excel') }}
-                <x-button primary wire:click="downloadSample" type="button">
-                    {{ __('Download Sample') }}
-                </x-button>
-            </div>
-        </x-slot>
 
-        <x-slot name="content">
-            <form wire:submit="import">
-                <div class="mb-4">
-                    <div class="my-4">
-                        <x-label for="import" :value="__('Import')" />
-                        <x-input id="import" class="block mt-1 w-full" type="file" name="import"
-                            wire:model="import" />
-                        <x-input-error :messages="$errors->get('import')" for="import" class="mt-2" />
-                    </div>
+    <livewire:admin.categories.import lazy />
 
-                    <div class="w-full flex justify-start">
-                        <x-button primary wire:click="import" type="submit" wire:loading.attr="disabled">
-                            {{ __('Import') }}
-                        </x-button>
-                    </div>
-                </div>
-            </form>
-        </x-slot>
-    </x-modal>
-    {{-- End Import modal --}}
-
-    <livewire:admin.categories.create />
+    <livewire:admin.categories.create lazy />
 
 
-</div>
-
-@push('scripts')
-    <script>
-        document.addEventListener('livewire:init', function() {
-            window.livewire.on('deleteModal', categoryId => {
-                Swal.fire({
-                    title: 'Are you sure?',
-                    text: "You won't be able to revert this!",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, delete it!'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        window.livewire.emit('delete', categoryId)
-                    }
+    @push('scripts')
+        <script>
+            document.addEventListener('livewire:init', function() {
+                window.livewire.on('deleteModal', categoryId => {
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: "You won't be able to revert this!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes, delete it!'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.livewire.emit('delete', categoryId)
+                        }
+                    })
                 })
             })
-        })
-    </script>
-@endpush
+        </script>
+    @endpush
+</div>

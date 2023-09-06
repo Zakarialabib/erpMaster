@@ -8,72 +8,26 @@ use App\Models\EmailTemplate;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Livewire\Component;
-use Livewire\WithPagination;
+use Livewire\Attributes\Layout;
+use App\Livewire\Utils\Datatable;
+use Illuminate\Support\Facades\Gate;
 
+#[Layout('components.layouts.dashboard')]
 class Index extends Component
 {
-    use WithPagination;
     use Datatable;
-
-    public int $perPage;
 
     public $email;
 
-    public array $orderable;
-
-    public string $search = '';
-
-    public array $selected = [];
-
-    protected $listeners = [
-        'refreshIndex' => '$refresh',
-    ];
-
-    public array $paginationOptions;
-
-    protected $queryString = [
-        'search' => [
-            'except' => '',
-        ],
-        'sortBy' => [
-            'except' => 'id',
-        ],
-        'sortDirection' => [
-            'except' => 'desc',
-        ],
-    ];
-
-    public function getSelectedCountProperty()
-    {
-        return count($this->selected);
-    }
-
-    public function updatingSearch()
-    {
-        $this->resetPage();
-    }
-
-    public function updatingPerPage()
-    {
-        $this->resetPage();
-    }
-
-    public function resetSelected()
-    {
-        $this->selected = [];
-    }
-
     public function mount()
     {
-        $this->sortBy = 'id';
-        $this->sortDirection = 'desc';
-        $this->perPage = 100;
-        $this->paginationOptions = [25, 50, 100];
         $this->orderable = (new EmailTemplate())->orderable;
     }
 
     public function render(): View|Factory
     {
+        abort_if(Gate::denies('email access'), 403);
+
         $query = EmailTemplate::advancedFilter([
             's'               => $this->search ?: null,
             'order_column'    => $this->sortBy,
@@ -82,13 +36,13 @@ class Index extends Component
 
         $emails = $query->paginate($this->perPage);
 
-        return view('livewire.admin.email.index', compact('emails'))->extends('layouts.dashboard');
+        return view('livewire.admin.email.index', compact('emails'));
     }
 
     // Blog Category  Delete
     public function delete(EmailTemplate $email)
     {
-        // abort_if(Gate::denies('email_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('email delete'), 403);
 
         $email->delete();
     }

@@ -1,4 +1,6 @@
 <div>
+    @section('title', __('Home'))
+
     <div class="relative mx-auto mb-5">
         <div class="w-full mx-auto bg-gray-900">
             <div class="swiper mySwiper">
@@ -7,7 +9,7 @@
                     @foreach ($this->sliders as $slider)
                         <div class="swiper-slide">
                             <div class="flex flex-wrap -mx-4 py-10 px-4"
-                                style="background-image: url({{ asset('images/sliders/' . $slider->photo) }});background-size: cover;background-position: center;">
+                                style="background-image: url({{ asset('images/sliders/' . $slider->image) }});background-size: cover;background-position: center;">
                                 <div class="w-full max-w-md px-10 lg:mb-5 sm:mb-2">
                                     <div class="lg:py-5 py-10 text-white px-2">
                                         <h5 class="xl:text-2xl md:text-xl sm:text-md font-bold mb-2">
@@ -17,10 +19,10 @@
                                             {{ $slider->title }}
                                         </h2>
                                         <p class="py-10 xl:text-lg sm:text-sm">
-                                            {!! $slider->details !!}
+                                            {!! $slider->description !!}
                                         </p>
                                         @if ($slider->link)
-                                            <a class="inline-block text-white font-bold font-heading py-4 px-6 rounded-md uppercase transition ease-in duration-300 bg-beige-500 hover:bg-beige-800 hover:shadow-md"
+                                            <a class="inline-block text-white font-bold font-heading py-4 px-6 rounded-md uppercase transition ease-in duration-300 bg-green-500 hover:bg-green-800 hover:shadow-md"
                                                 href="{{ $slider->link }}">
                                                 {{ 'Discover now' }}
                                             </a>
@@ -63,17 +65,17 @@
                 </div>
             </div>
         </div>
-        <div class="w-full py-5 px-4 mx-auto">
-            <div x-data="{ activeTabs: 'featuredProducts' }">
+        <div class="w-full py-5 mx-auto bg-white">
+            <div x-data="{ activeTabs: 'featuredProducts' }" class="px-4">
                 <div class="grid gap-4 xl:grid-cols-3 lg:grid-cols-3 md:grid-cols-3 sm:grid-cols-2 mb-10 ">
                     <div class="py-5 px-8 sm:py-2 sm:px-5 text-left font-bold text-gray-500 uppercase border-b-2 border-beige-100 hover:border-beige-500 focus:outline-none focus:border-beige-500 cursor-pointer"
                         @click="activeTabs = 'featuredProducts'"
                         :class="{
                             'border-beige-500': activeTabs === 'featuredProducts',
-                            'text-beige-500': activeTabs === 'featuredProducts',
-                            'hover:text-beige-500': activeTabs !== 'featuredProducts'
+                            'text-green-500': activeTabs === 'featuredProducts',
+                            'hover:text-green-500': activeTabs !== 'featuredProducts'
                         }">
-                        <h4 class="inline-block" :class="{ 'text-beige-400': activeTabs === 'featuredProducts' }">
+                        <h4 class="inline-block" :class="{ 'text-green-400': activeTabs === 'featuredProducts' }">
                             {{ __('Featured Products') }}
                         </h4>
                     </div>
@@ -81,10 +83,10 @@
                         @click="activeTabs = 'bestOfers'"
                         :class="{
                             'border-beige-500': activeTabs === 'bestOfers',
-                            'text-beige-500': activeTabs === 'bestOfers',
-                            'hover:text-beige-500': activeTabs !== 'bestOfers'
+                            'text-green-500': activeTabs === 'bestOfers',
+                            'hover:text-green-500': activeTabs !== 'bestOfers'
                         }">
-                        <h4 class="inline-block" :class="{ 'text-beige-400': activeTabs === 'bestOfers' }">
+                        <h4 class="inline-block" :class="{ 'text-green-400': activeTabs === 'bestOfers' }">
                             {{ __('Best Offers') }}
                         </h4>
                     </div>
@@ -92,10 +94,10 @@
                         @click="activeTabs = 'hotProducts'"
                         :class="{
                             'border-beige-500': activeTabs === 'hotProducts',
-                            'text-beige-500': activeTabs === 'hotProducts',
-                            'hover:text-beige-500': activeTabs !== 'hotProducts'
+                            'text-green-500': activeTabs === 'hotProducts',
+                            'hover:text-green-500': activeTabs !== 'hotProducts'
                         }">
-                        <h4 class="inline-block" :class="{ 'text-beige-400': activeTabs === 'hotProducts' }">
+                        <h4 class="inline-block" :class="{ 'text-green-400': activeTabs === 'hotProducts' }">
                             {{ __('Hot Products') }}
                         </h4>
                     </div>
@@ -153,32 +155,33 @@
             </div>
         </div>
     </div>
+
+
+    @push('scripts')
+        <script>
+            document.addEventListener('livewire:load', function() {
+                var swiper = widnow.Swiper(".mySwiper", {
+                    slidesPerView: "auto",
+                    spaceBetween: 30,
+                    speed: 400,
+                    autoHeight: true,
+                    loop: true,
+                    pagination: {
+                        el: '.swiper-pagination',
+                        clickable: true,
+                    },
+                    navigation: {
+                        nextEl: '.swiper-button-next',
+                        prevEl: '.swiper-button-prev',
+                    },
+                });
+            })
+        </script>
+    @endpush
+
+
+    @push('styles')
+        <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    @endpush
+
 </div>
-
-
-@push('scripts')
-    <script>
-        document.addEventListener('livewire:load', function() {
-            var swiper = widnow.Swiper(".mySwiper", {
-                slidesPerView: "auto",
-                spaceBetween: 30,
-                speed: 400,
-                autoHeight: true,
-                loop: true,
-                pagination: {
-                    el: '.swiper-pagination',
-                    clickable: true,
-                },
-                navigation: {
-                    nextEl: '.swiper-button-next',
-                    prevEl: '.swiper-button-prev',
-                },
-            });
-        })
-    </script>
-@endpush
-
-
-@push('styles')
-    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
-@endpush

@@ -2,11 +2,8 @@
     <div class="flex flex-wrap justify-center">
         <div class="lg:w-1/2 md:w-1/2 sm:w-full flex flex-col my-md-0 my-2">
             <div class="my-2 my-md-0">
-                <p class="leading-5 text-black mb-1 text-sm ">
-                    {{ __('Show items per page') }}
-                </p>
-                <select wire:model="perPage" name="perPage"
-                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-32 p-1">
+                <select wire:model.live="perPage" name="perPage"
+                    class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-auto sm:text-sm border-gray-300 rounded-md focus:outline-none focus:shadow-outline-blue transition duration-150 ease-in-out">
                     @foreach ($paginationOptions as $value)
                         <option value="{{ $value }}">{{ $value }}</option>
                     @endforeach
@@ -16,7 +13,7 @@
         <div class="lg:w-1/2 md:w-1/2 sm:w-full my-2 my-md-0">
             <div class="my-2 my-md-0">
                 <input type="text" wire:model.debounce.300ms="search"
-                    class="p-3 leading-5 bg-white text-gray-500 rounded border border-zinc-300 mb-1 text-sm w-full focus:shadow-outline-blue focus:border-blue-500"
+                    class="p-3 leading-5 bg-white text-gray-500 rounded border border-gray-300 mb-1 text-sm w-full focus:shadow-outline-blue focus:border-blue-500"
                     placeholder="{{ __('Search') }}" />
             </div>
         </div>
@@ -58,7 +55,7 @@
                                 class="attribute text-white" data-toggle="modal" data-target="#attribute"> <i
                                     class="fas fa-edit"></i>{{ __('Create') }}</a>
                             @if ($category->attributes()->count() > 0)
-                                <a href="{{ route('admin-attr-manage', $category->id), '?type=category' }}"
+                                <a href="{{ route('admin-attr-manage', $category->id).'?type=category' }}"
                                     class="edit">
                                     <i class="fas fa-edit"></i>
                                     {{ __('Manage') }}
@@ -68,7 +65,7 @@
                     </x-table.td>
 
                     <x-table.td>
-                        <livewire:toggle-button :model="$category" field="status" key="{{ $category->id }}" />
+                        <livewire:utils.toggle-button :model="$category" field="status" key="{{ $category->id }}" lazy />
                     </x-table.td>
                     <x-table.td>
                         <x-dropdown

@@ -27,7 +27,7 @@ class Show extends Component
 
     public function render()
     {
-        abort_if(Gate::denies('sale_show'), 403);
+        abort_if(Gate::denies('sale show'), 403);
 
         return view('livewire.admin.sales.show');
     }

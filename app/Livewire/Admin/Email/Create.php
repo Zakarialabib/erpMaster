@@ -9,29 +9,20 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
+use Livewire\Attributes\On;
 use Livewire\WithFileUploads;
+use Illuminate\Support\Facades\Gate;
 
 class Create extends Component
 {
     use LivewireAlert;
     use WithFileUploads;
 
-    public $listeners = ['createModal'];
-
     public $createModal;
-    public $email_setting;
+    public EmailTemplate $email_setting;
+
     public $description;
     public $message;
-
-    public function updatedDescription($value)
-    {
-        $this->description = $value;
-    }
-
-    public function updatedMessage($value)
-    {
-        $this->message = $value;
-    }
 
     protected $rules = [
         'email_setting.name'         => ['required', 'max:255'],
@@ -46,14 +37,16 @@ class Create extends Component
 
     public function render(): View|Factory
     {
+        abort_if(Gate::denies('email create'), 403);
+
         return view('livewire.admin.email.create');
     }
 
+    #[On('createModal')]
     public function createModal()
     {
         $this->resetErrorBag();
         $this->resetValidation();
-        $this->email_setting = new EmailTemplate();
         $this->description = '';
         $this->message = '';
         $this->createModal = true;
@@ -66,11 +59,9 @@ class Create extends Component
         $this->email_setting->description = $this->description;
         $this->email_setting->message = $this->message;
 
-        $this->email_setting->save();
+        EmailTemplate::create($this->all());
 
         $this->alert('success', __('Email template created successfully.'));
-
-        $this->emit('refreshIndex');
 
         $this->createModal = false;
     }

@@ -1,7 +1,10 @@
 <div>
-    <form wire:submit="onClearCache">
-        <button type="submit" wire:loading.attr="disabled">
-                {{ __('Clear all Cache') }}
-        </button>
-    </form>
+    <button type="button" wire:click="onClearCache">
+        <span>
+            <div wire:loading wire:target="onClearCache">
+                <x-loading />
+            </div>
+            <span>{{ __('Clear all Cache') }}</span>
+        </span>
+    </button>
 </div>

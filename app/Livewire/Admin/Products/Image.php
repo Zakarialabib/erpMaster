@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Livewire\Admin\Product;
+namespace App\Livewire\Admin\Products;
 
 use App\Models\Product;
 use Exception;
@@ -49,16 +49,6 @@ class Image extends Component
         $this->product = Product::findOrFail($id);
 
         $this->imageModal = true;
-    }
-
-    public function getImagePreviewProperty()
-    {
-        return $this->product?->image;
-    }
-
-    public function getGalleryPreviewProperty()
-    {
-        return $this->product?->gallery;
     }
 
     public function saveImage()
@@ -140,8 +130,6 @@ class Image extends Component
             $this->alert('success', __('Product image updated successfully.'));
 
             $this->imageModal = false;
-
-            // return redirect()->route('admin.products');
         } catch (Exception $e) {
             $this->alert('warning', __('Product image was not updated.'));
         }
@@ -149,6 +137,6 @@ class Image extends Component
 
     public function render(): View|Factory
     {
-        return view('livewire.admin.product.image');
+        return view('livewire.admin.products.image');
     }
 }

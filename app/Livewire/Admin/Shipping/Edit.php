@@ -7,7 +7,10 @@ namespace App\Livewire\Admin\Shipping;
 use App\Models\Shipping;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Gate;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
+use Livewire\Attributes\On;
+use Livewire\Attributes\Rule;
 use Livewire\Component;
 
 class Edit extends Component
@@ -20,24 +23,23 @@ class Edit extends Component
 
     public $langauges;
 
-    public $listeners = [
-        'editModal',
-    ];
-
-    protected $rules = [
-        'shipping.is_pickup' => ['nullable', 'boolean'],
-        'shipping.title'     => ['required', 'string', 'max:255'],
-        'shipping.subtitle'  => ['nullable', 'string'],
-        'shipping.cost'      => ['required', 'string'],
-        // 'shipping.language_id' => ['required', 'integer'],
-    ];
+    public $is_pickup = false;
+    #[Rule('required|max:255')]
+    public string $title;
+    #[Rule('nullable|max:255')]
+    public string $subtitle;
+    #[Rule('required|numeric')]
+    public $cost;
 
     public function render(): View|Factory
     {
+        abort_if(Gate::denies('shipping update'), 403);
+
         return view('livewire.admin.shipping.edit');
     }
 
-    public function editModal($shipping)
+    #[On('editModal')]
+    public function editModal($id)
     {
         // abort_if(Gate::denies('shipping_update'), 403);
 
@@ -45,22 +47,28 @@ class Edit extends Component
 
         $this->resetValidation();
 
-        $this->shipping = Shipping::findOrFail($shipping);
+        $this->shipping = Shipping::findOrFail($id);
+
+        $this->title = $this->shipping->title;
+
+        $this->subtitle = $this->shipping->subtitle;
+
+        $this->cost = $this->shipping->cost;
+
+        $this->is_pickup = $this->shipping->is_pickup;
 
         $this->editModal = true;
     }
 
     public function update()
     {
-        // abort_if(Gate::denies('shipping_update'), 403);
-
         $this->validate();
 
-        $this->shipping->save();
+        $this->shipping->update($this->all());
 
         $this->alert('success', __('shipping updated successfully'));
 
-        $this->emit('refreshIndex');
+        $this->dispatch('refreshIndex')->to(Index::class);
 
         $this->editModal = false;
     }

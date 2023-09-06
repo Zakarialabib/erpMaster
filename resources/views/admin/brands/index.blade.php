@@ -6,7 +6,7 @@
             <div class="mb-5 lg:mb-0">
                 <h2 class="mb-1 text-2xl font-bold">{{ __('Brands') }}</h2>
                 <div class="flex items-center">
-                    <a class="flex items-center text-sm text-gray-500" href="{{ route('home') }}">
+                    <a class="flex items-center text-sm text-gray-500" href="{{ route('admin.dashboard') }}">
                         <span class="inline-block mx-2">
                             <svg class="h-4 w-4 text-gray-500" viewBox="0 0 16 18" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
@@ -61,17 +61,17 @@
                         </x-button>
                     </x-slot>
                     <x-slot name="content">
-                        <x-dropdown-link onclick="Livewire.emit('importModal')" wire:loading.attr="disabled">
+                        <x-dropdown-link wire:click="dispatch('importModal')" wire:loading.attr="disabled">
                             {{ __('Import') }}
                         </x-dropdown-link>
                     </x-slot>
                 </x-dropdown>
 
-                <x-button primary type="button" onclick="Livewire.emit('createBrand')">
+                <x-button primary type="button" wire:click="dispatch('createBrand')">
                     {{ __('Create Brand') }}
                 </x-button>
                 @can('brand_create')
-                    <x-button primary type="button" onclick="Livewire.emit('createModal')">
+                    <x-button primary type="button" wire:click="dispatch('createModal')">
                         {{ __('Create Brand') }}
                     </x-button>
                 @endcan

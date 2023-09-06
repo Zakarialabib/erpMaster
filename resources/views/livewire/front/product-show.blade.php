@@ -1,3 +1,6 @@
+<div>
+@section('title', $product->name)
+
 @section('meta')
     <meta itemprop="url" content="{{ URL::current() }}" />
     <meta property="og:title" content="{{ $product->meta_title }}">
@@ -14,7 +17,6 @@
     <meta property="product:price:currency" content="MAD">
 @endsection
 
-<div>
     <div class="my-5">
         <div itemtype="https://schema.org/Product" itemscope>
 
@@ -30,11 +32,16 @@
                     <div class="w-full md:w-1/2 px-4">
                         <div itemprop="offers" itemscope itemtype="http://schema.org/Offer">
                             <div class="mb-5 pb-5 border-b">
-                                <span class="text-gray-500">
-                                    {{ $product->category?->name }} / 
+                                <span class="text-sm text-gray-500">
+                                    <a href="">
+                                        {{ $product->category?->name }}
+                                     </a> / 
                                     @isset($product->brand)
-                                        <a href="{{ route('front.brandPage', $product->brand?->slug) }}">{{ $product->brand?->name }}</a>
+                                        <a href="{{ route('front.brandPage', $product->brand?->slug) }}">{{ $product->brand?->name }}</a> / 
                                     @endisset
+                                    <a href="{{ URL::Current() }}">
+                                    {{ $product->name }}
+                                    </a>
                                     <div itemprop="brand" itemtype="https://schema.org/Brand" itemscope>
                                         <meta itemprop="brand" content="{{ $product->brand?->name }}" />
                                     </div>
@@ -43,10 +50,10 @@
                                     {{ $product->name }}
                                 </h2>
 
-                                <div class="flex items-center">
+                                {{-- <div class="flex items-center">
                                     <div class="flex items-center" itemprop="aggregateRating"
                                         itemtype="https://schema.org/AggregateRating" itemscope>
-                                        <meta itemprop="reviewCount" content="{{ $product->reviews->count() }}">
+                                        <meta itemprop="reviewCount" content="{{ $product?->reviews->count() }}">
                                         @for ($i = 0; $i < 5; $i++)
                                             @if ($i < $product->reviews->avg('rating'))
                                                 <meta itemprop="ratingValue"
@@ -69,7 +76,7 @@
                                             class="ml-2 text-sm text-gray-500 font-body">{{ $product->reviews->count() }}
                                             {{ __('Reviews') }}</span>
                                     </div>
-                                </div>
+                                </div> --}}
                             </div>
                             <div itemprop="offers" itemtype="https://schema.org/AggregateOffer" itemscope>
                                 <p class="inline-block mb-4 text-2xl font-bold font-heading">
@@ -130,7 +137,7 @@
                                 </div>
                                 <div>
                                     @if ($product->status == 1)
-                                        <a class="block text-center text-white font-bold font-heading py-2 px-4 rounded-md uppercase bg-beige-400 hover:bg-beige-200 transition cursor-pointer"
+                                        <a class="block text-center text-white font-bold font-heading py-2 px-4 rounded-md uppercase bg-green-400 hover:bg-green-200 transition cursor-pointer"
                                             wire:click="AddToCart({{ $product->id }}, '{{ $product->name }}', {{ $product->price }})">
                                             {{ __('Add to cart') }}
                                         </a>
@@ -142,7 +149,7 @@
                                 </div>
                             </div>
 
-                            <livewire:front.order-form :product="$product" />
+                            <livewire:front.order-form :product="$product" lazy />
 
                             <ul class="my-4 ">
                                 <li class="text-gray-500 py-1">
@@ -184,28 +191,28 @@
                         <div
                             class="inline-block py-6 px-10 text-left font-bold font-heading text-gray-500 uppercase border-b-2 border-gray-100 hover:border-gray-500 focus:outline-none focus:border-gray-500">
                             <button @click="activeTab = 'description'"
-                                :class="activeTab === 'description' ? 'text-beige-400' : ''">
+                                :class="activeTab === 'description' ? 'text-green-400' : ''">
                                 {{ __('Description') }}
                             </button>
                         </div>
                         <div
                             class="inline-block py-6 px-10 text-left font-bold font-heading text-gray-500 uppercase border-b-2 border-gray-100 hover:border-gray-500 focus:outline-none focus:border-gray-500">
                             <button @click="activeTab = 'reviews'"
-                                :class="activeTab === 'reviews' ? 'text-beige-400' : ''">
+                                :class="activeTab === 'reviews' ? 'text-green-400' : ''">
                                 {{ __('Reviews') }}
                             </button>
                         </div>
                         <div
                             class="inline-block py-6 px-10 text-left font-bold font-heading text-gray-500 uppercase border-b-2 border-gray-100 hover:border-gray-500 focus:outline-none focus:border-gray-500">
                             <button @click="activeTab = 'shipping'"
-                                :class="activeTab === 'shipping' ? 'text-beige-400' : ''">
+                                :class="activeTab === 'shipping' ? 'text-green-400' : ''">
                                 {{ __('Shipping & Returns') }}
                             </button>
                         </div>
                         <div
                             class="inline-block py-6 px-10 text-left font-bold font-heading text-gray-500 uppercase border-b-2 border-gray-100 hover:border-gray-500 focus:outline-none focus:border-gray-500">
                             <button @click="activeTab = 'brands'"
-                                :class="activeTab === 'brands' ? 'text-beige-400' : ''">
+                                :class="activeTab === 'brands' ? 'text-green-400' : ''">
                                 {{ __('Product Brand') }}
                             </button>
                         </div>
@@ -220,7 +227,7 @@
                     <div x-show="activeTab === 'reviews'" class="px-5 mb-10">
                         <div role="reviews" aria-labelledby="tab-1" id="tab-panel-1" tabindex="0">
                             {{-- show review or  make review --}}
-                            @if (auth()->check())
+                            {{-- @if (auth()->check())
                                 @if ($product->reviews->where('user_id', auth()->user()->id)->count() > 0)
                                     <div class="mb-8">
                                         <h4 class="mb-4 text-2xl font-bold font-heading text-orange-500">
@@ -261,8 +268,8 @@
                                             </button>
                                         </div>
                                     </div>
-                                @endif
-                            @endif
+                                 @endif
+                            @endif --}}
                         </div>
                     </div>
                     <div x-show="activeTab === 'shipping'" class="px-5 mb-10">

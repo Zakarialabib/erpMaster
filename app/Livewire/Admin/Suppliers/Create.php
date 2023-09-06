@@ -7,72 +7,69 @@ namespace App\Livewire\Admin\Suppliers;
 use App\Models\Supplier;
 use Illuminate\Support\Facades\Gate;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
+use Livewire\Attributes\On;
+use Livewire\Attributes\Rule;
 use Livewire\Component;
-use Throwable;
 
 class Create extends Component
 {
     use LivewireAlert;
 
-    /** @var array<string> */
-    public $listeners = ['createModal'];
-
     /** @var bool */
     public $createModal = false;
 
-    /** @var mixed */
-    public $supplier;
+    public Supplier $supplier;
 
-    /** @var array */
-    protected $rules = [
-        'supplier.name'       => 'required|string|min:3|max:255',
-        'supplier.phone'      => 'required|numeric',
-        'supplier.email'      => 'nullable|email|max:255',
-        'supplier.address'    => 'nullable|string|max:255',
-        'supplier.city'       => 'nullable|string|max:255',
-        'supplier.country'    => 'nullable|string|max:255',
-        'supplier.tax_number' => 'nullable|numeric|max:255',
-    ];
+    #[Rule('required|string|min:3|max:255', message: 'The name field is required and must be a string between 3 and 255 characters.')]
+    public string $name;
 
-    protected $messages = [
-        'supplier.name.required'  => 'The name field cannot be empty.',
-        'supplier.phone.required' => 'The phone field cannot be empty.',
-    ];
+    #[Rule('required|numeric', message: 'The phone field is required and must be a numeric value.')]
+    public int $phone;
+
+    #[Rule('nullable|email|max:255', message: 'The email field must be a valid email address with a maximum of 255 characters.')]
+    public ?string $email;
+
+    #[Rule('nullable|string|max:255', message: 'The address field must be a string with a maximum of 255 characters.')]
+    public ?string $address;
+
+    #[Rule('nullable|string|max:255', message: 'The city field must be a string with a maximum of 255 characters.')]
+    public ?string $city;
+
+    #[Rule('nullable|string|max:255', message: 'The country field must be a string with a maximum of 255 characters.')]
+    public ?string $country;
+
+    #[Rule('nullable|numeric|max:255', message: 'The tax number field must be a numeric value with a maximum of 255 characters.')]
+    public ?int $tax_number;
 
     public function render()
     {
-        abort_if(Gate::denies('supplier_create'), 403);
+        abort_if(Gate::denies('supplier create'), 403);
 
         return view('livewire.admin.suppliers.create');
     }
 
+    #[On('createModal')]
     public function createModal()
     {
         $this->resetErrorBag();
 
         $this->resetValidation();
 
-        $this->supplier = new Supplier();
-
         $this->createModal = true;
     }
 
     public function create(): void
     {
-        try {
-            $this->validate();
+        $this->validate();
 
-            $this->supplier->save();
+        Supplier::create($this->all());
 
-            $this->alert('success', __('Supplier created successfully.'));
+        $this->alert('success', __('Supplier created successfully.'));
 
-            $this->dispatch('refreshIndex');
+        $this->dispatch('refreshIndex')->to(Index::class);
 
-            $this->reset('supplier');
+        $this->reset('name', 'email', 'phone', 'address', 'city', 'country', 'tax_number');
 
-            $this->createModal = false;
-        } catch (Throwable $th) {
-            $this->alert('success', __('Supplier was not created .').$th->getMessage());
-        }
+        $this->createModal = false;
     }
 }

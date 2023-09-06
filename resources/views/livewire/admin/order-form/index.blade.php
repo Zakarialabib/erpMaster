@@ -10,11 +10,9 @@
                 </p>
             @endif
             <div class="my-2 my-md-0">
-                <p class="leading-5 text-black mb-1 text-sm ">
-                    {{ __('Show items per page') }}
-                </p>
-                <select wire:model="perPage" name="perPage"
-                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-32 p-1">
+                
+                <select wire:model.live="perPage" name="perPage"
+                    class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-auto sm:text-sm border-gray-300 rounded-md focus:outline-none focus:shadow-outline-blue transition duration-150 ease-in-out">
                     @foreach ($paginationOptions as $value)
                         <option value="{{ $value }}">{{ $value }}</option>
                     @endforeach
@@ -24,7 +22,7 @@
         <div class="lg:w-1/2 md:w-1/2 sm:w-full my-2 my-md-0">
             <div class="my-2 my-md-0">
                 <input type="text" wire:model.debounce.300ms="search"
-                    class="p-3 leading-5 bg-white text-gray-500 rounded border border-zinc-300 mb-1 text-sm w-full focus:shadow-outline-blue focus:border-blue-500"
+                    class="p-3 leading-5 bg-white text-gray-500 rounded border border-gray-300 mb-1 text-sm w-full focus:shadow-outline-blue focus:border-blue-500"
                     placeholder="{{ __('Search') }}" />
             </div>
         </div>
@@ -64,7 +62,7 @@
                     </x-table.td>
                     <x-table.td>
                         @if($orderform->status == 0)
-                        <livewire:toggle-button :model="$orderform" field="status" key="{{ $orderform->id }}" />
+                        <livewire:utils.toggle-button :model="$orderform" field="status" key="{{ $orderform->id }}" />
                         @else
                             <span class="text-green-500">{{ __('Approved') }}</span>
                         @endif

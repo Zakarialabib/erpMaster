@@ -17,6 +17,7 @@ class Index extends Component
 {
     use Datatable;
     use LivewireAlert;
+
     public $partner;
     public $deleteModal = false;
 
@@ -34,7 +35,7 @@ class Index extends Component
 
     public function render()
     {
-        // abort_if(Gate::denies('partner_access'), 403);
+        // abort_if(Gate::denies('partner access'), 403);
 
         $query = Partner::advancedFilter([
             's'               => $this->search ?: null,

@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace App\Livewire\Front;
 
-use App\Models\Brand;
-use App\Models\Category;
 use App\Models\Product;
-use App\Models\Subcategory;
 use Livewire\Component;
+use App\Livewire\Utils\Front\WithModels;
 
 class StepWizard extends Component
 {
+    use WithModels;
+
     public $step = 0;
     public $giftOrSelf;
     public $category_id;
@@ -90,22 +90,7 @@ class StepWizard extends Component
 
                 break;
         }
-        $this->emit('resetPage');
-    }
-
-    public function getBrandsProperty()
-    {
-        return Brand::active()->get();
-    }
-
-    public function getCategoriesProperty()
-    {
-        return Category::active()->with('subcategories')->get();
-    }
-
-    public function getSubcategoriesProperty()
-    {
-        return Subcategory::active()->get();
+        $this->dispatch('resetPage');
     }
 
     public function render()

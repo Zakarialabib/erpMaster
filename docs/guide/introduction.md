@@ -5,7 +5,7 @@ lang: en-US
 
 # Introduction
 
-MystockMaster is a Laravel-based inventory management system that offers an easy and straightforward way to keep track of your inventory, sales, purchases, and more. It offers powerful tools for managing your inventory effectively. Let's dive into the main features and demonstrate how easy it is to use
+ERPMASTER is a Laravel-based Ecommerce and inventory management system that offers an easy and straightforward way to keep track of your inventory, sales, purchases, and more. It offers powerful tools for managing your inventory effectively. Let's dive into the main features and demonstrate how easy it is to use
 
 ## Dashboard Overview
 
@@ -14,7 +14,6 @@ The dashboard provides a user-friendly interface to manage your inventory effici
 - Utilize the search bar to quickly find items.
 - Filter data by months for better analysis.
 - Adapt the language settings to suit your local market needs.
-
 
 ## Settings Configuration
 

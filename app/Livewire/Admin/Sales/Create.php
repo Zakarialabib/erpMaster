@@ -8,36 +8,37 @@ use App\Enums\MovementType;
 use App\Enums\PaymentStatus;
 use App\Enums\SaleStatus;
 use App\Jobs\PaymentNotification;
+use App\Livewire\Utils\Admin\WithModels;
 use App\Models\Category;
-use App\Models\Customer;
 use App\Models\Movement;
 use App\Models\Product;
 use App\Models\Sale;
 use App\Models\SaleDetails;
 use App\Models\SalePayment;
-use App\Models\Warehouse;
 use App\Models\ProductWarehouse;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Support\Facades\Auth;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
+use Livewire\Attributes\Computed;
+use Livewire\Attributes\Layout;
+use Livewire\Attributes\Rule;
 
+#[Layout('components.layouts.dashboard')]
 class Create extends Component
 {
     use LivewireAlert;
+    use WithModels;
 
-    public $cart_instance;
+    public $cart_instance = 'sale';
 
     public $global_discount;
 
     public $discount_amount;
 
-    public $warehouse_id;
-
     public $global_tax;
-
-    public $shipping;
 
     public $quantity;
 
@@ -47,45 +48,46 @@ class Create extends Component
 
     public $item_discount;
 
-    public $tax_percentage;
-
-    public $discount_percentage;
-
     public $date;
 
     public $price;
 
+    #[Rule('integer|min:0|max:100')]
+    public $tax_percentage;
+
+    #[Rule('integer|min:0|max:100')]
+    public $discount_percentage;
+
+    #[Rule('required')]
     public $customer_id;
 
+    #[Rule('required')]
+    public $warehouse_id;
+
+    #[Rule('required|numeric')]
     public $total_amount;
 
+    #[Rule('numeric')]
     public $paid_amount;
 
+    #[Rule('numeric')]
     public $shipping_amount;
 
+    #[Rule('nullable')]
     public $note;
+
+    #[Rule('required|integer|max:255')]
     public $status;
 
     public $payment_method = 'cash';
 
-    public function rules()
+    public function mount()
     {
-        return [
-            'customer_id'         => 'required|numeric',
-            'warehouse_id'        => 'required',
-            'tax_percentage'      => 'integer|min:0|max:100',
-            'discount_percentage' => 'integer|min:0|max:100',
-            'shipping_amount'     => 'numeric',
-            'total_amount'        => 'required|numeric',
-            'paid_amount'         => 'numeric',
-            'status'              => 'required|integer|max:255',
-            'note'                => 'nullable|string|max:1000',
-        ];
-    }
+        abort_if(Gate::denies('sale create'), 403);
 
-    public function mount($cartInstance)
-    {
-        $this->cart_instance = $cartInstance;
+        Cart::instance('sale')->destroy();
+
+        // $this->cart_instance = $cartInstance;
         $this->discount_percentage = 0;
         $this->tax_percentage = 0;
         $this->shipping_amount = 0;
@@ -95,7 +97,7 @@ class Create extends Component
         $this->item_discount = [];
         $this->payment_method = 'cash';
         $this->paid_amount = $this->total_amount;
-        $this->customer_id = settings()->default_client_id;
+        $this->customer_id = settings('default_client_id');
         $this->date = date('Y-m-d');
     }
 
@@ -165,8 +167,8 @@ class Create extends Component
                 'payment_status'      => $payment_status,
                 'payment_method'      => $this->payment_method,
                 'note'                => $this->note,
-                'tax_amount'          => Cart::instance('sale')->tax() * 100,
-                'discount_amount'     => Cart::instance('sale')->discount() * 100,
+                'tax_amount'          => (int) (Cart::instance('sale')->tax() * 100),
+                'discount_amount'     => (int) (Cart::instance('sale')->discount() * 100),
             ]);
 
             // foreach ($this->cart_instance as cart_items) {}
@@ -212,10 +214,10 @@ class Create extends Component
 
             Cart::instance('sale')->destroy();
 
-            if ($sale->paid_amount > 0) {
+            if ($this->paid_amount > 0) {
                 SalePayment::create([
                     'date'           => date('Y-m-d'),
-                    'amount'         => $sale->paid_amount,
+                    'amount'         => $this->paid_amount * 100,
                     'sale_id'        => $sale->id,
                     'payment_method' => $this->payment_method,
                     'user_id'        => Auth::user()->id,
@@ -229,13 +231,13 @@ class Create extends Component
             // dispatch the Send Payment Notification job
             PaymentNotification::dispatch($sale);
 
-            return redirect()->route('sales.index');
+            return redirect()->route('admin.sales.index');
         });
     }
 
     public function calculateTotal()
     {
-        return Cart::instance($this->cart_instance)->total() + $this->shipping;
+        return Cart::instance($this->cart_instance)->total() + $this->shipping_amount;
     }
 
     public function resetCart()
@@ -243,12 +245,8 @@ class Create extends Component
         Cart::instance($this->cart_instance)->destroy();
     }
 
-    public function getCustomersProperty()
-    {
-        return Customer::pluck('name', 'id')->toArray();
-    }
-
-    public function getCategoryProperty()
+    #[Computed]
+    public function category()
     {
         return Category::select('name', 'id')->get();
     }
@@ -264,10 +262,5 @@ class Create extends Component
         if ($value === SaleStatus::COMPLETED->value) {
             $this->paid_amount = $this->total_amount;
         }
-    }
-
-    public function getWarehousesProperty()
-    {
-        return Warehouse::pluck('name', 'id')->toArray();
     }
 }

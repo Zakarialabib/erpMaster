@@ -1,6 +1,6 @@
 <div>
     <h3 class="mb-6 text-xl text-white font-bold font-heading">{{ __('Join our Newsletter') }}</h3>
-    <form wire:submit.prevent="subscribe">
+    <form wire:submit="subscribe">
         <div class="mb-6 relative lg:mx-auto bg-white rounded-lg">
             <div class="relative flex flex-wrap items-center justify-between">
                 <div class="relative flex-1">
@@ -11,7 +11,7 @@
                     <x-input-error :messages="$errors->get('email')" for="email" class="mt-2" />
                 </div>
                 <button type="submit"
-                    class="inline-block w-auto cursor-pointer bg-beige-400 hover:bg-beige-200 text-white font-bold font-heading py-4 px-6 rounded-md uppercase text-center transition">
+                    class="inline-block w-auto cursor-pointer bg-green-400 hover:bg-green-200 text-white font-bold font-heading py-4 px-6 rounded-md uppercase text-center transition">
                     {{ __('Join') }}
                 </button>
             </div>

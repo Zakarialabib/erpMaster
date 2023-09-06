@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Livewire\Admin\Product;
+namespace App\Livewire\Admin\Products;
 
 use App\Models\Product;
 use Illuminate\Contracts\View\Factory;
@@ -109,6 +109,6 @@ class Highlighted extends Component
 
     public function render(): View|Factory
     {
-        return view('livewire.admin.product.highlighted');
+        return view('livewire.admin.products.highlighted');
     }
 }

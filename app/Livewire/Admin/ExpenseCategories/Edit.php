@@ -7,46 +7,34 @@ namespace App\Livewire\Admin\ExpenseCategories;
 use App\Models\ExpenseCategory;
 use Illuminate\Support\Facades\Gate;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
+use Livewire\Attributes\Rule;
+use Livewire\Attributes\On;
 use Livewire\Component;
-use Throwable;
 
 class Edit extends Component
 {
     use LivewireAlert;
 
-    public $listeners = [
-        'editModal',
-    ];
+    public bool $editModal = false;
 
-    /** @var bool */
-    public $editModal = false;
-
-    /** @var mixed */
     public $expenseCategory;
 
-    /** @var array */
-    protected $rules = [
-        'expenseCategory.name'        => 'required|min:3|max:255',
-        'expenseCategory.description' => 'nullable',
-    ];
+    #[Rule('required', message: 'Please provide a name')]
+    #[Rule('min:3', message: 'This name is too short')]
+    public string $name;
 
-    protected $messages = [
-        'expenseCategory.name.required' => 'The name field cannot be empty.',
-    ];
-
-    public function updated($propertyName): void
-    {
-        $this->validateOnly($propertyName);
-    }
+    #[Rule('nullable')]
+    public ?string $description;
 
     public function render()
     {
         return view('livewire.admin.expense-categories.edit');
     }
 
+    #[On('editModal')]
     public function editModal($id): void
     {
-        // abort_if(Gate::denies('expense_category_edit'), 403);
+        abort_if(Gate::denies('expense category edit'), 403);
 
         $this->resetErrorBag();
 
@@ -54,23 +42,24 @@ class Edit extends Component
 
         $this->expenseCategory = ExpenseCategory::where('id', $id)->firstOrFail();
 
+        $this->name = $this->expenseCategory->name;
+        $this->description = $this->expenseCategory->description;
+
         $this->editModal = true;
     }
 
     public function update(): void
     {
-        try {
-            $validatedData = $this->validate();
+        $this->validate();
 
-            $this->expenseCategory->save($validatedData);
+        $this->expenseCategory->update($this->all());
 
-            $this->alert('success', __('Expense Category Updated Successfully.'));
+        $this->alert('success', __('Expense Category Updated Successfully.'));
 
-            $this->dispatch('refreshIndex');
+        $this->dispatch('refreshIndex')->to(Index::class);
 
-            $this->editModal = false;
-        } catch (Throwable $th) {
-            $this->alert('error', $th->getMessage());
-        }
+        $this->reset('name', 'description');
+
+        $this->editModal = false;
     }
 }

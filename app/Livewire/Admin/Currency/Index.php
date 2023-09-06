@@ -9,7 +9,9 @@ use App\Models\Currency;
 use Illuminate\Support\Facades\Gate;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
+use Livewire\Attributes\Layout;
 
+#[Layout('components.layouts.dashboard')]
 class Index extends Component
 {
     use LivewireAlert;
@@ -21,7 +23,6 @@ class Index extends Component
     /** @var array<string> */
     public $listeners = [
         'showModal',
-        'refreshIndex' => '$refresh',
     ];
 
     public $showModal = false;
@@ -35,7 +36,7 @@ class Index extends Component
 
     public function render()
     {
-        abort_if(Gate::denies('currency_access'), 403);
+        abort_if(Gate::denies('currency access'), 403);
 
         $query = Currency::advancedFilter([
             's'               => $this->search ?: null,

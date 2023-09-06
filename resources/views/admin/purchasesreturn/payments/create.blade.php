@@ -4,7 +4,7 @@
 
 @section('breadcrumb')
     <ol class="breadcrumb border-0 m-0">
-        <li class="breadcrumb-item"><a href="{{ route('home') }}">{{__('Home')}}</a></li>
+        <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">{{__('Home')}}</a></li>
         <li class="breadcrumb-item"><a href="{{ route('purchase-returns.index') }}">Purchase Returns</a></li>
         <li class="breadcrumb-item"><a href="{{ route('purchase-returns.show', $purchase_return) }}">{{ $purchase_return->reference }}</a></li>
         <li class="breadcrumb-item active">Add Payment</li>
@@ -86,26 +86,4 @@
         </form>
     </div>
 @endsection
-
-@push('scripts')
-    <script src="{{ asset('js/jquery-mask-money.js') }}"></script>
-    <script>
-        $(document).ready(function () {
-            $('#amount').maskMoney({
-                prefix:'{{ settings()->currency->symbol }}',
-                thousands:'{{ settings()->currency->thousand_separator }}',
-                decimal:'{{ settings()->currency->decimal_separator }}',
-            });
-
-            $('#getTotalAmount').click(function () {
-                $('#amount').maskMoney('mask', {{ $purchase_return->due_amount }});
-            });
-
-            $('#payment-form').submit(function () {
-                var amount = $('#amount').maskMoney('unmasked')[0];
-                $('#amount').val(amount);
-            });
-        });
-    </script>
-@endpush
 

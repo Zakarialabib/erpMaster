@@ -1,5 +1,5 @@
 <div>
-    <x-modal wire:model.live="showPayments">
+    <x-modal wire:model="showPayments">
         <x-slot name="title">
             <h2 class="text-lg font-medium text-gray-900">
                 {{ __('Sale Payment') }}

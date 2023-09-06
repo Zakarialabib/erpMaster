@@ -1,0 +1,35 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Livewire\Admin\PurchaseReturn;
+
+use App\Models\PurchaseReturn;
+use Illuminate\Support\Facades\Gate;
+use Livewire\Attributes\On;
+use Livewire\Component;
+
+class Show extends Component
+{
+    public $purchasereturn;
+    public $showModal = false;
+
+    #[On('showModal')]
+    public function showModal($id)
+    {
+        $this->resetErrorBag();
+
+        $this->resetValidation();
+
+        $this->purchasereturn = PurchaseReturn::whereId($id)->firstOrFail();
+
+        $this->showModal = true;
+    }
+
+    public function render()
+    {
+        abort_if(Gate::denies('purchase access'), 403);
+
+        return view('livewire.admin.purchase-return.show');
+    }
+}

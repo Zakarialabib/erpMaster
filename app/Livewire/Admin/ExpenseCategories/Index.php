@@ -6,16 +6,14 @@ namespace App\Livewire\Admin\ExpenseCategories;
 
 use App\Livewire\Utils\Datatable;
 use App\Models\ExpenseCategory;
-
 use Illuminate\Support\Facades\Gate;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
-use Livewire\WithPagination;
+use Livewire\Attributes\Layout;
 
+#[Layout('components.layouts.dashboard')]
 class Index extends Component
 {
-    use WithPagination;
-    use Datatable;
     use LivewireAlert;
     use Datatable;
 
@@ -27,20 +25,17 @@ class Index extends Component
     /** @var array<string> */
     public $listeners = [
         'showModal',
-        'refreshIndex' => '$refresh',
         'delete',
     ];
 
     public function mount(): void
     {
-        $this->selectPage = false;
-
         $this->orderable = (new ExpenseCategory())->orderable;
     }
 
     public function render()
     {
-        abort_if(Gate::denies('expense_categories_access'), 403);
+        abort_if(Gate::denies('expense_categories access'), 403);
 
         $query = ExpenseCategory::advancedFilter([
             's'               => $this->search ?: null,

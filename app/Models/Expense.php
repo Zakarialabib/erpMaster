@@ -24,8 +24,8 @@ class Expense extends Model
         'updated_at',
     ];
 
-    public $orderable = self::ATTRIBUTES;
-    public $filterable = self::ATTRIBUTES;
+    public array $orderable = self::ATTRIBUTES;
+    public array $filterable = self::ATTRIBUTES;
 
     /**
      * The attributes that are mass assignable.
@@ -38,7 +38,7 @@ class Expense extends Model
         'warehouse_id',
         'date',
         'reference',
-        'details',
+        'description',
         'amount',
     ];
 
@@ -51,19 +51,31 @@ class Expense extends Model
         parent::__construct($attributes);
     }
 
+    /** @return BelongsTo<ExpenseCategory> */
     public function category(): BelongsTo
     {
-        return $this->belongsTo(ExpenseCategory::class, 'category_id');
+        return $this->belongsTo(
+            related: ExpenseCategory::class,
+            foreignKey: 'category_id'
+        );
     }
 
+    /** @return BelongsTo<User> */
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(
+            related : User::class,
+            foreignKey : 'user_id'
+        );
     }
 
+    /** @return BelongsTo<Warehouse> */
     public function warehouse(): BelongsTo
     {
-        return $this->belongsTo(Warehouse::class, 'warehouse_id');
+        return $this->belongsTo(
+            related: Warehouse::class,
+            foreignKey: 'warehouse_id',
+        );
     }
 
     /**

@@ -8,12 +8,14 @@ use Livewire\Component;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Gate;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
-use Intervention\Image\Facades\Image;
 use Illuminate\Support\Str;
 use Livewire\WithFileUploads;
 use App\Models\Subcategory;
 use App\Models\Category;
 use App\Models\Language;
+use Livewire\Attributes\Computed;
+use Livewire\Attributes\On;
+use Livewire\Attributes\Rule;
 
 class Edit extends Component
 {
@@ -24,67 +26,76 @@ class Edit extends Component
 
     public $subcategory;
 
+    #[Rule('required', message: 'Please provide a name')]
+    #[Rule('min:3', message: 'This name is too short')]
+    public string $name;
+
+    #[Rule('nullable')]
+    public $slug;
+
+    #[Rule('nullable')]
+    public $category_id;
+
+    #[Rule('nullable')]
+    public $language_id;
+
     public $image;
 
-    public $listeners = [
-        'editModal',
-    ];
-
-    public array $rules = [
-        'subcategory.name'        => ['required', 'string', 'max:255'],
-        'subcategory.category_id' => ['nullable', 'integer'],
-        'subcategory.language_id' => ['nullable'],
-        'subcategory.slug'        => ['required'],
-    ];
-
-    public function editModal($subcategory)
+    #[On('editModal')]
+    public function editModal($id)
     {
-        abort_if(Gate::denies('subcategory_update'), 403);
+        abort_if(Gate::denies('subcategory update'), 403);
 
         $this->resetErrorBag();
 
         $this->resetValidation();
 
-        $this->subcategory = Subcategory::findOrFail($subcategory);
+        $this->subcategory = Subcategory::findOrFail($id);
+
+        $this->name = $this->subcategory->name;
+        $this->slug = $this->subcategory->slug;
+        $this->category_id = $this->subcategory->category_id;
+        $this->language_id = $this->subcategory->language_id;
+        $this->image = $this->subcategory->image;
 
         $this->editModal = true;
     }
 
     public function update()
     {
-        abort_if(Gate::denies('subcategory_update'), 403);
-
         $this->validate();
 
+        if ($this->slug !== $this->subcategory->slug) {
+            $this->slug = Str::slug($this->name);
+        }
+
         if ($this->image) {
-            $imageName = Str::slug($this->subcategory->name).'-'.Str::random(3).'.'.$this->image->extension();
+            $imageName = Str::slug($this->subcategory->name).'-'.$this->image->extension();
 
-            $img = Image::make($this->image->getRealPath())->encode('webp', 85);
-
-            $img->stream();
-
-            Storage::disk('local_files')->put('subcategories/'.$imageName, $img, 'public');
-
-            $this->brand->image = $imageName;
+            $this->image->storeAs('subcategories', $imageName);
 
             $this->subcategory->image = $imageName;
         }
 
-        $this->subcategory->save();
+        $this->subcategory->update($this->all());
 
         $this->alert('success', __('Subcategory updated successfully'));
 
-        $this->emit('refreshIndex');
+        $this->dispatch('refreshIndex')->to(Index::class);
+
+        $this->reset('name', 'slug', 'category_id', 'language_id', 'image');
 
         $this->editModal = false;
     }
 
-    public function getCategoriesProperty()
+    #[Computed]
+    public function categories()
     {
         return Category::select('name', 'id')->get();
     }
 
-    public function getLanguagesProperty()
+    #[Computed]
+    public function languages()
     {
         return Language::select('name', 'id')->get();
     }

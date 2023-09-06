@@ -7,6 +7,7 @@ namespace App\Models;
 use App\Support\HasAdvancedFilter;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Facades\DB;
 
 class Warehouse extends Model
 {
@@ -21,7 +22,6 @@ class Warehouse extends Model
         'country',
         'created_at',
         'updated_at',
-
     ];
 
     public $orderable = self::ATTRIBUTES;
@@ -33,31 +33,33 @@ class Warehouse extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'name', 'phone', 'country', 'city', 'email',
+        'name', 'city', 'address', 'phone', 'email', 'country',
     ];
 
-    /** @return BelongsToMany<User> */
-    public function assignedUsers(): BelongsToMany
+    public function users()
     {
-        return $this->belongsToMany(User::class);
-    }
+        return $this->belongsToMany(User::class, 'user_warehouses', 'warehouse_id', 'user_id');
+    }    
 
     /** @return BelongsToMany<Product> */
     public function products(): BelongsToMany
     {
         return $this->belongsToMany(Product::class, 'product_warehouse', 'warehouse_id', 'product_id')
-            ->withPivot('price', 'cost', 'qty');
+            ->withPivot('price', 'cost', 'qty', 'old_price', 'stock_alert');
     }
 
-    public function getTotalQuantityAttribute()
+    public function productWarehouse()
     {
-        return $this->products->sum('pivot.qty');
+        return $this->hasMany(ProductWarehouse::class, 'warehouse_id');
     }
 
-    public function getStockValueAttribute()
+    public function getTotalQuantityAttribute(): int
     {
-        return $this->products->sum(function ($product) {
-            return $product->pivot->qty * $product->pivot->cost;
-        });
+        return $this->productWarehouse()->sum('qty');
     }
+    
+    public function getStockValueAttribute(): float
+    {
+        return $this->productWarehouse()->sum(DB::raw('qty * cost'));
+    }    
 }

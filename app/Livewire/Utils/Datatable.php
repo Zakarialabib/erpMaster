@@ -12,12 +12,13 @@ use Livewire\WithPagination;
 trait Datatable
 {
     use WithPagination;
+
     public int $perPage = 25;
 
     public array $orderable;
 
     #[Url(keep: true)]
-    public $search = '';
+    public string $search = '';
 
     public array $selected = [];
 
@@ -27,14 +28,14 @@ trait Datatable
     public string $sortBy = '';
     public string $sortDirection = '';
 
-    public function mountDatatable()
+    public function mountDatatable(): void
     {
         $this->sortBy = 'id';
         $this->sortDirection = 'desc';
         $this->paginationOptions = [25, 50, 100];
     }
 
-    public function sortBy($field)
+    public function sortBy(string $field): void
     {
         $this->sortBy = $field;
 
@@ -43,7 +44,7 @@ trait Datatable
             : 'asc';
     }
 
-    public function reverseSort()
+    public function reverseSort(): string
     {
         return $this->sortDirection === 'asc'
             ? 'desc'
@@ -51,7 +52,7 @@ trait Datatable
     }
 
     #[Computed]
-    public function selectedCount()
+    public function selectedCount(): int
     {
         return count($this->selected);
     }
@@ -68,7 +69,7 @@ trait Datatable
     ];
 
     #[On('refreshIndex')]
-    public function refreshIndex()
+    public function refreshIndex(): void
     {
         $this->resetPage();
     }

@@ -5,38 +5,27 @@ declare(strict_types=1);
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Support\HasAdvancedFilter;
 
 class Notification extends Model
 {
-    protected $fillable = ['order_id', 'user_id', 'product_id'];
+    use HasAdvancedFilter;
 
-    public function order()
-    {
-        return $this->belongsTo('App\Models\Order')->withDefault();
-    }
+    public const ATTRIBUTES = [
+        'id',
+        'created_at',
+        'updated_at',
+    ];
 
-    public function user()
-    {
-        return $this->belongsTo('App\Models\User')->withDefault();
-    }
+    public $orderable = self::ATTRIBUTES;
+    public $filterable = self::ATTRIBUTES;
 
-    public function product()
-    {
-        return $this->belongsTo('App\Models\Product')->withDefault();
-    }
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
 
-    public static function countRegistration()
-    {
-        return Notification::where('user_id', '!=', null)->where('is_read', '=', 0)->latest('id')->get()->count();
-    }
-
-    public static function countOrder()
-    {
-        return Notification::where('order_id', '!=', null)->where('is_read', '=', 0)->latest('id')->get()->count();
-    }
-
-    public static function countProduct()
-    {
-        return Notification::where('product_id', '!=', null)->where('is_read', '=', 0)->latest('id')->get()->count();
-    }
+    ];
 }

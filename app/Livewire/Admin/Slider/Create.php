@@ -4,94 +4,74 @@ declare(strict_types=1);
 
 namespace App\Livewire\Admin\Slider;
 
-use App\Models\Language;
-use Illuminate\Contracts\View\Factory;
-use Illuminate\Contracts\View\View;
-use Illuminate\Support\Collection;
+use App\Models\Slider;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use Intervention\Image\Facades\Image;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
 use Livewire\WithFileUploads;
-use Throwable;
+use Livewire\Attributes\On;
+use Livewire\Attributes\Rule;
 
 class Create extends Component
 {
     use LivewireAlert;
     use WithFileUploads;
 
-    public $createSlider = false;
+    public $createModal = false;
 
-    public $slider;
+    public Slider $slider;
 
-    public $photo;
+    #[Rule('required|max:255')]
+    public $title;
+    #[Rule('nullable')]
+    public $subtitle;
+    #[Rule('nullable')]
+    public $description;
+    #[Rule('nullable')]
+    public $link;
+    #[Rule('nullable')]
+    public $bg_color;
+    #[Rule('nullable')]
+    public $embeded_video;
+    #[Rule('required')]
+    public $image;
 
-    public $listeners = [
-        'createSlider',
-    ];
-
-    public array $rules = [
-        'slider.title'         => ['required', 'string', 'max:255'],
-        'slider.subtitle'      => ['nullable', 'string'],
-        'slider.details'       => ['nullable', 'string'],
-        'slider.link'          => ['nullable', 'string'],
-        'slider.language_id'   => ['nullable'],
-        'slider.bg_color'      => ['nullable'],
-        'slider.embeded_video' => ['nullable'],
-        'photo'                => ['required'],
-    ];
-
-    public function render(): View|Factory
+    public function render()
     {
-        abort_if(Gate::denies('slider_create'), 403);
+        abort_if(Gate::denies('slider create'), 403);
 
         return view('livewire.admin.slider.create');
     }
 
-    public function createSlider()
+    #[On('createModal')]
+    public function createModal()
     {
         $this->resetErrorBag();
 
         $this->resetValidation();
 
-        $this->slider = new PSliderage();
-
-        $this->createSlider = true;
+        $this->createModal = true;
     }
 
     public function create()
     {
-        try {
-            $this->validate();
+        $this->validate();
 
-            if ($this->photo) {
-                $imageName = Str::slug($this->slider->title).'-'.Str::random(5).'.'.$this->photo->extension();
+        if ( ! $this->image) {
+            $this->image = null;
+        } elseif (is_object($this->image) && method_exists($this->image, 'extension')) {
+            $imageName = Str::slug($this->title).'.'.$this->image->extension();
 
-                $img = Image::make($this->photo->getRealPath())->encode('webp', 85);
-
-                $img->stream();
-
-                Storage::disk('local_files')->put('sliders/'.$imageName, $img, 'public');
-
-                $this->slider->photo = $imageName;
-            }
-
-            $this->slider->save();
-
-            $this->alert('success', __('Slider created successfully.'));
-
-            $this->emit('refreshIndex');
-
-            $this->createSlider = false;
-        } catch (Throwable $th) {
-            $this->alert('warning', __('An error happend Slider was not created.'));
+            $this->slider->image = $imageName;
         }
-    }
 
-    public function getLanguagesProperty(): Collection
-    {
-        return Language::select('name', 'id')->get();
+        Slider::create($this->all());
+
+        $this->alert('success', __('Slider created successfully.'));
+
+        $this->dispatch('refreshIndex')->to(Index::class);
+
+        $this->createModal = false;
     }
 }

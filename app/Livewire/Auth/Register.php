@@ -5,45 +5,70 @@ declare(strict_types=1);
 namespace App\Livewire\Auth;
 
 use App\Models\User;
-use App\Providers\RouteServiceProvider;
+use Spatie\Permission\Models\Role;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Livewire\Component;
+use App\Enums\Status;
+use Livewire\Attributes\Layout;
 
+#[Layout('components.layouts.guest')]
 class Register extends Component
 {
-    /** @var string */
     public $name = '';
-
-    /** @var string */
     public $email = '';
-
-    /** @var string */
     public $password = '';
-
-    /** @var string */
     public $passwordConfirmation = '';
+    public $phone;
+    public $city; // Set the default city to 'Casablanca'
+    public $country; // Set
+
+    public function mount()
+    {
+        $this->city = 'Casablanca';
+        $this->country = 'Morocco';
+    }
 
     public function register()
     {
         $this->validate([
-            'name'     => ['required'],
-            'email'    => ['required', 'email', 'unique:users'],
-            'password' => ['required', 'min:8', 'same:passwordConfirmation'],
+            'name'     => 'required',
+            'email'    => 'required|email|unique:users,email',
+            'phone'    => 'required|numeric',
+            'password' => 'required|min:8|same:passwordConfirmation',
         ]);
 
         $user = User::create([
-            'email'    => $this->email,
             'name'     => $this->name,
+            'email'    => $this->email,
             'password' => Hash::make($this->password),
+            'phone'    => $this->phone,
+            'city'     => $this->city,
+            'country'  => $this->country,
+            'status'   => Status::INACTIVE, // Set status to inactive by default
         ]);
+
+        $role = Role::where('name', 'client')->first();
+
+        $user->assignRole($role);
 
         event(new Registered($user));
 
         Auth::login($user, true);
 
-        return redirect()->intended(RouteServiceProvider::HOME);
+        switch (true) {
+            case $user->hasRole('admin'):
+                $homePage = '/admin/dashboard';
+
+                break;
+            default:
+                $homePage = '/';
+
+                break;
+        }
+
+        return $this->redirect($homePage, navigate: true);
     }
 
     public function render()

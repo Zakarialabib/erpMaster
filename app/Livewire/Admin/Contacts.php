@@ -18,9 +18,6 @@ class Contacts extends Component
 
     public function mount()
     {
-        $this->sortBy = 'id';
-        $this->sortDirection = 'desc';
-        $this->paginationOptions = config('project.pagination.options');
         $this->orderable = (new Contact())->orderable;
     }
 

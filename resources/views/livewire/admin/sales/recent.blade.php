@@ -1,5 +1,5 @@
 <div>
-    <x-modal wire:model.live="recentSales" maxWidth="3xl">
+    <x-modal wire:model="recentSales" maxWidth="3xl">
         <x-slot name="title">
             {{ __('Recent Sales') }}
         </x-slot>
@@ -7,7 +7,7 @@
             <div class="flex flex-wrap justify-center">
                 <div class="lg:w-1/2 md:w-1/2 sm:w-full flex flex-wrap my-2">
                     <select wire:model.live="perPage"
-                        class="w-20 block p-3 leading-5 bg-white dark:bg-dark-eval-2 text-gray-700 dark:text-gray-300 rounded border border-gray-300 mb-1 text-sm focus:shadow-outline-blue focus:border-blue-300 mr-3">
+                        class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-auto sm:text-sm border-gray-300 rounded-md focus:outline-none focus:shadow-outline-blue transition duration-150 ease-in-out">
                         @foreach ($paginationOptions as $value)
                             <option value="{{ $value }}">{{ $value }}</option>
                         @endforeach
@@ -15,7 +15,7 @@
                 </div>
                 <div class="lg:w-1/2 md:w-1/2 sm:w-full my-2">
                     <div class="my-2">
-                        <x-input wire:model.live.debounce.500ms="search" placeholder="{{ __('Search') }}" autofocus />
+                        <x-input wire:model.live="search" placeholder="{{ __('Search') }}" autofocus />
                     </div>
                 </div>
             </div>
@@ -59,7 +59,7 @@
                                 </x-table.td>
                                 <x-table.td>
                                     @if ($sale->customer)
-                                        <a href="{{ route('customer.details', $sale->customer->uuid) }}"
+                                        <a href="{{ route('admin.customer.details', $sale->customer->id) }}"
                                             class="text-indigo-500 hover:text-indigo-600">
                                             {{ $sale->customer->name }}
                                         </a>
@@ -105,7 +105,7 @@
                                                 </x-dropdown-link>
 
                                                 <x-dropdown-link target="_blank"
-                                                    href="{{ route('sales.pos.pdf', $sale->id) }}"
+                                                    href="{{ route('admin.sales.pos.pdf', $sale->id) }}"
                                                     wire:loading.attr="disabled">
                                                     <i class="fas fa-print"></i>
                                                     {{ __('Print') }}
@@ -133,7 +133,7 @@
                 {{ $sales->links() }}
             </div>
 
-            <x-modal wire:model.live="showModal">
+            <x-modal wire:model="showModal">
                 <x-slot name="title">
                     {{ __('Show Sale') }} - {{ __('Reference') }}: <strong>{{ $sale?->reference }}</strong>
                 </x-slot>
@@ -145,7 +145,7 @@
                                 <div class="p-2 flex flex-wrap items-center">
                                     @if ($sale != null)
                                         <x-button secondary class="d-print-none" target="_blank"
-                                            wire:loading.attr="disabled" href="{{ route('sales.pdf', $sale->id) }}"
+                                            wire:loading.attr="disabled" href="{{ route('admin.sales.pdf', $sale->id) }}"
                                             class="ml-auto">
                                             <i class="fas fa-print"></i> {{ __('Print') }}
                                         </x-button>

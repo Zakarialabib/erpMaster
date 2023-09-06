@@ -10,7 +10,9 @@ use Illuminate\Support\Facades\Gate;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
 use Livewire\WithFileUploads;
+use Livewire\Attributes\Layout;
 
+#[Layout('components.layouts.dashboard')]
 class Index extends Component
 {
     use Datatable;
@@ -22,7 +24,6 @@ class Index extends Component
 
     /** @var array<string> */
     public $listeners = [
-        'refreshIndex' => '$refresh',
         'delete',
     ];
 
@@ -33,7 +34,7 @@ class Index extends Component
 
     public function render()
     {
-        abort_if(Gate::denies('adjustment_access'), 403);
+        abort_if(Gate::denies('adjustment access'), 403);
 
         $query = Adjustment::with('adjustedProducts', 'adjustedProducts.warehouse', 'adjustedProducts.product')
             ->advancedFilter([

@@ -5,31 +5,51 @@ declare(strict_types=1);
 namespace App\Livewire\Admin\Purchase;
 
 use App\Enums\MovementType;
+use App\Livewire\Utils\Admin\WithModels;
 use App\Models\Movement;
 use App\Models\ProductWarehouse;
-use App\Models\Warehouse;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use App\Models\Purchase;
 use App\Models\PurchaseDetail;
-use App\Models\Supplier;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use App\Enums\PaymentStatus;
 use App\Enums\PurchaseStatus;
 use App\Models\Product;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
+use Livewire\Attributes\Layout;
+use Livewire\Attributes\Rule;
 
+#[Layout('components.layouts.dashboard')]
 class Edit extends Component
 {
     use LivewireAlert;
-
-    /** @var array<string> */
-    public $listeners = [
-        'refreshIndex' => '$refresh',
-    ];
-
+    use WithModels;
     public $cart_instance;
+    public $purchase_details;
+
+    #[Rule('required')]
+    public $warehouse_id;
+    #[Rule('required')]
+    public $supplier_id;
+    #[Rule('required|integer|min:0|max:100')]
+    public $tax_percentage;
+    #[Rule('required|integer|min:0|max:100')]
+    public $discount_percentage;
+    #[Rule('required|numeric')]
+    public $shipping_amount;
+    #[Rule('required|numeric')]
+    public $total_amount;
+    #[Rule('required|numeric')]
+    public $paid_amount;
+    #[Rule('required|string|max:50')]
+    public $status;
+    #[Rule('required|string|max:50')]
+    public $payment_method;
+    #[Rule('nullable|string|max:1000')]
+    public $note;
 
     public $suppliers;
 
@@ -37,64 +57,50 @@ class Edit extends Component
 
     public $products;
 
-    public $supplier_id;
-
-    public $warehouse_id;
-
     public $product;
 
     public $quantity;
 
     public $reference;
 
-    public $total_amount;
-
     public $check_quantity;
 
     public $price;
-
-    public $tax_percentage;
-
-    public $discount_percentage;
-
-    public $shipping_amount;
-
-    public $shipping;
-
-    public $paid_amount;
-
-    public $note;
-
-    public $status;
-
-    public $payment_method;
 
     public $date;
     public $discount_type;
     public $item_discount;
     public $listsForFields = [];
 
-    public function rules(): array
+    public function mount($id)
     {
-        return [
-            'warehouse_id'        => 'required|integer',
-            'supplier_id'         => 'required|integer',
-            'reference'           => 'required|string|max:255',
-            'tax_percentage'      => 'required|integer|min:0|max:100',
-            'discount_percentage' => 'required|integer|min:0|max:100',
-            'shipping_amount'     => 'required|numeric',
-            'total_amount'        => 'required|numeric',
-            'paid_amount'         => 'required|numeric',
-            'status'              => 'required',
-            'payment_method'      => 'required|string|max:255',
-            'note'                => 'nullable|string|max:1000',
-            'date'                => 'required|string|max:1000',
-        ];
-    }
+        $this->purchase = Purchase::findOrFail($id);
 
-    public function mount(Purchase $purchase)
-    {
-        $this->purchase = Purchase::findOrFail($purchase->id);
+        $this->purchase_details = $this->purchase->purchaseDetails;
+
+        Cart::instance('purchase')->destroy();
+
+        $cart = Cart::instance('purchase');
+
+        foreach ($this->purchase_details as $purchase_detail) {
+            $cart->add([
+                'id'      => $purchase_detail->product_id,
+                'name'    => $purchase_detail->name,
+                'qty'     => $purchase_detail->quantity,
+                'price'   => $purchase_detail->price,
+                'weight'  => 1,
+                'options' => [
+                    'product_discount'      => $purchase_detail->product_discount_amount,
+                    'product_discount_type' => $purchase_detail->product_discount_type,
+                    'sub_total'             => $purchase_detail->sub_total,
+                    'code'                  => $purchase_detail->code,
+                    'stock'                 => Product::findOrFail($purchase_detail->product_id)->quantity,
+                    'product_tax'           => $purchase_detail->product_tax_amount,
+                    'unit_price'            => $purchase_detail->unit_price,
+                ],
+            ]);
+        }
+
         $this->reference = $this->purchase->reference;
         $this->date = $this->purchase->date;
         $this->supplier_id = $this->purchase->supplier_id;
@@ -220,12 +226,14 @@ class Edit extends Component
 
             $this->alert('success', __('Purchase Updated succesfully !'));
 
-            return redirect()->route('purchases.index');
+            return redirect()->route('admin.purchases.index');
         });
     }
 
     public function render()
     {
+        abort_if(Gate::denies('purchase update'), 403);
+
         return view('livewire.admin.purchase.edit');
     }
 
@@ -242,16 +250,6 @@ class Edit extends Component
     public function resetCart(): void
     {
         Cart::instance($this->cart_instance)->destroy();
-    }
-
-    public function getSupplierProperty()
-    {
-        return Supplier::pluck('name', 'id')->toArray();
-    }
-
-    public function getWarehousesProperty()
-    {
-        return Warehouse::pluck('name', 'id')->toArray();
     }
 
     public function updatedWarehouseId($warehouse_id)

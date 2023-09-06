@@ -1,5 +1,5 @@
 <div>
-    <x-modal wire:model.live="createModal">
+    <x-modal wire:model="createModal">
         <x-slot name="title">
             {{ __('Create') }}
         </x-slot>
@@ -8,7 +8,7 @@
             <form wire:submit="store">
                 <div class="w-full px-3">
                     <x-label for="name" :value="__('Name')" />
-                    <x-input type="text" id="name" wire:model.blur="role.name" />
+                    <x-input type="text" id="name" wire:model="role.name" />
                     @error('role.name')
                         <span class="error">{{ $message }}</span>
                     @enderror

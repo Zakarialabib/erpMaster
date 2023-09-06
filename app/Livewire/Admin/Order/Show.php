@@ -18,6 +18,6 @@ class Show extends Component
 
     public function render()
     {
-        return view('livewire.admin.order.show')->extends('layouts.dashboard');
+        return view('livewire.admin.order.show');
     }
 }

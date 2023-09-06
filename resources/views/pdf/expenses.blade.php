@@ -120,14 +120,14 @@
             </div>
         </div>
         <div class="footer">
-            <strong>{{ settings()->company_name }}</strong><br>
-            @if (settings()->show_address == true)
-                {{ settings()->company_address }}<br>
+            <strong>{{ settings('company_name') }}</strong><br>
+            @if (settings('show_address') == true)
+                {{ settings('company_address') }}<br>
             @endif
-            @if (settings()->show_email == true)
-                {{ __('Email') }}: {{ settings()->company_email }}<br>
+            @if (settings('show_email') == true)
+                {{ __('Email') }}: {{ settings('company_email') }}<br>
             @endif
-            {{ __('Phone') }}:<br> {{ settings()->company_phone }}<br>
+            {{ __('Phone') }}:<br> {{ settings('company_phone') }}<br>
         </div>
     </div>
 </body>

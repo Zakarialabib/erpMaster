@@ -1,5 +1,4 @@
 @section('title', __('Pages List'))
-<x-dashboard-layout>
     <section class="py-3 px-4">
         <div class="flex flex-wrap items-center justify-between">
             <div class="mb-5 lg:mb-0">
@@ -37,10 +36,10 @@
                 </div>
             </div>
             <div class="float-right">
-                <x-button primary type="button" onclick="Livewire.emit('createTemplate')">
+                <x-button primary type="button" wire:click="dispatch('createTemplate')">
                     {{ __('Create from template') }}
                 </x-button>
-                <x-button primary type="button" onclick="Livewire.emit('createPage')">
+                <x-button primary type="button" wire:click="dispatch('createPage')">
                     {{ __('Create Page') }}
                 </x-button>
             </div>

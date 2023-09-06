@@ -10,11 +10,9 @@
                 </p>
             @endif
             <div class="my-2 my-md-0">
-                <p class="leading-5 text-black mb-1 text-sm ">
-                    {{ __('Show items per page') }}
-                </p>
-                <select wire:model="perPage" name="perPage"
-                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-32 p-1">
+                
+                <select wire:model.live="perPage" name="perPage"
+                    class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-auto sm:text-sm border-gray-300 rounded-md focus:outline-none focus:shadow-outline-blue transition duration-150 ease-in-out">
                     @foreach ($paginationOptions as $value)
                         <option value="{{ $value }}">{{ $value }}</option>
                     @endforeach
@@ -24,7 +22,7 @@
         <div class="lg:w-1/2 md:w-1/2 sm:w-full my-2 my-md-0">
             <div class="my-2 my-md-0">
                 <input type="text" wire:model.debounce.300ms="search"
-                    class="p-3 leading-5 bg-white text-gray-500 rounded border border-zinc-300 mb-1 text-sm w-full focus:shadow-outline-blue focus:border-blue-500"
+                    class="p-3 leading-5 bg-white text-gray-500 rounded border border-gray-300 mb-1 text-sm w-full focus:shadow-outline-blue focus:border-blue-500"
                     placeholder="{{ __('Search') }}" />
             </div>
         </div>
@@ -87,7 +85,7 @@
                     </x-table.td>
                     <x-table.td>
                         <div class="flex justify-start space-x-2">
-                            <x-button primary type="button" wire:click="$emit('editModal', {{ $featuredbanner->id }})"
+                            <x-button primary type="button" wire:click="$dispatch('editModal',{ id : {{ $featuredbanner->id }}})"
                                 wire:loading.attr="disabled">
                                 <i class="fas fa-edit"></i>
                             </x-button>
@@ -124,21 +122,21 @@
 
             <x-slot name="content">
                 <!-- Validation Errors -->
-                <x-auth-validation-errors class="mb-4" :errors="$errors" />
+                <x-validation-errors class="mb-4" :errors="$errors" />
 
-                <form wire:submit.prevent="update">
+                <form wire:submit="update">
                     <div class="flex flex-wrap -mx-3 space-y-0">
                         <div class="xl:w-1/2 md:w-full px-2">
                             <x-label for="title" :value="__('Title')" />
                             <x-input id="title" class="block mt-1 w-full" type="text" name="title"
-                                wire:model.defer="featuredbanner.title" />
+                                wire:model="featuredbanner.title" />
                             <x-input-error :messages="$errors->get('featuredbanner.title')" for="featuredbanner.title" class="mt-2" />
                         </div>
                         <div class="xl:w-1/2 md:w-full px-2">
                             <x-label for="language_id" :value="__('Language')" required />
                             <x-select-list
                                 class="block bg-white text-gray-700 rounded border border-gray-300 mb-1 text-sm w-full focus:shadow-outline-blue focus:border-blue-500"
-                                id="language_id" name="language_id" wire:model.defer="featuredbanner.language_id"
+                                id="language_id" name="language_id" wire:model="featuredbanner.language_id"
                                 :options="$this->listsForFields['languages']" />
                             <x-input-error :messages="$errors->get('featuredbanner.language_id')" for="featuredbanner.language_id" class="mt-2" />
                         </div>
@@ -146,21 +144,21 @@
                             <x-label for="product_id" :value="__('Product')" />
                             <x-select-list
                                 class="block bg-white text-gray-700 rounded border border-gray-300 mb-1 text-sm w-full focus:shadow-outline-blue focus:border-blue-500"
-                                id="product_id" name="product_id" wire:model.defer="featuredbanner.product_id"
+                                id="product_id" name="product_id" wire:model="featuredbanner.product_id"
                                 :options="$this->listsForFields['products']" />
                             <x-input-error :messages="$errors->get('featuredbanner.product_id')" for="featuredbanner.product_id" class="mt-2" />
                         </div>
 
                         <div class="xl:w-1/2 md:w-full px-2">
-                            <x-label for="details" :value="__('Details')" />
-                            <x-input id="details" class="block mt-1 w-full" type="text" name="details"
-                                wire:model.defer="featuredbanner.details" />
-                            <x-input-error :messages="$errors->get('featuredbanner.details')" for="featuredbanner.details" class="mt-2" />
+                            <x-label for="description" :value="__('Details')" />
+                            <x-input id="description" class="block mt-1 w-full" type="text" name="description"
+                                wire:model="featuredbanner.description" />
+                            <x-input-error :messages="$errors->get('featuredbanner.description')" for="featuredbanner.description" class="mt-2" />
                         </div>
                         <div class="xl:w-1/2 md:w-full px-2">
                             <x-label for="link" :value="__('Link')" />
                             <x-input id="link" class="block mt-1 w-full" type="text" name="link"
-                                wire:model.defer="featuredbanner.link" />
+                                wire:model="featuredbanner.link" />
                             <x-input-error :messages="$errors->get('featuredbanner.link')" for="featuredbanner.link" class="mt-2" />
                         </div>
 

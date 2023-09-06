@@ -5,6 +5,7 @@ declare(strict_types=1);
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Models\User;
 
 return new class () extends Migration {
     /**
@@ -15,11 +16,11 @@ return new class () extends Migration {
     public function up()
     {
         Schema::create('transfers', function (Blueprint $table) {
-            $table->id();
-            $table->uuid();
+            $table->uuid('id')->primary();
             $table->string('reference');
             $table->integer('from_warehouse_id');
             $table->integer('to_warehouse_id');
+            $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
             $table->integer('item');
             $table->double('total_qty');
             $table->double('total_tax');

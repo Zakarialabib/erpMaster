@@ -26,12 +26,6 @@ class Index extends Component
 {
     use LivewireAlert;
 
-    /** @var array<string> */
-    public $listeners = [
-        'refreshIndex' => '$refresh',
-        'refreshCustomers',
-    ];
-
     public $cart_instance;
 
     public $discountModal;
@@ -41,8 +35,6 @@ class Index extends Component
     public $global_discount;
 
     public $global_tax;
-
-    public $shipping;
 
     public $quantity;
 
@@ -82,8 +74,6 @@ class Index extends Component
 
     public $note;
 
-    public $refreshCustomers;
-
     public $total_with_shipping;
 
     public $default_client;
@@ -109,7 +99,6 @@ class Index extends Component
         $this->cart_instance = $cartInstance;
         $this->global_discount = 0;
         $this->global_tax = 0;
-        $this->shipping = 0.00;
 
         $this->check_quantity = [];
         $this->quantity = [];
@@ -122,10 +111,10 @@ class Index extends Component
         $this->shipping_amount = 0;
         $this->paid_amount = 0;
 
-        $this->default_client = Customer::find(settings()->default_client_id);
-        $this->default_warehouse = Warehouse::find(settings()->default_warehouse_id);
+        $this->default_client = Customer::find(settings('default_client_id'));
+        $this->default_warehouse = Warehouse::find(settings('default_warehouse_id'));
 
-        $this->total_with_shipping = Cart::instance($this->cart_instance)->total() + (float) $this->shipping;
+        $this->total_with_shipping = (float) Cart::instance($this->cart_instance)->total() + (float) $this->shipping_amount;
     }
 
     public function hydrate(): void
@@ -147,7 +136,7 @@ class Index extends Component
 
     public function store(): void
     {
-        if ( ! $this->warehouse_id) {
+        if (!$this->warehouse_id) {
             $this->alert('error', __('Please select a warehouse'));
 
             return;
@@ -170,7 +159,7 @@ class Index extends Component
             $sale = Sale::create([
                 'date'                => date('Y-m-d'),
                 'customer_id'         => $this->customer_id,
-                'warehouse_id'        => $this->warehouse_id,
+                'warehouse_id'         => $this->warehouse_id,
                 'user_id'             => Auth::user()->id,
                 'tax_percentage'      => $this->tax_percentage,
                 'discount_percentage' => $this->discount_percentage,
@@ -182,8 +171,8 @@ class Index extends Component
                 'payment_status'      => $payment_status,
                 'payment_method'      => $this->payment_method,
                 'note'                => $this->note,
-                'tax_amount'          => Cart::instance('sale')->tax() * 100,
-                'discount_amount'     => Cart::instance('sale')->discount() * 100,
+                'tax_amount'          => (int) Cart::instance('sale')->tax() * 100,
+                'discount_amount'     => (int) Cart::instance('sale')->discount() * 100,
             ]);
 
             // foreach ($this->cart_instance as cart_items) {}
@@ -211,7 +200,7 @@ class Index extends Component
                 $new_quantity = $product_warehouse->qty - $cart_item->qty;
 
                 $product_warehouse->update([
-                    'qty' => $new_quantity,
+                    'qty'  => $new_quantity,
                 ]);
 
                 $movement = new Movement([
@@ -229,10 +218,10 @@ class Index extends Component
 
             Cart::instance('sale')->destroy();
 
-            if ($sale->paid_amount > 0) {
+            if ($this->paid_amount > 0) {
                 SalePayment::create([
                     'date'           => date('Y-m-d'),
-                    'amount'         => $sale->paid_amount,
+                    'amount'         => $this->paid_amount,
                     'sale_id'        => $sale->id,
                     'payment_method' => $this->payment_method,
                     'user_id'        => Auth::user()->id,
@@ -247,14 +236,17 @@ class Index extends Component
 
             PaymentNotification::dispatch($sale);
 
-            return redirect()->route('app.pos.index');
+            return redirect()->route('admin.pos.index');
         });
     }
 
     public function proceed(): void
     {
         if ($this->customer_id !== null) {
+
             $this->checkoutModal = true;
+            $this->cart_instance = 'sale';
+
         } else {
             $this->alert('error', __('Please select a customer!'));
         }
@@ -262,7 +254,7 @@ class Index extends Component
 
     public function calculateTotal(): mixed
     {
-        return Cart::instance($this->cart_instance)->total() + $this->shipping;
+        return Cart::instance($this->cart_instance)->total() + $this->shipping_amount;
     }
 
     public function resetCart(): void

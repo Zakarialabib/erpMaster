@@ -35,7 +35,7 @@ class PaymentReturnMail extends Mailable
      */
     public function build()
     {
-        return $this->subject('Return Payment Invoice - '.settings()->company_name)
+        return $this->subject('Return Payment Invoice - '.settings('company_name'))
             ->markdown('emails.payment-return-mail')
             ->attachData($this->pdf, 'Payment_Return'.$this->invoice['reference'].'.pdf', [
                 'mime' => 'application/pdf',

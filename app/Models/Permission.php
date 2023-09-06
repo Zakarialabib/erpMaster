@@ -10,6 +10,7 @@ use  Spatie\Permission\Models\Permission as SpatiePermission;
 class Permission extends SpatiePermission
 {
     use HasAdvancedFilter;
+
     public const ATTRIBUTES = [
         'id',
         'name',

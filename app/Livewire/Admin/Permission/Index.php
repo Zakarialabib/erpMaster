@@ -4,38 +4,31 @@ declare(strict_types=1);
 
 namespace App\Livewire\Admin\Permission;
 
-use App\Livewire\Utils\Datatable;
 use App\Models\Permission;
-
 use Exception;
 use Illuminate\Support\Facades\Gate;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
-use Livewire\WithPagination;
+use Livewire\Attributes\Layout;
+use Livewire\Attributes\Rule;
+use App\Livewire\Utils\Datatable;
+use Livewire\Attributes\On;
 
+#[Layout('components.layouts.dashboard')]
 class Index extends Component
 {
-    use WithPagination;
-    use Datatable;
     use LivewireAlert;
     use Datatable;
 
     /** @var mixed */
     public $permission;
 
-    /** @var array<string> */
-    public $listeners = [
-        'createModal', 'editModal',
-        'refreshIndex' => '$refresh',
-    ];
-
     public $createModal = false;
 
     public $editModal = false;
 
-    protected $rules = [
-        'name' => 'required|max:255|unique:permissions,name',
-    ];
+    #[Rule('required|max:255|unique:permissions,name')]
+    public $name; 
 
     public function mount(): void
     {
@@ -55,9 +48,10 @@ class Index extends Component
         return view('livewire.admin.permission.index', compact('permissions'));
     }
 
+    #[On('createModal')]
     public function createModal(): void
     {
-        abort_if(Gate::denies('permission_create'), 403);
+        abort_if(Gate::denies('permission create'), 403);
 
         $this->resetErrorBag();
 
@@ -77,9 +71,10 @@ class Index extends Component
         $this->alert('success', __('Permission created successfully.'));
     }
 
+    #[On('editModal')]
     public function editModal(Permission $permission): void
     {
-        abort_if(Gate::denies('permission_edit'), 403);
+        abort_if(Gate::denies('permission edit'), 403);
 
         $this->resetErrorBag();
 
@@ -102,7 +97,7 @@ class Index extends Component
 
             $this->alert('success', __('Permission updated successfully.'));
 
-            $this->dispatch('refreshIndex');
+            $this->dispatch('refreshIndex')->to(Index::class);
 
             $this->editModal = false;
         } catch (Exception $e) {

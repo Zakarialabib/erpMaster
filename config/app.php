@@ -159,12 +159,18 @@ return [
         /*
          * Package Service Providers...
          */
+        Spatie\Permission\PermissionServiceProvider::class,
+        Intervention\Image\ImageServiceProvider::class,
+        Milon\Barcode\BarcodeServiceProvider::class,
+        Maatwebsite\Excel\ExcelServiceProvider::class,
+        Mccarlosen\LaravelMpdf\LaravelMpdfServiceProvider::class,
 
         /*
          * Application Service Providers...
          */
         App\Providers\AppServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
+        App\Providers\GoogleDriveServiceProvider::class, 
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
@@ -182,7 +188,13 @@ return [
     */
 
     'aliases' => Facade::defaultAliases()->merge([
-        // 'Example' => App\Facades\Example::class,
+        'DNS1D' => Milon\Barcode\Facades\DNS1DFacade::class,
+        'DNS2D' => Milon\Barcode\Facades\DNS2DFacade::class,
+        'Cart' => Gloudemans\Shoppingcart\Facades\Cart::class,
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+        'PDF' => Mccarlosen\LaravelMpdf\Facades\LaravelMpdf::class,
+        'Helpers' => App\Helpers::class,
+        'Image' => Intervention\Image\Facades\Image::class,
     ])->toArray(),
 
 ];

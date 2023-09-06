@@ -6,13 +6,14 @@ namespace App\Livewire\Front;
 
 use App\Enums\PageType;
 use App\Models\Page;
-use App\Models\Partner;
 use App\Models\Slider;
 use App\Models\Section;
 use Livewire\Component;
 use App\Traits\LazySpinner;
 use Livewire\Attributes\Computed;
+use Livewire\Attributes\Layout;
 
+#[Layout('components.layouts.guest')]
 class DynamicPage extends Component
 {
     use LazySpinner;
@@ -38,28 +39,6 @@ class DynamicPage extends Component
     public function sliders()
     {
         return Slider::active()->take(5)->get();
-    }
-
-    #[Computed]
-    public function partners()
-    {
-        return Partner::active()->get();
-    }
-
-    #[Computed]
-    public function outdoorActivity()
-    {
-        $page = Page::where('type', PageType::ACTIVITY)->first();
-
-        return Section::where('page_id', $page->id)->active()->first();
-    }
-
-    #[Computed]
-    public function workshopActivity()
-    {
-        $page = Page::where('type', PageType::WORKSHOP)->first();
-
-        return Section::where('page_id', $page->id)->active()->first();
     }
 
     #[Computed]

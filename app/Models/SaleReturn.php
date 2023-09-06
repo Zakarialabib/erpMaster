@@ -83,7 +83,10 @@ class SaleReturn extends Model
 
     public function customer(): BelongsTo
     {
-        return $this->belongsTo(Customer::class, 'customer_id', 'id');
+        return $this->belongsTo(
+            related: Customer::class,
+            foreignKey: 'customer_id',
+        );
     }
 
     protected static function boot()
@@ -91,7 +94,7 @@ class SaleReturn extends Model
         parent::boot();
 
         static::creating(function ($saleReturn) {
-            $prefix = settings()->saleReturn_prefix;
+            $prefix = settings('saleReturn_prefix');
 
             $latestSaleReturn = self::latest()->first();
 

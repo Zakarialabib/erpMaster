@@ -4,22 +4,20 @@ declare(strict_types=1);
 
 namespace App\Livewire\Admin\BlogCategory;
 
+use App\Livewire\Utils\Datatable;
 use App\Models\BlogCategory;
-use Illuminate\Contracts\View\Factory;
-use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Gate;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
-use Livewire\WithPagination;
+use Livewire\Attributes\Layout;
 
+#[Layout('components.layouts.dashboard')]
 class Index extends Component
 {
-    use WithPagination;
     use Datatable;
     use LivewireAlert;
 
     public $listeners = [
-        'refreshIndex' => '$refresh',
         'delete',
     ];
 
@@ -29,7 +27,7 @@ class Index extends Component
 
     public function confirmed()
     {
-        $this->emit('delete');
+        $this->dispatch('delete');
     }
 
     public function mount()
@@ -67,7 +65,7 @@ class Index extends Component
         $this->resetSelected();
     }
 
-    public function render(): View|Factory
+    public function render()
     {
         $query = BlogCategory::advancedFilter([
             's'               => $this->search ?: null,

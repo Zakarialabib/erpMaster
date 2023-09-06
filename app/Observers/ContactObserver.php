@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Observers;
 
-use App\Models\Contact;
 use App\Models\User;
 use App\Notifications\ContactNotification;
 

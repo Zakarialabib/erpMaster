@@ -8,8 +8,7 @@ use App\Enums\PaymentStatus;
 use App\Enums\SaleStatus;
 use App\Scopes\SaleScope;
 use App\Support\HasAdvancedFilter;
-use App\Traits\GetModelByUuid;
-use App\Traits\UuidGenerator;
+use App\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -19,8 +18,7 @@ class Sale extends Model
 {
     use HasAdvancedFilter;
     use SaleScope;
-    use UuidGenerator;
-    use GetModelByUuid;
+    use HasUuid;
 
     public const ATTRIBUTES = [
         'id',
@@ -55,7 +53,6 @@ class Sale extends Model
      */
     protected $fillable = [
         'id',
-        'uuid',
         'date',
         'reference',
         'customer_id',
@@ -89,7 +86,7 @@ class Sale extends Model
         parent::boot();
 
         static::creating(function ($sale) {
-            $prefix = settings()->sale_prefix;
+            $prefix = settings('sale_prefix');
 
             $latestSale = self::latest()->first();
 

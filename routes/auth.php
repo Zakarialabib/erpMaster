@@ -8,20 +8,21 @@ use App\Http\Controllers\Auth\EmailVerificationNotificationController;
 use App\Http\Controllers\Auth\EmailVerificationPromptController;
 use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
-use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Livewire\Auth\Index as AuthIndex;
+use App\Livewire\Auth\Login as AuthLogin;
+use App\Livewire\Auth\Register as AuthRegister;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
-    Route::get('register', [RegisteredUserController::class, 'create'])
-        ->name('register');
+    Route::get('auth', AuthIndex::class)
+        ->name('auth');
 
-    Route::post('register', [RegisteredUserController::class, 'store']);
+    Route::get('login', AuthLogin::class)
+        ->name('auth.login');
 
-    Route::get('login', [AuthenticatedSessionController::class, 'create'])
-        ->name('login');
-
-    Route::post('login', [AuthenticatedSessionController::class, 'store']);
+    Route::get('register', AuthRegister::class)
+        ->name('auth.register');
 
     Route::get('forgot-password', [PasswordResetLinkController::class, 'create'])
         ->name('password.request');

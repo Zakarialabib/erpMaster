@@ -9,13 +9,16 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
+use App\Enums\Status;
 
 class Category extends Model
 {
     use HasAdvancedFilter;
     use HasFactory;
+
+    /** @var array<int, string> */
     public const ATTRIBUTES = [
-        'id', 'code', 'name',
+        'id', 'code', 'name', 'status',
     ];
 
     public $orderable = self::ATTRIBUTES;
@@ -27,7 +30,11 @@ class Category extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'code', 'name',
+        'code', 'name', 'description', 'slug', 'image', 'status',
+    ];
+
+    protected $casts = [
+        'status' => Status::class,
     ];
 
     public function __construct(array $attributes = [])
@@ -38,6 +45,12 @@ class Category extends Model
         parent::__construct($attributes);
     }
 
+    public function scopeActive($query)
+    {
+        return $query->where('status', true);
+    }
+
+    /** @return HasMany<Product> */
     public function products(): HasMany
     {
         return $this->hasMany(Product::class, 'category_id', 'id');

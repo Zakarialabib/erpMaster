@@ -15,9 +15,9 @@
                 </select>
             </div>
             @if ($selectedTemplate)
-                <form wire:submit.prevent="create" class="w-full">
+                <form wire:submit="create" class="w-full">
                     <!-- Validation Errors -->
-                    <x-auth-validation-errors class="mb-4" :errors="$errors" />
+                    <x-validation-errors class="mb-4" :errors="$errors" />
                     <div class="flex flex-wrap space-y-2">
                         <div class="lg:w-1/2 sm:w-full px-2">
                             <x-label for="title" :value="__('Title')" />
@@ -35,14 +35,14 @@
                         <div class="xl:w-1/2 md:w-full px-2">
                             <x-label for="bg_color" :value="__('Background Color')" />
                             <input id="bg_color" class="block mt-1 w-full" type="color" name="bg_color"
-                                wire:model.defer="selectedTemplate.bg_color" />
+                                wire:model="selectedTemplate.bg_color" />
                             <x-input-error :messages="$errors->get('selectedTemplate.bg_color')" for="selectedTemplate.bg_color" class="mt-2" />
                         </div>
     
                         <div class="xl:w-1/2 md:w-full px-2">
                             <x-label for="link" :value="__('Link')" />
                             <x-input id="link" class="block mt-1 w-full" type="text" name="link"
-                                wire:model.defer="selectedTemplate.link" />
+                                wire:model="selectedTemplate.link" />
                             <x-input-error :messages="$errors->get('selectedTemplate.link')" for="selectedTemplate.link" class="mt-2" />
                         </div>
 
@@ -61,7 +61,7 @@
                         <div class="lg:w-1/2 sm:w-full px-2">
                             <x-label for="page" :value="__('Page')" />
                             <select wire:model="selectedTemplate.page"
-                                class="p-3 leading-5 bg-white text-gray-700 rounded border border-zinc-300 mb-1 text-sm w-full focus:shadow-outline-blue focus:border-blue-500  lang"
+                                class="p-3 leading-5 bg-white text-gray-700 rounded border border-gray-300 mb-1 text-sm w-full focus:shadow-outline-blue focus:border-blue-500  lang"
                                 name="page">
                                 <option value="" selected>{{ __('Select a Page') }}</option>
                                 <option value="1">{{ __('Home Page') }}</option>

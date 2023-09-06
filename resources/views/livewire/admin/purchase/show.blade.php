@@ -1,12 +1,12 @@
 <div>
     {{-- ShowModal Purchase --}}
-    <x-modal wire:model.live="showModal">
+    <x-modal wire:model="showModal">
         <x-slot name="title">
             {{ __('Show Purchase') }} - {{ __('Reference') }}: <strong>{{ $purchase?->reference }}</strong>
 
             @if ($purchase != null)
                 <div class="float-right">
-                    <x-button secondary href="{{ route('purchases.pdf', $purchase->id) }}" target="_blank"
+                    <x-button secondary href="{{ route('admin.purchases.pdf', $purchase->id) }}" target="_blank"
                         wire:loading.attr="disabled">
                         <i class="fas fa-file-pdf"></i>
                         {{ __('PDF') }}
@@ -114,7 +114,7 @@
                                     </x-table.td>
                                 </x-table.tr>
                             @endif
-                            @if (settings()->show_shipping == true)
+                            @if (settings('show_shipping') == true)
                                 <x-table.tr>
                                     <x-table.heading class="left">
                                         <strong>{{ __('Shipping') }}</strong>

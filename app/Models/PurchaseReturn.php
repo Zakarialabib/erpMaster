@@ -83,7 +83,7 @@ class PurchaseReturn extends Model
     {
         return $this->belongsTo(
             related: Supplier::class,
-            foreignKey: 'user_id',
+            foreignKey: 'supplier_id',
         );
     }
 
@@ -92,7 +92,7 @@ class PurchaseReturn extends Model
         parent::boot();
 
         static::creating(function ($purchaseReturn) {
-            $prefix = settings()->purchaseReturn_prefix;
+            $prefix = settings('purchaseReturn_prefix');
 
             $latestPurchaseReturn = self::latest()->first();
 

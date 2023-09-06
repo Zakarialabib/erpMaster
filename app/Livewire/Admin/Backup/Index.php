@@ -11,6 +11,9 @@ use Illuminate\Support\Facades\Config;
 use Livewire\Component;
 use Throwable;
 
+use Livewire\Attributes\Layout;
+
+#[Layout('components.layouts.dashboard')]
 class Index extends Component
 {
     use LivewireAlert;
@@ -44,8 +47,8 @@ class Index extends Component
 
     public function settingsModal()
     {
-        $this->backup_status = settings()->backup_status;
-        $this->backup_schedule = settings()->backup_schedule;
+        $this->backup_status = settings('backup_status');
+        $this->backup_schedule = settings('backup_schedule');
         $this->settingsModal = true;
     }
 
@@ -120,7 +123,7 @@ class Index extends Component
 
     public function downloadBackup($file)
     {
-        return Storage::download($file);
+        return response()->download($file);
     }
 
     public function delete($name)

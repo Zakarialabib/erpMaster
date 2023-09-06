@@ -49,7 +49,7 @@
                 <!-- Validation Errors -->
                 <x-validation-errors class="mb-4" :errors="$errors" />
                 <div class="border border-gray-300 rounded-md shadow-sm py-2 w-full">
-                    <form wire:submit.prevent="store" class="grid grid-cols gap-2 px-4">
+                    <form wire:submit="store" class="grid grid-cols gap-2 px-4">
                         <div class="w-full">
                             <x-label for="name" :value="__('Name')" />
                             <x-input id="name" class="block mt-1 w-full" type="text" name="name"
@@ -158,7 +158,7 @@
                                 x-transition:leave="transition ease-in duration-200 opacity-0 transform origin-top"
                                 x-transition:leave-start="opacity-100 translate-y-0 scale-100"
                                 x-transition:leave-end="-translate-y-4 scale-95">
-                                <form wire:submit.prevent="update({{ $menu['id'] }})">
+                                <form wire:submit="update({{ $menu['id'] }})">
                                     <div class="grid grid-cols-2 gap-4">
                                         <div class="w-full">
                                             <x-label for="name" :value="__('Name')" />

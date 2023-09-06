@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Livewire\Admin\Product;
+namespace App\Livewire\Admin\Products;
 
 use Livewire\Component;
 use Illuminate\Contracts\View\View;
@@ -21,7 +21,7 @@ class ProductOptions extends Component
             }
         }
 
-        $this->emitUp('optionUpdated', $this->options);
+        $this->dispatch('optionUpdated', $this->options);
     }
 
     public function addOption()
@@ -50,6 +50,6 @@ class ProductOptions extends Component
 
     public function render(): View
     {
-        return view('livewire.admin.product.product-options');
+        return view('livewire.admin.products.product-options');
     }
 }

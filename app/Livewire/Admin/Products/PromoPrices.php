@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Livewire\Admin\Product;
+namespace App\Livewire\Admin\Products;
 
-use App\Models\Product;
+use App\Models\ProductWarehouse;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Livewire\Component;
@@ -13,39 +13,35 @@ class PromoPrices extends Component
 {
     public $percentage;
     public $copyPriceToOldPrice;
-
     public $promoModal = false;
 
-    public $listeners = [
+    protected $listeners = [
         'promoModal',
     ];
 
     public function promoModal()
     {
         $this->resetErrorBag();
-
         $this->resetValidation();
-
         $this->promoModal = true;
     }
 
     public function update()
     {
-        $products = Product::active()->get();
+        $warehouseProducts = ProductWarehouse::where('is_ecommerce', true)->get();
 
-        foreach ($products as $product) {
+        foreach ($warehouseProducts as $warehouse) {
             if ($this->copyPriceToOldPrice) {
-                $product->old_price = $product->price;
+                $warehouse->old_price = $warehouse->price;
             } else {
-                $product->price = $product->price * (1 + $this->percentage / 100);
+                $warehouse->price = $warehouse->price * (1 - $this->percentage / 100);
+                $warehouse->save();
             }
-
-            $product->save();
         }
     }
 
     public function render(): View|Factory
     {
-        return view('livewire.admin.product.promo-prices');
+        return view('livewire.admin.products.promo-prices');
     }
 }

@@ -13,29 +13,18 @@ use Illuminate\Support\Facades\Mail;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
 use Throwable;
+use Livewire\Attributes\Rule;
 
 class NewslettersForm extends Component
 {
     use LivewireAlert;
 
+    #[Rule('required|email')]
     public $email;
-
-    protected $listeners = [
-
-    ];
-
-    protected $rules = [
-        'email' => 'required|email',
-    ];
 
     public function render(): View|Factory
     {
-        return view('livewire.front.newsletters');
-    }
-
-    public function updated($propertyName): void
-    {
-        $this->validateOnly($propertyName);
+        return view('livewire.front.newsletters-form');
     }
 
     public function subscribe()
@@ -47,7 +36,7 @@ class NewslettersForm extends Component
 
             $this->alert('success', __('Your are subscribed to our newsletters.'));
 
-            $this->resetInputFields();
+            $this->reset('email');
 
             $user = User::find(1);
 
@@ -57,11 +46,5 @@ class NewslettersForm extends Component
         } catch (Throwable $th) {
             $this->alert('error', __('Error').$th->getMessage());
         }
-    }
-
-    /* @var array */
-    private function resetInputFields()
-    {
-        $this->email = '';
     }
 }

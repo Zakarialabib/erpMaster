@@ -7,17 +7,15 @@ namespace App\Livewire\Admin\Expense;
 use App\Exports\ExpenseExport;
 use App\Livewire\Utils\Datatable;
 use App\Models\Expense;
-
 use Illuminate\Support\Facades\Gate;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
-use Livewire\WithPagination;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Livewire\Attributes\Layout;
 
+#[Layout('components.layouts.dashboard')]
 class Index extends Component
 {
-    use WithPagination;
-    use Datatable;
     use LivewireAlert;
     use Datatable;
 
@@ -26,7 +24,6 @@ class Index extends Component
 
     /** @var array<string> */
     public $listeners = [
-        'refreshIndex' => '$refresh',
         'showModal',
         'exportAll', 'downloadAll',
         'delete',
@@ -44,16 +41,6 @@ class Index extends Component
         $this->orderable = (new Expense())->orderable;
         $this->startDate = now()->startOfYear()->format('Y-m-d');
         $this->endDate = now()->endOfDay()->format('Y-m-d');
-    }
-
-    public function updatedStartDate($value)
-    {
-        $this->startDate = $value;
-    }
-
-    public function updatedEndDate($value)
-    {
-        $this->endDate = $value;
     }
 
     public function filterByType($type)
@@ -79,7 +66,7 @@ class Index extends Component
 
     public function render()
     {
-        abort_if(Gate::denies('expense_access'), 403);
+        abort_if(Gate::denies('expense access'), 403);
 
         $query = Expense::with(['category', 'user', 'warehouse'])
             ->advancedFilter([

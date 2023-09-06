@@ -9,81 +9,36 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
-use Livewire\WithPagination;
+use Livewire\Attributes\Layout;
+use App\Livewire\Utils\Datatable;
+use Illuminate\Support\Facades\Gate;
 
+#[Layout('components.layouts.dashboard')]
 class Index extends Component
 {
-    use WithPagination;
     use Datatable;
     use LivewireAlert;
 
     public $listeners = [
-        'refreshIndex' => '$refresh',
         'delete',
     ];
 
-    public int $perPage;
-
     public $shipping;
-
-    public $refreshIndex;
-
-    public array $orderable;
-
-    public string $search = '';
-
-    public array $selected = [];
-
-    public array $paginationOptions;
-
-    protected $queryString = [
-        'search' => [
-            'except' => '',
-        ],
-        'sortBy' => [
-            'except' => 'id',
-        ],
-        'sortDirection' => [
-            'except' => 'desc',
-        ],
-    ];
-
-    public function getSelectedCountProperty()
-    {
-        return count($this->selected);
-    }
-
-    public function updatingSearch()
-    {
-        $this->resetPage();
-    }
-
-    public function updatingPerPage()
-    {
-        $this->resetPage();
-    }
-
-    public function resetSelected()
-    {
-        $this->selected = [];
-    }
 
     public function confirmed()
     {
-        $this->emit('delete');
+        $this->dispatch('delete');
     }
 
     public function mount()
     {
-        $this->sortBy = 'id';
-        $this->sortDirection = 'desc';
-        $this->perPage = 25;
-        $this->paginationOptions = [25, 50, 100];
         $this->orderable = (new Shipping())->orderable;
     }
 
     public function render(): View|Factory
     {
+        abort_if(Gate::denies('shipping access'), 403);
+
         $query = Shipping::advancedFilter([
             's'               => $this->search ?: null,
             'order_column'    => $this->sortBy,
@@ -95,7 +50,7 @@ class Index extends Component
         return view('livewire.admin.shipping.index', compact('shippings'));
     }
 
-    public function deleteModal($page)
+    public function deleteModal($shipping)
     {
         $this->confirm(__('Are you sure you want to delete this?'), [
             'toast'             => false,
@@ -104,14 +59,14 @@ class Index extends Component
             'cancelButtonText'  => __('Cancel'),
             'onConfirmed'       => 'delete',
         ]);
-        $this->page = $page;
+        $this->shipping = $shipping;
     }
 
     public function delete()
     {
-        // abort_if(Gate::denies('shipping_delete'), 403);
+        abort_if(Gate::denies('shipping delete'), 403);
 
-        Shipping::findOrFail($this->page)->delete();
+        Shipping::findOrFail($this->shipping)->delete();
 
         $this->alert('success', __('Shipping deleted successfully.'));
     }

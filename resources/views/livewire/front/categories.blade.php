@@ -6,7 +6,7 @@
 @endsection
 
 <div>
-    <div class="w-full px-4 mx-auto" x-data="{ showSidebar: false }"> 
+    <div class="w-full mt-4 px-4 mx-auto" x-data="{ showSidebar: false }"> 
         <div class="mb-4 items-center justify-between bg-white py-2">
             <div class="w-full md:px-4 sm:px-2 flex flex-wrap justify-between">
                 <ul class="flex flex-wrap items-center gap-2 py-4 md:py-2 ">
@@ -29,7 +29,7 @@
                     </li>
                     <li class="inline-flex">
                         <p class="lg:text-2xl sm:text-xl font-bold text-gray-600 hover:text-blue-500">
-                            {{ $products->count() }} {{ __('Watches') }} 
+                            {{ $products->count() }} {{ __('Products') }} 
                         </p>
                     </li>
                 </ul>
@@ -37,14 +37,14 @@
                 <div class="w-full md:w-auto flex flex-wrap justify-center my-2 space-x-4 space-y-2">
 
                     <button type="button" @click="showSidebar = true"
-                        class="flex lg:hidden items-center justify-center w-12 h-12 text-gray-600 hover:text-beige-600 focus:outline-none">
+                        class="flex lg:hidden items-center justify-center w-12 h-12 text-gray-600 hover:text-green-600 focus:outline-none">
                         <svg class="w-6 h-6" fill="none" stroke-linecap="round" stroke-linejoin="round"
                             stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
                             <path d="M4 6h16M4 12h16M4 18h16"></path>
                         </svg>
                     </button>
 
-                    <select wire:model="perPage" name="perPage"
+                    <select wire:model.live="perPage" name="perPage"
                         class="lg:px-4 md:px-2 py-2 bg-white text-gray-700 rounded border border-gray-100 text-xs focus:shadow-outline-blue focus:border-beige-500">
                         @foreach ($paginationOptions as $value)
                             <option value="{{ $value }}">{{ $value }}</option>
@@ -86,7 +86,7 @@
                             <li class="mb-2">
                                 <button type="button" wire:click="filterProducts('category', {{ $category->id }})">
                                     <span
-                                        class="inline-block px-2 py-2 text-sm font-bold font-heading text-beige-500 hover:underline">
+                                        class="inline-block px-2 py-2 text-sm font-bold font-heading text-green-500 hover:underline">
                                         {{ $category->name }} <small>
                                             ({{ $category->products()->active()->count() }})
                                         </small>
@@ -113,7 +113,7 @@
                                 <button type="button"
                                     wire:click="filterProducts('subcategory', {{ $subcategory->id }})">
                                     <span
-                                        class="inline-block px-2 py-2 text-sm font-bold font-heading text-beige-500 hover:underline">
+                                        class="inline-block px-2 py-2 text-sm font-bold font-heading text-green-500 hover:underline">
                                         {{ $subcategory->name }}
                                     </span>
                                 </button>
@@ -130,11 +130,11 @@
                 <div class="py-4">
                     <h3 class="mb-4 text-2xl font-bold font-heading">{{ __('Price budget') }}</h3>
                     <div class="flex flex-col justify-between  gap-2">
-                        <span class="inline-block text-lg font-bold font-heading text-beige-500">
+                        <span class="inline-block text-lg font-bold font-heading text-green-500">
                             <p class="">{{ __('Min Price') }}</p>
                             <x-input type="text" wire:model="minPrice" placeholder="350" />
                         </span>
-                        <span class="inline-block text-lg font-bold font-heading text-beige-500">
+                        <span class="inline-block text-lg font-bold font-heading text-green-500">
                             <p class="">{{ __('Max Price') }}</p>
                             <x-input type="text" wire:model="maxPrice" placeholder="1000" />
                         </span>
@@ -155,7 +155,7 @@
                         @foreach ($this->brands as $brand)
                             <li class="mx-2 mb-2">
                                 <button type="button" wire:click="filterProducts('brand', {{ $brand->id }})">
-                                    <span class="inline-block px-2 py-2 text-sm font-bold font-heading text-beige-500 hover:underline">
+                                    <span class="inline-block px-2 py-2 text-sm font-bold font-heading text-green-500 hover:underline">
                                         {{ $brand->name }} <small> ({{ $brand->products()->active()->count() }})</small>
                                     </span>
                                 </button>
@@ -185,7 +185,7 @@
                             <li class="mb-2">
                                 <button type="button" wire:click="filterProducts('category', {{ $category->id }})">
                                     <span
-                                        class="inline-block px-2 py-2 text-sm font-bold font-heading text-beige-500 hover:underline">
+                                        class="inline-block px-2 py-2 text-sm font-bold font-heading text-green-500 hover:underline">
                                         {{ $category->name }} <small>
                                             ({{ $category->products()->active()->count() }})
                                         </small>
@@ -211,7 +211,7 @@
                                 <button type="button"
                                     wire:click="filterProducts('subcategory', {{ $subcategory->id }})">
                                     <span
-                                        class="inline-block px-2 py-2 text-sm font-bold font-heading text-beige-500 hover:underline">
+                                        class="inline-block px-2 py-2 text-sm font-bold font-heading text-green-500 hover:underline">
                                         {{ $subcategory->name }}
                                     </span>
                                 </button>
@@ -228,11 +228,11 @@
                 <div class="mb-6 p-4 bg-gray-50">
                     <h3 class="mb-4 text-2xl font-bold font-heading">{{ __('Price budget') }}</h3>
                     <div class="flex md:flex-col justify-between space-y-2">
-                        <span class="inline-block text-lg font-bold font-heading text-beige-500 hover:underline">
+                        <span class="inline-block text-lg font-bold font-heading text-green-500 hover:underline">
                             <p class="">{{ __('Min Price') }}</p>
                             <x-input type="text" wire:model="minPrice" placeholder="350" />
                         </span>
-                        <span class="inline-block text-lg font-bold font-heading text-beige-500 hover:underline">
+                        <span class="inline-block text-lg font-bold font-heading text-green-500 hover:underline">
                             <p class="">{{ __('Max Price') }}</p>
                             <x-input type="text" wire:model="maxPrice" placeholder="1000" />
                         </span>
@@ -252,7 +252,7 @@
                         @foreach ($this->brands as $brand)
                             <li class="mx-2 mb-2">
                                 <button type="button" wire:click="filterProducts('brand', {{ $brand->id }})">
-                                    <span class="inline-block px-2 py-2 text-sm font-bold font-heading text-beige-500 hover:underline">
+                                    <span class="inline-block px-2 py-2 text-sm font-bold font-heading text-green-500 hover:underline">
                                         {{ $brand->name }} <small> ({{ $brand->products()->active()->count() }})</small>
                                     </span>
                                 </button>

@@ -25,7 +25,7 @@ class CartCount extends Component
     public function cartCountUpdated()
     {
         $this->cartCount = Cart::instance('shopping')->count();
-        $this->emit('cartBarUpdated');
+        $this->dispatch('cartBarUpdated');
     }
 
     public function render(): View|Factory

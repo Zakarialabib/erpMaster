@@ -2,8 +2,8 @@
     <div class="flex flex-wrap justify-center">
         <div class="lg:w-1/2 md:w-1/2 sm:w-full flex flex-col my-md-0 my-2">
             <div class="my-2 my-md-0">
-                <select wire:model="perPage" name="perPage"
-                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-32 p-1">
+                <select wire:model.live="perPage" name="perPage"
+                    class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-auto sm:text-sm border-gray-300 rounded-md focus:outline-none focus:shadow-outline-blue transition duration-150 ease-in-out">
                     @foreach ($paginationOptions as $value)
                         <option value="{{ $value }}">{{ $value }}</option>
                     @endforeach
@@ -22,7 +22,7 @@
         <div class="lg:w-1/2 md:w-1/2 sm:w-full my-2 my-md-0">
             <div class="my-2 my-md-0">
                 <input type="text" wire:model.debounce.300ms="search"
-                    class="p-3 leading-5 bg-white text-gray-500 rounded border border-zinc-300 mb-1 text-sm w-full focus:shadow-outline-blue focus:border-blue-500"
+                    class="p-3 leading-5 bg-white text-gray-500 rounded border border-gray-300 mb-1 text-sm w-full focus:shadow-outline-blue focus:border-blue-500"
                     placeholder="{{ __('Search') }}" />
             </div>
         </div>
@@ -70,7 +70,7 @@
                     </x-table.td>
 
                     <x-table.td>
-                        <livewire:toggle-button :model="$redirect" field="status" key="{{ $redirect->id }}" />
+                        <livewire:utils.toggle-button :model="$redirect" field="status" key="{{ $redirect->id }}" />
                     </x-table.td>
                     <x-table.td>
                         <div class="inline-flex">
@@ -108,22 +108,22 @@
 
         <x-slot name="content">
             <!-- Validation Errors -->
-            <x-auth-validation-errors class="mb-4" :errors="$errors" />
+            <x-validation-errors class="mb-4" :errors="$errors" />
 
-            <form enctype="multipart/form-data" wire:submit.prevent="update">
+            <form enctype="multipart/form-data" wire:submit="update">
                 <div class="flex flex-wrap">
 
 
                     <div class="lg:w-1/2 sm:w-full px-2">
                         <x-label for="old_url" :value="__('Old url')" />
                         <input type="text" name="old_url" wire:model.lazy="redirect.old_url" disabled
-                            class="p-3 leading-5 bg-white text-gray-700 rounded border border-zinc-300 mb-1 text-sm w-full focus:shadow-outline-blue focus:border-blue-500 ">
+                            class="p-3 leading-5 bg-white text-gray-700 rounded border border-gray-300 mb-1 text-sm w-full focus:shadow-outline-blue focus:border-blue-500 ">
                         <x-input-error :messages="$errors->get('redirect.old_url')" for="redirect.old_url" class="mt-2" />
                     </div>
                     <div class="lg:w-1/2 sm:w-full px-2">
                         <x-label for="new_url" :value="__('New url')" />
                         <input type="text" name="new_url" wire:model.lazy="redirect.new_url"
-                            class="p-3 leading-5 bg-white text-gray-700 rounded border border-zinc-300 mb-1 text-sm w-full focus:shadow-outline-blue focus:border-blue-500 "
+                            class="p-3 leading-5 bg-white text-gray-700 rounded border border-gray-300 mb-1 text-sm w-full focus:shadow-outline-blue focus:border-blue-500 "
                             placeholder="{{ __('New url') }}" value="{{ old('new_url') }}">
                         <x-input-error :messages="$errors->get('redirect.new_url')" for="redirect.new_url" class="mt-2" />
                     </div>

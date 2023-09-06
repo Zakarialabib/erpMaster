@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Livewire\Front;
 
+use App\Enums\OrderStatus;
+use App\Enums\PaymentStatus;
 use App\Mail\CheckoutMail;
 use App\Mail\CustomerRegistrationMail;
 use App\Models\Order;
@@ -69,8 +71,8 @@ class Checkout extends Component
     public function confirmed()
     {
         Cart::instance('shopping')->remove($this->productId);
-        $this->emit('cartCountUpdated');
-        $this->emit('checkoutCartUpdated');
+        $this->dispatch('cartCountUpdated');
+        $this->dispatch('checkoutCartUpdated');
     }
 
     public function getCartItemsProperty()
@@ -132,8 +134,8 @@ class Checkout extends Component
             'shipping_phone'   => $this->phone,
             'total'            => $this->cartTotal,
             'user_id'          => auth()->user()->id,
-            'order_status'     => Order::STATUS_PENDING,
-            'payment_status'   => Order::PAYMENT_STATUS_PENDING,
+            'order_status'     => OrderStatus::PENDING,
+            'payment_status'   => PaymentStatus::PENDING,
         ]);
 
         Mail::to($order->user->email)->send(new CheckoutMail($order, $user));
@@ -158,13 +160,6 @@ class Checkout extends Component
         return redirect()->route('front.thankyou', ['order' => $order->id]);
     }
 
-    public function updatedShippingId($value)
-    {
-        if ($value) {
-            $this->shipping = Shipping::find($value);
-        }
-    }
-
     public function updateCartTotal()
     {
         if ($this->shipping_id) {
@@ -185,7 +180,7 @@ class Checkout extends Component
         $cartItem = Cart::instance('shopping')->get($rowId);
         $qty = $cartItem->qty - 1;
         Cart::instance('shopping')->update($rowId, $qty);
-        $this->emit('checkoutCartUpdated');
+        $this->dispatch('checkoutCartUpdated');
     }
 
     public function increaseQuantity($rowId)
@@ -193,7 +188,7 @@ class Checkout extends Component
         $cartItem = Cart::instance('shopping')->get($rowId);
         $qty = $cartItem->qty + 1;
         Cart::instance('shopping')->update($rowId, $qty);
-        $this->emit('checkoutCartUpdated');
+        $this->dispatch('checkoutCartUpdated');
     }
 
     public function removeFromCart($rowId)

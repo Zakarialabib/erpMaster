@@ -21,19 +21,24 @@ class DatabaseSeeder extends Seeder
     {
         // \App\Models\User::factory(10)->create();
         $this->call([
-            RolesAndPermissionsSeeder::class,
+            PermissionsSeeder::class,
             SuperUserSeeder::class,
+            // PermissionsDemoSeeder::class,
             CurrencySeeder::class,
             SettingsSeeder::class,
             LanguagesSeeder::class,
-            // ExpenseSeeder::class,
-            // CategoriesSeeder::class,
+            MenuSeeder::class,
+            SliderSeeder::class,
+            BlogSeeder::class,
+            SectionsSeeder::class,
+            ShippingSeeder::class,
             // BrandSeeder::class,
-            // ProductsSeeder::class,
-            // CustomersSeeder::class,
-            // SupplierSeeder::class,
-            // ProductsSeeder::class,
-            // WarehouseSeeder::class,
+            CategoriesSeeder::class,
+            WarehouseSeeder::class,
+            ProductsSeeder::class,
+            ExpenseSeeder::class,
+            CustomersSeeder::class,
+            SupplierSeeder::class,
         ]);
     }
 }

@@ -7,66 +7,98 @@ namespace App\Livewire\Admin\Sales;
 use App\Enums\MovementType;
 use App\Models\Movement;
 use App\Models\ProductWarehouse;
-use App\Models\Warehouse;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use App\Models\Sale;
 use App\Models\SaleDetails;
-use App\Models\Customer;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use App\Enums\PaymentStatus;
 use App\Enums\SaleStatus;
 use App\Models\Product;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
+use Livewire\Attributes\Layout;
+use Livewire\Attributes\Rule;
 
+#[Layout('components.layouts.dashboard')]
 class Edit extends Component
 {
     use LivewireAlert;
 
     public $sale;
     public $products;
-    public $customer_id;
     public $product;
     public $quantity;
     public $reference;
-    public $total_amount;
     public $check_quantity;
     public $price;
+
+    #[Rule('integer|min:0|max:100')]
     public $tax_percentage;
+
+    #[Rule('integer|min:0|max:100')]
     public $discount_percentage;
-    public $shipping_amount;
+
+    #[Rule('required|integer')]
+    public $customer_id;
+
+    #[Rule('required|integer')]
     public $warehouse_id;
-    public $shipping;
+
+    #[Rule('required|numeric')]
+    public $total_amount;
+
+    #[Rule('numeric')]
     public $paid_amount;
+
+    #[Rule('numeric')]
+    public $shipping_amount;
+
+    #[Rule('nullable')]
     public $note;
+
+    #[Rule('required|integer|max:255')]
     public $status;
+
+    #[Rule('required|string|max:255')]
     public $payment_method;
     public $date;
     public $discount_type;
     public $item_discount;
-    public $listsForFields = [];
+    public $sale_details;
 
-    public function rules(): array
+    public function mount($id)
     {
-        return [
-            'customer_id'         => 'required|numeric',
-            'warehouse_id'        => 'required',
-            'reference'           => 'required|string|max:255',
-            'tax_percentage'      => 'required|integer|min:0|max:100',
-            'discount_percentage' => 'required|integer|min:0|max:100',
-            'shipping_amount'     => 'required|numeric',
-            'total_amount'        => 'required|numeric',
-            'paid_amount'         => 'required|numeric',
-            'status'              => 'required|integer|max:255',
-            'payment_method'      => 'required|string|max:255',
-            'note'                => 'nullable|string|max:1000',
-        ];
-    }
+        $this->sale = Sale::findOrFail($id);
 
-    public function mount(Sale $sale)
-    {
-        $this->sale = Sale::findOrFail($sale->id);
+        abort_if(Gate::denies('sale update'), 403);
+
+        $this->sale_details = $this->sale->saleDetails;
+
+        Cart::instance('sale')->destroy();
+
+        $cart = Cart::instance('sale');
+
+        foreach ($this->sale_details as $sale_detail) {
+            $cart->add([
+                'id'      => $sale_detail->product_id,
+                'name'    => $sale_detail->name,
+                'qty'     => $sale_detail->quantity,
+                'price'   => $sale_detail->price,
+                'weight'  => 1,
+                'options' => [
+                    'product_discount'      => $sale_detail->product_discount_amount,
+                    'product_discount_type' => $sale_detail->product_discount_type,
+                    'sub_total'             => $sale_detail->sub_total,
+                    'code'                  => $sale_detail->code,
+                    'stock'                 => Product::findOrFail($sale_detail->product_id)->quantity,
+                    'product_tax'           => $sale_detail->product_tax_amount,
+                    'unit_price'            => $sale_detail->unit_price,
+                ],
+            ]);
+        }
+
         $this->reference = $this->sale->reference;
         $this->date = $this->sale->date;
         $this->customer_id = $this->sale->customer_id;
@@ -140,8 +172,8 @@ class Edit extends Component
                 'payment_status'      => $payment_status,
                 'payment_method'      => $this->payment_method,
                 'note'                => $this->note,
-                'tax_amount'          => Cart::instance('sale')->tax() * 100,
-                'discount_amount'     => Cart::instance('sale')->discount() * 100,
+                'tax_amount'          => (int) (Cart::instance('sale')->tax() * 100),
+                'discount_amount'     => (int) (Cart::instance('sale')->discount() * 100),
             ]);
 
             foreach (Cart::instance('sale')->content() as $cart_item) {
@@ -188,18 +220,13 @@ class Edit extends Component
 
             $this->alert('success', __('Sale Updated succesfully !'));
 
-            return redirect()->route('sales.index');
+            return redirect()->route('admin.sales.index');
         });
     }
 
     public function render()
     {
         return view('livewire.admin.sales.edit');
-    }
-
-    public function getCustomersProperty()
-    {
-        return Customer::pluck('name', 'id')->toArray();
     }
 
     public function updatedWarehouseId($value)
@@ -213,10 +240,5 @@ class Edit extends Component
         if ($value === SaleStatus::COMPLETED->value) {
             $this->paid_amount = $this->total_amount;
         }
-    }
-
-    public function getWarehousesProperty()
-    {
-        return Warehouse::pluck('name', 'id')->toArray();
     }
 }

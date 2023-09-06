@@ -7,12 +7,15 @@ namespace App\Livewire\Front;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\ProductWarehouse;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
+use Livewire\Attributes\Layout;
 
+#[Layout('components.layouts.guest')]
 class ProductShow extends Component
 {
     use LivewireAlert;
@@ -37,13 +40,11 @@ class ProductShow extends Component
 
     public $brand_products;
 
-    public $listeners = [
-        'AddToCart',
-    ];
-
     public $decreaseQuantity;
 
     public $increaseQuantity;
+
+    // public $warehouseData;
 
     public function decreaseQuantity()
     {
@@ -57,16 +58,18 @@ class ProductShow extends Component
 
     public function AddToCart($product_id)
     {
-        $product = Product::find($product_id);
+        $warehouse = ProductWarehouse::where('product_id', $product_id)->first();
 
-        $this->product_id = $product->id;
-        $this->product_name = $product->name;
-        $this->product_price = $product->price;
-        $this->product_qty = $this->quantity;
+        $cartItem = Cart::instance('shopping')->add(
+            $product_id,
+            $warehouse->product->name,
+            $this->quantity,
+            $warehouse->price
+        )->associate('App\Models\Product');
 
-        Cart::instance('shopping')->add($this->product_id, $this->product_name, $this->product_qty, $this->product_price)->associate('App\Models\Product');
+        // $cartItem->save();
 
-        $this->emit('cartCountUpdated');
+        $this->dispatch('cartCountUpdated');
 
         $this->alert(
             'success',
@@ -84,18 +87,18 @@ class ProductShow extends Component
         );
     }
 
-    public function mount(Product $product)
+    public function mount($slug)
     {
-        $this->product = $product;
-
-        $this->brand_products = Product::active()->where('brand_id', $product->brand_id)->take(3)->get();
+        $this->product = Product::whereSlug($slug)->firstOrFail();
+        // $this->warehouseData = $this->product->warehouses();
+        $this->brand_products = Product::active()->where('brand_id', $this->product->brand_id)->take(3)->get();
         $this->relatedProducts = Product::active()
             ->inRandomOrder()
             ->limit(4)
             ->get();
 
-        $this->brand = Brand::where('id', $product->brand_id)->first();
-        $this->category = Category::where('id', $product->category_id)->first();
+        $this->brand = Brand::where('id', $this->product->brand_id)->first();
+        $this->category = Category::where('id', $this->product->category_id)->first();
     }
 
     public function render(): View|Factory

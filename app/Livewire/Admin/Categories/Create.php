@@ -7,69 +7,68 @@ namespace App\Livewire\Admin\Categories;
 use App\Models\Category;
 use Illuminate\Support\Facades\Gate;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
+use Livewire\Attributes\On;
+use Livewire\Attributes\Rule;
 use Livewire\Component;
-use Throwable;
+use Illuminate\Support\Str;
 
 class Create extends Component
 {
     use LivewireAlert;
 
-    /** @var array<string> */
-    public $listeners = ['createModal'];
-
     /** @var bool */
     public $createModal = false;
 
-    /** @var mixed */
-    public $category;
+    public Category $category;
 
-    /** @var array */
-    protected $rules = [
-        'category.name' => 'required|min:3|max:255',
-    ];
+    #[Rule('required', message: 'Please provide a name')]
+    #[Rule('min:3', message: 'This name is too short')]
+    public string $name;
 
-    protected $messages = [
-        'category.name.required' => 'The name field cannot be empty.',
-    ];
+    #[Rule('nullable')]
+    public string $description;
+    #[Rule('nullable')]
+    public string $slug;
+    public $image;
 
-    public function updated($propertyName): void
-    {
-        $this->validateOnly($propertyName);
-    }
-
+    #[On('createModal')]
     public function createModal(): void
     {
-        abort_if(Gate::denies('category_access'), 403);
+        abort_if(Gate::denies('category access'), 403);
 
         $this->resetErrorBag();
 
         $this->resetValidation();
-
-        $this->category = new Category();
 
         $this->createModal = true;
     }
 
     public function create(): void
     {
-        try {
-            $validatedData = $this->validate();
+        $this->validate();
 
-            $this->category->save($validatedData);
+        $this->slug = Str::slug($this->name);
 
-            $this->dispatch('refreshIndex');
-
-            $this->alert('success', __('Category created successfully.'));
-
-            $this->createModal = false;
-        } catch (Throwable $th) {
-            $this->alert('error', $th->getMessage());
+        if ($this->image) {
+            $imageName = Str::slug($this->name).'-'.Str::random(3).'.'.$this->image->extension();
+            $this->image->storeAs('categories', $imageName);
+            $this->image = $imageName;
         }
+
+        Category::create($this->all());
+
+        $this->dispatch('refreshIndex')->to(Index::class);
+
+        $this->alert('success', __('Category created successfully.'));
+
+        $this->reset('name', 'description', 'slug', 'image');
+
+        $this->createModal = false;
     }
 
     public function render()
     {
-        abort_if(Gate::denies('category_access'), 403);
+        abort_if(Gate::denies('category access'), 403);
 
         return view('livewire.admin.categories.create');
     }

@@ -4,19 +4,18 @@ declare(strict_types=1);
 
 namespace App\Livewire\Front;
 
-use App\Models\Brand;
-use App\Models\Category;
-use App\Models\Product;
-use App\Models\Subcategory;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Livewire\Attributes\Layout;
+use App\Livewire\Utils\Front\WithModels;
 
+#[Layout('components.layouts.guest')]
 class Brands extends Component
 {
     use WithPagination;
-    use Datatable;
+    use WithModels;
 
     public $listeners = [
         'load-more' => 'loadMore',
@@ -112,7 +111,7 @@ class Brands extends Component
 
     public function render(): View|Factory
     {
-        $query = Product::active()
+        $query = \App\Helpers::getEcommerceProducts()
             ->when($this->category_id, function ($query) {
                 return $query->where('category_id', $this->category_id);
             })
@@ -139,23 +138,8 @@ class Brands extends Component
 
         $products = $query->paginate($this->perPage);
 
-        $this->emit('productsLoaded', $products->count());
+        $this->dispatch('productsLoaded', $products->count());
 
         return view('livewire.front.brands', compact('products'));
-    }
-
-    public function getBrandsProperty()
-    {
-        return Brand::select('id', 'name', 'image', 'featured_image')->active()->get();
-    }
-
-    public function getCategoriesProperty()
-    {
-        return Category::active()->with('subcategories')->get();
-    }
-
-    public function getSubcategoriesProperty()
-    {
-        return Subcategory::active()->get();
     }
 }

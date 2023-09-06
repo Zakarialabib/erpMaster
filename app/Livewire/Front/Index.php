@@ -6,7 +6,6 @@ namespace App\Livewire\Front;
 
 use App\Models\Brand;
 use App\Models\FeaturedBanner;
-use App\Models\Product;
 use App\Models\Section;
 use App\Models\Slider;
 use App\Models\Subcategory;
@@ -14,7 +13,9 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
 use Livewire\Component;
+use Livewire\Attributes\Layout;
 
+#[Layout('components.layouts.guest')]
 class Index extends Component
 {
     public function getSubcategoriesProperty(): Collection
@@ -22,31 +23,32 @@ class Index extends Component
         return Subcategory::inRandomOrder()->limit(3)->get();
     }
 
-    public function getFeaturedProductsProperty(): Collection
+    public function getFeaturedProductsProperty()
     {
-        return Product::where('featured', 1)
+        return \App\Helpers::getEcommerceProducts()
+            ->where('featured', 1)
             ->active()
             ->inRandomOrder()
-            ->limit(4)
-            ->get();
+            ->limit(4);
+        // dd($query);
     }
 
-    public function getBestOffersProperty(): Collection
+    public function getBestOffersProperty()
     {
-        return Product::where('best', 1)
+        return \App\Helpers::getEcommerceProducts()
+            ->where('best', 1)
             ->active()
             ->inRandomOrder()
-            ->limit(4)
-            ->get();
+            ->limit(4);
     }
 
-    public function getHotProductsProperty(): Collection
+    public function getHotProductsProperty()
     {
-        return Product::where('hot', 1)
+        return \App\Helpers::getEcommerceProducts()
+            ->where('hot', 1)
             ->active()
             ->inRandomOrder()
-            ->limit(4)
-            ->get();
+            ->limit(4);
     }
 
     public function getBrandsProperty(): Collection

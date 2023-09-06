@@ -26,12 +26,12 @@ class PaymentForm extends Component
     // public $reference;
     public $amount;
     public $payment_method;
-
+    public $due_amount;
+    public $paid_amount;
     public $note;
 
     public $listeners = [
         'paymentModal',
-        'refreshIndex' => '$refresh',
     ];
 
     protected $rules = [
@@ -51,7 +51,7 @@ class PaymentForm extends Component
 
     public function paymentModal($id): void
     {
-        // abort_if(Gate::denies('purchase_payment'), 403);
+        // abort_if(Gate::denies('purchase payment'), 403);
 
         $this->resetErrorBag();
 
@@ -105,7 +105,7 @@ class PaymentForm extends Component
 
             $this->paymentModal = false;
 
-            $this->dispatch('refreshIndex');
+            $this->dispatch('refreshIndex')->to(Index::class);
         } catch (Throwable $th) {
             $this->alert('error', 'Error'.$th->getMessage());
         }

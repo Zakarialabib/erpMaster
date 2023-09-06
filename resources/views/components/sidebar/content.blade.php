@@ -1,99 +1,155 @@
 <x-perfect-scrollbar as="nav" aria-label="main" class="flex flex-col flex-1 gap-3 px-3">
 
-    <x-sidebar.link title="{{ __('Dashboard') }}" href="{{ route('home') }}" :isActive="request()->routeIs('home')">
+    <x-sidebar.link title="{{ __('Dashboard') }}" href="{{ route('admin.dashboard') }}" :isActive="request()->routeIs('admin.dashboard')">
         <x-slot name="icon">
             <span class="inline-block mx-4">
                 <x-icons.dashboard class="w-5 h-5" aria-hidden="true" />
             </span>
         </x-slot>
     </x-sidebar.link>
+
     @can('product_access')
 
-    <x-sidebar.dropdown title="{{ __('Products') }}" :active="request()->routeIs([
-        'products.*',
-        'product-categories.index',
-        'barcode.print',
-        'product-brands.index',
-        'warehouses.index',
-        'adjustments.index',
-    ])">
+        <x-sidebar.dropdown title="{{ __('Products') }}" :active="request()->routeIs([
+            'admin.products.*',
+            'admin.product-categories.index',
+            'admin.product-subcategories.index',
+            'admin.barcode.print',
+            'admin.brands.index',
+            'admin.warehouses.index',
+            'admin.adjustments.index',
+        ])">
 
+            <x-slot name="icon">
+                <span class="inline-block mx-4">
+                    <i class="fas fa-boxes w-5 h-5"></i>
+                </span>
+            </x-slot>
+
+            @can('category_access')
+                <x-sidebar.sublink title="{{ __('Categories') }}" href="{{ route('admin.product-categories.index') }}"
+                    :active="request()->routeIs('admin.product-categories.index')" />
+            @endcan
+            @can('subcategory_access')
+                <x-sidebar.sublink title="{{ __('SubCategories') }}" href="{{ route('admin.product-subcategories.index') }}"
+                    :active="request()->routeIs('admin.product-subcategories.index')" />
+            @endcan
+            @can('brand_access')
+                <x-sidebar.sublink title="{{ __('Brands') }}" href="{{ route('admin.brands.index') }}" :active="request()->routeIs('admin.brands.index')" />
+            @endcan
+            <x-sidebar.sublink title="{{ __('All Products') }}" href="{{ route('admin.products.index') }}"
+                :active="request()->routeIs('admin.products.index')" />
+
+            @can('print_barcodes')
+                <x-sidebar.sublink title="{{ __('Print Barcode') }}" href="{{ route('admin.barcode.print') }}"
+                    :active="request()->routeIs('admin.barcode.print')" />
+            @endcan
+
+            @can('warehouse_access')
+                <x-sidebar.sublink title="{{ __('Warehouses') }}" href="{{ route('admin.warehouses.index') }}"
+                    :active="request()->routeIs('admin.warehouses.index')" />
+            @endcan
+            @can('adjustment_access')
+                <x-sidebar.sublink title="{{ __('Stock adjustments') }}" href="{{ route('admin.adjustments.index') }}"
+                    :active="request()->routeIs('admin.adjustments.index')" />
+            @endcan
+
+        </x-sidebar.dropdown>
+    @endcan
+
+    <x-sidebar.dropdown title="{{ __('Content') }}" :active="request()->routeIs([
+        'admin.blogs.*',
+        'admin.blogcategories.*',
+        'admin.pages.*',
+        'admin.sections.*',
+        'admin.sliders.*',
+        'admin.featuredBanners',
+        'admin.contacts.*',
+    ])">
         <x-slot name="icon">
             <span class="inline-block mx-4">
-                <i class="fas fa-boxes w-5 h-5"></i>
+                <i class="fas fa-file-alt w-5 h-5"></i>
             </span>
         </x-slot>
 
-        @can('category_access')
-            <x-sidebar.sublink title="{{ __('Categories') }}" href="{{ route('product-categories.index') }}"
-                :active="request()->routeIs('product-categories.index')" />
+        @can('blog_access')
+            <x-sidebar.sublink title="{{ __('All Blog') }}" href="{{ route('admin.blogs.index') }}" :active="request()->routeIs('admin.blogs.index')" />
+            <x-sidebar.sublink title="{{ __('Blog Categories') }}" href="{{ route('admin.blog-categories.index') }}"
+                :active="request()->routeIs('admin.blog-categories.index')" />
         @endcan
-            <x-sidebar.sublink title="{{ __('All Products') }}" href="{{ route('products') }}" :active="request()->routeIs('products')" />
-        @can('print_barcodes')
-            <x-sidebar.sublink title="{{ __('Print Barcode') }}" href="{{ route('barcode.print') }}" :active="request()->routeIs('barcode.print')" />
-        @endcan
-        @can('brand_access')
-            <x-sidebar.sublink title="{{ __('Brands') }}" href="{{ route('brands.index') }}" :active="request()->routeIs('product-brands.index')" />
-        @endcan
-        @can('warehouse_access')
-            <x-sidebar.sublink title="{{ __('Warehouses') }}" href="{{ route('warehouses.index') }}" :active="request()->routeIs('warehouses.index')" />
-        @endcan
-        @can('adjustment_access')
-            <x-sidebar.sublink title="{{ __('Stock adjustments') }}" href="{{ route('adjustments.index') }}"
-                :active="request()->routeIs('adjustments.index')" />
-        @endcan
-
+        <x-sidebar.sublink title="{{ __('Pages') }}" href="{{ route('admin.pages.index') }}" :active="request()->routeIs('admin.pages.index')" />
+        <x-sidebar.sublink title="{{ __('Page Settings') }}" href="{{ route('admin.page.settings') }}"
+            :active="request()->routeIs('admin.page.settings')" />
+        <x-sidebar.sublink title="{{ __('Sections') }}" href="{{ route('admin.sections.index') }}"
+            :active="request()->routeIs('admin.sections.index')" />
+        <x-sidebar.sublink title="{{ __('Sliders') }}" href="{{ route('admin.sliders.index') }}" :active="request()->routeIs('admin.sliders.index')" />
+        <x-sidebar.sublink title="{{ __('Featured Banners') }}" href="{{ route('admin.featuredBanners') }}"
+            :active="request()->routeIs('admin.featuredBanners')" />
     </x-sidebar.dropdown>
-    @endcan
+
+    <x-sidebar.dropdown title="{{ __('Orders') }}" :active="request()->routeIs(['admin.orders.index', 'admin.orderforms', 'admin.contacts.index'])">
+        <x-slot name="icon">
+            <span class="inline-block mx-4">
+                <i class="fas fa-shopping-cart w-5 h-5"></i>
+            </span>
+        </x-slot>
+        @can('order_access')
+            <x-sidebar.sublink title="{{ __('All Orders') }}" href="{{ route('admin.orders.index') }}" :active="request()->routeIs('admin.orders.index')" />
+            <x-sidebar.sublink title="{{ __('Order Forms') }}" href="{{ route('admin.orderforms') }}"
+                :active="request()->routeIs('admin.orderforms')" />
+            <x-sidebar.sublink title="{{ __('COntacts') }}" href="{{ route('admin.contacts.index') }}"
+                :active="request()->routeIs('admin.contacts.index')" />
+        @endcan
+    </x-sidebar.dropdown>
 
     @can('quotation_access')
-        <x-sidebar.dropdown title="{{ __('Quotations') }}" :active="request()->routeIs('quotations.index')">
+        <x-sidebar.dropdown title="{{ __('Quotations') }}" :active="request()->routeIs('admin.quotations.index')">
 
             <x-slot name="icon">
                 <span class="inline-block mx-4">
                     <i class="fas fa-file-invoice-dollar w-5 h-5"></i>
                 </span>
             </x-slot>
-            <x-sidebar.sublink title="{{ __('All Quotations') }}" href="{{ route('quotations.index') }}"
-                :active="request()->routeIs('quotations.index')" />
+            <x-sidebar.sublink title="{{ __('All Quotations') }}" href="{{ route('admin.quotations.index') }}"
+                :active="request()->routeIs('admin.quotations.index')" />
         </x-sidebar.dropdown>
     @endcan
 
     @can('purchase_access')
-        <x-sidebar.dropdown title="{{ __('Purchases') }}" :active="request()->routeIs('purchases.index') || request()->routeIs('purchase-returns.index')">
+        <x-sidebar.dropdown title="{{ __('Purchases') }}" :active="request()->routeIs('admin.purchases.index') || request()->routeIs('purchase-returns.index')">
             <x-slot name="icon">
                 <span class="inline-block mx-4">
                     <i class="fas fa-shopping-cart w-5 h-5"></i>
                 </span>
             </x-slot>
-            <x-sidebar.sublink title="{{ __('All Purchases') }}" href="{{ route('purchases.index') }}"
-                :active="request()->routeIs('purchases.index')" />
+            <x-sidebar.sublink title="{{ __('All Purchases') }}" href="{{ route('admin.purchases.index') }}"
+                :active="request()->routeIs('admin.purchases.index')" />
             @can('purchase_return_access')
-                <x-sidebar.sublink title="{{ __('All Purchase Returns') }}" href="{{ route('purchase-returns.index') }}"
-                    :active="request()->routeIs('purchase-returns.index')" />
+                <x-sidebar.sublink title="{{ __('All Purchase Returns') }}" href="{{ route('admin.purchase-returns.index') }}"
+                    :active="request()->routeIs('admin.purchase-returns.index')" />
             @endcan
         </x-sidebar.dropdown>
     @endcan
     @can('sale_access')
-        <x-sidebar.dropdown title="{{ __('Sales') }}" :active="request()->routeIs(['sales.index', 'sale-returns.index'])">
+        <x-sidebar.dropdown title="{{ __('Sales') }}" :active="request()->routeIs(['admin.sales.index', 'admin.sale-returns.index'])">
             <x-slot name="icon">
                 <span class="inline-block mx-4">
                     <i class="fas fa-shopping-bag w-5 h-5"></i>
                 </span>
             </x-slot>
 
-            <x-sidebar.sublink title="{{ __('All Sales') }}" href="{{ route('sales.index') }}" :active="request()->routeIs('sales.index')" />
+            <x-sidebar.sublink title="{{ __('All Sales') }}" href="{{ route('admin.sales.index') }}" :active="request()->routeIs('admin.sales.index')" />
 
             @can('sale_return_access')
-                <x-sidebar.sublink title="{{ __('All Sale Returns') }}" href="{{ route('sale-returns.index') }}"
-                    :active="request()->routeIs('sale-returns.index')" />
+                <x-sidebar.sublink title="{{ __('All Sale Returns') }}" href="{{ route('admin.sale-returns.index') }}"
+                    :active="request()->routeIs('admin.sale-returns.index')" />
             @endcan
         </x-sidebar.dropdown>
     @endcan
 
 
     @can('expense_access')
-        <x-sidebar.dropdown title="{{ __('Expenses') }}" :active="request()->routeIs(['expenses.index', 'expense-categories.index'])">
+        <x-sidebar.dropdown title="{{ __('Expenses') }}" :active="request()->routeIs(['admin.expenses.index', 'admin.expense-categories.index'])">
             <x-slot name="icon">
                 <span class="inline-block mx-4">
                     <i class="fas fa-money-bill-alt w-5 h-5"></i>
@@ -101,21 +157,22 @@
             </x-slot>
 
             @can('expense_categories_access')
-                <x-sidebar.sublink title="{{ __('Categories') }}" href="{{ route('expense-categories.index') }}"
-                    :active="request()->routeIs('expense-categories.index')" />
+                <x-sidebar.sublink title="{{ __('Categories') }}" href="{{ route('admin.expense-categories.index') }}"
+                    :active="request()->routeIs('admin.expense-categories.index')" />
             @endcan
-            <x-sidebar.sublink title="{{ __('All Expenses') }}" href="{{ route('expenses.index') }}" :active="request()->routeIs('expenses.index')" />
+            <x-sidebar.sublink title="{{ __('All Expenses') }}" href="{{ route('admin.expenses.index') }}"
+                :active="request()->routeIs('admin.expenses.index')" />
         </x-sidebar.dropdown>
     @endcan
 
     @can('report_access')
         <x-sidebar.dropdown title="{{ __('Reports') }}" :active="request()->routeIs([
-            'purchases-report.index',
-            'sales-report.index',
-            'sales-return-report.index',
-            'payments-report.index',
-            'purchases-return-report.index',
-            'profit-loss-report.index',
+            'admin.purchases-report.index',
+            'admin.sales-report.index',
+            'admin.sales-return-report.index',
+            'admin.payments-report.index',
+            'admin.purchases-return-report.index',
+            'admin.profit-loss-report.index',
         ])">
             <x-slot name="icon">
                 <span class="inline-block mx-4">
@@ -123,79 +180,92 @@
                 </span>
             </x-slot>
 
-            <x-sidebar.sublink title="{{ __('Purchases Report') }}" href="{{ route('purchases-report.index') }}"
-                :active="request()->routeIs('purchases-report.index')" />
-            <x-sidebar.sublink title="{{ __('Sale Report') }}" href="{{ route('sales-report.index') }}"
-                :active="request()->routeIs('sales-report.index')" />
-            <x-sidebar.sublink title="{{ __('Sale Return Report') }}" href="{{ route('sales-return-report.index') }}"
-                :active="request()->routeIs('sales-return-report.index')" />
-            <x-sidebar.sublink title="{{ __('Payment Report') }}" href="{{ route('payments-report.index') }}"
-                :active="request()->routeIs('payments-report.index')" />
+            <x-sidebar.sublink title="{{ __('Purchases Report') }}" href="{{ route('admin.purchases-report.index') }}"
+                :active="request()->routeIs('admin.purchases-report.index')" />
+            <x-sidebar.sublink title="{{ __('Sale Report') }}" href="{{ route('admin.sales-report.index') }}"
+                :active="request()->routeIs('admin.sales-report.index')" />
+            <x-sidebar.sublink title="{{ __('Sale Return Report') }}"
+                href="{{ route('admin.sales-return-report.index') }}" :active="request()->routeIs('admin.sales-return-report.index')" />
+            <x-sidebar.sublink title="{{ __('Payment Report') }}" href="{{ route('admin.payments-report.index') }}"
+                :active="request()->routeIs('admin.payments-report.index')" />
             <x-sidebar.sublink title="{{ __('Purchases Return Report') }}"
-                href="{{ route('purchases-return-report.index') }}" :active="request()->routeIs('purchases-return-report.index')" />
-            <x-sidebar.sublink title="{{ __('Profit Report') }}" href="{{ route('profit-loss-report.index') }}"
-                :active="request()->routeIs('profit-loss-report.index')" />
+                href="{{ route('admin.purchases-return-report.index') }}" :active="request()->routeIs('admin.purchases-return-report.index')" />
+            <x-sidebar.sublink title="{{ __('Profit Report') }}" href="{{ route('admin.profit-loss-report.index') }}"
+                :active="request()->routeIs('admin.profit-loss-report.index')" />
 
         </x-sidebar.dropdown>
     @endcan
 
     @can('user_access')
-        <x-sidebar.dropdown title="{{ __('People') }}" :active="request()->routeIs('customers.*') ||
-            request()->routeIs('customer-group.*') ||
-            request()->routeIs('suppliers.*') ||
-            request()->routeIs('users.*') ||
-            request()->routeIs('roles.*') ||
-            request()->routeIs('permissions.*')">
+        <x-sidebar.dropdown title="{{ __('People') }}" :active="request()->routeIs('admin.customers.*') ||
+            request()->routeIs('admin.customer-group.*') ||
+            request()->routeIs('admin.suppliers.*') ||
+            request()->routeIs('admin.users.*') ||
+            request()->routeIs('admin.roles.*') ||
+            request()->routeIs('admin.permissions.*')">
             <x-slot name="icon">
                 <span class="inline-block mx-4">
                     <i class="fas fa-users w-5 h-5"></i>
                 </span>
             </x-slot>
-            <x-sidebar.sublink title="{{ __('Users') }}" href="{{ route('users.index') }}" :active="request()->routeIs('users.index')" />
+            <x-sidebar.sublink title="{{ __('Users') }}" href="{{ route('admin.users.index') }}" :active="request()->routeIs('admin.users.index')" />
             @can('customer_access')
-                <x-sidebar.sublink title="{{ __('Customers') }}" href="{{ route('customers.index') }}" :active="request()->routeIs('customers.index')" />
+                <x-sidebar.sublink title="{{ __('Customers') }}" href="{{ route('admin.customers.index') }}"
+                    :active="request()->routeIs('admin.customers.index')" />
             @endcan
             @can('customer_group_access')
-                <x-sidebar.sublink title="{{ __('Customer Groups') }}" href="{{ route('customer-group.index') }}" :active="request()->routeIs('customer-group.index')" />
+                <x-sidebar.sublink title="{{ __('Customer Groups') }}" href="{{ route('admin.customer-group.index') }}"
+                    :active="request()->routeIs('admin.customer-group.index')" />
             @endcan
             @can('suppliers_access')
-                <x-sidebar.sublink title="{{ __('Suppliers') }}" href="{{ route('suppliers.index') }}" :active="request()->routeIs('suppliers.index')" />
+                <x-sidebar.sublink title="{{ __('Suppliers') }}" href="{{ route('admin.suppliers.index') }}"
+                    :active="request()->routeIs('admin.suppliers.index')" />
             @endcan
             @can('access_roles')
-                <x-sidebar.sublink title="{{ __('Roles') }}" href="{{ route('roles.index') }}" :active="request()->routeIs('roles.index')" />
+                <x-sidebar.sublink title="{{ __('Roles') }}" href="{{ route('admin.roles.index') }}" :active="request()->routeIs('admin.roles.index')" />
             @endcan
             @can('access_permissions')
-                <x-sidebar.sublink title="{{ __('Permissions') }}" href="{{ route('permissions.index') }}"
-                    :active="request()->routeIs('permissions.index')" />
+                <x-sidebar.sublink title="{{ __('Permissions') }}" href="{{ route('admin.permissions.index') }}"
+                    :active="request()->routeIs('admin.permissions.index')" />
             @endcan
         </x-sidebar.dropdown>
     @endcan
     @can('access_settings')
         <x-sidebar.dropdown title="{{ __('Settings') }}" :active="request()->routeIs([
-            'settings.index',
-            'logs.index',
-            'currencies.index',
-            'languages.index',
-            'backup.index',
+            'admin.settings.index',
+            'admin.logs.index',
+            'admin.currencies.index',
+            'admin.languages.index',
+            'setting.backup',
         ])">
             <x-slot name="icon">
                 <span class="inline-block mx-4">
                     <i class="fas fa-cog w-5 h-5"></i>
                 </span>
             </x-slot>
-            <x-sidebar.sublink title="{{ __('Settings') }}" href="{{ route('settings.index') }}" :active="request()->routeIs('settings.index')" />
+            <x-sidebar.sublink title="{{ __('Settings') }}" href="{{ route('admin.settings.index') }}"
+                :active="request()->routeIs('admin.settings.index')" />
             @can('log_access')
-                <x-sidebar.sublink title="{{ __('Logs') }}" href="{{ route('logs.index') }}" :active="request()->routeIs('logs.index')" />
+                <x-sidebar.sublink title="{{ __('Logs') }}" href="{{ route('admin.logs.index') }}" :active="request()->routeIs('admin.logs.index')" />
             @endcan
             @can('currency_access')
-                <x-sidebar.sublink title="{{ __('Currencies') }}" href="{{ route('currencies.index') }}" :active="request()->routeIs('currencies.index')" />
+                <x-sidebar.sublink title="{{ __('Currencies') }}" href="{{ route('admin.currencies.index') }}"
+                    :active="request()->routeIs('admin.currencies.index')" />
             @endcan
             @can('language_access')
-                <x-sidebar.sublink title="{{ __('Languages') }}" href="{{ route('languages.index') }}" :active="request()->routeIs('languages.index')" />
+                <x-sidebar.sublink title="{{ __('Languages') }}" href="{{ route('admin.languages.index') }}"
+                    :active="request()->routeIs('admin.languages.index')" />
             @endcan
             @can('backup_access')
-                <x-sidebar.sublink title="{{ __('Backup') }}" href="{{ route('backup.index') }}" :active="request()->routeIs('backup.index')" />
+                <x-sidebar.sublink title="{{ __('Backup') }}" href="{{ route('admin.setting.backup') }}"
+                    :active="request()->routeIs('admin.setting.backup')" />
             @endcan
+
+            <x-sidebar.sublink title="{{ __('Shipping') }}" href="{{ route('admin.shipping.index') }}"
+                :active="request()->routeIs('admin.shipping.index')" />
+            {{-- <x-sidebar.sublink title="{{ __('Popup Settings') }}" href="{{ route('admin.setting.popupsettings') }}" :active="request()->routeIs('admin.setting.popupsettings')" /> --}}
+            <x-sidebar.sublink title="{{ __('Redirects') }}" href="{{ route('admin.setting.redirects') }}"
+                :active="request()->routeIs('admin.setting.redirects')" />
 
         </x-sidebar.dropdown>
     @endcan

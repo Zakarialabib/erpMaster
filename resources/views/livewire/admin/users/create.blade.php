@@ -1,5 +1,5 @@
 <div>
-    <x-modal wire:model.live="createModal">
+    <x-modal wire:model="createModal">
         <x-slot name="title">
             {{ __('Create User') }}
         </x-slot>
@@ -10,15 +10,13 @@
                 <div class="flex flex-wrap -mx-2 mb-3">
                     <div class="md:w-1/2 sm:w-full px-3">
                         <x-label for="name" :value="__('Name')" required />
-                        <x-input id="name" class="block mt-1 w-full" type="text" wire:model="name"
-                            required />
+                        <x-input id="name" class="block mt-1 w-full" type="text" wire:model="name" required />
                         <x-input-error :messages="$errors->get('name')" class="mt-2" />
                     </div>
 
                     <div class="md:w-1/2 sm:w-full px-3">
                         <x-label for="phone" :value="__('Phone')" required />
-                        <x-input id="phone" class="block mt-1 w-full" required type="text"
-                            wire:model="phone" />
+                        <x-input id="phone" class="block mt-1 w-full" required type="text" wire:model="phone" />
                         <x-input-error :messages="$errors->get('phone')" class="mt-2" />
                     </div>
 
@@ -34,9 +32,9 @@
                         <x-label for="warehouse" :value="__('Warehouse')" />
                         <x-select-list multiple
                             class="block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border-gray-300 rounded-md mt-1"
-                            required id="warehouse_id" name="warehouse_id" wire:model.live="warehouse_id"
+                            required id="selectedWarehouses" name="selectedWarehouses" wire:model="selectedWarehouses"
                             :options="$this->warehouses" />
-                        <x-input-error :messages="$errors->get('password')" class="mt-2" />
+                        <x-input-error :messages="$errors->get('selectedWarehouses')" class="mt-2" />
                     </div>
                     <div class="md:w-1/2 sm:w-full px-3">
                         <x-label for="password" :value="__('Password')" />

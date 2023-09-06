@@ -4,21 +4,19 @@ declare(strict_types=1);
 
 namespace App\Livewire\Admin\Section;
 
+use App\Livewire\Utils\Datatable;
 use App\Models\Section;
-use Illuminate\Contracts\View\Factory;
-use Illuminate\Contracts\View\View;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Gate;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
 use Livewire\WithFileUploads;
-use Livewire\WithPagination;
-use App\Livewire\Utils\Datatable;
+use Livewire\Attributes\Layout;
 
+#[Layout('components.layouts.dashboard')]
 class Index extends Component
 {
-    use LivewireAlert;
     use Datatable;
+    use LivewireAlert;
     use WithFileUploads;
 
     public $image;
@@ -26,7 +24,6 @@ class Index extends Component
     public $section;
 
     public $listeners = [
-        'refreshIndex' => '$refresh',
         'showModal',  'delete',
     ];
 
@@ -34,31 +31,22 @@ class Index extends Component
 
     public $deleteModal = false;
 
-
     public $language_id;
-
-   
 
     protected $rules = [
         'section.language_id' => 'required',
-        'section.page'        => 'required',
+        'section.page_id'     => 'required',
         'section.title'       => 'nullable',
         'section.subtitle'    => 'nullable',
         'section.description' => 'nullable',
     ];
 
-    public function confirmed()
-    {
-        $this->emit('delete');
-    }
-
     public function mount()
     {
-    
         $this->orderable = (new Section())->orderable;
     }
 
-    public function render(): View|Factory
+    public function render()
     {
         $query = Section::when($this->language_id, function ($query) {
             return $query->where('language_id', $this->language_id);
@@ -73,14 +61,29 @@ class Index extends Component
         return view('livewire.admin.section.index', compact('sections'));
     }
 
-    // Section  Delete
     public function delete()
     {
-        abort_if(Gate::denies('section_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        // abort_if(Gate::denies('section_delete'), 403);
 
         Section::findOrFail($this->section)->delete();
 
-        $this->alert('warning', __('Section Deleted successfully!'));
+        $this->alert('success', __('Section deleted successfully.'));
+    }
+
+    public function deleteSelected()
+    {
+        // abort_if(Gate::denies('section_delete'), 403);
+
+        Section::whereIn('id', $this->selected)->delete();
+
+        $this->resetSelected();
+
+        $this->alert('success', __('Section deleted successfully.'));
+    }
+
+    public function confirmed()
+    {
+        $this->dispatch('delete');
     }
 
     public function deleteModal($section)

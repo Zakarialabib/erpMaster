@@ -19,7 +19,6 @@ class Edit extends Component
     public $partner;
 
     public $editModal = false;
-
     public $image;
     #[Rule('required', 'string', 'max:255')]
     public $name;

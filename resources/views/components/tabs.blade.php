@@ -5,7 +5,7 @@
         <template x-for="(state, index) in tabStates" :key="index">
             <button x-text="tabLabel(index)" @click.self="setActiveTab(index)"
                 class="px-4 py-1 mx-2 text-sm hover:bg-blue-500 hover:text-white"
-                :class="state === true ? 'bg-blue-500 text-white' : 'text-zinc-800'" :id="`tab-${index}`"
+                :class="state === true ? 'bg-blue-500 text-white' : 'text-gray-800'" :id="`tab-${index}`"
                 role="tab" :aria-selected="(state === true).toString()"
                 :aria-controls="`tab-panel-${index}`"></button>
         </template>

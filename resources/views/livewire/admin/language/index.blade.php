@@ -14,18 +14,18 @@
                     <x-table.td>{{ $language['name'] }}</x-table.td>
                     <x-table.td>
                         @if ($language['status'] == true)
-                            <x-badge type="primary">
+                            <x-badge primary>
                                 {{ __('Active') }}
                             </x-badge>
                         @elseif($language['status'] == false)
-                            <x-badge type="secondary">
+                            <x-badge secondary>
                                 {{ __('Inactive') }}
                             </x-badge>
                         @endif
                     </x-table.td>
                     <x-table.td>
                         @if ($language['is_default'] == true)
-                            <x-badge type="primary">
+                            <x-badge primary>
                                 {{ __('Yes') }}
                             </x-badge>
                         @endif
@@ -36,12 +36,12 @@
                                 {{ __('Set as Default') }}</x-button>
                         @endif
 
-                        <x-button success href="{{ route('translation.index', $language['code']) }}">
-                            {{ __('Translate') }}
-                        </x-button>
-
                         <x-button type="button" primary wire:click="sync({{ $language['id'] }})">
                             {{ __('Sync') }}
+                        </x-button>
+
+                        <x-button success  href="{{ route('admin.translation',  $language['id'] )}}">
+                            {{__('Translate')}}
                         </x-button>
 
                         <x-button success type="button" wire:click="$dispatch('editLanguage', {{ $language['id'] }}) ">
@@ -67,26 +67,27 @@
     <!-- Update Language-->
     @livewire('admin.language.edit', ['language' => $language])
 
-    @push('scripts')
-        <script>
-            document.addEventListener('livewire:init', function() {
-                window.livewire.on('deleteModal', brandId => {
-                    Swal.fire({
-                        title: 'Are you sure?',
-                        text: "You won't be able to revert this!",
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonColor: '#3085d6',
-                        cancelButtonColor: '#d33',
-                        confirmButtonText: 'Yes, delete it!'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            window.livewire.emit('delete', languageId)
-                        }
-                    })
+</div>
+
+
+@push('scripts')
+    <script>
+        document.addEventListener('livewire:init', function() {
+            window.livewire.on('deleteModal', brandId => {
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.Livewire.dispatch('delete', languageId)
+                    }
                 })
             })
-        </script>
-    @endpush
-
-</div>
+        })
+    </script>
+@endpush

@@ -4,11 +4,9 @@
     <section class="py-3 px-4">
         <div class="flex flex-wrap items-center rtl:justify-start justify-between ">
             <div class="mb-5 lg:mb-0">
-                <h2 class="mb-1 text-2xl font-bold">
-                    {{ __('Supplier Detail') }} : {{ $supplier->name }}
-                </h2>
+              
                 <div class="flex items-center">
-                    <a class="flex items-center text-sm text-gray-500" href="{{ route('home') }}">
+                    <a class="flex items-center text-sm text-gray-500" href="{{ route('admin.dashboard') }}">
                         <span class="inline-block mx-2">
                             <svg class="h-4 w-4 text-gray-500" viewBox="0 0 16 18" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
@@ -43,7 +41,7 @@
 
 <x-app-layout>
     <x-card>
-            @livewire('suppliers.details', ['supplier' => $supplier])
+            @livewire('admin.suppliers.details', ['supplier' => $supplier])
         </div>
     </x-card>
 </x-app-layout>

@@ -4,37 +4,29 @@ declare(strict_types=1);
 
 namespace App\Livewire\Front;
 
-use App\Models\Category;
-use App\Models\Product;
-use App\Models\Subcategory;
-use App\Models\Brand;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Livewire\Component;
+use Livewire\Attributes\On;
+use Livewire\Attributes\Layout;
 use Livewire\WithPagination;
+use App\Livewire\Utils\Front\WithModels;
 
+#[Layout('components.layouts.guest')]
 class Categories extends Component
 {
     use WithPagination;
-    use Datatable;
+    use WithModels;
 
-    public $listeners = [
-        'load-more' => 'loadMore',
-    ];
-
-    public int $perPage;
-
-    public array $paginationOptions;
-
+    public $sortingOptions;
+    public $sorting = 'name-asc';
+    public int $perPage = 25;
     public $category_id;
 
     public $subcategory_id;
 
     public $brand_id;
-
-    public $sorting;
-
-    public $sortingOptions;
+    public array $paginationOptions;
 
     public $selectedFilters = [];
 
@@ -43,11 +35,6 @@ class Categories extends Component
         'subcategory_id' => ['except' => '', 'as' => 's'],
         'sorting'        => ['except' => '', 'as' => 'f'],
     ];
-
-    public function updatingPerPage()
-    {
-        $this->resetPage();
-    }
 
     public function filterProducts($type, $value)
     {
@@ -92,8 +79,6 @@ class Categories extends Component
 
     public function mount()
     {
-        $this->perPage = 25;
-        $this->paginationOptions = [25, 50, 100];
         $this->sortingOptions = [
             'name-asc'   => __('Order Alphabetic, A-Z'),
             'name-desc'  => __('Order Alphabetic, Z-A'),
@@ -104,21 +89,7 @@ class Categories extends Component
         ];
     }
 
-    public function getCategoriesProperty()
-    {
-        return Category::active()->get();
-    }
-
-    public function getSubcategoriesProperty()
-    {
-        return Subcategory::active()->get();
-    }
-
-    public function getBrandsProperty()
-    {
-        return Brand::active()->get();
-    }
-
+    #[On('load-more')]
     public function loadMore()
     {
         $this->perPage += 25;
@@ -126,7 +97,7 @@ class Categories extends Component
 
     public function render(): View|Factory
     {
-        $query = Product::active()
+        $query = \App\Helpers::getEcommerceProducts()
             ->when($this->category_id, function ($query) {
                 return $query->where('category_id', $this->category_id);
             })

@@ -1,19 +1,27 @@
 <div>
+    @section('title', __('Warehouses list'))
+    <x-theme.breadcrumb :title="__('Warehouses list')" :parent="route('admin.warehouses.index')" :parentName="__('Warehouses list')">
+        @can('warehouse_create')
+            <x-button primary type="button" wire:click="$dispatchTo('admin.warehouses.create','createModal')">
+                {{ __('Create Warehouse') }}
+            </x-button>
+        @endcan
+    </x-theme.breadcrumb>
     <div class="flex flex-wrap justify-center">
-        <div class="lg:w-1/2 md:w-1/2 sm:w-full flex flex-wrap my-2">
+        <div class="lg:w-1/2 md:w-1/2 sm:w-full flex flex-wrap gap-6 w-full">
             <select wire:model.live="perPage"
-                class="w-20 border border-gray-300 rounded-md shadow-sm py-2 px-4 bg-white text-sm leading-5 font-medium text-gray-700 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out">
+                class="w-auto shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block sm:text-sm border-gray-300 rounded-md focus:outline-none focus:shadow-outline-blue transition duration-150 ease-in-out">
                 @foreach ($paginationOptions as $value)
                     <option value="{{ $value }}">{{ $value }}</option>
                 @endforeach
             </select>
             @if ($selected)
-                <x-button danger wire:click="deleteSelected" class="ml-3">
+                <x-button danger type="button" wire:click="deleteSelected" class="ml-3">
                     <i class="fas fa-trash"></i>
                 </x-button>
             @endif
             @if ($this->selectedCount)
-                <p class="text-sm leading-5">
+                <p class="text-sm  my-auto">
                     <span class="font-medium">
                         {{ $this->selectedCount }}
                     </span>
@@ -21,10 +29,8 @@
                 </p>
             @endif
         </div>
-        <div class="lg:w-1/2 md:w-1/2 sm:w-full my-2">
-            <div class="my-2">
-                <x-input wire:model.live.debounce.500ms="search" placeholder="{{ __('Search') }}" autofocus />
-            </div>
+        <div class="lg:w-1/2 md:w-1/2 sm:w-full ">
+            <x-input wire:model.live="search" placeholder="{{ __('Search') }}" autofocus />
         </div>
     </div>
 
@@ -65,11 +71,11 @@
                     </x-table.td>
                     <x-table.td>
                         <div class="flex justify-start space-x-2">
-                            <x-button info type="button" wire:click="editModal({{ $warehouse->id }})"
+                            <x-button info type="button" wire:click="$dispatch('editModal',{ id : {{ $warehouse->id }} })"
                                 wire:loading.attr="disabled">
                                 <i class="fas fa-edit"></i>
                             </x-button>
-                            <x-button danger type="button" wire:click="$dispatch('deleteModal', {{ $warehouse->id }})"
+                            <x-button danger type="button" wire:click="$dispatch('deleteModal',{ id : {{ $warehouse->id }} })"
                                 wire:loading.attr="disabled">
                                 <i class="fas fa-trash"></i>
                             </x-button>
@@ -93,59 +99,10 @@
     </div>
 
 
-    <x-modal wire:model.live="editModal">
-        <x-slot name="title">
-            {{ __('Edit Warehouse') }}
-        </x-slot>
-        <x-slot name="content">
-            <form wire:submit="update">
-                <div class="flex flex-wrap -mx-2 mb-3">
-                    <div class="lg:w-1/2 sm:full px-3 mb-6">
-                        <x-label for="name" :value="__('Name')" />
-                        <x-input id="name" class="block mt-1 w-full" type="text"
-                            wire:model.blur="warehouse.name" required />
-                        <x-input-error :messages="$errors->get('warehouse.name')" class="mt-2" />
-                    </div>
-                    <div class="lg:w-1/2 sm:full px-3 mb-6">
-                        <x-label for="phone" :value="__('Phone')" />
-                        <x-input id="phone" class="block mt-1 w-full" type="text"
-                            wire:model.blur="warehouse.phone" />
-                        <x-input-error :messages="$errors->get('warehouse.phone')" class="mt-2" />
-                    </div>
-                    <x-accordion title="{{ __('Details') }}">
-                        <div class="flex flex-wrap">
-                            <div class="lg:w-1/2 sm:full px-3 mb-6">
-                                <x-label for="email" :value="__('Email')" />
-                                <x-input id="email" class="block mt-1 w-full" type="email"
-                                    wire:model.blur="warehouse.email" />
-                                <x-input-error :messages="$errors->get('warehouse.email')" class="mt-2" />
-                            </div>
-                            <div class="lg:w-1/2 sm:full px-3 mb-6">
-                                <x-label for="city" :value="__('City')" />
-                                <x-input id="city" class="block mt-1 w-full" type="text"
-                                    wire:model.blur="warehouse.city" />
-                                <x-input-error :messages="$errors->get('warehouse.city')" class="mt-2" />
-                            </div>
-                            <div class="hidden xl:w-1/2 md:w-1/2 px-3 mb-6 md:mb-0">
-                                <x-label for="country" :value="__('Country')" />
-                                <x-input id="country" class="block mt-1 w-full" type="text"
-                                    wire:model.blur="warehouse.country" />
-                                <x-input-error :messages="$errors->get('warehouse.country')" class="mt-2" />
-                            </div>
-                        </div>
-                    </x-accordion>
-                    <div class="w-full px-3">
-                        <x-button primary type="submit" class="w-full text-center" wire:loading.attr="disabled">
-                            {{ __('Update') }}
-                        </x-button>
-                    </div>
-                </div>
-            </form>
-        </x-slot>
-    </x-modal>
+  
+    <livewire:admin.warehouses.edit :warehouse="$warehouse" lazy />
 
-
-    <livewire:admin.warehouses.create />
+    <livewire:admin.warehouses.create lazy />
 
 </div>
 

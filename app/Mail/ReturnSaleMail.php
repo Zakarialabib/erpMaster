@@ -35,7 +35,7 @@ class ReturnSaleMail extends Mailable
      */
     public function build()
     {
-        return $this->subject('Return Sale Details - '.settings()->company_name)
+        return $this->subject('Return Sale Details - '.settings('company_name'))
             ->markdown('emails.returnSaleMail')
             ->attachData($this->pdf, 'Return_'.$this->returnSaleMail['reference'].'.pdf', [
                 'mime' => 'application/pdf',

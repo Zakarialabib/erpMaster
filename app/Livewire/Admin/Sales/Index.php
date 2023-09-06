@@ -4,25 +4,25 @@ declare(strict_types=1);
 
 namespace App\Livewire\Admin\Sales;
 
-use App\Livewire\Utils\Datatable;
 use App\Imports\SaleImport;
-use App\Models\Customer;
+use App\Livewire\Utils\Admin\WithModels;
 use App\Models\Sale;
-
 use Illuminate\Support\Facades\Gate;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
 use Livewire\WithFileUploads;
-use Livewire\WithPagination;
 use Illuminate\Support\Facades\Storage;
+use App\Livewire\Utils\Datatable;
+use Livewire\Attributes\Layout;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
+#[Layout('components.layouts.dashboard')]
 class Index extends Component
 {
-    use WithPagination;
-    use Datatable;
     use WithFileUploads;
     use LivewireAlert;
     use Datatable;
+    use WithModels;
 
     /** @var Sale|null */
     public $sale;
@@ -30,15 +30,12 @@ class Index extends Component
     /** @var array<string> */
     public $listeners = [
         'importModal',   'delete',
-        'refreshIndex' => '$refresh',
     ];
 
     public $startDate;
     public $endDate;
 
     public $importModal = false;
-
-    public $listsForFields = [];
 
     /** @var array */
     protected $rules = [
@@ -59,17 +56,6 @@ class Index extends Component
         $this->orderable = (new Sale())->orderable;
         $this->startDate = now()->startOfYear()->format('Y-m-d');
         $this->endDate = now()->endOfDay()->format('Y-m-d');
-        $this->initListsForFields();
-    }
-
-    public function updatedStartDate($value)
-    {
-        $this->startDate = $value;
-    }
-
-    public function updatedEndDate($value)
-    {
-        $this->endDate = $value;
     }
 
     public function filterByType($type)
@@ -95,9 +81,9 @@ class Index extends Component
 
     public function render()
     {
-        abort_if(Gate::denies('sale_access'), 403);
+        abort_if(Gate::denies('sale access'), 403);
 
-        $query = Sale::with(['customer', 'salepayments', 'saleDetails'])
+        $query = Sale::with(['customer', 'user', 'saleDetails', 'salepayments', 'saleDetails.product'])
             ->whereBetween('date', [$this->startDate, $this->endDate])
             ->advancedFilter([
                 's'               => $this->search ?: null,
@@ -112,7 +98,7 @@ class Index extends Component
 
     public function deleteSelected()
     {
-        abort_if(Gate::denies('sale_delete'), 403);
+        abort_if(Gate::denies('sale delete'), 403);
 
         Sale::whereIn('id', $this->selected)->delete();
 
@@ -121,7 +107,7 @@ class Index extends Component
 
     public function delete(Sale $sale)
     {
-        abort_if(Gate::denies('sale_delete'), 403);
+        abort_if(Gate::denies('sale delete'), 403);
 
         $sale->delete();
 
@@ -132,19 +118,19 @@ class Index extends Component
 
     public function importModal()
     {
-        abort_if(Gate::denies('sale_create'), 403);
+        abort_if(Gate::denies('sale create'), 403);
 
         $this->importModal = true;
     }
 
-    public function downloadSample()
+    public function downloadSample(): BinaryFileResponse
     {
         return Storage::disk('exports')->download('sales_import_sample.xls');
     }
 
     public function import()
     {
-        abort_if(Gate::denies('sale_create'), 403);
+        abort_if(Gate::denies('sale create'), 403);
 
         $this->validate([
             'import_file' => [
@@ -160,11 +146,6 @@ class Index extends Component
         $this->dispatch('refreshIndex');
 
         $this->importModal = false;
-    }
-
-    public function refreshCustomers()
-    {
-        $this->initListsForFields();
     }
 
     public function sendWhatsapp($sale)
@@ -204,10 +185,5 @@ class Index extends Component
     public function openWhatapp($url)
     {
         // open whatsapp url in another tab
-    }
-
-    protected function initListsForFields(): void
-    {
-        $this->listsForFields['customers'] = Customer::pluck('name', 'id')->toArray();
     }
 }

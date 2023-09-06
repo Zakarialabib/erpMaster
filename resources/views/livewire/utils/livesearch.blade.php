@@ -1,13 +1,13 @@
 <div>
     <div class="relative mb-4">
         <div class="w-full rounded-lg">
-            <x-input wire:model.blur="searchQuery" autofocus
+            <x-input wire:model.live="query" autofocus
                 placeholder="{{ __('Search with names and codes, or reference') }}" />
         </div>
-        @if (!empty($searchQuery))
+        @if (!empty($query))
             <div class="absolute top-0 left-0 w-full mt-12 bg-white rounded-md shadow-xl overflow-y-auto max-h-52 z-50">
                 <ul>
-                    @if ($this->product->count())
+                    @if ($this->product->count() > 0)
                         <li class="flex items-center text-left px-4 py-3 border-b border-gray-100">
                             <x-chips label="{{ __('Products') }}" shade="dark" color="red" />
                             <div class="flex space-x-4">
@@ -49,7 +49,7 @@
                                         {{ __('Address') }} <br>
                                         {{ $item->address }}
                                     </p>
-                                    <x-button info href="{{ route('customer.details', $item->uuid) }}">
+                                    <x-button info href="{{ route('admin.customer.details', $item->id) }}">
                                         <i class="fas fa-book"></i>
                                         {{ __('Details') }}
                                     </x-button>
@@ -70,7 +70,7 @@
                                         {{ __('Phone') }} <br>
                                         {{ $item->phone }}
                                     </p>
-                                    <x-button info href="{{ route('supplier.details', $item->uuid) }}">
+                                    <x-button info href="{{ route('admin.supplier.details', $item->id) }}">
                                         <i class="fas fa-book"></i>
                                         {{ __('Details') }}
                                     </x-button>

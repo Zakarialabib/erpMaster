@@ -1,5 +1,4 @@
 @section('title', __('Redirect List'))
-<x-dashboard-layout>
     <section class="py-3 px-4">
         <div class="flex flex-wrap items-center justify-between">
             <div class="mb-5 lg:mb-0">
@@ -49,4 +48,3 @@
             @livewire('admin.settings.redirects')
         </div>
     </x-card>
-</x-dashboard-layout>

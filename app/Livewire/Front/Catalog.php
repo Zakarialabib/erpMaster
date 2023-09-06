@@ -4,34 +4,30 @@ declare(strict_types=1);
 
 namespace App\Livewire\Front;
 
-use App\Models\Brand;
-use App\Models\Category;
-use App\Models\Product;
-use App\Models\Subcategory;
+use App\Livewire\Utils\Front\WithModels;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Livewire\Component;
+use Livewire\Attributes\Layout;
 use Livewire\WithPagination;
 
+#[Layout('components.layouts.guest')]
 class Catalog extends Component
 {
     use WithPagination;
-    use Datatable;
+    use WithModels;
 
-    public int $perPage = 25;
-
-    public $paginationOptions = [25, 50, 100];
-
-    public ?int $maxPrice;
-    public ?int $minPrice;
-    public ?int $category_id;
+    public $maxPrice;
+    public $minPrice;
+    public $category_id;
 
     public $subcategory_id;
 
-    public ?int $brand_id;
-    public ?string $sorting;
-
+    public $brand_id;
+    public int $perPage = 25;
+    public $sorting;
     public $sortingOptions;
+    public $paginationOptions;
 
     public $selectedFilters = [];
 
@@ -85,13 +81,10 @@ class Catalog extends Component
         $this->resetPage();
     }
 
-    public function updatingPerPage()
-    {
-        $this->resetPage();
-    }
-
     public function mount()
     {
+        $this->paginationOptions = [25, 50, 100];
+
         $this->sortingOptions = [
             'name-asc'   => __('Order Alphabetic, A-Z'),
             'name-desc'  => __('Order Alphabetic, Z-A'),
@@ -104,7 +97,7 @@ class Catalog extends Component
 
     public function render(): View|Factory
     {
-        $query = Product::active()
+        $query = \App\Helpers::getEcommerceProducts()
             ->when($this->minPrice, function ($query) {
                 return $query->where('price', '>=', $this->minPrice);
             })
@@ -138,20 +131,5 @@ class Catalog extends Component
         }
 
         return view('livewire.front.catalog', compact('products'));
-    }
-
-    public function getCategoriesProperty()
-    {
-        return Category::active()->with('subcategories')->get();
-    }
-
-    public function getSubcategoriesProperty()
-    {
-        return Subcategory::active()->get();
-    }
-
-    public function getBrandsProperty()
-    {
-        return Brand::select('id', 'name')->active()->get();
     }
 }

@@ -5,35 +5,29 @@ declare(strict_types=1);
 namespace App\Livewire\Admin\Page;
 
 use App\Models\Page;
-use Illuminate\Contracts\View\Factory;
-use Illuminate\Contracts\View\View;
-use Livewire\Component;
-use Illuminate\Support\Facades\Gate;
-use Jantinnerezo\LivewireAlert\LivewireAlert;
 use App\Livewire\Utils\Datatable;
+use Livewire\Attributes\On;
+use Livewire\Component;
+use Livewire\Attributes\Layout;
+use Jantinnerezo\LivewireAlert\LivewireAlert;
+use Livewire\WithPagination;
 
+#[Layout('components.layouts.dashboard')]
 class Index extends Component
 {
+    use WithPagination;
     use Datatable;
     use LivewireAlert;
 
-    public $listeners = [
-        'refreshIndex' => '$refresh',
-        'delete',
-    ];
-
     public $deleteModal = false;
-
-    public array $listsForFields = [];
-
-   
+    public $page;
 
     public function mount()
     {
         $this->orderable = (new Page())->orderable;
     }
 
-    public function render(): View|Factory
+    public function render()
     {
         $query = Page::advancedFilter([
             's'               => $this->search ?: null,
@@ -46,6 +40,7 @@ class Index extends Component
         return view('livewire.admin.page.index', compact('pages'));
     }
 
+    #[On('delete')]
     public function delete()
     {
         // abort_if(Gate::denies('page_delete'), 403);
@@ -68,7 +63,7 @@ class Index extends Component
 
     public function confirmed()
     {
-        $this->emit('delete');
+        $this->dispatch('delete');
     }
 
     public function deleteModal($page)

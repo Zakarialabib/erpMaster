@@ -1,8 +1,14 @@
 <div>
+    @section('title', __('Supplier'))
+    <x-theme.breadcrumb :title="__('User List')" :parent="route('admin.suppliers.index')" :parentName="__('User List')">
+        <x-button primary type="button" wire:click="dispatchTo('admin.users.create', 'createModal')">
+            {{ __('Create User') }}
+        </x-button>
+    </x-theme.breadcrumb> 
     <div class="flex flex-wrap justify-center">
         <div class="lg:w-1/2 md:w-1/2 sm:w-full flex flex-wrap my-2">
             <select wire:model.live="perPage"
-                class="w-20 block p-3 leading-5 bg-white dark:bg-dark-eval-2 text-gray-700 dark:text-gray-300 rounded border border-gray-300 mb-1 text-sm focus:shadow-outline-blue focus:border-blue-300 mr-3">
+                class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-auto sm:text-sm border-gray-300 rounded-md focus:outline-none focus:shadow-outline-blue transition duration-150 ease-in-out">
                 @foreach ($paginationOptions as $value)
                     <option value="
                 {{ $value }}">{{ $value }}</option>
@@ -24,7 +30,7 @@
         </div>
         <div class="lg:w-1/2 md:w-1/2 sm:w-full my-2">
             <div class="my-2">
-                <x-input wire:model.live.debounce.500ms="search" placeholder="{{ __('Search') }}" autofocus />
+                <x-input wire:model.live="search" placeholder="{{ __('Search') }}" autofocus />
             </div>
         </div>
     </div>
@@ -81,7 +87,7 @@
                         </a>
                     </x-table.td>
                     <x-table.td>
-                        <livewire:toggle-button :model="$user" field="status" key="{{ $user->id }}" />
+                        <livewire:utils.toggle-button :model="$user" field="status" key="{{ $user->id }}" lazy />
                     </x-table.td>
                     <x-table.td>
                         @foreach ($user->roles as $role)
@@ -92,15 +98,15 @@
                     </x-table.td>
                     <x-table.td>
                         <div class="flex justify-start space-x-2">
-                            <x-button secondary wire:click="$dispatch('showModal', {{ $user->id }})" type="button"
+                            <x-button secondary wire:click="$dispatch('showModal', { id ;{{ $user->id }} })"  type="button"
                                 wire:loading.attr="disabled">
                                 <i class="fas fa-eye"></i>
                             </x-button>
-                            <x-button primary wire:click="$dispatch('editModal', {{ $user->id }})" type="button"
+                            <x-button primary wire:click="$dispatch('editModal', { id ; {{ $user->id }} })" type="button"
                                 wire:loading.attr="disabled">
                                 <i class="fas fa-edit"></i>
                             </x-button>
-                            <x-button danger wire:click="$dispatch('deleteModal', {{ $user->id }})" type="button"
+                            <x-button danger wire:click="$dispatch('deleteModal', { id ; {{ $user->id }} })" type="button"
                                 wire:loading.attr="disabled">
                                 <i class="fas fa-trash"></i>
                             </x-button>
@@ -131,11 +137,11 @@
         </div>
     </div>
 
-    <livewire:admin.users.show :user="$user" />
+    <livewire:admin.users.show :user="$user" lazy />
 
-    <livewire:admin.users.edit :user="$user" />
+    <livewire:admin.users.edit :user="$user" lazy />
 
-    <livewire:admin.users.create />
+    <livewire:admin.users.create lazy />
 
     @push('scripts')
         <script>

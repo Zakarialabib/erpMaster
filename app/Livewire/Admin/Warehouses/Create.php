@@ -7,42 +7,38 @@ namespace App\Livewire\Admin\Warehouses;
 use App\Models\Warehouse;
 use Illuminate\Support\Facades\Gate;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
+use Livewire\Attributes\On;
+use Livewire\Attributes\Rule;
 use Livewire\Component;
 
 class Create extends Component
 {
     use LivewireAlert;
 
-    /** @var array<string> */
-    public $listeners = ['createModal'];
-
     /** @var bool */
     public $createModal = false;
 
-    /** @var mixed */
-    public $warehouse;
+    public Warehouse $warehouse;
 
-    /** @var array */
-    protected $rules = [
-        'warehouse.name'    => 'string|required|max:255',
-        'warehouse.phone'   => 'numeric|nullable|max:255',
-        'warehouse.country' => 'nullable|max:255',
-        'warehouse.city'    => 'nullable|max:255',
-        'warehouse.email'   => 'nullable|max:255',
-    ];
-
-    public function mount(Warehouse $warehouse): void
-    {
-        $this->warehouse = $warehouse;
-    }
+    #[Rule('string|required|max:255')]
+    public $name;
+    #[Rule('numeric|nullable|max:255')]
+    public $phone;
+    #[Rule('nullable|max:255')]
+    public $country;
+    #[Rule('nullable|max:255')]
+    public $city;
+    #[Rule('nullable|max:255')]
+    public $email;
 
     public function render()
     {
-        abort_if(Gate::denies('warehouse_create'), 403);
+        abort_if(Gate::denies('warehouse create'), 403);
 
         return view('livewire.admin.warehouses.create');
     }
 
+    #[On('createModal')]
     public function createModal()
     {
         $this->resetErrorBag();
@@ -56,13 +52,13 @@ class Create extends Component
     {
         $this->validate();
 
-        $this->warehouse->save();
+        Warehouse::create($this->all());
 
         $this->alert('success', __('Warehouse created successfully.'));
 
-        $this->dispatch('refreshIndex');
+        $this->dispatch('refreshIndex')->to(Index::class);
 
-        $this->reset('warehouse');
+        $this->reset('name', 'phone', 'country', 'city', 'email');
 
         $this->createModal = false;
     }

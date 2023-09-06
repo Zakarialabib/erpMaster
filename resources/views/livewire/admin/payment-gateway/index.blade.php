@@ -47,7 +47,7 @@
     <x-card>
         <div class="flex flex-row md:flex-col justify-between">
             <div class="lg:w-1/2 md:w-1/2 my-2 flex mr-2">
-                <select wire:model="perPage" name="perPage"
+                <select wire:model.live="perPage" name="perPage"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-32 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                     @foreach ($paginationOptions as $value)
                         <option value="{{ $value }}">{{ $value }}</option>
@@ -64,7 +64,7 @@
             </div>
             <div class="lg:w-1/2 md:w-1/2 my-2">
                 <input type="text" wire:model.debounce.300ms="search"
-                    class="p-3 leading-5 bg-white text-gray-500 rounded border border-zinc-300 mb-1 text-sm w-full focus:shadow-outline-blue focus:border-blue-500"
+                    class="p-3 leading-5 bg-white text-gray-500 rounded border border-gray-300 mb-1 text-sm w-full focus:shadow-outline-blue focus:border-blue-500"
                     placeholder="{{ __('Search') }}" />
             </div>
         </div>
@@ -98,7 +98,7 @@
                             {{ $paymentgateway->description }}
                         </x-table.td>
                         <x-table.td>
-                            <livewire:toggle-button :model="$paymentgateway" field="stauts" key="{{ $paymentgateway->id }}" />
+                            <livewire:utils.toggle-button :model="$paymentgateway" field="stauts" key="{{ $paymentgateway->id }}" />
                         </x-table.td>
                         <x-table.td>
                             <x-dropdown

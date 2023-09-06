@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Livewire\Admin\Language;
 
-use App\Models\Language;
-use Artisan;
-use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
+use App\Models\Language;
+use Illuminate\Support\Facades\Artisan;
+use Jantinnerezo\LivewireAlert\LivewireAlert;
 
 class Index extends Component
 {
@@ -18,13 +18,11 @@ class Index extends Component
     public $language;
 
     protected $listeners = [
-        'refreshIndex' => '$refresh',
-        'delete',
     ];
 
     public function mount()
     {
-        $this->languages = Language::select(['id', 'name', 'status', 'code', 'is_default'])->get();
+        $this->languages = Language::all()->toArray();
     }
 
     public function render()

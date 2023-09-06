@@ -70,7 +70,7 @@ class Login extends Component
 
             $this->alert('success', __('Authentication successful !'));
 
-            $this->dispatch('refreshIndex');
+            $this->dispatch('refreshIndex')->to(Index::class);
 
             $this->loginModal = false;
         }

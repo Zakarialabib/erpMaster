@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Livewire\Admin\Faq;
 
 use Livewire\Component;
+use Livewire\Attributes\On;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Gate;
 use App\Models\Faq;
@@ -22,18 +23,15 @@ class Edit extends Component
 
     public $image;
 
-    public $listeners = [
-        'editModal',
-    ];
-
     protected $rules = [
         'faq.name'        => ['required', 'max:255'],
         'faq.description' => ['required'],
     ];
 
+    #[On('editModal')]
     public function editModal($faq)
     {
-        //abort_if(Gate::denies('category_edit'), 403);
+        //abort_if(Gate::denies('category edit'), 403);
 
         $this->resetErrorBag();
 
@@ -45,15 +43,13 @@ class Edit extends Component
 
     public function update()
     {
-        //abort_if(Gate::denies('faq_edit'), 403);
+        //abort_if(Gate::denies('faq edit'), 403);
 
         $this->validate();
 
         $this->faq->save();
 
         $this->alert('success', __('Faq updated successfully.'));
-
-        $this->emit('refreshIndex');
 
         $this->editModal = false;
     }

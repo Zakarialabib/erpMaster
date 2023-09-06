@@ -26,6 +26,17 @@ enum IntegrationType: int
         return $this->value;
     }
 
+    public function getTypeName(): string
+    {
+        return match ($this->type) {
+            IntegrationType::CUSTOM      => 'Custom',
+            IntegrationType::YOUCAN      => 'Youcan',
+            IntegrationType::WOOCOMMERCE => 'WooCommerce',
+            IntegrationType::SHOPIFY     => 'Shopify',
+            default                      => 'Unknown'
+        };
+    }
+
     public static function getLabel($value)
     {
         foreach (self::cases() as $case) {

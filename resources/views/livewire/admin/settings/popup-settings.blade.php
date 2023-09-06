@@ -60,7 +60,7 @@
                 @endif
             </x-slot>
             <x-slot name="content">
-                <form wire:submit.prevent="create ?? edit">
+                <form wire:submit="create ?? edit">
                     <div class="mb-4 font-bold text-2xl">
                         <div class="container mx-auto">
                             <div class="mb-4 w-full max-w-md">

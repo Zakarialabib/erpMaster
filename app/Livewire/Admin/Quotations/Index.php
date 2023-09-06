@@ -4,45 +4,38 @@ declare(strict_types=1);
 
 namespace App\Livewire\Admin\Quotations;
 
+use App\Livewire\Utils\Admin\WithModels;
 use App\Livewire\Utils\Datatable;
-use App\Models\Customer;
 use App\Models\Quotation;
-
 use Illuminate\Support\Facades\Gate;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
 use Livewire\WithFileUploads;
-use Livewire\WithPagination;
+use Livewire\Attributes\Layout;
 
+#[Layout('components.layouts.dashboard')]
 class Index extends Component
 {
-    use WithPagination;
     use Datatable;
     use WithFileUploads;
     use LivewireAlert;
-    use Datatable;
+    use WithModels;
 
     public $quotation;
 
     /** @var array<string> */
     public $listeners = [
-        'showModal', 'delete',
+        'delete',
     ];
-
-    /** @var bool */
-    public $showModal = false;
-
-    public $listsForFields = [];
 
     public function mount(): void
     {
         $this->orderable = (new Quotation())->orderable;
-        $this->initListsForFields();
     }
 
     public function render()
     {
-        abort_if(Gate::denies('quotation_access'), 403);
+        abort_if(Gate::denies('quotation access'), 403);
 
         $query = Quotation::advancedFilter([
             's'               => $this->search ?: null,
@@ -53,15 +46,6 @@ class Index extends Component
         $quotations = $query->paginate($this->perPage);
 
         return view('livewire.admin.quotations.index', compact('quotations'));
-    }
-
-    public function showModal(Quotation $quotation)
-    {
-        abort_if(Gate::denies('quotation_access'), 403);
-
-        $this->quotation = Customer::findOrFail($quotation->customer_id);
-
-        $this->showModal = true;
     }
 
     public function deleteSelected()
@@ -80,10 +64,5 @@ class Index extends Component
         $product->delete();
 
         $this->alert('success', __('Quotation deleted successfully.'));
-    }
-
-    protected function initListsForFields(): void
-    {
-        $this->listsForFields['customers'] = Customer::pluck('name', 'id')->toArray();
     }
 }

@@ -6,13 +6,12 @@ namespace App\Livewire\Admin\Blog;
 
 use App\Models\Blog;
 use App\Models\BlogCategory;
-use App\Models\Language;
-use Illuminate\Contracts\View\Factory;
-use Illuminate\Contracts\View\View;
 use Illuminate\Support\Str;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
 use Livewire\WithFileUploads;
+use Livewire\Attributes\On;
+use Livewire\Attributes\Computed;
 
 class Edit extends Component
 {
@@ -20,69 +19,78 @@ class Edit extends Component
     use WithFileUploads;
 
     public $editModal = false;
-
-    public $image;
-
     public $blog;
-
-    public $listeners = ['editModal'];
-
+    public $title;
+    public $category_id;
+    public $slug;
+    public $meta_title;
+    public $meta_description;
+    public $image;
+    public $description;
     protected $rules = [
-        'blog.title'       => 'required|min:3|max:255',
-        'blog.category_id' => 'required|integer',
-        'blog.slug'        => 'required|string',
-        'blog.details'     => 'required|min:3',
-        'blog.language_id' => 'nullable|integer',
-        'blog.meta_title'  => 'nullable|max:100',
-        'blog.meta_desc'   => 'nullable|max:200',
+        'title'            => 'required|min:3|max:255',
+        'category_id'      => 'required|integer',
+        'slug'             => 'required|string',
+        'description'      => 'required|min:3',
+        'meta_title'       => 'nullable|max:100',
+        'meta_description' => 'nullable|max:200',
     ];
 
-    public function render(): View|Factory
+    #[Computed]
+    public function blogCategories()
     {
-        // abort_if(Gate::denies('blog_create'), 403);
-
-        return view('livewire.admin.blog.edit');
+        return BlogCategory::select('title', 'id')->get();
     }
 
+    #[On('editModal')]
     public function editModal($id)
     {
-        // abort_if(Gate::denies('blog_edit'), 403);
+        // abort_if(Gate::denies('blog edit'), 403);
 
         $this->resetErrorBag();
 
         $this->resetValidation();
 
         $this->blog = Blog::where('id', $id)->firstOrFail();
+        $this->title = $this->blog->title;
+        $this->category_id = $this->blog->category_id;
+        $this->slug = $this->blog->slug;
+        $this->meta_title = $this->blog->meta_title;
+        $this->meta_description = $this->blog->meta_description;
+        $this->image = $this->blog->image;
+        $this->description = $this->blog->description;
 
         $this->editModal = true;
     }
 
+    public function render()
+    {
+        // abort_if(Gate::denies('blog create'), 403);
+
+        return view('livewire.admin.blog.edit');
+    }
+
     public function update()
     {
-        $this->validate();
-
-        if ($this->image) {
-            $imageName = Str::slug($this->blog->title).'.'.$this->image->extension();
+        if ( ! $this->image) {
+            $this->image = null;
+        } elseif (is_object($this->image) && method_exists($this->image, 'extension')) {
+            $imageName = Str::slug($this->title).'.'.$this->image->extension();
             $this->image->storeAs('blogs', $imageName);
             $this->blog->image = $imageName;
         }
 
-        $this->blog->save();
+        $this->blog->description = $this->description;
+        $this->blog->language_id = 1;
+
+        $validated = $this->validate();
+
+        $this->blog->update($validated);
 
         $this->alert('success', __('Blog updated successfully.'));
 
-        $this->emit('refreshIndex');
+        $this->dispatch('refreshIndex')->to(Index::class);
 
         $this->editModal = false;
-    }
-
-    public function getBlogCategoriesProperty()
-    {
-        return BlogCategory::select('title', 'id')->get();
-    }
-
-    public function getLanguagesProperty()
-    {
-        return Language::select('name', 'id')->get();
     }
 }

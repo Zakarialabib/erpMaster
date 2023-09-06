@@ -4,17 +4,15 @@ declare(strict_types=1);
 
 namespace App\Livewire\Admin\Slider;
 
-use App\Models\Language;
+use App\Livewire\Utils\Datatable;
 use App\Models\Slider;
-use Illuminate\Contracts\View\Factory;
-use Illuminate\Contracts\View\View;
-use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Gate;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
 use Livewire\WithFileUploads;
-use Livewire\WithPagination;
-use App\Livewire\Utils\Datatable;
+use Livewire\Attributes\Layout;
 
+#[Layout('components.layouts.dashboard')]
 class Index extends Component
 {
     use Datatable;
@@ -23,39 +21,23 @@ class Index extends Component
 
     public $slider;
 
-    public $photo;
+    public $image;
 
     public $listeners = [
-        'refreshIndex' => '$refresh',
         'showModal', 'delete',
     ];
 
     public $showModal = false;
-
-    protected $rules = [
-        'slider.title'         => ['required', 'string', 'max:255'],
-        'slider.subtitle'      => ['nullable', 'string'],
-        'slider.details'       => ['nullable'],
-        'slider.link'          => ['nullable', 'string'],
-        'slider.language_id'   => ['nullable', 'integer'],
-        'slider.bg_color'      => ['nullable', 'string'],
-        'slider.embeded_video' => ['nullable'],
-    ];
-
- 
-
-    public function confirmed()
-    {
-        $this->emit('delete');
-    }
 
     public function mount()
     {
         $this->orderable = (new Slider())->orderable;
     }
 
-    public function render(): View|Factory
+    public function render()
     {
+        abort_if(Gate::denies('slider access'), 403);
+
         $query = Slider::advancedFilter([
             's'               => $this->search ?: null,
             'order_column'    => $this->sortBy,
@@ -66,11 +48,6 @@ class Index extends Component
 
         return view('livewire.admin.slider.index', compact('sliders'));
     }
-
-    // public function getPhotoPreviewProperty()
-    // {
-    //     return $this->slider->photo;
-    // }
 
     public function setFeatured($id)
     {
@@ -93,38 +70,12 @@ class Index extends Component
         $this->showModal = true;
     }
 
-    public function deleteModal($slider)
+    public function delete(Slider $slider)
     {
-        $this->confirm(__('Are you sure you want to delete this?'), [
-            'toast'             => false,
-            'position'          => 'center',
-            'showConfirmButton' => true,
-            'cancelButtonText'  => __('Cancel'),
-            'onConfirmed'       => 'delete',
-        ]);
-        $this->slider = $slider;
-    }
+        abort_if(Gate::denies('slider delete'), 403);
 
-    public function deleteSelected()
-    {
-        abort_if(Gate::denies('slider_delete'), 403);
-
-        Slider::whereIn('id', $this->selected)->delete();
-
-        $this->resetSelected();
-    }
-
-    public function delete()
-    {
-        abort_if(Gate::denies('slider_delete'), 403);
-
-        Slider::findOrFail($this->slider)->delete();
+        $slider->delete();
 
         $this->alert('success', __('Slider deleted successfully.'));
-    }
-
-    public function getLanguagesProperty(): Collection
-    {
-        return Language::select('name', 'id')->get();
     }
 }

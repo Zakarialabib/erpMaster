@@ -42,8 +42,8 @@ class CartBar extends Component
     public function confirmed()
     {
         Cart::instance('shopping')->remove($this->productId);
-        $this->emit('cartCountUpdated');
-        $this->emit('cartBarUpdated');
+        $this->dispatch('cartCountUpdated');
+        $this->dispatch('cartBarUpdated');
     }
 
     public function showCart()
@@ -56,7 +56,7 @@ class CartBar extends Component
         $cartItem = Cart::instance('shopping')->get($rowId);
         $qty = $cartItem->qty - 1;
         Cart::instance('shopping')->update($rowId, $qty);
-        $this->emit('cartBarUpdated');
+        $this->dispatch('cartBarUpdated');
     }
 
     public function increaseQuantity($rowId)
@@ -64,7 +64,7 @@ class CartBar extends Component
         $cartItem = Cart::instance('shopping')->get($rowId);
         $qty = $cartItem->qty + 1;
         Cart::instance('shopping')->update($rowId, $qty);
-        $this->emit('cartBarUpdated');
+        $this->dispatch('cartBarUpdated');
     }
 
     public function removeFromCart($rowId)

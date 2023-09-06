@@ -12,7 +12,9 @@ use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
 use Livewire\WithPagination;
 use App\Livewire\Utils\Datatable;
+use Livewire\Attributes\Layout;
 
+#[Layout('components.layouts.dashboard')]
 class Index extends Component
 {
     use WithPagination;
@@ -20,7 +22,6 @@ class Index extends Component
     use LivewireAlert;
 
     public $listeners = [
-        'refreshIndex' => '$refresh',
         'delete',
     ];
 
@@ -32,7 +33,7 @@ class Index extends Component
 
     public function confirmed()
     {
-        $this->emit('delete');
+        $this->dispatch('delete');
     }
 
     public function mount()
@@ -72,5 +73,16 @@ class Index extends Component
         Subcategory::findOrFail($this->subcategory)->delete();
 
         $this->alert('success', __('Subcategory deleted successfully.'));
+    }
+
+    public function deleteSelected()
+    {
+        abort_if(Gate::denies('subcategor delete'), 403);
+
+        Subcategory::whereIn('id', $this->selected)->delete();
+
+        $this->alert('success', __('Subcategory deleted successfully.'));
+
+        $this->resetSelected();
     }
 }

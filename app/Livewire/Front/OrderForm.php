@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Livewire\Front;
 
-use App\Helpers;
 use App\Models\OrderForms;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -63,7 +62,7 @@ class OrderForm extends Component
 
         $this->alert('success', __('Your order has been sent successfully!'));
 
-        Mail::to(Helpers::settings('company_email_address'))->send(new OrderFormMail($order));
+        Mail::to(settings('company_email'))->send(new OrderFormMail($order));
 
         $this->reset();
     }

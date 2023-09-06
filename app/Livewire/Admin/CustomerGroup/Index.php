@@ -10,6 +10,9 @@ use Illuminate\Support\Facades\Gate;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
 
+use Livewire\Attributes\Layout;
+
+#[Layout('components.layouts.dashboard')]
 class Index extends Component
 {
     use LivewireAlert;
@@ -23,20 +26,17 @@ class Index extends Component
     /** @var array<string> */
     public $listeners = [
         'showModal',
-        'refreshIndex' => '$refresh',
         'delete',
     ];
 
     public function mount(): void
     {
-        $this->selectPage = false;
-
         $this->orderable = (new CustomerGroup())->orderable;
     }
 
     public function render()
     {
-        abort_if(Gate::denies('customer_group_access'), 403);
+        abort_if(Gate::denies('customer group access'), 403);
 
         $query = CustomerGroup::advancedFilter([
             's'               => $this->search ?: null,
@@ -51,7 +51,7 @@ class Index extends Component
 
     public function showModal($id): void
     {
-        abort_if(Gate::denies('customer_group_show'), 403);
+        abort_if(Gate::denies('customer group show'), 403);
 
         $this->customergroup = CustomerGroup::where('id', $id)->get();
 
@@ -60,7 +60,7 @@ class Index extends Component
 
     public function deleteSelected(): void
     {
-        abort_if(Gate::denies('customer_group_delete'), 403);
+        abort_if(Gate::denies('customer group delete'), 403);
 
         CustomerGroup::whereIn('id', $this->selected)->delete();
 
@@ -69,7 +69,7 @@ class Index extends Component
 
     public function delete(CustomerGroup $customergroup): void
     {
-        abort_if(Gate::denies('customer_group_delete'), 403);
+        abort_if(Gate::denies('customer group delete'), 403);
 
         $customergroup->delete();
 

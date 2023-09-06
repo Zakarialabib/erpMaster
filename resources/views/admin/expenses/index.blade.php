@@ -8,7 +8,7 @@
                     {{ __('Expenses') }}
                 </h2>
                 <div class="flex items-center">
-                    <a class="flex items-center text-sm text-gray-500" href="{{ route('home') }}">
+                    <a class="flex items-center text-sm text-gray-500" href="{{ route('admin.dashboard') }}">
                         <span class="inline-block mx-2">
                             <svg class="h-4 w-4 text-gray-500" viewBox="0 0 16 18" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
@@ -46,20 +46,20 @@
                     </x-slot>
                     <x-slot name="content">
                         {{-- use livewire - coming soon --}}
-                        {{-- <x-dropdown-link onclick="Livewire.emit('import')" 
+                        {{-- <x-dropdown-link wire:click="dispatch('import')" 
                             wire:loading.attr="disabled">
                             {{ __('Import') }}
                         </x-dropdown-link> --}}
-                        <x-dropdown-link onclick="Livewire.emit('exportAll')" wire:loading.attr="disabled">
+                        <x-dropdown-link wire:click="dispatch('exportAll')" wire:loading.attr="disabled">
                             {{ __('PDF') }}
                         </x-dropdown-link>
-                        <x-dropdown-link onclick="Livewire.emit('downloadAll')" wire:loading.attr="disabled">
+                        <x-dropdown-link wire:click="dispatch('downloadAll')" wire:loading.attr="disabled">
                             {{ __('Excel') }}
                         </x-dropdown-link>
                     </x-slot>
                 </x-dropdown>
                 @can('expense_create')
-                    <x-button primary type="button" onclick="Livewire.emit('createModal')">
+                    <x-button primary type="button" wire:click="dispatch('createModal')">
                         {{ __('Create Expense') }}
                     </x-button>
                 @endcan

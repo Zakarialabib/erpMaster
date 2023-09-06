@@ -1,6 +1,6 @@
 <div>
     <!-- Show Modal -->
-    <x-modal wire:model.live="showModal">
+    <x-modal wire:model="showModal">
         <x-slot name="title">
             {{ __('Show Product') }} - {{ $product?->code }}
         </x-slot>
@@ -9,7 +9,7 @@
 
             <div class="px-4 mx-auto mb-4">
                 @if ($product)
-                    @if (settings()->telegram_channel)
+                    @if (settings('telegram_channel'))
                         <div class="flex justify-center w-full my-5 px-3">
                             <x-button success type="button" wire:click="$dispatch('sendTelegram',{{ $product?->id }})"
                                 wire:loading.attr="disabled">

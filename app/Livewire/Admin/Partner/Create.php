@@ -32,7 +32,7 @@ class Create extends Component
 
     public function render()
     {
-        abort_if(Gate::denies('partner_create'), 403);
+        abort_if(Gate::denies('partner create'), 403);
 
         return view('livewire.admin.partners.create');
     }

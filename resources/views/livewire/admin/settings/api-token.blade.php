@@ -47,7 +47,7 @@
                 </div>
                 <div class="mb-4">
                     <p class="font-medium">{{ __('Website URL') }}</p>
-                    <input type="text" wire:model.blur="custom_store_url" id="url" name="url"
+                    <input type="text" wire:model="custom_store_url" id="url" name="url"
                         class="w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
                 </div>
                 <button wire:click="countNotExistingProducts" type="button"

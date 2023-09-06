@@ -13,12 +13,9 @@ class Create extends Component
 {
     use LivewireAlert;
 
-    public $listeners = ['createModal'];
-
     public $createModal = false;
 
-    /** @var mixed */
-    public $customergroup;
+    public CustomerGroup $customergroup;
 
     /** @var array */
     protected $rules = [
@@ -31,25 +28,19 @@ class Create extends Component
         'customergroup.percentage.required' => 'The percentage field cannot be empty.',
     ];
 
-    public function updated($propertyName): void
-    {
-        $this->validateOnly($propertyName);
-    }
-
     public function render()
     {
-        // abort_if(Gate::denies('expense_category_create'), 403);
+        // abort_if(Gate::denies('expense_category create'), 403);
 
         return view('livewire.admin.customer-group.create');
     }
 
+    #[On('createModal')]
     public function createModal(): void
     {
         $this->resetErrorBag();
 
         $this->resetValidation();
-
-        $this->customergroup = new CustomerGroup();
 
         $this->createModal = true;
     }
@@ -62,7 +53,7 @@ class Create extends Component
 
         $this->alert('success', __('Customer group created successfully.'));
 
-        $this->dispatch('refreshIndex');
+        $this->dispatch('refreshIndex')->to(Index::class);
 
         $this->createModal = false;
     }

@@ -7,33 +7,34 @@ namespace App;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Currency;
-use App\Models\Settings;
+use App\Models\Page;
 use App\Models\Subcategory;
-use Illuminate\Support\Facades\Cache;
+use App\Models\Product;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
 
 class Helpers
 {
-    /**
-     * Fetch Cached settings from database
-     *
-     * @param mixed $key
-     *
-     * @return mixed
-     */
-    public static function settings($key)
+    public static function getEcommerceProducts()
     {
-        return Cache::rememberForever('settings', function () {
-            return Settings::pluck('value', 'key');
-        })->get($key);
+        return Product::whereHas('warehouses', function ($query) {
+            $query->where('is_ecommerce', true)
+                ->where('qty', '>', 0);
+        });
     }
 
     public static function getActiveCategories()
     {
         return Category::active()
             ->select('id', 'name')
+            ->get();
+    }
+
+    public static function getActivePages()
+    {
+        return Page::active()
+            ->select('id', 'title', 'slug')
             ->get();
     }
 

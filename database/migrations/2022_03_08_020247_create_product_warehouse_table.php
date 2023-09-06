@@ -22,9 +22,16 @@ return new class () extends Migration {
             $table->foreignIdFor(Product::class)->constrained()->restrictOnDelete();
             $table->foreignIdFor(Warehouse::class)->constrained()->restrictOnDelete();
 
-            $table->integer('price');
-            $table->integer('cost');
+            $table->float('price', 10, 2);
+            $table->float('cost', 10, 2);
+            $table->float('old_price', 10, 2);
             $table->integer('qty');
+            $table->integer('stock_alert');
+            $table->boolean('is_ecommerce')->default(false);
+            $table->tinyInteger('is_discount')->default(false);
+            $table->date('discount_date')->nullable();
+
+            $table->softDeletes();
             $table->timestamps();
         });
     }

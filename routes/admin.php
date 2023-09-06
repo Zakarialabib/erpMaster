@@ -2,55 +2,77 @@
 
 declare(strict_types=1);
 
-use App\Http\Controllers\AdjustmentController;
-use App\Http\Controllers\BarcodeController;
-use App\Http\Controllers\ExportController;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\IntegrationController;
-use App\Http\Controllers\LogController;
-use App\Http\Controllers\PosController;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\PurchaseController;
-use App\Http\Controllers\PurchasePaymentsController;
-use App\Http\Controllers\PurchaseReturnPaymentsController;
-use App\Http\Controllers\PurchasesReturnController;
-use App\Http\Controllers\QuotationController;
-use App\Http\Controllers\QuotationSalesController;
-use App\Http\Controllers\ReportsController;
-use App\Http\Controllers\SaleController;
-use App\Http\Controllers\SalesReturnController;
-use App\Http\Controllers\SendQuotationEmailController;
-use App\Http\Controllers\SettingController;
-use App\Http\Controllers\SuppliersController;
-use App\Http\Controllers\Admin\NotificationController;
-use App\Http\Controllers\Admin\ReportController;
+use App\Http\Controllers\Admin\ExportController;
+use App\Http\Controllers\Admin\HomeController;
+use App\Http\Controllers\Admin\IntegrationController;
+use App\Http\Controllers\Admin\LogController;
+use App\Http\Controllers\Admin\PosController;
+use App\Http\Controllers\Admin\ProfileController;
+use App\Http\Controllers\Admin\PurchasePaymentsController;
+use App\Http\Controllers\Admin\PurchaseReturnPaymentsController;
+use App\Http\Controllers\Admin\PurchasesReturnController;
+use App\Http\Controllers\Admin\QuotationSalesController;
+use App\Http\Controllers\Admin\SalesReturnController;
+use App\Http\Controllers\Admin\SendQuotationEmailController;
+use App\Http\Controllers\Admin\SettingController;
+use App\Http\Controllers\Admin\ReportsController;
 use App\Livewire\Admin\Dashboard;
+use App\Livewire\Admin\Adjustment\Index as AdjustmentIndex;
+use App\Livewire\Admin\Adjustment\Create as CreateAdjustment;
+use App\Livewire\Admin\Adjustment\Edit as EditAdjustment;
 use App\Livewire\Admin\Backup\Index as BackupIndex;
 use App\Livewire\Admin\Blog\Index as BlogsIndex;
 use App\Livewire\Admin\Brands\Index as BrandIndex;
 use App\Livewire\Admin\BlogCategory\Index as BlogCategoryIndex;
 use App\Livewire\Admin\Categories\Index as CategoryIndex;
-use App\Livewire\Admin\Comment\Index as CommentIndex;
 use App\Livewire\Admin\Currency\Index as CurrencyIndex;
-use App\Livewire\Admin\Customer\Index  as CustomersIndex;
-// use App\Livewire\Admin\Customers\Index as CustomersIndex;
+use App\Livewire\Admin\Customers\Index as CustomersIndex;
+use App\Livewire\Admin\Customers\Details as CustomerDetails;
 use App\Livewire\Admin\CustomerGroup\Index  as CustomerGroupIndex;
-use App\Livewire\Admin\Expense\Index as ExpenseIndex;
+use App\Livewire\Admin\Email\Index as EmailIndex;
+use App\Livewire\Admin\Expense\Index as ExpensesIndex;
 use App\Livewire\Admin\ExpenseCategories\Index as ExpenseCategoriesIndex;
-use App\Livewire\Admin\FeaturedBanner\Index as FeaturedBannerIndex;
+use App\Livewire\Admin\FeaturedBanner\Index as FeaturedBannersIndex;
+use App\Livewire\Admin\Faq\Index as FaqIndex;
 use App\Livewire\Admin\Language\Index as LanguageIndex;
 use App\Livewire\Admin\Language\EditTranslation;
-use App\Livewire\Admin\Suppliers\Index  as SuppliersIndex;
 use App\Livewire\Admin\Permission\Index as PermissionsIndex;
 use App\Livewire\Admin\Products\Index as ProductsIndex;
+use App\Livewire\Admin\Products\Barcode as BarcodeIndex;
+use App\Livewire\Admin\Reviews\Index as ReviewsIndex;
 use App\Livewire\Admin\Role\Index as RolesIndex;
 use App\Livewire\Admin\Section\Index as Sectionsindex;
 use App\Livewire\Admin\Slider\Index as SlidersIndex;
 use App\Livewire\Admin\Subcategory\Index as SubcategoryIndex;
+use App\Livewire\Admin\Suppliers\Index  as SuppliersIndex;
+use App\Livewire\Admin\Suppliers\Details  as SupplierDetails;
 use App\Livewire\Admin\Warehouses\Index as WarehouseIndex;
 use App\Livewire\Admin\Shipping\Index as ShippingIndex;
 use App\Livewire\Admin\Users\Index as UsersIndex;
 use App\Livewire\Admin\Page\Index as PagesIndex;
+use App\Livewire\Admin\Menu\Index as MenuIndex;
+use App\Livewire\Admin\Order\Index as OrdersIndex;
+use App\Livewire\Admin\OrderForm\Index as OrderFormIndex;
+use App\Livewire\Admin\Notification\Index as NotificationIndex;
+use App\Livewire\Admin\Pos\Index as PosIndex;
+use App\Livewire\Admin\Printer\Index as PrinterIndex;
+use App\Livewire\Admin\Purchase\Index as PurchasesIndex;
+use App\Livewire\Admin\Purchase\Create as CreatePurchase;
+use App\Livewire\Admin\Purchase\Edit as EditPurchase;
+use App\Livewire\Admin\PurchaseReturn\Index as PurchaseReturnIndex;
+use App\Livewire\Admin\Quotations\Index as QuotationsIndex;
+use App\Livewire\Admin\Quotations\Create as CreateQuotation;
+use App\Livewire\Admin\Quotations\Edit as EditQuotation;
+use App\Livewire\Admin\SaleReturn\Index as SaleReturnIndex;
+use App\Livewire\Admin\Sales\Index as SalesIndex;
+use App\Livewire\Admin\Sales\Create as CreateSale;
+use App\Livewire\Admin\Sales\Edit as EditSale;
+use App\Livewire\Admin\Settings\Index as SettingsIndex;
+use App\Livewire\Admin\Subscriber\Index as SubscriberIndex;
+use App\Livewire\Admin\Contacts as ContactsIndex;
+use App\Livewire\Admin\Page\Settings as PageSettings;
+use Illuminate\Support\Facades\Route;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -62,11 +84,7 @@ use App\Livewire\Admin\Page\Index as PagesIndex;
 |
 */
 
-Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth', 'role:ADMIN', 'firewall.all']], function () {
-    // change lang
-    Route::get('/lang/{lang}', [HomeController::class, 'changeLanguage'])->name('changelanguage');
-    // Route::get('/lang/{lang}', [DashboardController::class, 'changeLanguage'])->name('changelanguage');
-
+Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth', 'role:admin']], function () {
     // Dashboard
     Route::get('/dashboard', Dashboard::class)->name('dashboard');
 
@@ -76,7 +94,9 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth', 'r
     Route::get('/payment-flow/chart-data', [HomeController::class, 'paymentChart'])->name('payment-flow.chart');
 
     //Product Adjustment
-    Route::resource('adjustments', AdjustmentController::class);
+    Route::get('/adjustments', AdjustmentIndex::class)->name('adjustments.index');
+    Route::get('/adjustment/create', CreateAdjustment::class)->name('adjustments.create');
+    Route::get('/adjustment/update/{id}', EditAdjustment::class)->name('adjustments.edit');
 
     //Currencies
     Route::get('currencies', CurrencyIndex::class)->name('currencies.index');
@@ -85,29 +105,28 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth', 'r
     Route::get('expense-categories', ExpenseCategoriesIndex::class)->name('expense-categories.index');
 
     //Expense
-    Route::get('expenses', ExpenseIndex::class)->name('expenses.index');
+    Route::get('expenses', ExpensesIndex::class)->name('expenses.index');
 
     //Customers
     Route::get('customers', CustomersIndex::class)->name('customers.index');
-    Route::get('customer/details/{id}', [CustomersController::class, 'show'])->name('customer.details');
+    Route::get('customer/details/{id}', CustomerDetails::class)->name('customer.details');
 
     Route::get('customergroup', CustomerGroupIndex::class)->name('customer-group.index');
 
     Route::get('suppliers', SuppliersIndex::class)->name('suppliers.index');
-    Route::get('supplier/details/{id}', [SuppliersController::class, 'show'])->name('supplier.details');
+    Route::get('supplier/details/{id}', SupplierDetails::class)->name('supplier.details');
 
     //Warehouses
     Route::get('warehouses', WarehouseIndex::class)->name('warehouses.index');
 
-    Route::get('/products/print-barcode', [BarcodeController::class, 'index'])->name('barcode.print');
-
     Route::get('brands', BrandIndex::class)->name('brands.index');
     Route::get('product-categories', CategoryIndex::class)->name('product-categories.index');
 
-    Route::get('/subcategories', SubcategoryIndex::class)->name('subcategories');
+    Route::get('/subcategories', SubcategoryIndex::class)->name('product-subcategories.index');
 
-    Route::get('/products', ProductsIndex::class)->name('products');
+    Route::get('/products', ProductsIndex::class)->name('products.index');
 
+    Route::get('/products/print-barcode', BarcodeIndex::class)->name('barcode.print');
     //Generate Quotation PDF
     Route::get('/quotations/pdf/{id}', [ExportController::class, 'quotation'])->name('quotations.pdf');
 
@@ -118,13 +137,17 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth', 'r
     Route::get('quotation-sales/{quotation}', QuotationSalesController::class)->name('quotation-sales.create');
 
     //Quotations
-    Route::resource('quotations', QuotationController::class);
+    Route::get('/quotations', QuotationsIndex::class)->name('quotations.index');
+    Route::get('/quotation/create', CreateQuotation::class)->name('quotation.create');
+    Route::get('/quotation/update/{id}', EditQuotation::class)->name('quotation.edit');
 
     //Generate Purchase PDF
     Route::get('/purchases/pdf/{id}', [ExportController::class, 'purchase'])->name('purchases.pdf');
 
     //Purchases
-    Route::resource('purchases', PurchaseController::class);
+    Route::get('/purchases', PurchasesIndex::class)->name('purchases.index');
+    Route::get('/purchase/create', CreatePurchase::class)->name('purchase.create');
+    Route::get('/purchase/update/{id}', EditPurchase::class)->name('purchase.edit');
 
     //Purchase Payments
     Route::get('/purchase-payments/{purchase_id}', [PurchasePaymentsController::class, 'index'])->name('purchase-payments.index');
@@ -168,15 +191,17 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth', 'r
     Route::get('/purchases-return-report', [ReportsController::class, 'purchasesReturnReport'])->name('purchases-return-report.index');
 
     //POS
-    Route::get('/pos', [PosController::class, 'index'])->name('app.pos.index');
-    Route::post('/app/pos', [PosController::class, 'store'])->name('app.pos.store');
+    Route::get('/pos', [PosController::class, 'index'])->name('pos.index');
+    Route::post('/app/pos', [PosController::class, 'store'])->name('pos.store');
 
     //Generate Sale PDF
     Route::get('/sales/pdf/{id}', [ExportController::class, 'sale'])->name('sales.pdf');
     Route::get('/sales/pos/pdf/{id}', [ExportController::class, 'salePos'])->name('sales.pos.pdf');
 
     //Sales
-    Route::resource('sales', SaleController::class);
+    Route::get('/sales', SalesIndex::class)->name('sales.index');
+    Route::get('/sale/create', CreateSale::class)->name('sale.create');
+    Route::get('/sale/update/{id}', EditSale::class)->name('sale.edit');
 
     //Generate Sale Returns PDF
     Route::get('/sale-returns/pdf/{id}', [ExportController::class, 'saleReturns'])->name('sale-returns.pdf');
@@ -204,64 +229,46 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth', 'r
     Route::get('/translation/{code}', EditTranslation::class)->name('translation.index');
 
     //General Settings
-    Route::get('/settings', SettingController::class)->name('settings.index');
+    Route::get('/settings', SettingsIndex::class)->name('settings.index');
 
     // Integrations
     Route::get('/integrations', IntegrationController::class)->name('integrations.index');
 
-    Route::get('/orders', [OrderController::class, 'index'])->name('orders');
+    Route::get('/orders', OrdersIndex::class)->name('orders.index');
 
-    Route::get('/sections',Sectionsindex::class)->name('sections');
+    Route::get('/sections', Sectionsindex::class)->name('sections.index');
 
-    Route::get('/featuredBanners', [FeaturedBannerController::class, 'index'])->name('featuredBanners');
-    Route::get('/pages', PagesIndex::class)->name('pages');
-    Route::get('/order-forms', [PageController::class, 'orderForms'])->name('orderforms');
-    Route::get('/page/settings', [PageController::class, 'settings'])->name('page.settings');
+    Route::get('/featuredBanners', FeaturedBannersIndex::class)->name('featuredBanners');
+    Route::get('/pages', PagesIndex::class)->name('pages.index');
+    Route::get('/order-forms', OrderFormIndex::class)->name('orderforms');
+    Route::get('/page/settings', PageSettings::class)->name('page.settings');
 
-    Route::get('/sliders', SlidersIndex::class)->name('sliders');
+    Route::get('/sliders', SlidersIndex::class)->name('sliders.index');
 
-    Route::get('/blogs', SliderIndex::class)->name('blogs');
-    Route::get('/blog/category', BlogCategoryIndex::class)->name('blogcategories');
+    Route::get('/blogs', BlogsIndex::class)->name('blogs.index');
+    Route::get('/blog/category', BlogCategoryIndex::class)->name('blog-categories.index');
 
-    Route::get('/settings', [SettingController::class, 'index'])->name('settings');
     Route::get('/backup', BackupIndex::class)->name('setting.backup');
-    Route::get('/shipping', ShippingIndex::class)->name('setting.shipping');
+    Route::get('/shipping', ShippingIndex::class)->name('shipping.index');
     Route::get('/popupsettings', [SettingController::class, 'popupsettings'])->name('setting.popupsettings');
     Route::get('/redirects', [SettingController::class, 'redirects'])->name('setting.redirects');
 
-    Route::get('/report', [ReportController::class, 'index'])->name('report');
+    Route::get('/report', [ReportsController::class, 'index'])->name('report');
 
-    Route::get('/notification', [NotificationController::class, 'index'])->name('notification');
-    Route::get('/smpt', [SmptController::class, 'index'])->name('smpt');
+    Route::get('/notification', NotificationIndex::class)->name('notification');
 
-    Route::get('/currencies', [SettingController::class, 'currencies'])->name('currencies');
+    Route::get('/reviews', ReviewsIndex::class)->name('reviews.index');
+    Route::get('/contacts', ContactsIndex::class)->name('contacts.index');
 
-    Route::get('/comment', CommentIndex::class)->name('comments');
-    Route::get('/contacts', App\Livewire\Admin\Contacts::class);
+    Route::get('/email-settings', EmailIndex::class)->name('email-settings');
+    Route::get('/faqs', FaqIndex::class)->name('faqs');
+    Route::get('/menus', MenuIndex::class)->name('menus');
+    Route::get('/printers', PrinterIndex::class)->name('printers');
+    Route::get('/subscribers', SubscriberIndex::class)->name('subscribers.index');
 
-
-        Route::get('/email', App\Livewire\Admin\Email::class);
-        Route::get('/faq', App\Livewire\Admin\Faq::class);
-        Route::get('/menu', App\Livewire\Admin\Menu::class);
-        Route::get('/order', App\Livewire\Admin\Order::class);
-        Route::get('/orderform', App\Livewire\Admin\OrderForm::class);
-        Route::get('/package', App\Livewire\Admin\Package::class);
-        Route::get('/partner', App\Livewire\Admin\Partner::class);
-        Route::get('/pos', App\Livewire\Admin\Pos::class);
-        Route::get('/printer', App\Livewire\Admin\Printer::class);
-        Route::get('/product', App\Livewire\Admin\Product::class);
-        Route::get('/products', App\Livewire\Admin\Products::class);
-        Route::get('/purchase', App\Livewire\Admin\Purchase::class);
-        Route::get('/purchasereturn', App\Livewire\Admin\PurchaseReturn::class);
-        Route::get('/quotations', App\Livewire\Admin\Quotations::class);
-        Route::get('/reports', App\Livewire\Admin\Reports::class);
-        Route::get('/role', App\Livewire\Admin\Role::class);
-        Route::get('/salereturn', App\Livewire\Admin\SaleReturn::class);
-        Route::get('/sales', App\Livewire\Admin\Sales::class);
-        Route::get('/section', App\Livewire\Admin\Section::class);
-        Route::get('/service', App\Livewire\Admin\Service::class);
-        Route::get('/settings', App\Livewire\Admin\Settings::class);
-        Route::get('/stats', App\Livewire\Admin\Stats::class);
-        Route::get('/subscriber', App\Livewire\Admin\Subscriber::class);
-        Route::get('/sync', App\Livewire\Admin\Sync::class);
+    // Route::get('/package', PackageIndex::class);
+    // Route::get('/partner', PartnerIndex::class);
+    // Route::get('/pos', PosIndex::class);
+    // Route::get('/purchasereturn', PurchaseReturnIndex::class);
+    // Route::get('/salereturn', SaleReturnIndex::class);
 });

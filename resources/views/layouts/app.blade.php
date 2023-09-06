@@ -9,7 +9,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="robots" content="nofollow">
 
-    <title>@yield('title') || {{ settings()->company_name }}</title>
+    <title>@yield('title') || {{ settings('company_name') }}</title>
     <!-- Styles -->
 
     <!-- Favicon -->
@@ -19,7 +19,7 @@
     <link rel="apple-touch-icon" href="/images/icon-192x192.png">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <meta name="apple-mobile-web-app-title" content="{{ settings()->company_name }}">
+    <meta name="apple-mobile-web-app-title" content="{{ settings('company_name') }}">
 
     @vite('resources/css/app.css')
 

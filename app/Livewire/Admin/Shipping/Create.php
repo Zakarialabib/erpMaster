@@ -6,55 +6,56 @@ namespace App\Livewire\Admin\Shipping;
 
 use App\Models\Shipping;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
+use Livewire\Attributes\On;
+use Livewire\Attributes\Rule;
 use Livewire\Component;
+use Illuminate\Support\Facades\Gate;
 
 class Create extends Component
 {
     use LivewireAlert;
 
-    public $createShipping;
+    public $createModal = false;
 
-    public $listeners = ['createShipping'];
+    public Shipping $shipping;
 
-    public $shipping;
-
-    public array $rules = [
-        'shipping.is_pickup' => ['integer'],
-        'shipping.title'     => ['required', 'string', 'max:255'],
-        'shipping.subtitle'  => ['nullable', 'string', 'max:255'],
-        'shipping.cost'      => ['required', 'string'],
-    ];
+    public bool $is_pickup = false;
+    #[Rule('required|max:255')]
+    public string $title;
+    #[Rule('nullable|max:255')]
+    public string $subtitle;
+    #[Rule('required|numeric')]
+    public $cost;
 
     public function render()
     {
-        // abort_if(Gate::denies('shipping_create'), 403);
+        abort_if(Gate::denies('shipping create'), 403);
 
         return view('livewire.admin.shipping.create');
     }
 
-    public function createShipping()
+    #[On('createModal')]
+    public function createModal()
     {
         $this->resetErrorBag();
 
         $this->resetValidation();
 
-        $this->shipping = new Shipping();
-
-        $this->shipping->is_pickup = false;
-
-        $this->createShipping = true;
+        $this->createModal = true;
     }
 
     public function create()
     {
         $this->validate();
 
-        $this->shipping->save();
+        Shipping::create($this->all());
 
         $this->alert('success', __('Shipping created successfully.'));
 
-        $this->emit('refreshIndex');
+        $this->dispatch('refreshIndex')->to(Index::class);
 
-        $this->createShipping = false;
+        $this->createModal = false;
+
+        $this->reset('title', 'subtitle', 'cost', 'is_pickup');
     }
 }

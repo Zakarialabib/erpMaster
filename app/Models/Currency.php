@@ -13,6 +13,7 @@ class Currency extends Model
     use HasAdvancedFilter;
     use HasFactory;
 
+    /** @var array<int, string> */
     public const ATTRIBUTES = [
         'id',
         'name',
@@ -38,5 +39,7 @@ class Currency extends Model
         'thousand_separator',
         'decimal_separator',
         'exchange_rate',
+        'is_default',
+        'status',
     ];
 }

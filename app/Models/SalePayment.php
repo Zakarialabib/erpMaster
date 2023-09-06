@@ -64,7 +64,7 @@ class SalePayment extends Model
         parent::boot();
 
         static::creating(function ($salePayment) {
-            $prefix = settings()->salePayment_prefix;
+            $prefix = settings('salePayment_prefix');
 
             $latestSalePayment = self::latest()->first();
 

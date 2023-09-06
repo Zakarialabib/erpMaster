@@ -9,11 +9,15 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Enums\MovementType;
 
+// use App\Traits\HasUuid;
+
 class Movement extends Model
 {
     use HasFactory;
+    // use HasUuid;
 
     protected $fillable = [
+        'id',
         'type',
         'quantity',
         'price',

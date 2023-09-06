@@ -4,10 +4,15 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\Pivot;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ProductWarehouse extends Pivot
 {
+    use SoftDeletes;
+
     protected $table = 'product_warehouse';
     /**
      * The attributes that are mass assignable.
@@ -15,7 +20,9 @@ class ProductWarehouse extends Pivot
      * @var array<int, string>
      */
     protected $fillable = [
-        'product_id', 'warehouse_id', 'qty', 'price', 'cost',
+        'product_id', 'warehouse_id',
+        'qty', 'price', 'cost', 'old_price', 'stock_alert',
+        'is_discount', 'discount_date', 'is_ecommerce',
     ];
 
     protected $casts = [
@@ -23,17 +30,17 @@ class ProductWarehouse extends Pivot
         'warehouse_id' => 'integer',
     ];
 
-    public function product()
+    public function product(): BelongsTo
     {
         return $this->belongsTo(Product::class);
     }
 
-    public function warehouse()
+    public function warehouse(): BelongsTo
     {
         return $this->belongsTo(Warehouse::class);
     }
 
-    public function productMovements()
+    public function productMovements(): HasMany
     {
         return $this->hasMany(Movement::class);
     }

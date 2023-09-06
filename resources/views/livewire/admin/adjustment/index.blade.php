@@ -1,8 +1,16 @@
 <div>
+    @section('title', __('Adjustments list'))
+    <x-theme.breadcrumb :title="__('Adjustments list')" :parent="route('admin.adjustments.index')" :parentName="__('Adjustment')">
+        @can('adjustment_create')
+            <x-button href="{{ route('admin.adjustments.create') }}" primary>
+                {{ __('Create Adjustment') }}
+            </x-button>
+        @endcan
+    </x-theme.breadcrumb>
     <div class="flex flex-wrap justify-center">
         <div class="lg:w-1/2 md:w-1/2 sm:w-full flex flex-wrap my-2">
             <select wire:model.live="perPage"
-                class="w-20 block p-3 leading-5 bg-white dark:bg-dark-eval-2 text-gray-700 dark:text-gray-300 rounded border border-gray-300 mb-1 text-sm focus:shadow-outline-blue focus:border-blue-300 mr-3">
+                class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-auto sm:text-sm border-gray-300 rounded-md focus:outline-none focus:shadow-outline-blue transition duration-150 ease-in-out">
                 @foreach ($paginationOptions as $value)
                     <option value="{{ $value }}">{{ $value }}</option>
                 @endforeach
@@ -15,7 +23,7 @@
         </div>
         <div class="lg:w-1/2 md:w-1/2 sm:w-full my-2">
             <div class="my-2">
-                <x-input wire:model.live.debounce.500ms="search" placeholder="{{ __('Search') }}" autofocus />
+                <x-input wire:model.live="search" placeholder="{{ __('Search') }}" autofocus />
             </div>
         </div>
     </div>
@@ -49,13 +57,13 @@
                                 <i class="fas fa-eye"></i>
                             </x-button>
 
-                            <x-button info href="{{ route('adjustments.edit', $adjustment->id) }}"
+                            <x-button info href="{{ route('admin.adjustments.edit', $adjustment->id) }}"
                                 wire:loading.attr="disabled">
                                 <i class="fas fa-edit"></i>
                             </x-button>
 
-                            <x-button danger type="button" 
-                            wire:click="$dispatch('deleteModal', {{ $adjustment->id }})"
+                            <x-button danger type="button"
+                                wire:click="$dispatch('deleteModal', {{ $adjustment->id }})"
                                 wire:loading.attr="disabled">
                                 <i class="fas fa-trash"></i>
                             </x-button>

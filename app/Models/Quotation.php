@@ -67,7 +67,10 @@ class Quotation extends Model
 
     public function customer(): BelongsTo
     {
-        return $this->belongsTo(Customer::class, 'customer_id', 'id');
+        return $this->belongsTo(
+            related: Customer::class,
+            foreignKey: 'customer_id',
+        );
     }
 
     /**
@@ -87,7 +90,7 @@ class Quotation extends Model
         parent::boot();
 
         static::creating(function ($quotation) {
-            $prefix = settings()->quotation_prefix;
+            $prefix = settings('quotation_prefix');
 
             $latestQuotation = self::latest()->first();
 

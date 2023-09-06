@@ -6,8 +6,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCurrenciesTable extends Migration
-{
+return new class () extends Migration {
     /**
      * Run the migrations.
      *
@@ -24,7 +23,8 @@ class CreateCurrenciesTable extends Migration
             $table->string('thousand_separator')->default(',');
             $table->string('decimal_separator')->default('.');
             $table->integer('exchange_rate')->nullable();
-
+            $table->boolean('is_default')->default(false);
+            $table->boolean('status')->default(true);
             $table->softDeletes();
             $table->timestamps();
         });
@@ -39,4 +39,4 @@ class CreateCurrenciesTable extends Migration
     {
         Schema::dropIfExists('currencies');
     }
-}
+};

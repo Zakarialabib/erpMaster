@@ -4,11 +4,183 @@ declare(strict_types=1);
 
 namespace Database\Seeders;
 
-use App\Models\Setting;
+use App\Models\Settings;
 use Illuminate\Database\Seeder;
 
 class SettingsSeeder extends Seeder
 {
+    /** @var array */
+    protected $settings = [
+        [
+            'key'   => 'company_name',
+            'value' => 'ERPMASTER',
+        ],
+        [
+            'key'   => 'site_title',
+            'value' => 'ERPMASTER',
+        ],
+        [
+            'key'   => 'company_email',
+            'value' => 'connect@zakarialabib.com',
+        ],
+        [
+            'key'   => 'company_phone',
+            'value' => '+212638041919',
+        ],
+        [
+            'key'   => 'company_address',
+            'value' => 'Casablanca, Maroc',
+        ],
+        [
+            'key'   => 'company_tax',
+            'value' => '',
+        ],
+        [
+            'key'   => 'site_logo',
+            'value' => '',
+        ],
+        [
+            'key'   => 'site_favicon',
+            'value' => '',
+        ],
+        [
+            'key'   => 'footer_copyright_text',
+            'value' => '',
+        ],
+        [
+            'key'   => 'seo_meta_title',
+            'value' => 'ERPMASTER',
+        ],
+        [
+            'key'   => 'seo_meta_description',
+            'value' => 'ERPMASTER',
+        ],
+        [
+            'key'   => 'social_facebook',
+            'value' => '#',
+        ],
+        [
+            'key'   => 'social_twitter',
+            'value' => '#',
+        ],
+        [
+            'key'   => 'social_instagram',
+            'value' => '#',
+        ],
+        [
+            'key'   => 'social_linkedin',
+            'value' => '#',
+        ],
+        [
+            'key'   => 'social_whatsapp',
+            'value' => '#',
+        ],
+        [
+            'key'   => 'head_tags',
+            'value' => '',
+        ],
+        [
+            'key'   => 'body_tags',
+            'value' => '',
+        ],
+        [
+            'key'   => 'site_maintenance_message',
+            'value' => 'Site is under maintenance',
+        ],
+        [
+            'key'   => 'telegram_channel',
+            'value' => '',
+        ],
+        [
+            'key'   => 'default_currency_id',
+            'value' => 1,
+        ],
+        [
+            'key'   => 'default_currency_position',
+            'value' => 'right',
+        ],
+        [
+            'key'   => 'default_date_format',
+            'value' => 'd-m-Y',
+        ],
+        [
+            'key'   => 'default_client_id',
+            'value' => '1',
+        ],
+        [
+            'key'   => 'default_warehouse_id',
+            'value' => null,
+        ],
+        [
+            'key'   => 'default_language',
+            'value' => 'fr',
+        ],
+        [
+            'key'   => 'invoice_header',
+            'value' => '',
+        ],
+        [
+            'key'   => 'invoice_footer',
+            'value' => '',
+        ],
+        [
+            'key'   => 'invoice_footer_text',
+            'value' => 'Thank you for your business',
+        ],
+        [
+            'key'   => 'is_rtl',
+            'value' => '1',
+        ],
+        [
+            'key'   => 'sale_prefix',
+            'value' => 'SA-000',
+        ],
+        [
+            'key'   => 'saleReturn_prefix',
+            'value' => 'SRE-000',
+        ],
+        [
+            'key'   => 'purchase_prefix',
+            'value' => 'PR-000',
+        ],
+        [
+            'key'   => 'purchaseReturn_prefix',
+            'value' => 'PRE-000',
+        ],
+        [
+            'key'   => 'quotation_prefix',
+            'value' => 'QU-000',
+        ],
+        [
+            'key'   => 'salePayment_prefix',
+            'value' => 'SP-000',
+        ],
+        [
+            'key'   => 'purchasePayment_prefix',
+            'value' => 'PP-000',
+        ],
+        [
+            'key'   => 'show_email',
+            'value' => '1',
+        ],
+        [
+            'key'   => 'show_address',
+            'value' => '1',
+        ],
+        [
+            'key'   => 'show_order_tax',
+            'value' => '1',
+        ],
+        [
+            'key'   => 'show_discount',
+            'value' => '1',
+        ],
+        [
+            'key'   => 'show_shipping',
+            'value' => '1',
+        ],
+    ];
+
     /**
      * Run the database seeds.
      *
@@ -16,42 +188,15 @@ class SettingsSeeder extends Seeder
      */
     public function run()
     {
-        $settings = [
-            [
-                'id'                        => 1,
-                'company_name'              => 'Mystock',
-                'company_email'             => 'contact@hotech.ma',
-                'company_phone'             => '212 5 22 22 22 22',
-                'company_logo'              => 'logo.png',
-                'company_address'           => 'Rue 1, Casablanca, Maroc',
-                'company_tax'               => '0',
-                'telegram_channel'          => '',
-                'default_currency_id'       => 1,
-                'default_currency_position' => 'right',
-                'default_date_format'       => 'd-m-Y',
-                'default_client_id'         => '1',
-                'default_warehouse_id'      => null,
-                'default_language'          => 'fr',
-                'invoice_header'            => '',
-                'invoice_footer'            => '',
-                'invoice_footer_text'       => 'Thank you for your business',
-                'is_rtl'                    => '1',
-                'sale_prefix'               => 'SA-000',
-                'saleReturn_prefix'         => 'SRE-000',
-                'purchase_prefix'           => 'PR-000',
-                'purchaseReturn_prefix'     => 'PRE-000',
-                'quotation_prefix'          => 'QU-000',
-                'salePayment_prefix'        => 'SP-000',
-                'purchasePayment_prefix'    => 'PP-000',
-                'show_email'                => '1',
-                'show_address'              => '1',
-                'show_order_tax'            => '1',
-                'show_discount'             => '1',
-                'show_shipping'             => '1',
-                'created_at'                => now(),
-            ],
-        ];
+        foreach ($this->settings as $index => $setting) {
+            $result = Settings::create($setting);
 
-        Setting::insert($settings);
+            if ( ! $result) {
+                $this->command->info("Insert failed at record $index.");
+
+                return;
+            }
+        }
+        $this->command->info('Inserted '.count($this->settings).' records');
     }
 }

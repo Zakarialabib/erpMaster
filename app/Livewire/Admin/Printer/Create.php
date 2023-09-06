@@ -40,7 +40,7 @@ class Create extends Component
 
     public function render()
     {
-        abort_if(Gate::denies('printer_create'), 403);
+        abort_if(Gate::denies('printer create'), 403);
 
         return view('livewire.admin.printer.create');
     }
@@ -65,7 +65,7 @@ class Create extends Component
 
         $this->alert('success', __('Printer created successfully.'));
 
-        $this->dispatch('refreshIndex');
+        $this->dispatch('refreshIndex')->to(Index::class);
 
         $this->createPrinter = false;
     }

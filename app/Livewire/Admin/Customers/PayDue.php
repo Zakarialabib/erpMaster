@@ -7,6 +7,7 @@ namespace App\Livewire\Admin\Customers;
 use App\Enums\PaymentStatus;
 use App\Models\Sale;
 use App\Models\SalePayment;
+use Livewire\Attributes\On;
 use Illuminate\Support\Facades\Auth;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
@@ -17,10 +18,9 @@ class PayDue extends Component
 
     public $amount;
     public $selectedSales;
+    public $payment_method;
     public $customer_id;
     public $payModal = false;
-
-    public $listeners = ['editModal'];
 
     protected $rules = [
         'selectedSales' => 'required|array',
@@ -34,6 +34,7 @@ class PayDue extends Component
             ->get();
     }
 
+    #[On('payModal')]
     public function payModal($customer)
     {
         $this->payModal = true;

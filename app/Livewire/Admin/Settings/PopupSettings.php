@@ -153,9 +153,9 @@ class PopupSettings extends Component
             // Emit an event based on the chosen timing option, passing along the corresponding delay/interval/duration value as an argument
 
             match ($this->timing) {
-                'delay'    => $this->emit('showDelay', $this->delay),
-                'duration' => $this->emit('showDuration', $this->duration),
-                'interval' => $this->emit('showInterval', $this->interval),
+                'delay'    => $this->dispatch('showDelay', $this->delay),
+                'duration' => $this->dispatch('showDuration', $this->duration),
+                'interval' => $this->dispatch('showInterval', $this->interval),
             };
 
             // Show success message

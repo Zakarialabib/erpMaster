@@ -6,43 +6,26 @@ namespace App\Livewire\Admin\Role;
 
 use App\Livewire\Utils\Datatable;
 use App\Models\Role;
-
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Gate;
-use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
-use Livewire\WithPagination;
 
 class Index extends Component
 {
-    use WithPagination;
-    use Datatable;
-    use LivewireAlert;
     use Datatable;
 
-    /** @var mixed */
-    public $role;
-
-    public $permissions;
-
-    /** @var array<string> */
-    public $listeners = [
-        'refreshIndex' => '$refresh',
-    ];
-
-    public function mount(): void
+    public function mount()
     {
         $this->orderable = (new Role())->orderable;
-        // $this->permissions = $this->role->permissions->pluck('id')->toArray();
     }
 
     public function render()
     {
-        $query = Role::with('permissions')
-            ->advancedFilter([
-                's'               => $this->search ?: null,
-                'order_column'    => $this->sortBy,
-                'order_direction' => $this->sortDirection,
-            ]);
+        $query = Role::advancedFilter([
+            's'               => $this->search ?: null,
+            'order_column'    => $this->sortBy,
+            'order_direction' => $this->sortDirection,
+        ]);
 
         $roles = $query->paginate($this->perPage);
 
@@ -51,7 +34,7 @@ class Index extends Component
 
     public function deleteSelected()
     {
-        abort_if(Gate::denies('role_delete'), 403);
+        abort_if(Gate::denies('role_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         Role::whereIn('id', $this->selected)->delete();
 
@@ -60,24 +43,8 @@ class Index extends Component
 
     public function delete(Role $role)
     {
-        abort_if(Gate::denies('role_delete'), 403);
+        abort_if(Gate::denies('role_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $this->confirm(__('Are you sure ?'), [
-            'toast'             => false,
-            'position'          => 'center',
-            'showConfirmButton' => true,
-            'cancelButtonText'  => __('Cancel'),
-            'onConfirmed'       => 'confirmedDelete',
-        ]);
-        $this->role = $role;
-    }
-
-    public function confirmedDelete()
-    {
-        abort_if(Gate::denies('role_delete'), 403);
-
-        $this->role->delete();
-        $this->dispatch('refreshIndex');
-        $this->alert('success', __('Role removed'));
+        $role->delete();
     }
 }

@@ -5,24 +5,19 @@ declare(strict_types=1);
 namespace App\Livewire\Admin\Categories;
 
 use App\Livewire\Utils\Datatable;
-use App\Imports\CategoriesImport;
 use App\Models\Category;
-
 use Illuminate\Support\Facades\Gate;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
 use Livewire\WithFileUploads;
-use Livewire\WithPagination;
-use Maatwebsite\Excel\Facades\Excel;
-use Storage;
+use Livewire\Attributes\Layout;
 
+#[Layout('components.layouts.dashboard')]
 class Index extends Component
 {
-    use WithPagination;
     use Datatable;
     use LivewireAlert;
     use WithFileUploads;
-    use Datatable;
 
     /** @var mixed */
     public $category;
@@ -31,16 +26,12 @@ class Index extends Component
 
     /** @var array<string> */
     public $listeners = [
-        'importModal', 'showModal',
-        'refreshIndex' => '$refresh',
+        'showModal',
         'delete',
     ];
 
     /** @var bool */
     public $showModal = false;
-
-    /** @var bool */
-    public $importModal = false;
 
     /** @var bool */
     public $deleteModal = false;
@@ -52,7 +43,7 @@ class Index extends Component
 
     public function render(): mixed
     {
-        abort_if(Gate::denies('category_access'), 403);
+        abort_if(Gate::denies('category access'), 403);
 
         $query = Category::with('products')->advancedFilter([
             's'               => $this->search ?: null,
@@ -67,7 +58,7 @@ class Index extends Component
 
     public function showModal(Category $category): void
     {
-        abort_if(Gate::denies('category_access'), 403);
+        abort_if(Gate::denies('category access'), 403);
 
         $this->resetErrorBag();
 
@@ -108,40 +99,11 @@ class Index extends Component
     {
         abort_if(Gate::denies('category_delete'), 403);
 
-        if ($category->products->count() > 0) {
+        if ($this->category->products->count() > 0) {
             $this->alert('error', __('Category has products.'));
         } else {
             Category::findOrFail($this->category)->delete();
             $this->alert('success', __('Category deleted successfully.'));
         }
-    }
-
-    public function importModal(): void
-    {
-        abort_if(Gate::denies('category_access'), 403);
-
-        $this->importModal = true;
-    }
-
-    public function downloadSample()
-    {
-        return Storage::disk('exports')->download('categories_import_sample.xls');
-    }
-
-    public function import(): void
-    {
-        abort_if(Gate::denies('category_access'), 403);
-
-        $this->validate([
-            'file' => 'required|mimes:xlsx,xls,csv,txt',
-        ]);
-
-        $file = $this->file('file');
-
-        Excel::import(new CategoriesImport(), $file);
-
-        $this->alert('success', __('Categories imported successfully.'));
-
-        $this->importModal = false;
     }
 }

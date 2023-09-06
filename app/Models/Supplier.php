@@ -5,8 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Support\HasAdvancedFilter;
-use App\Traits\GetModelByUuid;
-use App\Traits\UuidGenerator;
+use App\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -14,12 +13,10 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 class Supplier extends Model
 {
     use HasAdvancedFilter;
-    use GetModelByUuid;
-    use UuidGenerator;
+    use HasUuid;
     use HasFactory;
 
     public const ATTRIBUTES = [
-
         'id',
         'name',
         'email',
@@ -40,14 +37,7 @@ class Supplier extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'uuid',
-        'id',
-        'name',
-        'email',
-        'phone',
-        'city',
-        'country',
-        'address',
+        'id', 'name', 'email', 'phone', 'address', 'city', 'country', 'tax_number', 'wallet_id',
     ];
 
     /** @return HasOne<Wallet> */
@@ -93,17 +83,14 @@ class Supplier extends Model
 
         foreach (Purchase::completed()->purchaseDetails()->get() as $purchase) {
             foreach ($purchase->purchaseDetails as $purchaseDetail) {
-                $product_costs += $purchaseDetail->product->cost;
+                $product_costs += $purchaseDetail->product->warehouses->sum(function ($warehouse) {
+                    return $warehouse->pivot->cost * $warehouse->pivot->qty;
+                });
             }
         }
 
         $debt = ($purchases - $purchase_returns) / 100;
 
         return $debt - $product_costs;
-    }
-
-    private function supplierSum($column, $model)
-    {
-        return $model::where('supplier_id', $this->id)->sum($column);
     }
 }

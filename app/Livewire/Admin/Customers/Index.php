@@ -8,32 +8,29 @@ use App\Exports\CustomerExport;
 use App\Livewire\Utils\Datatable;
 use App\Imports\CustomerImport;
 use App\Models\Customer;
-
 use Illuminate\Support\Facades\Gate;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
 use Livewire\WithFileUploads;
-use Livewire\WithPagination;
 use Maatwebsite\Excel\Facades\Excel;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Illuminate\Http\Response;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Livewire\Attributes\Layout;
 
+#[Layout('components.layouts.dashboard')]
 class Index extends Component
 {
-    use WithPagination;
     use Datatable;
     use LivewireAlert;
     use WithFileUploads;
-    use Datatable;
 
     public $customer;
 
     public $file;
 
     public $listeners = [
-        'refreshIndex' => '$refresh',
         'showModal',
         'exportAll', 'downloadAll',
         'delete',
@@ -50,7 +47,7 @@ class Index extends Component
 
     public function render(): View|Factory
     {
-        abort_if(Gate::denies('customer_access'), 403);
+        abort_if(Gate::denies('customer access'), 403);
 
         $query = Customer::advancedFilter([
             's'               => $this->search ?: null,
@@ -83,7 +80,7 @@ class Index extends Component
 
     public function showModal($id): void
     {
-        abort_if(Gate::denies('customer_access'), 403);
+        abort_if(Gate::denies('customer access'), 403);
 
         $this->customer = Customer::find($id);
 
@@ -92,7 +89,7 @@ class Index extends Component
 
     public function downloadSelected(): BinaryFileResponse|Response
     {
-        abort_if(Gate::denies('customer_access'), 403);
+        abort_if(Gate::denies('customer access'), 403);
 
         $customers = Customer::whereIn('id', $this->selected)->get();
 
@@ -101,35 +98,35 @@ class Index extends Component
 
     public function downloadAll(Customer $customers): BinaryFileResponse|Response
     {
-        abort_if(Gate::denies('customer_access'), 403);
+        abort_if(Gate::denies('customer access'), 403);
 
         return (new CustomerExport($customers))->download('customers.xls', \Maatwebsite\Excel\Excel::XLS);
     }
 
     public function exportSelected(): BinaryFileResponse|Response
     {
-        abort_if(Gate::denies('customer_access'), 403);
+        abort_if(Gate::denies('customer access'), 403);
 
         return $this->callExport()->forModels($this->selected)->download('customers.pdf', \Maatwebsite\Excel\Excel::MPDF);
     }
 
     public function exportAll(): BinaryFileResponse|Response
     {
-        abort_if(Gate::denies('customer_access'), 403);
+        abort_if(Gate::denies('customer access'), 403);
 
         return $this->callExport()->download('customers.pdf', \Maatwebsite\Excel\Excel::MPDF);
     }
 
     public function import(): void
     {
-        abort_if(Gate::denies('customer_access'), 403);
+        abort_if(Gate::denies('customer access'), 403);
 
         $this->import = true;
     }
 
     public function importExcel()
     {
-        abort_if(Gate::denies('customer_access'), 403);
+        abort_if(Gate::denies('customer access'), 403);
 
         $this->validate([
             'file' => 'required|mimes:xls,xlsx',

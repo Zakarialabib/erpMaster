@@ -22,6 +22,7 @@ class CreateSaleReturnPaymentsTable extends Migration
 
             $table->foreignIdFor(SaleReturn::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
+
             $table->integer('amount');
             $table->date('date');
             $table->string('reference');

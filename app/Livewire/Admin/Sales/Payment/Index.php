@@ -11,12 +11,9 @@ use App\Models\Sale;
 use Illuminate\Support\Facades\Gate;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
-use Livewire\WithPagination;
 
 class Index extends Component
 {
-    use WithPagination;
-    use Datatable;
     use LivewireAlert;
     use Datatable;
 
@@ -25,12 +22,9 @@ class Index extends Component
     /** @var array<string> */
     public $listeners = [
         'showPayments',
-        'refreshIndex' => '$refresh',
     ];
 
     public $showPayments;
-
-    public $listsForFields = [];
 
     public $sale_id;
 
@@ -38,18 +32,14 @@ class Index extends Component
     {
         $this->sale = $sale;
 
-        $this->perPage = 10;
-        $this->sortBy = 'id';
-        $this->sortDirection = 'desc';
-        $this->paginationOptions = config('project.pagination.options');
         $this->orderable = (new SalePayment())->orderable;
     }
 
     public function render()
     {
-        abort_if(Gate::denies('sale_payment_access'), 403);
+        abort_if(Gate::denies('sale payment access'), 403);
 
-        $query = SalePayment::where('sale_id', $this->sale_id)->advancedFilter([
+        $query = SalePayment::where('sale_id', $this->sale->id)->advancedFilter([
             's'               => $this->search ?: null,
             'order_column'    => $this->sortBy,
             'order_direction' => $this->sortDirection,
@@ -62,7 +52,7 @@ class Index extends Component
 
     public function showPayments($sale_id)
     {
-        abort_if(Gate::denies('sale_access'), 403);
+        abort_if(Gate::denies('sale access'), 403);
 
         $this->sale = Sale::findOrFail($sale_id);
 

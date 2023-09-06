@@ -1,5 +1,4 @@
 @section('title', __('Brands'))
-<x-dashboard-layout>
     <section class="py-3 px-4">
         <div class="flex flex-wrap items-center justify-between">
             <div class="mb-5 lg:mb-0">
@@ -39,7 +38,7 @@
             <div class="float-right">
 
                 <!-- Button trigger livewire modal -->
-                <x-button primary type="button" onclick="Livewire.emit('createBrand', 'show')">
+                <x-button primary type="button" wire:click="dispatch('createBrand', 'show')">
                     {{ __('Create') }}
                 </x-button>
             </div>
@@ -51,4 +50,3 @@
             @livewire('admin.brands.index')
         </div>
     </x-card>
-</x-dashboard-layout>

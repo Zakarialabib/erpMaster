@@ -61,11 +61,11 @@
                     <tbody>
                         <tr>
                             <td>
-                                <div id="comp">{{ settings()->company_name }}</div>
-                                <div><strong>{{ __('Tax number') }}</strong> {{ settings()->company_tax }}</div>
-                                <div><strong>{{ __('Address') }}:</strong> {{ settings()->company_address }}</div>
-                                <div><strong>{{ __('Phone') }}:</strong> {{ settings()->company_phone }}</div>
-                                <div><strong>{{ __('Email') }}:</strong> {{ settings()->company_email }}</div>
+                                <div id="comp">{{ settings('company_name') }}</div>
+                                <div><strong>{{ __('Tax number') }}</strong> {{ settings('company_tax') }}</div>
+                                <div><strong>{{ __('Address') }}:</strong> {{ settings('company_address') }}</div>
+                                <div><strong>{{ __('Phone') }}:</strong> {{ settings('company_phone') }}</div>
+                                <div><strong>{{ __('Email') }}:</strong> {{ settings('company_email') }}</div>
                             </td>
                         </tr>
                     </tbody>
@@ -131,7 +131,7 @@
             </table>
         </div>
         <div id="signature">
-            @if (settings()->is_invoice_footer !== null)
+            @if (settings('is_invoice_footer') !== null)
                 <p>{{ __('Thank you for your business') }}</p>
             @endif
         </div>

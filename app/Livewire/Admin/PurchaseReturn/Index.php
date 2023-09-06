@@ -8,37 +8,25 @@ use App\Enums\PaymentStatus;
 use App\Livewire\Utils\Datatable;
 use App\Models\PurchasePayment;
 use App\Models\PurchaseReturn;
-
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
 use Livewire\WithFileUploads;
-use Livewire\WithPagination;
 use Throwable;
 
 class Index extends Component
 {
-    use WithPagination;
     use Datatable;
     use WithFileUploads;
     use LivewireAlert;
-    use Datatable;
 
     public $purchasereturn;
 
     /** @var array<string> */
     public $listeners = [
-        'showModal', 'editModal', 'delete',
-        'createModal', 'paymentModal', 'paymentSave',
-        'refreshIndex' => '$refresh',
+        'delete', 'paymentModal', 'paymentSave',
     ];
-
-    public $showModal = false;
-
-    public $createModal;
-
-    public $editModal = false;
 
     public $purchase_id;
     public $date;
@@ -63,8 +51,6 @@ class Index extends Component
 
     public function mount(): void
     {
-        $this->selectPage = false;
-
         $this->orderable = (new PurchaseReturn())->orderable;
     }
 
@@ -82,72 +68,9 @@ class Index extends Component
         return view('livewire.admin.purchase-return.index', compact('purchasereturns'));
     }
 
-    public function createModal(): void
-    {
-        abort_if(Gate::denies('purchase_create'), 403);
-
-        $this->resetErrorBag();
-
-        $this->resetValidation();
-
-        $this->reset();
-
-        $this->createModal = true;
-    }
-
-    public function create(): void
-    {
-        abort_if(Gate::denies('purchase_create'), 403);
-
-        $this->validate();
-
-        PurchaseReturn::create($this->purchase);
-
-        $this->createModal = false;
-
-        $this->alert('success', 'PurchaseReturn created successfully.');
-    }
-
-    public function editModal(PurchaseReturn $purchasereturn)
-    {
-        abort_if(Gate::denies('purchase_update'), 403);
-
-        $this->resetErrorBag();
-
-        $this->resetValidation();
-
-        $this->purchasereturn = $purchasereturn;
-
-        $this->editModal = true;
-    }
-
-    public function update(): void
-    {
-        $this->validate();
-
-        $this->purchasereturn->save();
-
-        $this->editModal = false;
-
-        $this->alert('success', 'PurchaseReturn updated successfully.');
-    }
-
-    public function showModal(PurchaseReturn $purchasereturn)
-    {
-        abort_if(Gate::denies('purchase_access'), 403);
-
-        $this->resetErrorBag();
-
-        $this->resetValidation();
-
-        $this->purchasereturn = $purchasereturn;
-
-        $this->showModal = true;
-    }
-
     public function deleteSelected()
     {
-        abort_if(Gate::denies('purchase_delete'), 403);
+        abort_if(Gate::denies('purchase delete'), 403);
 
         PurchaseReturn::whereIn('id', $this->selected)->delete();
 
@@ -156,16 +79,14 @@ class Index extends Component
 
     public function delete(PurchaseReturn $purchasereturn)
     {
-        abort_if(Gate::denies('purchase_delete'), 403);
+        abort_if(Gate::denies('purchase delete'), 403);
 
         $purchasereturn->delete();
     }
 
-    //  Payment modal
-
     public function paymentModal(PurchaseReturn $purchasereturn)
     {
-        abort_if(Gate::denies('purchase_payment'), 403);
+        abort_if(Gate::denies('purchase payment'), 403);
 
         $this->resetErrorBag();
 

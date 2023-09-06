@@ -6,16 +6,14 @@ namespace App\Livewire\Admin\Printer;
 
 use App\Livewire\Utils\Datatable;
 use App\Models\Printer;
-
 use Illuminate\Support\Facades\Gate;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
-use Livewire\WithPagination;
+use Livewire\Attributes\Layout;
 
+#[Layout('components.layouts.dashboard')]
 class Index extends Component
 {
-    use WithPagination;
-    use Datatable;
     use LivewireAlert;
     use Datatable;
 
@@ -46,7 +44,7 @@ class Index extends Component
 
     public function render()
     {
-        abort_if(Gate::denies('printer_access'), 403);
+        abort_if(Gate::denies('printer access'), 403);
 
         $query = Printer::advancedFilter([
             's'               => $this->search ?: null,
@@ -70,7 +68,7 @@ class Index extends Component
 
     public function editModal(Printer $printer): void
     {
-        abort_if(Gate::denies('printer_edit'), 403);
+        abort_if(Gate::denies('printer edit'), 403);
 
         $this->resetErrorBag();
 
@@ -83,7 +81,7 @@ class Index extends Component
 
     public function update(Printer $printer): void
     {
-        abort_if(Gate::denies('printer_edit'), 403);
+        abort_if(Gate::denies('printer edit'), 403);
 
         $this->validate();
 

@@ -5,7 +5,7 @@ lang: en-US
 
 # Usage
 
-You can check MystockMaster demo here: [LINK](https://test.hotechserver.com)
+You can check ERPMASTER demo here: [LINK]()
 
 Login with the following credentials
 
@@ -34,4 +34,4 @@ We hope this markdown format suits your needs for creating Vitepress docs/guide 
 
 
 
-To learn more about using MystockMaster, visit the [Usage Guide](/guide/usage.html).
+To learn more about using ERPMASTER, visit the [Usage Guide](/guide/usage.html).

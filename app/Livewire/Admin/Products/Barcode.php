@@ -4,14 +4,15 @@ declare(strict_types=1);
 
 namespace App\Livewire\Admin\Products;
 
-use App\Models\ProductWarehouse; // Import ProductWarehouse model instead of Product model
-use App\Models\Product;
+use App\Models\ProductWarehouse;
 use App\Models\Warehouse;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
 use Milon\Barcode\Facades\DNS1DFacade;
 use PDF;
+use Livewire\Attributes\Layout;
 
+#[Layout('components.layouts.dashboard')]
 class Barcode extends Component
 {
     use LivewireAlert;

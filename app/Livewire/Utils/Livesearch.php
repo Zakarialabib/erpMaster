@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Livewire;
+namespace App\Livewire\Utils;
 
 use App\Models\Customer;
 use App\Models\Product;
@@ -13,7 +13,7 @@ use Livewire\Component;
 
 class Livesearch extends Component
 {
-    public $searchQuery = '';
+    public $query = '';
 
     public $product;
     public $customer;
@@ -21,31 +21,27 @@ class Livesearch extends Component
     public $sale;
     public $purchase;
 
-    /** @var array<array<string>> */
     protected $queryString = [
-        'searchQuery' => [
-            'except' => '',
-            'as'     => 'q',
-        ],
+        'query',
     ];
 
-    public function updatedSearchQuery(): void
+    public function mount(): void
     {
-        $this->product = Product::query()->where('name', 'LIKE', '%'.$this->searchQuery.'%')->orWhere('code', 'like', '%'.$this->searchQuery.'%')->get();
+        $this->product = Product::query()->where('name', 'LIKE', '%'.$this->query.'%')->orWhere('code', 'like', '%'.$this->query.'%')->get();
 
-        $this->customer = Customer::query()->where('name', 'LIKE', '%'.$this->searchQuery.'%')
+        $this->customer = Customer::query()->where('name', 'LIKE', '%'.$this->query.'%')
             ->with('sales')->get();
 
-        $this->supplier = Supplier::query()->where('name', 'LIKE', '%'.$this->searchQuery.'%')
+        $this->supplier = Supplier::query()->where('name', 'LIKE', '%'.$this->query.'%')
             ->with('purchases')->get();
 
-        $this->sale = Sale::query()->where('reference', 'like', '%'.$this->searchQuery.'%')->get();
+        $this->sale = Sale::query()->where('reference', 'like', '%'.$this->query.'%')->get();
 
-        $this->purchase = Purchase::query()->where('reference', 'like', '%'.$this->searchQuery.'%')->get();
+        $this->purchase = Purchase::query()->where('reference', 'like', '%'.$this->query.'%')->get();
     }
 
     public function render()
     {
-        return view('livewire.livesearch');
+        return view('livewire.utils.livesearch');
     }
 }

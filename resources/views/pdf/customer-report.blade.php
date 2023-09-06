@@ -15,10 +15,10 @@
             <div id="logo">
                 <img src="{{ asset('images/logo.png') }}">
             </div>
-            <h2 style="margin-bottom: 5px;font-size: 16px;">{{ settings()->company_name }}</h2>
+            <h2 style="margin-bottom: 5px;font-size: 16px;">{{ settings('company_name') }}</h2>
             <p>
-                {{ settings()->company_phone }} <br>
-                {{ settings()->company_address }} <br>
+                {{ settings('company_phone') }} <br>
+                {{ settings('company_address') }} <br>
             </p>
             <div id="Title-heading">
                 {{ __('Customer') }} : {{ $customer->name }}
@@ -63,10 +63,10 @@
                     <tbody>
                         <tr>
                             <td>
-                                <div id="comp">{{ settings()->company_name }}</div>
-                                <div><strong>{{ __('Tax number') }}</strong> {{ settings()->company_tax }}</div>
-                                <div><strong>{{ __('Address') }}:</strong> {{ settings()->company_address }}</div>
-                                <div><strong>{{ __('Phone') }}:</strong> {{ settings()->company_phone }}</div>
+                                <div id="comp">{{ settings('company_name') }}</div>
+                                <div><strong>{{ __('Tax number') }}</strong> {{ settings('company_tax') }}</div>
+                                <div><strong>{{ __('Address') }}:</strong> {{ settings('company_address') }}</div>
+                                <div><strong>{{ __('Phone') }}:</strong> {{ settings('company_phone') }}</div>
                             </td>
                         </tr>
                     </tbody>

@@ -1,8 +1,38 @@
 <div>
+    @section('title', __('Sales'))
+
+    <x-theme.breadcrumb :title="__('Sales List')" :parent="route('admin.sales.index')" :parentName="__('Sales List')">
+
+        <x-dropdown align="right" width="48" class="w-auto mr-2">
+            <x-slot name="trigger" class="inline-flex">
+                <x-button secondary type="button" class="text-white flex items-center">
+                    <i class="fas fa-angle-double-down w-4 h-4"></i>
+                </x-button>
+            </x-slot>
+            <x-slot name="content">
+                <x-dropdown-link wire:click="dispatch('importModal')" wire:loading.attr="disabled">
+                    {{ __('Import') }}
+                </x-dropdown-link>
+                {{-- use livewire - coming soon --}}
+                {{-- <x-dropdown-link wire:click="dispatch('exportAll')" 
+                wire:loading.attr="disabled">
+                {{ __('PDF') }}
+            </x-dropdown-link>
+            <x-dropdown-link wire:click="dispatch('downloadAll')" 
+                wire:loading.attr="disabled">
+                {{ __('Excel') }}
+            </x-dropdown-link> --}}
+            </x-slot>
+        </x-dropdown>
+        @can('sale_create')
+            <x-button primary href="{{ route('admin.sale.create') }}">{{ __('Create Invoice') }}</x-button>
+        @endcan
+
+    </x-theme.breadcrumb>
     <div class="flex flex-wrap justify-center">
         <div class="lg:w-1/2 md:w-1/2 sm:w-full flex flex-wrap my-2">
             <select wire:model.live="perPage"
-                class="w-20 block p-3 leading-5 bg-white dark:bg-dark-eval-2 text-gray-700 dark:text-gray-300 rounded border border-gray-300 mb-1 text-sm focus:shadow-outline-blue focus:border-blue-300 mr-3">
+                class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-auto sm:text-sm border-gray-300 rounded-md focus:outline-none focus:shadow-outline-blue transition duration-150 ease-in-out">
                 @foreach ($paginationOptions as $value)
                     <option value="{{ $value }}">{{ $value }}</option>
                 @endforeach
@@ -23,7 +53,7 @@
         </div>
         <div class="lg:w-1/2 md:w-1/2 sm:w-full my-2">
             <div class="my-2">
-                <x-input wire:model.live.debounce.500ms="search" placeholder="{{ __('Search') }}" autofocus />
+                <x-input wire:model.live="search" placeholder="{{ __('Search') }}" autofocus />
             </div>
         </div>
         <div class="grid gap-4 grid-cols-2 items-center justify-center">
@@ -42,7 +72,7 @@
                         <span class="text-danger mt-1">{{ $message }}</span>
                     @enderror
                 </div>
-            </div> 
+            </div>
             <div class="gap-2 inline-flex items-center mx-0 px-2 mb-2">
                 <x-button type="button" primary wire:click="filterByType('day')">{{ __('Today') }}</x-button>
                 <x-button type="button" info wire:click="filterByType('month')">{{ __('This Month') }}</x-button>
@@ -95,15 +125,15 @@
                         {{ format_date($sale->date) }}
                     </x-table.td>
                     <x-table.td>
-                        @if($sale?->customer)
-                        <a class="text-blue-400 hover:text-blue-600 focus:text-blue-600"
-                            href="{{ route('customer.details', $sale->customer->uuid) }}">
-                        {{ $sale?->customer?->name }}
-                        </a>
+                        @if ($sale?->customer)
+                            <a class="text-blue-400 hover:text-blue-600 focus:text-blue-600"
+                                href="{{ route('admin.customer.details', $sale->customer->id) }}">
+                                {{ $sale?->customer?->name }}
+                            </a>
                         @else
                             {{ $sale?->customer?->name }}
                         @endif
-                        
+
                     </x-table.td>
                     <x-table.td>
                         @php
@@ -122,7 +152,7 @@
                         @php
                             $badgeType = $sale->status->getBadgeType();
                         @endphp
-                        
+
                         <x-badge :type="$badgeType">{{ $sale->status->getName() }}</x-badge>
                     </x-table.td>
                     <x-table.td>
@@ -148,7 +178,7 @@
                                         </x-dropdown-link>
                                     @endif
                                     @can('edit_sales')
-                                        <x-dropdown-link href="{{ route('sales.edit', $sale->id) }}"
+                                        <x-dropdown-link href="{{ route('admin.sale.edit', $sale->id) }}"
                                             wire:loading.attr="disabled">
                                             <i class="fas fa-edit"></i>
                                             {{ __('Edit') }}
@@ -162,29 +192,29 @@
                                         </x-dropdown-link>
                                     @endcan
 
-                                    <x-dropdown-link target="_blank" href="{{ route('sales.pos.pdf', $sale->id) }}"
+                                    <x-dropdown-link target="_blank" href="{{ route('admin.sales.pos.pdf', $sale->id) }}"
                                         wire:loading.attr="disabled">
                                         <i class="fas fa-print"></i>
                                         {{ __('Print Pos') }}
                                     </x-dropdown-link>
 
-                                    <x-dropdown-link target="_blank" href="{{ route('sales.pdf', $sale->id) }}"
+                                    <x-dropdown-link target="_blank" href="{{ route('admin.sales.pdf', $sale->id) }}"
                                         wire:loading.attr="disabled">
                                         <i class="fas fa-print"></i>
                                         {{ __('Print') }}
                                     </x-dropdown-link>
 
                                     @can('access_sale_payments')
-                                        <x-dropdown-link wire:click="$dispatch('showPayments', {{ $sale->id }})" primary
-                                            wire:loading.attr="disabled">
+                                        <x-dropdown-link wire:click="$dispatch('showPayments', {{ $sale->id }})"
+                                            primary wire:loading.attr="disabled">
                                             <i class="fas fa-money-bill-wave"></i>
                                             {{ __('Payments') }}
                                         </x-dropdown-link>
                                     @endcan
                                     @can('access_sale_payments')
                                         @if ($sale->due_amount > 0)
-                                            <x-dropdown-link wire:click="$dispatch('paymentModal', {{ $sale->id }})" primary
-                                                wire:loading.attr="disabled">
+                                            <x-dropdown-link wire:click="$dispatch('paymentModal', {{ $sale->id }})"
+                                                primary wire:loading.attr="disabled">
                                                 <i class="fas fa-money-bill-wave"></i>
                                                 {{ __('Add Payment') }}
                                             </x-dropdown-link>
@@ -212,11 +242,11 @@
         {{ $sales->links() }}
     </div>
 
-    @livewire('admin.sales.show', ['sale' => $sale] , key('show' . $sale?->id))
+    @livewire('admin.sales.show', ['sale' => $sale], key('show' . $sale?->id))
 
-    @livewire('admin.sales.payment-form', ['sale' => $sale] , key('payment-form' . $sale?->id))
+    @livewire('admin.sales.payment-form', ['sale' => $sale], key('payment-form' . $sale?->id))
 
-    <x-modal wire:model.live="importModal">
+    <x-modal wire:model="importModal">
         <x-slot name="title">
             <div class="flex justify-between items-center">
                 {{ __('Import Excel') }}
@@ -247,54 +277,50 @@
         </x-slot>
     </x-modal>
 
-    {{-- Sales Payment payment component   --}}
     @if (empty($showPayments))
         <livewire:admin.sales.payment.index :sale="$sale" />
     @endif
 
-
-    {{-- End Sales Payment payment component   --}}
-
-</div>
-@pushOnce('scripts')
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"
-        integrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoeqMV/TJlSKda6FXzoEyYGjTe+vXA=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-@endPushOnce
-@push('scripts')
-    <script>
-        document.addEventListener('livewire:init', function() {
-            window.livewire.on('deleteModal', saleId => {
-                Swal.fire({
-                    title: 'Are you sure?',
-                    text: "You won't be able to revert this!",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, delete it!'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        window.livewire.emit('delete', saleId)
-                    }
+    @pushOnce('scripts')
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"
+            integrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoeqMV/TJlSKda6FXzoEyYGjTe+vXA=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    @endPushOnce
+    @push('scripts')
+        <script>
+            document.addEventListener('livewire:init', function() {
+                window.livewire.on('deleteModal', saleId => {
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: "You won't be able to revert this!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes, delete it!'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.livewire.emit('delete', saleId)
+                        }
+                    })
                 })
+    
             })
-
-        })
-    </script>
-    <script>
-        function printContent() {
-            const content = document.getElementById("printable-content");
-            html2canvas(content).then(canvas => {
-                const printWindow = window.open('', '',
-                    'left=0,top=0,width=800,height=900,toolbar=0,scrollbars=0,status=0');
-                const printDocument = printWindow.document;
-                printDocument.body.appendChild(canvas);
-                canvas.onload = function() {
-                    printWindow.print();
-                    printWindow.close();
-                };
-            });
-        }
-    </script>
-@endpush
+        </script>
+        <script>
+            function printContent() {
+                const content = document.getElementById("printable-content");
+                html2canvas(content).then(canvas => {
+                    const printWindow = window.open('', '',
+                        'left=0,top=0,width=800,height=900,toolbar=0,scrollbars=0,status=0');
+                    const printDocument = printWindow.document;
+                    printDocument.body.appendChild(canvas);
+                    canvas.onload = function() {
+                        printWindow.print();
+                        printWindow.close();
+                    };
+                });
+            }
+        </script>
+    @endpush
+</div>

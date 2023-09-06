@@ -1,9 +1,8 @@
 ---
-# https://vitepress.dev/reference/default-theme-home-page
 layout: home
 
 hero:
-  name: "MyStockMaster"
+  name: "ERPMASTER"
   text: "A VitePress Site"
   tagline: My great project tagline
   actions:

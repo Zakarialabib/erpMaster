@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Mail;
 
-use App\Helpers;
 use App\Models\Subscriber;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
@@ -28,8 +27,8 @@ class SubscribeMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            from: new Address(Helpers::settings('company_email_address'), Helpers::settings('site_title')),
-            subject: $this->subscriber->name.' You are Subscribed to our Newsletters '.Helpers::settings('site_title'),
+            from: new Address(settings('company_email'), settings('site_title')),
+            subject: $this->subscriber->name.' You are Subscribed to our Newsletters '.settings('site_title'),
         );
     }
 

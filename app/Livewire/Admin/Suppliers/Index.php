@@ -8,19 +8,17 @@ use App\Exports\SupplierExport;
 use App\Livewire\Utils\Datatable;
 use App\Imports\SupplierImport;
 use App\Models\Supplier;
-
 use Illuminate\Support\Facades\Gate;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
 use Livewire\WithFileUploads;
-use Livewire\WithPagination;
-use Storage;
+use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Livewire\Attributes\Layout;
 
+#[Layout('components.layouts.dashboard')]
 class Index extends Component
 {
-    use WithPagination;
-    use Datatable;
     use WithFileUploads;
     use LivewireAlert;
     use Datatable;
@@ -31,7 +29,6 @@ class Index extends Component
     /** @var array<string> */
     public $listeners = [
         'importModal', 'showModal',
-        'refreshIndex' => '$refresh',
         'downloadAll', 'exportAll', 'delete',
     ];
 
@@ -43,14 +40,12 @@ class Index extends Component
 
     public function mount(): void
     {
-        $this->selectPage = false;
-
         $this->orderable = (new Supplier())->orderable;
     }
 
     public function render()
     {
-        abort_if(Gate::denies('supplier_access'), 403);
+        abort_if(Gate::denies('supplier access'), 403);
 
         $query = Supplier::advancedFilter([
             's'               => $this->search ?: null,
@@ -108,7 +103,7 @@ class Index extends Component
 
     public function import()
     {
-        abort_if(Gate::denies('supplier_import'), 403);
+        abort_if(Gate::denies('supplier import'), 403);
 
         $this->validate([
             'import_file' => [
@@ -126,7 +121,7 @@ class Index extends Component
 
     public function downloadSelected()
     {
-        abort_if(Gate::denies('supplier_access'), 403);
+        abort_if(Gate::denies('supplier access'), 403);
 
         $suppliers = Supplier::whereIn('id', $this->selected)->get();
 
@@ -135,14 +130,14 @@ class Index extends Component
 
     public function downloadAll(Supplier $suppliers)
     {
-        abort_if(Gate::denies('supplier_access'), 403);
+        abort_if(Gate::denies('supplier access'), 403);
 
         return (new SupplierExport($suppliers))->download('suppliers.xls', \Maatwebsite\Excel\Excel::XLS);
     }
 
     public function exportSelected(): BinaryFileResponse
     {
-        abort_if(Gate::denies('supplier_access'), 403);
+        abort_if(Gate::denies('supplier access'), 403);
 
         // $suppliers = Supplier::whereIn('id', $this->selected)->get();
 
@@ -151,7 +146,7 @@ class Index extends Component
 
     public function exportAll(): BinaryFileResponse
     {
-        abort_if(Gate::denies('supplier_access'), 403);
+        abort_if(Gate::denies('supplier access'), 403);
 
         return $this->callExport()->download('suppliers.pdf', \Maatwebsite\Excel\Excel::MPDF);
     }

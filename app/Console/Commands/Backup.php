@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
-use Artisan;
+use Illuminate\Support\Facades\Artisan;
 use Exception;
 use Illuminate\Console\Command;
 use Log;
@@ -30,10 +30,10 @@ class Backup extends Command
     /** Execute the console command. */
     public function handle(): mixed
     {
-        if (settings()->backup_status === 1) {
+        if (settings('backup_status') === 1) {
             $artisan_command = '';
 
-            switch (settings()->backup_content) {
+            switch (settings('backup_content')) {
                 case 'db': {
                     $artisan_command = 'backup:run & --only-db';
 

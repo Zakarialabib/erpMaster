@@ -5,66 +5,64 @@ declare(strict_types=1);
 namespace App\Livewire\Admin\BlogCategory;
 
 use App\Models\BlogCategory;
-use App\Models\Language;
-use Illuminate\Contracts\View\Factory;
-use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Gate;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
 use Livewire\WithFileUploads;
+use Livewire\Attributes\On;
 
 class Create extends Component
 {
     use LivewireAlert;
     use WithFileUploads;
 
-    public $createBlogCategory = false;
+    public $createModal = false;
 
-    public $listeners = ['createBlogCategory'];
-
-    public $blogcategory;
+    public BlogCategory $blogcategory;
+    public $title;
+    public $description;
+    public $meta_title;
+    public $meta_description;
+    public $language_id;
 
     protected $rules = [
-        'blogcategory.title'       => 'required|string|max:255',
-        'blogcategory.description' => 'nullable',
-        'blogcategory.meta_title'  => 'nullable|max:100',
-        'blogcategory.meta_desc'   => 'nullable|max:200',
-        'blogcategory.language_id' => 'required|integer',
+        'title'            => 'required|string|max:255',
+        'description'      => 'nullable',
+        'meta_title'       => 'nullable|max:100',
+        'meta_description' => 'nullable|max:200',
     ];
 
-    public function render(): View|Factory
+    public function render()
     {
-        abort_if(Gate::denies('blogcategory_create'), 403);
+        abort_if(Gate::denies('blogcategory create'), 403);
 
         return view('livewire.admin.blog-category.create');
     }
 
-    public function createBlogCategory()
+    #[On('createModal')]
+    public function createModal()
     {
         $this->resetErrorBag();
 
         $this->resetValidation();
 
-        $this->blogcategory = new BlogCategory();
-
-        $this->createBlogCategory = true;
+        $this->createModal = true;
     }
 
     public function create()
     {
-        $this->validate();
+        $validated = $this->validate();
 
-        $this->blogcategory->save();
+        $this->language_id = 1;
+        $this->meta_title = $this->title;
+        $this->meta_description = $this->description;
+
+        BlogCategory::create($validated);
 
         $this->alert('success', __('BlogCategory created successfully.'));
 
-        $this->createBlogCategory = false;
+        $this->createModal = false;
 
-        $this->emit('refreshIndex');
-    }
-
-    public function getLanguagesProperty(): Collection
-    {
-        return Language::select('name', 'id')->get();
+        $this->dispatch('refreshIndex')->to(Index::class);
     }
 }

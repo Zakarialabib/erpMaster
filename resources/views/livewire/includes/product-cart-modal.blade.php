@@ -5,7 +5,7 @@
         <i class="bi bi-percent text-black"></i>
     </button>
     <!-- Discount Modal -->
-    <x-modal wire:model.live="discountModal">
+    <x-modal wire:model="discountModal">
         <x-slot name="title">
             <div class="text-center text-xl">
                 {{ $cart_item->name }}

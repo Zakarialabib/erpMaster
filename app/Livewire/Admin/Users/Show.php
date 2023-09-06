@@ -6,6 +6,7 @@ namespace App\Livewire\Admin\Users;
 
 use Livewire\Component;
 use App\Models\User;
+use Livewire\Attributes\Computed;
 
 class Show extends Component
 {

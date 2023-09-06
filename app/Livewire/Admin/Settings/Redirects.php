@@ -9,78 +9,30 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
-use Livewire\WithPagination;
+use App\Livewire\Utils\Datatable;
 
 class Redirects extends Component
 {
     use LivewireAlert;
-    use WithPagination;
     use Datatable;
 
-    public $listeners = ['delete', 'refreshIndex' => '$refresh'];
+    public $listeners = ['delete'];
 
     public $editModal = false;
 
     public $redirect;
-
-    public $refreshIndex;
-
-    public int $perPage;
-
-    public array $orderable;
-
-    public string $search = '';
-
-    public array $selected = [];
-
-    public array $paginationOptions;
-
-    protected $queryString = [
-        'search' => [
-            'except' => '',
-        ],
-        'sortBy' => [
-            'except' => 'id',
-        ],
-        'sortDirection' => [
-            'except' => 'desc',
-        ],
-    ];
 
     protected $rules = [
         'redirect.old_url' => 'required',
         'redirect.new_url' => 'nullable',
     ];
 
-    public function getSelectedCountProperty()
-    {
-        return count($this->selected);
-    }
-
-    public function updatingSearch()
-    {
-        $this->resetPage();
-    }
-
-    public function updatingPerPage()
-    {
-        $this->resetPage();
-    }
-
-    public function resetSelected()
-    {
-        $this->selected = [];
-    }
-
     public function mount()
     {
-        $this->sortBy = 'id';
-        $this->sortDirection = 'desc';
-        $this->perPage = 100;
-        $this->paginationOptions = [25, 50, 100];
         $this->orderable = (new Redirect())->orderable;
     }
 
+    #[On('editModal')]
     public function editModal($id)
     {
         $this->redirect = Redirect::find($id);
@@ -96,8 +48,6 @@ class Redirects extends Component
         $this->alert('warning', __('Redirect updated successfully!'));
 
         $this->editModal = false;
-
-        $this->emit('refreshIndex');
     }
 
     public function delete(Redirect $redirect)

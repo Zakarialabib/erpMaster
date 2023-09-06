@@ -1,19 +1,62 @@
 <div>
+    @section('title', __('Product'))
+    <x-theme.breadcrumb :title="__('Product List')" :parent="route('admin.products.index')" :parentName="__('Product List')">
+
+        <x-dropdown align="right" width="48" class="w-auto mr-2">
+            <x-slot name="trigger" class="inline-flex">
+                <x-button secondary type="button" class="text-white flex items-center">
+                    <i class="fas fa-angle-double-down w-4 h-4"></i>
+                </x-button>
+            </x-slot>
+            <x-slot name="content">
+                @can('product_import')
+                    <x-dropdown-link wire:click="dispatch('importModal')" wire:loading.attr="disabled">
+                        {{ __('Excel Import') }}
+                    </x-dropdown-link>
+                @endcan
+                @can('product_export')
+                    <x-dropdown-link wire:click="dispatch('exportAll')" wire:loading.attr="disabled">
+                        {{ __('PDF Export') }}
+                    </x-dropdown-link>
+                    <x-dropdown-link wire:click="dispatch('downloadAll')" wire:loading.attr="disabled">
+                        {{ __('Excel Export') }}
+                    </x-dropdown-link>
+                @endcan
+            </x-slot>
+        </x-dropdown>
+        @can('product_create')
+            <x-button primary type="button" wire:click="dispatchTo('admin.products.create', 'createModal')">
+                {{ __('Create Product') }}
+            </x-button>
+        @endcan
+
+    </x-theme.breadcrumb>
     <div class="flex flex-wrap justify-center">
-        <div class="lg:w-1/2 md:w-1/2 sm:w-full flex flex-wrap my-2">
+        <div class="lg:w-1/2 md:w-1/2 sm:w-full flex flex-wrap gap-6 w-full">
             <select wire:model.live="perPage"
-                class="w-20 block p-3 leading-5 bg-white dark:bg-dark-eval-2 text-gray-700 dark:text-gray-300 rounded border border-gray-300 mb-1 text-sm focus:shadow-outline-blue focus:border-blue-300 mr-3">
+                class="w-auto shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block sm:text-sm border-gray-300 rounded-md focus:outline-none focus:shadow-outline-blue transition duration-150 ease-in-out">
                 @foreach ($paginationOptions as $value)
                     <option value="{{ $value }}">{{ $value }}</option>
                 @endforeach
             </select>
-            @if ($selected)
-                <x-button danger type="button" wire:click="deleteSelected" class="ml-3">
+            @if ($this->selected)
+                <x-button danger type="button" wire:click="deleteSelectedModal" wire:loading.attr="disabled">
                     <i class="fas fa-trash"></i>
                 </x-button>
+
+                <x-button primary type="button" wire:click="promoAllProducts" wire:loading.attr="disabled">
+                    <i class="fas fa-percent"></i>
+                </x-button>
+                <x-button success type="button" wire:click="downloadSelected" wire:loading.attr="disabled">
+                    {{ __('EXCEL') }}
+                </x-button>
+                <x-button warning type="button" wire:click="exportSelected" wire:loading.attr="disabled">
+                    {{ __('PDF') }}
+                </x-button>
             @endif
+
             @if ($this->selectedCount)
-                <p class="text-sm leading-5">
+                <p class="text-sm  my-auto">
                     <span class="font-medium">
                         {{ $this->selectedCount }}
                     </span>
@@ -21,12 +64,11 @@
                 </p>
             @endif
         </div>
-        <div class="lg:w-1/2 md:w-1/2 sm:w-full my-2">
-            <div class="my-2">
-                <x-input wire:model.live.debounce.500ms="search" placeholder="{{ __('Search') }}" autofocus />
-            </div>
+        <div class="lg:w-1/2 md:w-1/2 sm:w-full ">
+            <x-input wire:model.live="search" placeholder="{{ __('Search') }}" autofocus />
         </div>
     </div>
+
 
     <x-table>
         <x-slot name="thead">
@@ -75,7 +117,13 @@
                     <x-table.td>{{ format_currency($product->average_cost) }}</x-table.td>
                     <x-table.td>
                         <x-badge type="warning">
-                            <small>{{ $product->category->name }}</small>
+                            <a href="{{ route('admin.product-categories.index') }}"
+                                class="whitespace-nowrap hover:text-blue-400 active:text-blue-400">
+                                {{ $product->category->name }}
+                                <small>
+                                    ({{ $product->ProductsByCategory($product->category->id) }})
+                                </small>
+                            </a>
                         </x-badge>
                     </x-table.td>
                     <x-table.td>
@@ -96,12 +144,21 @@
                             </x-slot>
 
                             <x-slot name="content">
-                                <x-dropdown-link wire:click="$dispatch('showModal',{{ $product->id }})"
+                                <x-dropdown-link wire:click="$emit('highlightModal',{{ $product->id }})"
+                                    wire:loading.attr="disabled">
+                                    <i class="fas fa-eye"></i>
+                                    {{ __('Highlighted') }}
+                                </x-dropdown-link>
+                                <x-dropdown-link wire:click="clone({{ $product->id }})" wire:loading.attr="disabled">
+                                    <i class="fas fa-clone"></i>
+                                    {{ __('Clone') }}
+                                </x-dropdown-link>
+                                <x-dropdown-link wire:click="$dispatch('showModal',{ id : {{ $product->id }} })"
                                     wire:loading.attr="disabled">
                                     <i class="fas fa-eye"></i>
                                     {{ __('View') }}
                                 </x-dropdown-link>
-                                @if (settings()->telegram_channel)
+                                @if (settings('telegram_channel'))
                                     <x-dropdown-link wire:click="sendTelegram({{ $product->id }})"
                                         wire:loading.attr="disabled">
                                         <i class="fas fa-paper-plane"></i>
@@ -113,12 +170,12 @@
                                     <i class="fas fa-paper-plane"></i>
                                     {{ __('Send to Whatsapp') }}
                                 </x-dropdown-link>
-                                <x-dropdown-link wire:click="$dispatch('editModal', {{ $product->id }})"
+                                <x-dropdown-link wire:click="$dispatch('editModal',{ id : {{ $product->id }} })"
                                     wire:loading.attr="disabled">
                                     <i class="fas fa-edit"></i>
                                     {{ __('Edit') }}
                                 </x-dropdown-link>
-                                <x-dropdown-link wire:click="$dispatch('deleteModal', {{ $product->id }})"
+                                <x-dropdown-link wire:click="deleteModal({{ $product->id }})"
                                     wire:loading.attr="disabled">
                                     <i class="fas fa-trash"></i>
                                     {{ __('Delete') }}
@@ -153,69 +210,20 @@
     </div>
 
     <!-- Show Modal -->
-    @livewire('admin.products.show', ['product' => $product], key('show-modal-' . $product?->id))
+    <livewire:admin.products.show product="$product" lazy />
     <!-- End Show Modal -->
 
     <!-- Edit Modal -->
-    @livewire('admin.products.edit', ['product' => $product], key('edit-modal-' . $product?->id))
+    <livewire:admin.products.edit product="$product" lazy />
     <!-- End Edit Modal -->
 
-    <livewire:admin.products.create />
+    <livewire:admin.products.create lazy />
 
     {{-- Import modal --}}
 
-    <x-modal wire:model.live="importModal">
-        <x-slot name="title">
-            <div class="flex justify-between items-center">
-                {{ __('Import Excel') }}
-                <x-button primary wire:click="downloadSample" type="button">
-                    {{ __('Download Sample') }}
-                </x-button>
-            </div>
-        </x-slot>
-
-        <x-slot name="content">
-            <form wire:submit="import">
-                <div class="space-y-4">
-                    <div class="mt-4">
-                        <x-label for="import" :value="__('Import')" />
-                        <x-input id="import" class="block mt-1 w-full" type="file" name="import"
-                            wire:model="import" />
-                        <x-input-error :messages="$errors->get('import')" for="import" class="mt-2" />
-                    </div>
-
-                    <div class="w-full px-3">
-                        <x-button primary type="submit" class="w-full text-center" wire:loading.attr="disabled">
-                            {{ __('Import') }}
-                        </x-button>
-                    </div>
-                </div>
-            </form>
-        </x-slot>
-    </x-modal>
+    <livewire:admin.products.import lazy />
 
     {{-- End Import modal --}}
+    <livewire:admin.products.highlighted :product="$product" lazy />
 
 </div>
-
-@push('scripts')
-    <script>
-        document.addEventListener('livewire:init', function() {
-            window.livewire.on('deleteModal', productId => {
-                Swal.fire({
-                    title: 'Are you sure?',
-                    text: "You won't be able to revert this!",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, delete it!'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        window.livewire.emit('delete', productId)
-                    }
-                })
-            })
-        })
-    </script>
-@endpush

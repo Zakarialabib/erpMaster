@@ -1,5 +1,5 @@
 <div>
-    <x-modal wire:model.live="paymentModal">
+    <x-modal wire:model="paymentModal">
         <x-slot name="title">
             <h2 class="text-lg font-medium text-gray-900">
                 {{ __('Sale Payment') }}
@@ -11,7 +11,7 @@
                 <div class="flex flex-wrap -mx-2 mb-3">
                     <div class="xl:w-1/3 lg:w-1/2 sm:w-full px-3">
                         <x-label for="date" :value="__('Date')" required />
-                        <input type="date" wire:model.blur="date" id="date" class="block w-full mt-1"
+                        <input type="date" wire:model="date" id="date" class="block w-full mt-1"
                             required>
                         <x-input-error :messages="$errors->first('date')" />
                     </div>

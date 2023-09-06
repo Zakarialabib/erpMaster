@@ -30,4 +30,4 @@
     ]);
 @endphp
 
-<input {{ $attributes }} dir="ltr" />
+<input {{ $attributes }} dir="ltr" wire:dirty.class="border-red-500" />

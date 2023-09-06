@@ -7,7 +7,8 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use Spatie\Permission\PermissionRegistrar;
 
-return new class () extends Migration {
+class CreatePermissionTables extends Migration
+{
     /**
      * Run the migrations.
      *
@@ -58,7 +59,7 @@ return new class () extends Migration {
             $table->unsignedBigInteger(PermissionRegistrar::$pivotPermission);
 
             $table->string('model_type');
-            $table->unsignedBigInteger($columnNames['model_morph_key']);
+            $table->uuid($columnNames['model_morph_key']);
             $table->index([$columnNames['model_morph_key'], 'model_type'], 'model_has_permissions_model_id_model_type_index');
 
             $table->foreign(PermissionRegistrar::$pivotPermission)
@@ -86,7 +87,7 @@ return new class () extends Migration {
             $table->unsignedBigInteger(PermissionRegistrar::$pivotRole);
 
             $table->string('model_type');
-            $table->unsignedBigInteger($columnNames['model_morph_key']);
+            $table->uuid($columnNames['model_morph_key']);
             $table->index([$columnNames['model_morph_key'], 'model_type'], 'model_has_roles_model_id_model_type_index');
 
             $table->foreign(PermissionRegistrar::$pivotRole)
@@ -151,4 +152,4 @@ return new class () extends Migration {
         Schema::drop($tableNames['roles']);
         Schema::drop($tableNames['permissions']);
     }
-};
+}

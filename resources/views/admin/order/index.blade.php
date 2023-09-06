@@ -1,6 +1,5 @@
 @section('title', __('Orders'))
 
-<x-dashboard-layout>
 
     <section class="py-3 px-4">
         <div class="flex flex-wrap items-center justify-between">

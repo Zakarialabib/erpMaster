@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Livewire;
+namespace App\Livewire\Utils;
 
-use App\Models\Product;
+use App\Models\ProductWarehouse;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -20,8 +20,8 @@ class Notifications extends Component
     {
         $this->user = auth()->user();
 
-        $this->low_quantity_products = Product::select('id', 'name', 'quantity', 'stock_alert', 'code')
-            ->whereColumn('quantity', '<=', 'stock_alert')
+        $this->low_quantity_products = ProductWarehouse::select('product_id', 'qty', 'stock_alert')
+            ->whereColumn('qty', '<=', 'stock_alert')
             ->take($this->how_many)
             ->get();
     }
@@ -54,7 +54,7 @@ class Notifications extends Component
 
     public function render()
     {
-        return view('livewire.notifications', [
+        return view('livewire.utils.notifications', [
             'low_quantity_products' => $this->low_quantity_products,
         ]);
     }

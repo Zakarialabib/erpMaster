@@ -53,10 +53,10 @@ class Popups extends Component
     {
         $popup = Popup::default(); // retrieve the default popup setting from the database
 
-        $this->backgroundColor = $popup->background_color;
+        $this->backgroundColor = $popup->backgroundColor;
         $this->content = $popup->content;
-        $this->ctaText = $popup->cta_text;
-        $this->ctaUrl = $popup->cta_url;
+        $this->ctaText = $popup->ctaText;
+        $this->ctaUrl = $popup->ctaUrl;
 
         return view('front.popups');
     }

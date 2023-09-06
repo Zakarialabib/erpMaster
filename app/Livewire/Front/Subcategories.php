@@ -9,47 +9,16 @@ use App\Models\Subcategory;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Livewire\Component;
-use Livewire\WithPagination;
+use App\Livewire\Utils\Datatable;
+use Livewire\Attributes\Computed;
 
 class Subcategories extends Component
 {
-    use WithPagination;
     use Datatable;
-
-    public int $perPage;
-
-    public array $orderable;
-
-    public string $search = '';
-
-    public array $paginationOptions;
 
     public $subcategory_id;
     public $sorting;
-
     public $filterProductSubcategories;
-
-    protected $queryString = [
-        'search' => [
-            'except' => '',
-        ],
-        'sortBy' => [
-            'except' => 'id',
-        ],
-        'sortDirection' => [
-            'except' => 'desc',
-        ],
-    ];
-
-    public function updatingSearch()
-    {
-        $this->resetPage();
-    }
-
-    public function updatingPerPage()
-    {
-        $this->resetPage();
-    }
 
     public function filterProductSubcategories($subcategory_id)
     {
@@ -59,15 +28,11 @@ class Subcategories extends Component
 
     public function mount()
     {
-        $this->sorting = 'default';
-        $this->sortBy = 'id';
-        $this->sortDirection = 'desc';
-        $this->perPage = 25;
-        $this->paginationOptions = [25, 50, 100];
         $this->orderable = (new Product())->orderable;
     }
 
-    public function getSubcategoriesProperty()
+    #[Computed]
+    public function subcategories()
     {
         return Subcategory::active()->get();
     }

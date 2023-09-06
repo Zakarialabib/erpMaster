@@ -1,8 +1,14 @@
 <div>
+    @section('title', __('Customer'))
+    <x-theme.breadcrumb :title="__('Customer List')" :parent="route('admin.customers.index')" :parentName="__('Customer List')">
+        <x-button primary type="button" wire:click="dispatchTo('admin.customer.create', 'createModal')">
+            {{ __('Create Customer') }}
+        </x-button>
+    </x-theme.breadcrumb> 
     <div class="flex flex-wrap justify-center">
         <div class="md:w-1/2 sm:w-full flex flex-wrap my-2 space-x-2">
             <select wire:model.live="perPage"
-                class="w-20 block p-3 leading-5 bg-white dark:bg-dark-eval-2 text-gray-700 dark:text-gray-300 rounded border border-gray-300 mb-1 text-sm focus:shadow-outline-blue focus:border-blue-300 mr-3">
+                class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-auto sm:text-sm border-gray-300 rounded-md focus:outline-none focus:shadow-outline-blue transition duration-150 ease-in-out">
                 @foreach ($paginationOptions as $value)
                     <option value="{{ $value }}">{{ $value }}</option>
                 @endforeach
@@ -23,7 +29,7 @@
         </div>
         <div class="md:w-1/2 sm:w-full my-2">
             <div class="my-2">
-                <x-input wire:model.live.debounce.500ms="search" placeholder="{{ __('Search') }}" autofocus />
+                <x-input wire:model.live="search" placeholder="{{ __('Search') }}" autofocus />
             </div>
         </div>
     </div>
@@ -72,7 +78,7 @@
                                         <i class="fas fa-eye"></i>
                                         {{ __('View') }}
                                     </x-dropdown-link>
-                                    <x-dropdown-link href="{{ route('customer.details', $customer->uuid) }}">
+                                    <x-dropdown-link href="{{ route('admin.customer.details', $customer->id) }}">
                                         <i class="fas fa-book"></i>
                                         {{ __('Details') }}
                                     </x-dropdown-link>
@@ -124,7 +130,7 @@
         </div>
     </div>
 
-    <x-modal wire:model.live="showModal">
+    <x-modal wire:model="showModal">
         <x-slot name="title">
             {{ __('Show Customer') }}
         </x-slot>
@@ -165,9 +171,9 @@
     </x-modal>
 
 
-    @livewire('admin.customers.edit', ['customer' => $customer])
+    <livewire:admin.customers.edit :customer="$customer" />
 
-    <x-modal wire:model.live="import">
+    <x-modal wire:model="import">
         <x-slot name="title">
             {{ __('Import Customers') }}
         </x-slot>
@@ -220,7 +226,7 @@
     </x-modal>
 
 
-    <livewire:admin.customers.create />
+    <livewire:admin.customers.create lazy />
 
 
     @push('scripts')

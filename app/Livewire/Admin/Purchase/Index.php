@@ -6,17 +6,15 @@ namespace App\Livewire\Admin\Purchase;
 
 use App\Livewire\Utils\Datatable;
 use App\Models\Purchase;
-
 use Illuminate\Support\Facades\Gate;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
 use Livewire\WithFileUploads;
-use Livewire\WithPagination;
+use Livewire\Attributes\Layout;
 
+#[Layout('components.layouts.dashboard')]
 class Index extends Component
 {
-    use WithPagination;
-    use Datatable;
     use WithFileUploads;
     use LivewireAlert;
     use Datatable;
@@ -25,7 +23,6 @@ class Index extends Component
 
     /** @var array<string> */
     public $listeners = [
-        'refreshIndex' => '$refresh',
         'delete',
     ];
 
@@ -45,16 +42,6 @@ class Index extends Component
         'payment_method'      => 'required|integer|max:255',
         'note'                => 'nullable|string|max:1000',
     ];
-
-    public function updatedStartDate($value)
-    {
-        $this->startDate = $value;
-    }
-
-    public function updatedEndDate($value)
-    {
-        $this->endDate = $value;
-    }
 
     public function filterByType($type)
     {
@@ -79,8 +66,6 @@ class Index extends Component
 
     public function mount(): void
     {
-        $this->selectPage = false;
-
         $this->orderable = (new Purchase())->orderable;
         $this->startDate = now()->startOfYear()->format('Y-m-d');
         $this->endDate = now()->endOfDay()->format('Y-m-d');
@@ -88,7 +73,7 @@ class Index extends Component
 
     public function render()
     {
-        $query = Purchase::with(['supplier', 'purchaseDetails', 'purchaseDetails.product'])
+        $query = Purchase::with(['supplier', 'user', 'purchaseDetails', 'purchasePayments','purchaseDetails.product'])
             ->whereBetween('date', [$this->startDate, $this->endDate])
             ->advancedFilter([
                 's'               => $this->search ?: null,
@@ -103,7 +88,7 @@ class Index extends Component
 
     public function deleteSelected(): void
     {
-        abort_if(Gate::denies('purchase_delete'), 403);
+        abort_if(Gate::denies('purchase delete'), 403);
 
         Purchase::whereIn('id', $this->selected)->delete();
 
@@ -112,7 +97,7 @@ class Index extends Component
 
     public function delete(Purchase $purchase): void
     {
-        abort_if(Gate::denies('purchase_delete'), 403);
+        abort_if(Gate::denies('purchase delete'), 403);
 
         $purchase->delete();
     }

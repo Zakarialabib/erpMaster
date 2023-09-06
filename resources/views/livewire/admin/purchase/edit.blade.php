@@ -1,8 +1,14 @@
 <div>
+    @section('title', __('Edit Purchase'))
+
+    <x-theme.breadcrumb :title="__('Edit Purchase')" :parent="route('admin.purchases.index')" :parentName="__('Purchases List')" :children="URL::Current()" :childrenName="__('Edit Purchase')">
+
+    </x-theme.breadcrumb>
+
     <div class="flex flex-wrap">
 
         <div class="lg:w-1/2 sm:w-full h-full">
-            <livewire:search-product />
+            <livewire:search-product :$warehouse_id="$this->adjustment->warehouse_id" lazy />
         </div>
 
         <div class="lg:w-1/2 sm:w-full h-full">
@@ -35,7 +41,7 @@
 
                 </div>
 
-                <livewire:product-cart :cartInstance="'purchase'" :data="$purchase" />
+                <livewire:product-cart :cartInstance="'purchase'" :data="$purchase" lazy />
 
                 <div class="flex flex-wrap -mx-2 mb-3">
                     <div class="w-full md:w-1/3 px-3 mb-4 md:mb-0">
@@ -44,7 +50,7 @@
                             class="block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border-gray-300 rounded-md mt-1"
                             name="status" id="status" required wire:model.live="status">
                             @foreach (\App\Enums\PurchaseStatus::cases() as $status)
-                                <option {{ $purchase->status == $status ? 'selected' : '' }}
+                                <option {{ $status == $status ? 'selected' : '' }}
                                     value="{{ $status->value }}">
                                     {{ __($status->name) }}
                                 </option>

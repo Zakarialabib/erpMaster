@@ -1,5 +1,5 @@
 <div>
-    <x-modal wire:model.live="editModal">
+    <x-modal wire:model="editModal">
         <x-slot name="title">
             {{ __('Edit Currency') }}
         </x-slot>
@@ -12,22 +12,22 @@
                     <div class="flex flex-col">
                         <x-label for="currency.name" :value="__('Name')" />
                         <x-input id="name" class="block mt-1 w-full" required type="text"
-                            wire:model.blur="currency.name" />
+                            wire:model="currency.name" />
                     </div>
                     <div class="flex flex-col">
                         <x-label for="currency.code" :value="__('Code')" />
                         <x-input id="code" class="block mt-1 w-full" type="text"
-                            wire:model.blur="currency.code" />
+                            wire:model="currency.code" />
                     </div>
                     <div class="flex flex-col">
                         <x-label for="currency.symbol" :value="__('Symbol')" />
                         <x-input id="symbol" class="block mt-1 w-full" type="text"
-                            wire:model.blur="currency.symbol" />
+                            wire:model="currency.symbol" />
                     </div>
                     <div class="flex flex-col">
                         <x-label for="currency.exchange_rate" :value="__('Rate')" />
                         <x-input id="exchange_rate" class="block mt-1 w-full" type="text"
-                            wire:model.blur="currency.exchange_rate" />
+                            wire:model="currency.exchange_rate" />
                     </div>
                 </div>
 

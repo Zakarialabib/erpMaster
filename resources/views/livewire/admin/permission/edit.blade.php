@@ -1,8 +1,8 @@
-<form wire:submit.prevent="submit" class="pt-3">
+<form wire:submit="submit" class="pt-3">
 
     <div class="mb-4 {{ $errors->has('permission.title') ? 'is-invalid' : '' }}">
         <x-label required for="title" :value=" __('Title')" />
-        <input class="p-3 leading-5 bg-white text-gray-700 rounded border border-zinc-300 mb-1 text-sm w-full focus:shadow-outline-blue focus:border-blue-500" type="text" name="title" id="title" required wire:model.defer="permission.title">
+        <input class="p-3 leading-5 bg-white text-gray-700 rounded border border-gray-300 mb-1 text-sm w-full focus:shadow-outline-blue focus:border-blue-500" type="text" name="title" id="title" required wire:model="permission.title">
         <x-input-error for="permission.title" />
     </div>
 

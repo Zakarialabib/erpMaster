@@ -35,7 +35,7 @@ class PaymentPurchaseMail extends Mailable
      */
     public function build()
     {
-        return $this->subject('Purchase Payment Invoice - '.settings()->company_name)
+        return $this->subject('Purchase Payment Invoice - '.settings('company_name'))
             ->markdown('emails.payment-purchase-mail')
             ->attachData($this->pdf, 'PaymentPurchase_'.$this->invoice['reference'].'.pdf', [
                 'mime' => 'application/pdf',

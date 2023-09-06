@@ -43,7 +43,7 @@ class PaymentNotification implements ShouldQueue
             // $payment_date = Carbon::parse($this->sale->date)->addDays(15);
 
             // if (now()->gt($payment_date)) {
-            $user = User::find(1);
+            $user = User::where('name', 'Admin')->first();
 
             $user->notify(new PaymentDue($this->sale));
             // }

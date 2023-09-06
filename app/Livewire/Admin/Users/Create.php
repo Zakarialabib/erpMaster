@@ -5,59 +5,47 @@ declare(strict_types=1);
 namespace App\Livewire\Admin\Users;
 
 use App\Models\User;
-use App\Models\UserWarehouse;
-use App\Models\Role;
 use App\Models\Warehouse;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
+use Livewire\Attributes\Computed;
+use Livewire\Attributes\Rule;
 use Livewire\Component;
-use Throwable;
 
 class Create extends Component
 {
     use LivewireAlert;
 
-    /** @var array<string> */
-    public $listeners = ['createModal'];
+    public $createModal;
 
-    /** @var bool */
-    public $createModal = false;
+    public User $user;
 
-    /** @var mixed */
-    public $user;
-
+    #[Rule('required|string|max:255')]
     public $name;
-
+    #[Rule('required|email|unique:users,email')]
     public $email;
-
+    #[Rule('required|string|min:8')]
     public $password;
-
+    #[Rule('required|numeric')]
     public $phone;
-
-    public $role;
+    #[Rule('nullable')]
+    public $city;
+    #[Rule('nullable')]
+    public $country;
+    #[Rule('nullable')]
+    public $address;
+    #[Rule('nullable')]
+    public $tax_number;
+    
+    public $selectedWarehouses = [];
 
     public $warehouse_id;
-
-    /** @var array */
-    protected $rules = [
-        'name'         => 'required|string|min:3|max:255',
-        'email'        => 'required|email|unique:users,email',
-        'password'     => 'required|string|min:8',
-        'phone'        => 'required|numeric',
-        'role'         => 'required',
-        'warehouse_id' => 'required|array',
-    ];
-
-    public function updated($propertyName): void
-    {
-        $this->validateOnly($propertyName);
-    }
 
     public function render()
     {
         return view('livewire.admin.users.create');
     }
 
-    public function createModal(): void
+    public function createModal()
     {
         $this->resetErrorBag();
 
@@ -66,40 +54,23 @@ class Create extends Component
         $this->createModal = true;
     }
 
-    public function create(): void
+    public function create()
     {
-        try {
-            $validatedData = $this->validate();
+        $this->validate();
 
-            $user = User::create($validatedData);
+        $this->user = User::create($this->all());
+       
+        $this->user->warehouses()->sync($this->selectedWarehouses);
 
-            $user->assignRole($this->role);
+        $this->dispatch('refreshIndex')->to(Index::class);
 
-            foreach ($this->warehosues_id as $warehouseId) {
-                UserWarehouse::create([
-                    'user_id'      => $user->id,
-                    'warehouse_id' => $warehouseId,
-                ]);
-            }
+        $this->alert('success', 'User created successfully!');
 
-            $this->alert('success', __('User created successfully!'));
-
-            $this->dispatch('refreshIndex');
-
-            $this->reset('name', 'email', 'password', 'phone', 'role', 'warehouse_id');
-
-            $this->createModal = false;
-        } catch (Throwable $th) {
-            $this->alert('error', $th->getMessage());
-        }
+        $this->createModal = false;
     }
 
-    public function getRolesProperty()
-    {
-        return Role::pluck('name', 'id')->toArray();
-    }
-
-    public function getWarehousesProperty()
+    #[Computed]
+    public function warehouses()
     {
         return Warehouse::pluck('name', 'id')->toArray();
     }

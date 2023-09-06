@@ -9,26 +9,19 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
+use Livewire\Attributes\On;
 use Livewire\WithFileUploads;
+use Illuminate\Support\Facades\Gate;
 
 class Edit extends Component
 {
     use LivewireAlert;
     use WithFileUploads;
 
-    public $listeners = [
-        'editModal',
-    ];
-
-    public $editModal;
+    public $editModal = false;
     public $email_setting;
     public $description;
     public $message;
-
-    public function updatedDescription($value)
-    {
-        $this->description = $value;
-    }
 
     public function updatedMessage($value)
     {
@@ -47,9 +40,12 @@ class Edit extends Component
 
     public function render(): View|Factory
     {
+        abort_if(Gate::denies('email update'), 403);
+
         return view('livewire.admin.email.edit');
     }
 
+    #[On('editModal')]
     public function editModal($id)
     {
         $this->resetErrorBag();
@@ -64,13 +60,9 @@ class Edit extends Component
     {
         $this->validate();
 
-        $this->email_setting->description = $this->description;
-
-        $this->email_setting->save();
+        $this->email_setting->update($this->all());
 
         $this->alert('success', __('Email template created successfully.'));
-
-        $this->emit('refreshIndex');
 
         $this->editModal = false;
     }

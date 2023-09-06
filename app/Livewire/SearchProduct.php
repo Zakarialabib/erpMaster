@@ -7,6 +7,7 @@ namespace App\Livewire;
 use App\Models\Category;
 use App\Models\Product;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
+use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -29,11 +30,8 @@ class SearchProduct extends Component
 
     public bool $featured = false;
 
-    public $listeners = [
-        'warehouseSelected' => 'updatedWarehouseId',
-    ];
     protected $queryString = [
-        'query'       => ['except' => ''],
+        'query',
         'category_id' => ['except' => null],
         'showCount'   => ['except' => 9],
     ];
@@ -52,6 +50,7 @@ class SearchProduct extends Component
         }
     }
 
+    #[On('warehouseSelected')]
     public function updatedWarehouseId($value)
     {
         $this->warehouse_id = $value;
@@ -63,11 +62,13 @@ class SearchProduct extends Component
         return Category::pluck('name', 'id');
     }
 
-    public function mount($warehouse_id = null): void
+    public function mount($warehouse_id = null)
     {
-        $this->warehouse_id = $warehouse_id;
-        // Initialize search_results as an array
-        $this->search_results = [];
+        if ($warehouse_id) {
+            $this->warehouse_id = $warehouse_id;
+        } else {
+            $this->search_results = [];
+        }
     }
 
     public function render()

@@ -6,18 +6,16 @@ namespace App\Livewire\Admin\Purchase;
 
 use App\Models\Purchase;
 use Illuminate\Support\Facades\Gate;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class Show extends Component
 {
     public $purchase;
 
-    public $listeners = [
-        'showModal',
-    ];
-
     public $showModal = false;
 
+    #[On('showModal')]
     public function showModal($id)
     {
         $this->purchase = Purchase::findOrFail($id);
@@ -27,7 +25,7 @@ class Show extends Component
 
     public function render()
     {
-        // abort_if(Gate::denies('purchase_show'), 403);
+        // abort_if(Gate::denies('purchase show'), 403);
 
         return view('livewire.admin.purchase.show');
     }

@@ -4,12 +4,17 @@ declare(strict_types=1);
 
 namespace App\Livewire\Admin\Products;
 
+use App\Helpers;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\Subcategory;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
+use Livewire\Attributes\Computed;
+use Livewire\Attributes\On;
+use Livewire\Attributes\Rule;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
@@ -20,55 +25,72 @@ class Edit extends Component
 
     public $product;
 
-    public $productWarehouse = [];
-
     public $productWarehouses;
 
     public $editModal = false;
 
-    public $image;
+    #[Rule('required|string|min:3|max:255')]
+    public string $name;
 
-    public $category_id;
+    public string $barcode_symbology;
 
-    public $gallery = [];
+    public string $slug;
 
-    public $width = 1000;
+    public string $unit;
 
-    public $height = 1000;
+    public int $order_tax;
 
     public $description;
 
-    public $listeners = [
-        'editModal',
-    ];
+    public int $tax_type;
+    public bool $featured;
+    public string $condition;
+    public $embeded_video;
+    public $category_id;
+    public $brand_id;
 
-    public $listsForFields = [];
-
-    public function mount()
-    {
-        $this->initListsForFields();
-    }
+    #[Rule('required', 'array', 'min:1')]
+    public array $subcategories = [];
+    #[Rule('array')]
+    public array $options = [];
+    public string $meta_title;
+    public string $meta_description;
+    public $image;
+    public bool $best;
+    public bool $hot;
+    public $productWarehouse = [];
 
     /** @var array */
     protected $rules = [
-        'product.name'              => 'required|string|min:3|max:255',
-        'product.code'              => 'required|string|max:255',
-        'product.barcode_symbology' => 'required|string|max:255',
-        'product.unit'              => 'required|string|max:255',
-        'productWarehouse'          => 'required|array',
-        'productWarehouse.*.price'  => 'required|numeric',
-        'productWarehouse.*.cost'   => 'required|numeric',
-        // 'productWarehouse.*.quantity' => 'required|numeric',
-        'product.stock_alert'  => 'required|integer|min:0',
-        'product.order_tax'    => 'nullable|integer|min:0|max:100',
-        'product.tax_type'     => 'nullable|integer|min:0|max:100',
-        'product.note'         => 'nullable|string|max:1000',
-        'product.category_id'  => 'required|integer|min:0|max:100',
-        'product.brand_id'     => 'nullable|integer|min:0|max:100',
-        'product.warehouse_id' => 'nullable|integer|min:0|max:100',
-        'product.featured'     => 'nullable',
+        'productWarehouse.*.quantity'    => 'integer|min:1',
+        'productWarehouse.*.price'       => 'numeric',
+        'productWarehouse.*.cost'        => 'numeric',
+        'productWarehouse.*.stock_alert' => 'required|integer|min:0|max:192',
+        'options.*.type'                 => ['string', 'max:255'],
+        'options.*.value'                => ['string', 'max:255'],
     ];
 
+    public function addOption()
+    {
+        $this->options[] = [
+            'type'  => '',
+            'value' => '',
+        ];
+    }
+
+    public function removeOption($index)
+    {
+        unset($this->options[$index]);
+        $this->options = array_values($this->options);
+    }
+
+    public function fetchSubcategories()
+    {
+        $selectedCategory = $this->product['category_id'];
+        $this->subcategories = Subcategory::where('category_id', $selectedCategory)->get();
+    }
+
+    #[On('editModal')]
     public function editModal($id)
     {
         $this->resetErrorBag();
@@ -77,7 +99,11 @@ class Edit extends Component
 
         $this->product = Product::findOrFail($id);
 
-        $this->productWarehouses = $this->product->warehouses()->withPivot('price', 'qty', 'cost')->get();
+        $this->fetchSubcategories();
+
+        $this->options = $this->product->options ?? [['type' => '', 'value' => '']];
+
+        $this->productWarehouses = $this->product->warehouses()->pivot('price', 'qty', 'cost')->get();
 
         $this->productWarehouse = $this->productWarehouses->mapWithKeys(function ($warehouse) {
             return [$warehouse->id => [
@@ -92,20 +118,30 @@ class Edit extends Component
 
     public function update()
     {
-        abort_if(Gate::denies('product_update'), 403);
-
         $this->validate();
+
+        if ($this->slug !== $this->product->slug) {
+            $this->slug = Str::slug($this->name);
+        }
 
         if ($this->image) {
             $imageName = Str::slug($this->product->name).'-'.Str::random(5).'.'.$this->image->extension();
             $this->image->store('products', $imageName);
             $this->product->image = $imageName;
         }
-        $this->product->price = 0;
-        $this->product->cost = 0;
-        $this->product->quantity = 0;
 
-        $this->product->save();
+        if ($this->gallery) {
+            $gallery = [];
+
+            foreach ($this->gallery as $key => $value) {
+                $imageName = Helpers::handleUpload($value, $this->width, $this->height, $this->product->name);
+                $gallery[] = $imageName;
+            }
+
+            $this->product->gallery = json_encode($gallery);
+        }
+
+        $this->product->update($this->all());
 
         foreach ($this->productWarehouse as $warehouseId => $warehouse) {
             $this->product->warehouses()->updateExistingPivot($warehouseId, [
@@ -115,32 +151,29 @@ class Edit extends Component
             ]);
         }
 
-        $this->dispatch('refreshIndex');
+        $this->dispatch('refreshIndex')->to(Index::class);
 
         $this->alert('success', __('Product updated successfully.'));
 
         $this->editModal = false;
     }
 
-    public function getCategoriesProperty()
+    #[Computed]
+    public function categories()
     {
         return Category::pluck('name', 'id')->toArray();
     }
 
-    public function getBrandsProperty()
+    #[Computed]
+    public function brands()
     {
         return Brand::pluck('name', 'id')->toArray();
     }
 
     public function render()
     {
-        abort_if(Gate::denies('product_update'), 403);
+        abort_if(Gate::denies('product update'), 403);
 
         return view('livewire.admin.products.edit');
-    }
-
-    protected function initListsForFields(): void
-    {
-        $this->listsForFields['brands'] = Brand::pluck('name', 'id')->toArray();
     }
 }

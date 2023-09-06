@@ -1,5 +1,5 @@
 <div>
-    <form wire:submit.prevent="save" class="container mx-auto mb-4">
+    <form wire:submit="save" class="container mx-auto mb-4">
         <div class="flex justify-center mb-4">
             <h5 class="text-gray-500 font-bold text-center text-md font-heading uppercase py-2">
                 {{ __('Order Now') }}
@@ -26,7 +26,7 @@
             </div>
             <div class="w-full flex py-2 justify-center">
                 <button wire:click="save" wire:loading.attr="disabled"
-                    class="block text-center text-white font-bold font-heading py-2 px-4 rounded-md uppercase bg-beige-400 hover:bg-beige-200 transition cursor-pointer">
+                    class="block text-center text-white font-bold font-heading py-2 px-4 rounded-md uppercase bg-green-400 hover:bg-green-200 transition cursor-pointer">
                     {{ __('Order Now') }}
                 </button>
             </div>

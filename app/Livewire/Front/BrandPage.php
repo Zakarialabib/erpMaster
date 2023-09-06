@@ -5,17 +5,18 @@ declare(strict_types=1);
 namespace App\Livewire\Front;
 
 use App\Models\Brand;
-use App\Models\Category;
-use App\Models\Product;
-use App\Models\Subcategory;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Livewire\Attributes\Layout;
+use App\Livewire\Utils\Front\WithModels;
 
+#[Layout('components.layouts.guest')]
 class BrandPage extends Component
 {
     use WithPagination;
+    use WithModels;
 
     public $listeners = [
         'load-more' => 'loadMore',
@@ -73,7 +74,7 @@ class BrandPage extends Component
 
     public function render(): View|Factory
     {
-        $query = Product::active()
+        $query = \App\Helpers::getEcommerceProducts()
             ->where('brand_id', $this->brand->id)
             ->when($this->category_id, function ($query) {
                 return $query->where('category_id', $this->category_id);
@@ -98,18 +99,8 @@ class BrandPage extends Component
 
         $brandproducts = $query->paginate($this->perPage);
 
-        $this->emit('productsLoaded', $brandproducts->count());
+        $this->dispatch('productsLoaded', $brandproducts->count());
 
         return view('livewire.front.brand-page', compact('brandproducts'));
-    }
-
-    public function getCategoriesProperty()
-    {
-        return Category::active()->get();
-    }
-
-    public function getSubcategoriesProperty()
-    {
-        return Subcategory::active()->get();
     }
 }

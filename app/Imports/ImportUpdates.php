@@ -33,7 +33,6 @@ class ImportUpdates implements ToModel
                 // 'gallery' => getGalleryFromUrl($row[7]) ?? null,
                 'meta_title'       => Str::limit($row[0], 60),
                 'meta_description' => Str::limit($row[2], 160),
-                'meta_keywords'    => Str::limit($row[0], 60),
                 'status'           => 0,
             ]);
 

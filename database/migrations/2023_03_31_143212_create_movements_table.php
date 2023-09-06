@@ -20,9 +20,9 @@ return new class () extends Migration {
             $table->unsignedInteger('quantity');
             $table->decimal('price', 10, 2);
             $table->dateTime('date');
-            $table->unsignedBigInteger('movable_id');
+            $table->uuid('movable_id');
             $table->string('movable_type');
-            $table->unsignedBigInteger('user_id');
+            $table->foreignUuid('user_id')->constrained();
             $table->timestamps();
         });
     }

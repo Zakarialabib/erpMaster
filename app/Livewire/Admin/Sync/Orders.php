@@ -27,11 +27,11 @@ class Orders extends Component
     public function updatedType(): void
     {
         if ($this->type === 'woocommerce') {
-            $this->store_url = settings()->woocommerce_store_url;
+            $this->store_url = settings('woocommerce_store_url');
         } elseif ($this->type === 'shopify') {
-            $this->store_url = settings()->shopify_store_url;
+            $this->store_url = settings('shopify_store_url');
         } elseif ($this->type === 'custom') {
-            $this->store_url = settings()->custom_store_url;
+            $this->store_url = settings('custom_store_url');
         }
     }
 
@@ -40,21 +40,21 @@ class Orders extends Component
         // Connect to the user's e-commerce store
         if ($this->type === 'woocommerce') {
             $client = new \Automattic\WooCommerce\Client(
-                settings()->woocommerce_store_url,
+                settings('woocommerce_store_url'),
                 settings()->woocommerce_api_key,
                 settings()->woocommerce_api_secret,
                 ['wp_api' => true, 'version' => 'wc/v3']
             );
         } elseif ($this->type === 'shopify') {
             $client = new \Shopify\Client([
-                'shop_domain' => settings()->shopify_store_url,
+                'shop_domain' => settings('shopify_store_url'),
                 'api_key'     => settings()->shopify_api_key,
                 'api_secret'  => settings()->shopify_api_secret,
             ]);
         } elseif ($this->type === 'custom') {
             $client = Http::withHeaders([
                 'Authorization' => 'Bearer '.settings()->custom_api_key,
-            ])->get(settings()->custom_store_url.'/api');
+            ])->get(settings('custom_store_url').'/api');
         }
 
         // Get the orders from the e-commerce store

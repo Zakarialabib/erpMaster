@@ -1,7 +1,11 @@
 <div>
+    @section('title', __('Edit adjustment'))
+    <x-theme.breadcrumb :title="__('Edit adjustment')" :parent="route('admin.adjustments.index')" :parentName="__('Adjustment')" :children="URL::Current()" :childrenName="__('Edit adjustment')">
+
+    </x-theme.breadcrumb>
     <div class="flex flex-wrap">
         <div class="lg:w-1/2 sm:w-full h-full">
-            <livewire:search-product :$warehouse_id />
+            <livewire:search-product :$warehouse_id="$this->adjustment->warehouse_id" lazy />
         </div>
         <div class="lg:w-1/2 sm:w-full h-full">
             <x-validation-errors class="mb-4" :errors="$errors" />
@@ -10,7 +14,7 @@
                 <div class="flex flex-wrap -mx-2 mb-3">
                     <div class="xl:w-1/2 lg:w-1/2 sm:w-full px-3">
                         <x-label for="reference" :value="__('Reference')" required />
-                        <x-input type="text" wire:model.blur="reference" name="reference" required disabled />
+                        <x-input type="text" wire:model="reference" name="reference" required disabled />
                     </div>
                     <div class="w-full md:w-1/2 px-3 mb-4 md:mb-0">
                         <x-label for="warehouse" :value="__('Warehouse')" />
@@ -56,7 +60,7 @@
                                             class="block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border-gray-300 rounded-md mt-1">
                                     </x-table.td>
                                     <x-table.td>
-                                        <select name="types[]" wire:model.blur="products.{{ $key }}.type"
+                                        <select name="types[]" wire:model="products.{{ $key }}.type"
                                             class="block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border-gray-300 rounded-md mt-1">
                                             <option value="add"
                                                 {{ isset($product['type']) && $product['type'] == 'add' ? 'selected' : '' }}>
@@ -82,7 +86,7 @@
 
                 <div class="mb-4">
                     <x-label for="note" :value="__('Note (If Needed)')" />
-                    <textarea name="note" id="note" rows="5" wire:model.blur="note"
+                    <textarea name="note" id="note" rows="5" wire:model="note"
                         class="block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border-gray-300 rounded-md mt-1"></textarea>
                 </div>
                 <div class="mt-3">

@@ -40,7 +40,7 @@ class PurchasePayment extends Model
         parent::boot();
 
         static::creating(function ($purchasePayment) {
-            $prefix = settings()->purchasePayment_prefix;
+            $prefix = settings('purchasePayment_prefix');
 
             $latestPurchasePayment = self::latest()->first();
 

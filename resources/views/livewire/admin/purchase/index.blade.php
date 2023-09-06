@@ -1,8 +1,19 @@
 <div>
+    @section('title', __('Purchases'))
+
+    <x-theme.breadcrumb :title="__('Purchases List')" :parent="route('admin.quotations.index')" :parentName="__('Purchases List')">
+
+        @can('purchase_create')
+            <x-button primary href="{{ route('admin.purchase.create') }}" wire:loading.attr="disabled">
+                {{ __('Create Purchase order') }}
+            </x-button>
+        @endcan
+
+    </x-theme.breadcrumb>
     <div class="flex flex-wrap justify-center">
         <div class="lg:w-1/2 md:w-1/2 sm:w-full flex flex-wrap my-2">
             <select wire:model.live="perPage"
-                class="w-20 block p-3 leading-5 bg-white dark:bg-dark-eval-2 text-gray-700 dark:text-gray-300 rounded border border-gray-300 mb-1 text-sm focus:shadow-outline-blue focus:border-blue-300 mr-3">
+                class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-auto sm:text-sm border-gray-300 rounded-md focus:outline-none focus:shadow-outline-blue transition duration-150 ease-in-out">
                 @foreach ($paginationOptions as $value)
                     <option value="{{ $value }}">{{ $value }}</option>
                 @endforeach
@@ -23,7 +34,7 @@
         </div>
         <div class="lg:w-1/2 md:w-1/2 sm:w-full my-2">
             <div class="my-2">
-                <x-input wire:model.live.debounce.500ms="search" placeholder="{{ __('Search') }}" autofocus />
+                <x-input wire:model.live="search" placeholder="{{ __('Search') }}" autofocus />
             </div>
         </div>
 
@@ -93,7 +104,7 @@
                     </x-table.td>
                     <x-table.td>
                         <a class="text-blue-400 hover:text-blue-600 focus:text-blue-600"
-                            href="{{ route('supplier.details', $purchase->supplier->uuid) }}">
+                            href="{{ route('admin.supplier.details', $purchase->supplier->id) }}">
                             {{ $purchase->supplier->name }}
                         </a>
                     </x-table.td>
@@ -140,7 +151,7 @@
                                     @endcan
 
                                     @can('purchase_access')
-                                        <x-dropdown-link wire:click="$dispatch('showModal', {{ $purchase->id }})"
+                                        <x-dropdown-link wire:click="$dispatch('showModal', {id : {{ $purchase->id }} })"
                                             wire:loading.attr="disabled">
                                             <i class="fas fa-eye"></i>
                                             {{ __('View') }}
@@ -148,21 +159,23 @@
                                     @endcan
 
                                     @can('purchase_update')
-                                        <x-dropdown-link href="{{ route('purchases.edit', $purchase->uuid) }}"
+                                        <x-dropdown-link href="{{ route('admin.purchase.edit', $purchase->id) }}"
                                             wire:loading.attr="disabled">
                                             <i class="fas fa-edit"></i>
                                             {{ __('Edit') }}
                                         </x-dropdown-link>
                                     @endcan
 
-                                    <x-dropdown-link target="_blank" href="{{ route('purchases.pdf', $purchase->id) }}"
+                                    <x-dropdown-link target="_blank"
+                                        href="{{ route('admin.purchases.pdf', $purchase->id) }}"
                                         wire:loading.attr="disabled">
                                         <i class="fas fa-print"></i>
                                         {{ __('Print') }}
                                     </x-dropdown-link>
 
                                     @can('purchase_delete')
-                                        <x-dropdown-link wire:click="$dispatch('deleteModal', {{ $purchase->id }})"
+                                        <x-dropdown-link
+                                            wire:click="$dispatch('deleteModal', { id : {{ $purchase->id }} })"
                                             wire:loading.attr="disabled">
                                             <i class="fas fa-trash"></i>
                                             {{ __('Delete') }}
@@ -189,12 +202,12 @@
         {{ $purchases->links() }}
     </div>
 
-    @livewire('admin.purchase.show', ['purchase' => $purchase])
+    <livewire:admin.purchase.show :purchase="$purchase" lazy />
 
-    @livewire('admin.purchase.payment-form', ['purchase' => $purchase])
+    <livewire:admin.purchase.payment-form :purchase="$purchase" lazy />
 
     @if (empty($showPayments))
-        <livewire:admin.purchase.payment.index :purchase="$purchase" />
+        <livewire:admin.purchase.payment.index :purchase="$purchase" lazy />
     @endif
 
 

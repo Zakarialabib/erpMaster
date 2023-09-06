@@ -35,7 +35,7 @@ class PurchaseMail extends Mailable
      */
     public function build()
     {
-        return $this->subject('Purchase Details - '.settings()->company_name)
+        return $this->subject('Purchase Details - '.settings('company_name'))
             ->markdown('emails.purchaseMail')
             ->attachData($this->pdf, 'Purchase_'.$this->purchase->reference.'.pdf', [
                 'mime' => 'application/pdf',

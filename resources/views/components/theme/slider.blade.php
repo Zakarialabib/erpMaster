@@ -67,9 +67,9 @@
             @foreach ($sliders as $index => $slider)
                 <div class="relative h-screen min-w-full flex items-center lg:min-h-[500px]">
                     <picture>
-                        <source media="(max-width: 800px)" srcset="{{ $slider->getFirstMediaUrl('local_files') }}">
-                        <source media="(max-width: 1920px)" srcset="{{ $slider->getFirstMediaUrl('local_files') }}">
-                        <img src="{{ $slider->getFirstMediaUrl('local_files') }}"
+                        <source media="(max-width: 800px)" srcset="{{ $slider->image }}">
+                        <source media="(max-width: 1920px)" srcset="{{ $slider->image }}">
+                        <img src="{{ $slider->image }}"
                             class="block absolute inset-0 w-full h-full object-cover object-center z-0">
                     </picture>
                     <div class="absolute bottom-0 w-full h-1/2 z-0 bg-gradient-to-t from-black to-transparent"></div>

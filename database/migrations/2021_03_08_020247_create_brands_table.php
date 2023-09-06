@@ -16,10 +16,14 @@ return new class () extends Migration {
     {
         Schema::create('brands', function (Blueprint $table) {
             $table->id();
-
             $table->string('name', 192);
-            $table->string('description', 192)->nullable();
-            $table->string('image', 192)->nullable();
+            $table->string('image')->nullable();
+            $table->string('slug')->unique();
+            $table->text('description')->nullable();
+            $table->string('meta_title')->nullable();
+            $table->string('meta_description')->nullable();
+            $table->string('origin')->nullable();
+            $table->boolean('status')->default(true);
             $table->softDeletes();
             $table->timestamps();
         });

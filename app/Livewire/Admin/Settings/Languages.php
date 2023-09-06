@@ -41,7 +41,6 @@ class Languages extends Component
             $trans->save();
 
             $this->alert('success', __('Language updated successfully!'));
-            $this->mount();
         } catch (Exception $e) {
             $this->alert('error', __($e->getMessage()));
         }
@@ -61,19 +60,9 @@ class Languages extends Component
         $this->alert('success', __('Translation updated successfully!'));
     }
 
-    public function onUpdateLanguageStatus()
+    public function delete(Language $language)
     {
-        $this->mount();
-    }
-
-    /**
-     * -------------------------------------------------------------------------------
-     *  Delete Language
-     * -------------------------------------------------------------------------------
-     */
-    public function delete(Language $lang_id)
-    {
-        $lang_id->delete();
+        $language->delete();
 
         $this->alert('warning', __('Language deleted successfully!'));
     }

@@ -4,7 +4,7 @@
 
 @section('breadcrumb')
     <ol class="breadcrumb border-0 m-0">
-        <li class="breadcrumb-item"><a href="{{ route('home') }}">{{ __('Home') }}</a></li>
+        <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">{{ __('Home') }}</a></li>
         <li class="breadcrumb-item"><a href="{{ route('purchase-returns.index') }}">Purchase Returns</a></li>
         <li class="breadcrumb-item active">{{ __('Details') }}</li>
     </ol>
@@ -28,21 +28,21 @@
                         <div class="flex flex-row mb-4">
                             <div class="md-w-1/4 sm:w-full px-2 mb-2">
                                 <h5 class="mb-2 border-bottom pb-2">{{ __('Company Info') }}:</h5>
-                                <div><strong>{{ settings()->company_name }}</strong></div>
-                                <div>{{ settings()->company_address }}</div>
-                                @if (settings()->show_email == true)
-                                    <div>{{ __('Email') }}: {{ settings()->company_email }}</div>
+                                <div><strong>{{ settings('company_name') }}</strong></div>
+                                <div>{{ settings('company_address') }}</div>
+                                @if (settings('show_email') == true)
+                                    <div>{{ __('Email') }}: {{ settings('company_email') }}</div>
                                 @endif
-                                <div>{{ __('Phone') }}: {{ settings()->company_phone }}</div>
+                                <div>{{ __('Phone') }}: {{ settings('company_phone') }}</div>
                             </div>
 
                             <div class="md-w-1/4 sm:w-full px-2 mb-2">
                                 <h5 class="mb-2 border-bottom pb-2">{{ __('Supplier Info') }}:</h5>
                                 <div><strong>{{ $supplier->name }}</strong></div>
-                                @if (settings()->show_address == true)
+                                @if (settings('show_address') == true)
                                     <div>{{ $supplier->address }}</div>
                                 @endif
-                                @if (settings()->show_email == true)
+                                @if (settings('show_email') == true)
                                     <div>{{ __('Email') }}: {{ $supplier->email }}</div>
                                 @endif
                                 <div>{{ __('Phone') }}: {{ $supplier->phone }}</div>

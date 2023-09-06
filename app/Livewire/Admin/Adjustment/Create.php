@@ -8,12 +8,16 @@ use App\Models\AdjustedProduct;
 use App\Models\Adjustment;
 use App\Models\Product;
 use App\Models\ProductWarehouse;
+use App\Models\Warehouse;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
 use Livewire\Component;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
+use Livewire\Attributes\Computed;
 use Throwable;
+use Livewire\Attributes\Layout;
 
+#[Layout('components.layouts.dashboard')]
 class Create extends Component
 {
     use LivewireAlert;
@@ -30,7 +34,6 @@ class Create extends Component
     public $hasAdjustments;
 
     protected $listeners = [
-        'warehouseSelected' => 'updatedWarehouseId',
         'productSelected',
     ];
 
@@ -58,11 +61,12 @@ class Create extends Component
     public function updatedWarehouseId($value)
     {
         $this->warehouse_id = $value;
+        $this->dispatch('warehouseSelected', $this->warehouse_id);
     }
 
     public function store()
     {
-        abort_if(Gate::denies('adjustment_create'), 403);
+        abort_if(Gate::denies('adjustment create'), 403);
 
         if ( ! $this->warehouse_id) {
             $this->alert('error', __('Please select a warehouse'));
@@ -104,7 +108,7 @@ class Create extends Component
 
             $this->alert('success', __('Adjustment created successfully'));
 
-            return redirect()->route('adjustments.index');
+            return redirect()->route('admin.adjustments.index');
         } catch (Throwable $th) {
             $this->alert('error', 'Error Occurred in '.$th->getMessage());
         }
@@ -147,5 +151,11 @@ class Create extends Component
     public function removeProduct($key): void
     {
         unset($this->products[$key]);
+    }
+
+    #[Computed]
+    public function warehouses()
+    {
+        return Warehouse::pluck('name', 'id')->toArray();
     }
 }

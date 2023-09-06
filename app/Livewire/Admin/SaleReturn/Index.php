@@ -6,7 +6,6 @@ namespace App\Livewire\Admin\SaleReturn;
 
 use App\Enums\PaymentStatus;
 use App\Livewire\Utils\Datatable;
-use App\Models\Customer;
 use App\Models\SaleReturn;
 use App\Models\SaleReturnPayment;
 
@@ -14,16 +13,13 @@ use Illuminate\Support\Facades\Gate;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
 use Livewire\WithFileUploads;
-use Livewire\WithPagination;
 use Throwable;
 
 class Index extends Component
 {
-    use WithPagination;
     use Datatable;
     use WithFileUploads;
     use LivewireAlert;
-    use Datatable;
 
     public $salereturn;
 
@@ -31,7 +27,6 @@ class Index extends Component
     public $listeners = [
         'showModal',
         'importModal', 'import',
-        'refreshIndex' => '$refresh',
         'paymentModal', 'paymentSave',
     ];
 
@@ -46,8 +41,9 @@ class Index extends Component
     public $reference;
     public $amount;
     public $payment_method;
-
-    public $listsForFields = [];
+    public $total_amount;
+    public $due_amount;
+    public $paid_amount;
 
     /** @var array */
     protected $rules = [
@@ -66,12 +62,11 @@ class Index extends Component
     public function mount(): void
     {
         $this->orderable = (new SaleReturn())->orderable;
-        $this->initListsForFields();
     }
 
     public function render()
     {
-        abort_if(Gate::denies('sale_access'), 403);
+        abort_if(Gate::denies('sale access'), 403);
 
         $query = SaleReturn::with(['customer', 'saleReturnPayments', 'saleReturnDetails'])
             ->advancedFilter([
@@ -87,7 +82,7 @@ class Index extends Component
 
     public function showModal(SaleReturn $salereturn)
     {
-        abort_if(Gate::denies('sale_access'), 403);
+        abort_if(Gate::denies('sale access'), 403);
 
         $this->salereturn = SaleReturn::find($salereturn->id);
 
@@ -96,7 +91,7 @@ class Index extends Component
 
     public function deleteSelected()
     {
-        abort_if(Gate::denies('sale_delete'), 403);
+        abort_if(Gate::denies('sale delete'), 403);
 
         SaleReturn::whereIn('id', $this->selected)->delete();
 
@@ -105,7 +100,7 @@ class Index extends Component
 
     public function delete(SaleReturn $product)
     {
-        abort_if(Gate::denies('sale_delete'), 403);
+        abort_if(Gate::denies('sale delete'), 403);
 
         $product->delete();
 
@@ -116,7 +111,7 @@ class Index extends Component
 
     public function paymentModal(SaleReturn $salereturn)
     {
-        abort_if(Gate::denies('sale_access'), 403);
+        abort_if(Gate::denies('sale access'), 403);
 
         $this->salereturn = $salereturn;
         $this->date = date('Y-m-d');
@@ -175,15 +170,5 @@ class Index extends Component
         } catch (Throwable $th) {
             $this->alert('error', __('Error.').$th->getMessage());
         }
-    }
-
-    public function refreshCustomers()
-    {
-        $this->initListsForFields();
-    }
-
-    protected function initListsForFields(): void
-    {
-        $this->listsForFields['customers'] = Customer::pluck('name', 'id')->toArray();
     }
 }

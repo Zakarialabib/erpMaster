@@ -3,11 +3,17 @@
 declare(strict_types=1);
 
 if ( ! function_exists('settings')) {
-    function settings()
+    function settings($key = null)
     {
-        return cache()->rememberForever('settings', function () {
-            return \App\Models\Setting::with('currency')->firstOrFail();
+        $settings = cache()->rememberForever('settings', function () {
+            return \App\Models\Settings::pluck('value', 'key');
         });
+
+        if ($key !== null) {
+            return $settings->get($key);
+        }
+
+        return $settings;
     }
 }
 
@@ -18,11 +24,12 @@ if ( ! function_exists('format_currency')) {
             return $value;
         }
 
-        $settings = settings();
-        $position = $settings->default_currency_position;
-        $symbol = $settings->currency->symbol;
-        $decimalSeparator = $settings->currency->decimal_separator;
-        $thousandSeparator = $settings->currency->thousand_separator;
+        $currency = \App\Models\Currency::find(1); // Assuming you want to retrieve the currency from the database based on a specific condition
+
+        $position = $currency->position;
+        $symbol = $currency->symbol;
+        $decimalSeparator = $currency->decimal_separator;
+        $thousandSeparator = $currency->thousand_separator;
 
         return $position === 'prefix'
             ? $symbol.number_format((float) $value, 2, $decimalSeparator, $thousandSeparator)
@@ -31,20 +38,31 @@ if ( ! function_exists('format_currency')) {
 }
 
 if ( ! function_exists('format_date')) {
-    function format_date($date, $format = true)
+    function format_date($value)
     {
-        if (empty($date)) {
-            return '';
+        if ($value instanceof DateTimeInterface) {
+            return $value->format('Y-m-d');
         }
 
-        if ( ! $format) {
-            return $date;
+        // Check if value is non-empty and is a string
+        if (empty($value) || ! is_string($value)) {
+            return null;
         }
 
-        $settings = settings();
-        $date_format = $settings->default_date_format;
+        // Ensure that the value is at least 10 characters long to avoid warnings with substr
+        if (strlen($value) < 10) {
+            return null;
+        }
 
-        return date($date_format, strtotime($date));
+        $dateString = substr($value, 0, 10);
+
+        try {
+            $date = \Carbon\Carbon::createFromFormat('Y-m-d', $dateString);
+        } catch (Exception $e) {
+            return null; // Return null if date creation fails
+        }
+
+        return $date->format('Y-m-d');
     }
 }
 

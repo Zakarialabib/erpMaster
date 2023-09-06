@@ -13,7 +13,9 @@ use Livewire\Component;
 use Livewire\WithFileUploads;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Storage;
+use Livewire\Attributes\Layout;
 
+#[Layout('components.layouts.dashboard')]
 class Index extends Component
 {
     use LivewireAlert;
@@ -27,7 +29,6 @@ class Index extends Component
 
     /** @var array<string> */
     public $listeners = [
-        'refreshIndex' => '$refresh',
         'showModal', 'importModal',
         'delete',
     ];
@@ -52,7 +53,7 @@ class Index extends Component
 
     public function render()
     {
-        abort_if(Gate::denies('brand_access'), 403);
+        abort_if(Gate::denies('brand access'), 403);
 
         $query = Brand::advancedFilter([
             's'               => $this->search ?: null,
@@ -122,7 +123,7 @@ class Index extends Component
 
     public function downloadSample()
     {
-        return Storage::disk('exports')->download('brands_import_sample.xls');
+        return Storage::disk('exports')->download('brands_import_sample.xls.csv');   
     }
 
     public function import(): void

@@ -7,8 +7,8 @@
                     style="border-collapse: collapse;">
                     <tr>
                         <td align="center" style="padding: 40px 0 30px 0;">
-                            <img src="{{ asset('images/' . Helpers::settings('site_logo')) }}"
-                                alt="{{ Helpers::settings('site_title') }}" width="190px" height="90px">
+                            <img src="{{ asset('images/' . settings('site_logo')) }}"
+                                alt="{{ settings('site_title') }}" width="190px" height="90px">
                         </td>
                     </tr>
                     <tr>
@@ -59,7 +59,7 @@
                                 <tr>
                                     <td
                                         style="color:#153643; font-family: Arial, sans-serif; font-size: 14px; text-align:center">
-                                        <p style="margin: 0;">&reg; {{ Helpers::settings('company_address') }}<br />
+                                        <p style="margin: 0;">&reg; {{ settings('company_address') }}<br />
                                             <a href="#" style="color:#153643;">{{ __('Unsubscribe') }}</a>
                                             {{ __('to this newsletter
                                                                                         instantly') }}

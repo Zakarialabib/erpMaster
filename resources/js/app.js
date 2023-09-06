@@ -1,103 +1,101 @@
 import './bootstrap';
-import '../css/app.css'; 
+import '../css/app.css';
 import "../css/theme.css";
 import "../css/font.css";
 import "perfect-scrollbar/css/perfect-scrollbar.css";
-import {livewire_hot_reload} from 'virtual:livewire-hot-reload'
 import { Livewire, Alpine } from '../../vendor/livewire/livewire/dist/livewire.esm';
 
-livewire_hot_reload();
-
 import swal from 'sweetalert2';
-
 window.Swal = swal;
+
+import Sortable from 'sortablejs';
+window.Sortable = Sortable;
 
 import "@fortawesome/fontawesome-free/css/all.css";
 
 import PerfectScrollbar from "perfect-scrollbar";
 window.PerfectScrollbar = PerfectScrollbar;
 
-Alpine.data("mainState", () => {
-    
-    let lastScrollTop = 0;
-    
-    const init = function () {
-        window.addEventListener("scroll", () => {
-            let st =
-                window.pageYOffset || document.documentElement.scrollTop;
-            if (st > lastScrollTop) {
-                // downscroll
-                this.scrollingDown = true;
-                this.scrollingUp = false;
-            } else {
-                // upscroll
-                this.scrollingDown = false;
-                this.scrollingUp = true;
-                if (st == 0) {
-                    //  reset
-                    this.scrollingDown = false;
-                    this.scrollingUp = false;
-                }
-            }
-            lastScrollTop = st <= 0 ? 0 : st; // For Mobile or negative scrolling
-        });
+Alpine.data('mainState', () => {
+    const enableTheme = (isRtl) => {
+        document.body.dir = isRtl ? 'rtl' : 'ltr';
     };
 
-    
-
-    Alpine.data("loadingMask", () => ({
-        pageLoaded: false,
-        init() {
-            window.onload = (event) => {
-                this.pageLoaded = true
-            };
+    const scrollToAnchor = (anchor) => {
+        const element = document.querySelector(anchor);
+        if (element) {
+            element.scrollIntoView({ behavior: 'smooth' });
         }
-    }));
+    };
+
+    const loadingMask = {
+        pageLoaded: false,
+        showText: false,
+        init() {
+            window.onload = () => {
+                this.pageLoaded = true;
+            };
+            this.animateCharge();
+        },
+        animateCharge() {
+            setInterval(() => {
+                this.showText = true;
+                setTimeout(() => {
+                    this.showText = false;
+                }, 2000);
+            }, 4000);
+        },
+    };
 
     const getTheme = () => {
-        if (window.localStorage.getItem("dark")) {
-            return JSON.parse(window.localStorage.getItem("dark"));
-        }
-        return (
-            !!window.matchMedia &&
-            window.matchMedia("(prefers-color-scheme: dark)").matches
-        );
+        return window.localStorage.getItem('dark') === 'true' ||
+            (!!window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
     };
+
     const setTheme = (value) => {
-        window.localStorage.setItem("dark", value);
+        window.localStorage.setItem('dark', value);
     };
 
-    const RTL = () => {
-        if (window.localStorage.getItem("rtl")) {
-            return JSON.parse(window.localStorage.getItem("rtl"));
-          }
-          return false;
-    }
-
-    const enableTheme = (isRtl) => {
-        if (isRtl) {
-          document.body.dir = "rtl";
-        } else {
-          document.body.dir = "ltr";
+    const handleOutsideClick = (event) => {
+        if (this.isSidebarOpen && !event.target.closest('.sidebar') && !event.target.closest('.sidebar-toggle')) {
+            this.isSidebarOpen = false;
         }
-      };
-      
-      enableTheme(false); // sets document.body.dir to "ltr"      
+    };
+
+    document.addEventListener('click', handleOutsideClick);
+
+    enableTheme(false); // sets document.body.dir to "ltr"
 
     return {
-        init,
+        isRtl: false,
+        toggleRtl() {
+            this.isRtl = !this.isRtl;
+            enableTheme(this.isRtl);
+            window.localStorage.setItem('rtl', this.isRtl);
+        },
+        loadingMask,
+        scrollToAnchor,
         isDarkMode: getTheme(),
         toggleTheme() {
             this.isDarkMode = !this.isDarkMode;
             setTheme(this.isDarkMode);
         },
-        isRtl : RTL(),
-        toggleRtl() {
-            this.isRtl = !this.isRtl;
-            enableTheme(this.isRtl);
-            window.localStorage.setItem("rtl", this.isRtl);
-       },
-        isSidebarOpen: window.innerWidth > 1024,
+        isSidebarOpen: sessionStorage.getItem('sidebarOpen') === 'true',
+        isRightSidebarOpen: sessionStorage.getItem('rightSidebarOpen') === 'true',
+        handleSidebarToggle() {
+            this.isSidebarOpen = !this.isSidebarOpen;
+            sessionStorage.setItem('sidebarOpen', this.isSidebarOpen.toString());
+        },
+        handleRightSidebarToggle() {
+            this.isRightSidebarOpen = !this.isRightSidebarOpen;
+            sessionStorage.setItem('rightSidebarOpen', this.isRightSidebarOpen.toString());
+        },
+        closeSidebarOnMobile() {
+            if (window.innerWidth < 1024) {
+                this.isSidebarOpen = false;
+                this.isRightSidebarOpen = false;
+            }
+        },
         isSidebarHovered: false,
         handleSidebarHover(value) {
             if (window.innerWidth < 1024) {
@@ -108,8 +106,10 @@ Alpine.data("mainState", () => {
         handleWindowResize() {
             if (window.innerWidth <= 1024) {
                 this.isSidebarOpen = false;
+                this.isRightSidebarOpen = false;
             } else {
                 this.isSidebarOpen = true;
+                this.isRightSidebarOpen = false;
             }
         },
         scrollingDown: false,

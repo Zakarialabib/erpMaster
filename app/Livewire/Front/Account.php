@@ -8,14 +8,15 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
+use Livewire\Attributes\Layout;
 
+#[Layout('components.layouts.guest')]
 class Account extends Component
 {
     use LivewireAlert;
 
     public $user;
-    public $first_name;
-    public $last_name;
+    public $name;
     public $phone;
     public $email;
     public $address;

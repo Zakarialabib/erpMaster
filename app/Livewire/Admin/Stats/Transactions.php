@@ -4,17 +4,24 @@ declare(strict_types=1);
 
 namespace App\Livewire\Admin\Stats;
 
+use App\Enums\OrderType;
 use App\Models\Category;
+use App\Models\Contact;
 use App\Models\Customer;
+use App\Models\Order;
+use App\Models\ProductWarehouse;
+use App\Models\OrderForms;
 use App\Models\Product;
 use App\Models\Purchase;
 use App\Models\PurchasePayment;
 use App\Models\SaleDetails;
 use App\Models\Sale;
 use App\Models\SalePayment;
+use App\Models\Subscriber;
 use App\Models\Supplier;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Livewire\Attributes\Computed;
 use Livewire\Component;
 
 class Transactions extends Component
@@ -40,12 +47,54 @@ class Transactions extends Component
     public $sales;
     public $sales_count;
 
+    public $subscribersCount;
+    public $orderFormProduct;
+    public $ordersCount;
+    public $recentOrders;
+    public $contactsCount;
+    public $recentContacts;
+    public $startDate;
+    public $endDate;
+    public $purchasesCount;
+    public $salesTotal;
+    public $stockValue;
+    
     public function mount()
     {
+        $this->startDate = Carbon::now()->startOfMonth()->toDateString();
+        $this->endDate = Carbon::now()->endOfMonth()->toDateString();
+
         $this->categoriesCount = Category::count('id');
-        $this->productCount = Product::count('id');
-        $this->supplierCount = Supplier::count('id');
-        $this->customerCount = Customer::count('id');
+
+        $this->productCount = Product::whereBetween('created_at', [$this->startDate, $this->endDate])->count();
+        $this->supplierCount = Supplier::whereBetween('created_at', [$this->startDate, $this->endDate])->count();
+        $this->customerCount = Customer::whereBetween('created_at', [$this->startDate, $this->endDate])->count();
+
+        $this->subscribersCount = Subscriber::whereBetween('created_at', [$this->startDate, $this->endDate])->count();
+
+        $this->orderFormProduct = OrderForms::where('type', OrderType::PRODUCT)->whereBetween('created_at', [$this->startDate, $this->endDate])->count();
+
+        $this->ordersCount = Order::with('products')
+            ->whereBetween('created_at', [$this->startDate, $this->endDate])
+            ->count();
+
+        $this->recentOrders = Order::select('created_at', 'total_amount', 'reference', 'id')->orderBy('created_at', 'desc')->take(10)->get();
+
+        $this->contactsCount = Contact::whereBetween('created_at', [$this->startDate, $this->endDate])->count();
+        $this->recentContacts = Contact::select('created_at', 'type', 'subject', 'name', 'id')->orderBy('created_at', 'desc')->take(10)->get();
+      
+      
+        $this->salesCount = Sale::whereBetween('created_at', [$this->startDate, $this->endDate])
+            ->count();
+        $this->purchasesCount = Purchase::whereBetween('created_at', [$this->startDate, $this->endDate])
+            ->count();
+
+
+        $this->salesTotal = Sale::whereDate('created_at', [$this->startDate, $this->endDate])->sum('total_amount') / 100;
+
+        $this->stockValue = ProductWarehouse::whereDate('created_at', [$this->startDate, $this->endDate])->sum(DB::raw('qty * cost'));
+
+
         $this->lastSales = Sale::with('customer')
             ->latest()
             ->take(5)
@@ -167,7 +216,8 @@ class Transactions extends Component
         return json_encode($dataarray);
     }
 
-    public function getDailyChartOptionsProperty()
+    #[Computed]
+    public function dailyChartOptions()
     {
         $currentMonth = Carbon::now()->startOfMonth();
 

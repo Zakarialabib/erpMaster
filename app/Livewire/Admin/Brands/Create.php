@@ -8,9 +8,10 @@ use App\Models\Brand;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
+use Livewire\Attributes\On;
+use Livewire\Attributes\Rule;
 use Livewire\Component;
 use Livewire\WithFileUploads;
-use Throwable;
 
 class Create extends Component
 {
@@ -19,68 +20,72 @@ class Create extends Component
 
     public $createModal = false;
 
-    /** @var mixed */
-    public $brand;
+    public Brand $brand;
+
+    #[Rule('required', message: 'Please provide a name')]
+    #[Rule('min:3', message: 'This name is too short')]
+    public string $name;
+
+    #[Rule('nullable')]
+    public string $description;
+
+    #[Rule('nullable')]
+    public string $slug;
 
     public $image;
 
-    /** @var array<string> */
-    public $listeners = ['createModal'];
+    public $featured_image;
 
-    /** @var array */
-    protected $rules = [
-        'brand.name'        => 'required|min:3|max:255',
-        'brand.description' => 'nullable|min:3',
-    ];
+    #[Rule('nullable')]
+    public string $meta_title;
 
-    protected $messages = [
-        'brand.name.required' => 'The name field cannot be empty.',
-    ];
+    #[Rule('nullable')]
+    public string $meta_description;
 
-    public function updated($propertyName): void
-    {
-        $this->validateOnly($propertyName);
-    }
+    #[Rule('nullable')]
+    public string $origin;
 
+    #[On('createModal')]
     public function createModal(): void
     {
-        abort_if(Gate::denies('brand_create'), 403);
+        abort_if(Gate::denies('brand create'), 403);
 
         $this->resetErrorBag();
 
         $this->resetValidation();
-
-        $this->brand = new Brand();
 
         $this->createModal = true;
     }
 
     public function create(): void
     {
-        try {
-            $validatedData = $this->validate();
+        $this->validate();
 
-            if ($this->image) {
-                $imageName = Str::slug($this->name).'-'.Str::random(5).'.'.$this->image->extension();
-                $this->image->storeAs('brands', $imageName);
-                $this->image = $imageName;
-            }
+        $this->slug = Str::slug($this->name);
 
-            $this->brand->save($validatedData);
-
-            $this->dispatch('refreshIndex');
-
-            $this->alert('success', __('Brand created successfully.'));
-
-            $this->createModal = false;
-        } catch (Throwable $th) {
-            $this->alert('success', __('Error.').$th->getMessage());
+        if ($this->image) {
+            $imageName = Str::slug($this->name).'-'.Str::random(5).'.'.$this->image->extension();
+            $this->image->storeAs('brands', $imageName);
+            $this->image = $imageName;
         }
+
+        $this->meta_title = $this->name;
+        $this->meta_description = Str::limit($this->description, 160);
+
+        Brand::create($this->all());
+
+        $this->dispatch('refreshIndex')->to(Index::class);
+
+        $this->alert('success', __('Brand created successfully.'));
+
+        $this->reset('name', 'description', 'slug', 'image');
+
+        $this->createModal = false;
     }
 
     public function render()
     {
-        abort_if(Gate::denies('brand_create'), 403);
+        abort_if(Gate::denies('brand create'), 403);
 
         return view('livewire.admin.brands.create');
     }

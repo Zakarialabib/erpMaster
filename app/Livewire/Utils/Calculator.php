@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Livewire;
+namespace App\Livewire\Utils;
 
 use Livewire\Component;
 
@@ -20,7 +20,7 @@ class Calculator extends Component
 
     public function render()
     {
-        return view('livewire.calculator');
+        return view('livewire.utils.calculator');
     }
 
     public function calculate()

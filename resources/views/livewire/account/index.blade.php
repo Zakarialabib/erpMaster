@@ -9,26 +9,12 @@
                         class="px-4 py-2 w-full text-left text-green-800 hover:bg-green-500 hover:text-white transition-colors cursor-pointer">
                         {{ __('Account Info') }}
                     </li>
-                    @isset($participant?->id)
-                    <li @click="activeTab = 'registration'"
-                        :class="{ 'bg-green-500 text-white': activeTab === 'registration' }"
-                        class="px-4 py-2 w-full text-left text-green-800 hover:bg-green-500 hover:text-white transition-colors cursor-pointer">
-                        {{ __('Registrations Info') }}
-                    </li>
-                    <li @click="activeTab = 'participation'"
-                        :class="{ 'bg-green-500 text-white': activeTab === 'participation' }"
-                        class="px-4 py-2 w-full text-left text-green-800 hover:bg-green-500 hover:text-white transition-colors cursor-pointer">
-                        {{ __('Participations Infos') }}
-                    </li>
-                    @endisset
+                  
                     <li @click="activeTab = 'orders'" :class="{ 'bg-green-500 text-white': activeTab === 'orders' }"
                         class="px-4 py-2 w-full text-left text-green-800 hover:bg-green-500 hover:text-white transition-colors cursor-pointer">
                         {{ __('Orders') }}
                     </li>
-                    <li @click="activeTab = 'raceResults'" :class="{ 'bg-green-500 text-white': activeTab === 'raceResults' }"
-                        class="px-4 py-2 w-full text-left text-green-800 hover:bg-green-500 hover:text-white transition-colors cursor-pointer">
-                        {{ __('Race results') }}
-                    </li>
+                
                     
                 </ul>
             </div>
@@ -38,23 +24,10 @@
                     @livewire('account.user-infos', ['user' => $user])
                 </div>
 
-                @isset($participant->id)
-                <div x-show="activeTab === 'registration'" class="w-full">
-                    @livewire('account.registration-infos', ['participant' => $participant])
-                </div>
-
-                <div x-show="activeTab === 'participation'" class="w-full">
-                    @livewire('account.participant-infos', ['participant' => $participant])
-                </div>
-                @endisset
-
                 <div x-show="activeTab === 'orders'" class="w-full">
                     @livewire('account.orders')
                 </div>
                
-                <div x-show="activeTab === 'raceResults'" class="w-full">
-                    @livewire('account.race-results', ['participant' => $participant])
-                </div>
             </div>
         </div>
     </section>

@@ -5,90 +5,73 @@ declare(strict_types=1);
 namespace App\Livewire\Admin\Page;
 
 use App\Models\Page;
-use App\Models\PageSetting;
-use Illuminate\Contracts\View\Factory;
-use Illuminate\Contracts\View\View;
 use Illuminate\Support\Str;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
+use Livewire\Attributes\Layout;
+use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithFileUploads;
-use App\Http\Livewire\Quill;
+use App\Traits\LazySpinner;
+use Livewire\Attributes\Rule;
 
+Should:
+#[Layout('components.layouts.dashboard')]
 class Create extends Component
 {
-    use LivewireAlert;
     use WithFileUploads;
+    use LazySpinner;
+    use LivewireAlert;
 
-    public $createPage;
+    public Page $page;
 
-    public $page;
-
-    public $image;
-
+    #[Rule('required|min:3|max:255')]
+    public $title;
+    #[Rule('required|min:3|max:255')]
+    public $slug;
     public $description;
+    #[Rule('nullable')]
+    public $meta_title;
+    #[Rule('nullable')]
+    public $meta_description;
+    public $image = '';
+    public bool $is_sliders = false;
+    public bool $is_contact = false;
+    public bool $is_offer = false;
+    public bool $is_title = true;
+    public bool $is_description = true;
+    public $status;
+    public $type;
 
-    public $listeners = [
-        'createPage',
-        Quill::EVENT_VALUE_UPDATED,
-    ];
-
-    public function QuillValueUpdated($value)
+    #[On('editorjs-save')]
+    public function saveEditorState($editorJsonData)
     {
-        $this->description = $value;
+        $this->description = $editorJsonData;
     }
 
-    protected $rules = [
-        'page.title'            => ['required', 'string', 'max:255'],
-        'page.slug'             => ['required', 'max:255'],
-        'description'           => ['required'],
-        'page.meta_title'       => ['nullable', 'max:255'],
-        'page.meta_description' => ['nullable', 'max:255'],
-        'page.language_id'      => ['nullable'],
-    ];
-
-    public function render(): View|Factory
+    public function store()
     {
-        // abort_if(Gate::denies('page_create'), 403);
-
-        return view('livewire.admin.page.create');
-    }
-
-    public function createPage()
-    {
-        $this->resetErrorBag();
-
-        $this->resetValidation();
-
-        $this->page = new Page();
-
-        $this->createPage = true;
-    }
-
-    public function create()
-    {
-        $this->validate();
-
-        $this->page->slug = Str::slug($this->page->name);
-
-        if ($this->photo) {
-            $imageName = Str::slug($this->page->name).'-'.date('Y-m-d H:i:s').'.'.$this->photo->extension();
-            $this->photo->storeAs('pages', $imageName);
-            $this->page->photo = $imageName;
+        if ( ! $this->image) {
+            $this->image = null;
+        } elseif (is_object($this->image) && method_exists($this->image, 'extension')) {
+            $imageName = Str::slug($this->title).$this->image->extension();
+            $this->image->store('pages', $imageName);
+            $this->image = $imageName;
         }
 
-        $this->page->details = $this->description;
+        $this->slug = Str::slug($this->title);
+        $this->description = json_encode($this->description);
 
-        $this->page->save();
+        $this->meta_title = Str::limit($this->title, 55);
 
-        $pageSettings = new PageSetting([
-            'page_id'     => $this->page->id,
-            'language_id' => $this->page->language_id,
-        ]);
+        Page::create($this->all());
 
-        $this->emit('refreshIndex');
+        $this->alert('success', 'Page successfully created.');
 
-        $this->alert('success', __('Page created successfully!'));
+        return $this->redirect('page/edit', $this->slug);
+    }
 
-        $this->createPage = false;
+    public function render()
+    {
+        return view('livewire.admin.page.create');
     }
 }

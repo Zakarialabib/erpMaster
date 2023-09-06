@@ -9,73 +9,71 @@ use App\Models\ExpenseCategory;
 use App\Models\Warehouse;
 use Illuminate\Support\Facades\Gate;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
+use Livewire\Attributes\On;
 use Livewire\Component;
-use Throwable;
+use Livewire\Attributes\Rule;
 
 class Create extends Component
 {
     use LivewireAlert;
 
-    /** @var array<string> */
-    public $listeners = ['createModal'];
-
     public $createModal = false;
 
-    /** @var mixed */
-    public $expense;
+    public Expense $expense;
 
-    protected $rules = [
-        'expense.reference'    => 'required|string|max:255',
-        'expense.category_id'  => 'required|integer|exists:expense_categories,id',
-        'expense.date'         => 'required|date',
-        'expense.amount'       => 'required|numeric',
-        'expense.details'      => 'nullable|string|min:3',
-        'expense.user_id'      => 'nullable',
-        'expense.warehouse_id' => 'nullable',
-    ];
+    #[Rule('required|string|max:255')]
+    public $reference;
 
-    public function updated($propertyName)
-    {
-        $this->validateOnly($propertyName);
-    }
+    #[Rule('required|integer|exists:expense_categories,id')]
+    public $category_id;
+
+    #[Rule('required|date')]
+    public $date;
+
+    #[Rule('required|numeric')]
+    public $amount;
+
+    #[Rule('nullable|string|min:3')]
+    public $description;
+
+    #[Rule('nullable')]
+    public $user_id;
+
+    #[Rule('nullable')]
+    public $warehouse_id;
 
     public function render()
     {
-        abort_if(Gate::denies('expense_create'), 403);
+        abort_if(Gate::denies('expense create'), 403);
 
         return view('livewire.admin.expense.create');
     }
 
+    #[On('createModal')]
     public function createModal(): void
     {
         $this->resetErrorBag();
 
         $this->resetValidation();
 
-        $this->expense = new Expense();
-
-        $this->expense->date = date('Y-m-d');
+        $this->date = date('Y-m-d');
 
         $this->createModal = true;
     }
 
     public function create(): void
     {
-        try {
-            $validatedData = $this->validate();
+        $this->validate();
 
-            $this->expense->save($validatedData);
+        $this->expense->save($this->all());
 
-            $this->expense->user()->associate(auth()->user());
+        $this->expense->user()->associate(auth()->user());
 
-            $this->alert('success', __('Expense created successfully.'));
+        $this->alert('success', __('Expense created successfully.'));
 
-            $this->dispatch('refreshIndex');
+        $this->dispatch('refreshIndex')->to(Index::class);
 
-            $this->createModal = false;
-        } catch (Throwable $th) {
-            $this->alert('error', $th->getMessage());
-        }
+        $this->createModal = false;
     }
 
     public function getExpenseCategoriesProperty()

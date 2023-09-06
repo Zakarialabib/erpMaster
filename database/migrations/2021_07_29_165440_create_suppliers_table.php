@@ -6,8 +6,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSuppliersTable extends Migration
-{
+return new class () extends Migration {
     /**
      * Run the migrations.
      *
@@ -16,17 +15,15 @@ class CreateSuppliersTable extends Migration
     public function up()
     {
         Schema::create('suppliers', function (Blueprint $table) {
-            $table->id();
-            $table->uuid();
-
-            $table->string('name', 192);
-            $table->string('email', 192)->nullable();
-            $table->string('phone', 192);
+            $table->uuid('id')->primary();
+            $table->string('name');
+            $table->string('email')->nullable();
+            $table->string('phone')->nullable();
             $table->text('address')->nullable();
             $table->string('city')->nullable();
             $table->string('country')->nullable();
-            $table->string('tax_number', 192)->nullable();
-
+            $table->string('tax_number')->nullable();
+            $table->foreignUuid('wallet_id')->nullable()->constrained('wallets')->cascadeOnDelete();
             $table->softDeletes();
             $table->timestamps();
         });
@@ -41,4 +38,4 @@ class CreateSuppliersTable extends Migration
     {
         Schema::dropIfExists('suppliers');
     }
-}
+};

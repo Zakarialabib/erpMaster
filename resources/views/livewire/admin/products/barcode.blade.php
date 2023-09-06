@@ -1,4 +1,8 @@
 <div>
+    @section('title', __('Barcode generator'))
+    <x-theme.breadcrumb :title="__('Barcode generator')" :parent="route('admin.barcode.print')" :parentName="__('Barcode generator')">
+
+    </x-theme.breadcrumb>
     <div class="flex flex-row">
         <div class="w-full px-2">
             <livewire:search-product />

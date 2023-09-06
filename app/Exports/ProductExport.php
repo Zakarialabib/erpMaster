@@ -17,6 +17,11 @@ class ProductExport implements FromView
     /** @var mixed */
     protected $models;
 
+    public function __construct($models = null)
+    {
+        $this->models = $models;
+    }
+
     public function query()
     {
         if ($this->models) {

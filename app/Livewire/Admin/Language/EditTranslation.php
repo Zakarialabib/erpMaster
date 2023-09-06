@@ -7,23 +7,21 @@ namespace App\Livewire\Admin\Language;
 use Livewire\Component;
 use App\Models\Language;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
-use Symfony\Component\HttpFoundation\Exception\JsonException;
 
 class EditTranslation extends Component
 {
     use LivewireAlert;
-
     public $language;
-
     public $translations;
 
     public $rules = [
         'translations.*.value' => 'required',
     ];
 
-    public function mount($code)
+    public function mount($language)
     {
-        $this->language = Language::where('code', $code)->firstOrFail();
+        $this->language = Language::where('id', $language)->firstOrFail();
+        // dd($this->all());
         $this->translations = $this->getTranslations();
         $this->translations = collect($this->translations)->map(function ($item, $key) {
             return [
@@ -47,34 +45,16 @@ class EditTranslation extends Component
 
         $path = base_path("lang/{$this->language->code}.json");
 
-        if ( ! file_exists($path)) {
-            $this->alert('error', __('File does not exist!'));
-
-            return;
-        }
-
-        try {
-            $json = file_get_contents($path);
-            $translations = json_decode($json, true, 512, JSON_THROW_ON_ERROR);
-        } catch (JsonException $e) {
-            $this->alert('error', __('Error decoding JSON data!'));
-
-            return;
-        }
+        $data = file_get_contents($path);
+        $translations = json_decode($data, true);
 
         foreach ($this->translations as $key => $translation) {
             $translations[$translation['key']] = $translation['value'];
         }
 
-        try {
-            file_put_contents($path, json_encode($translations, JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
-        } catch (JsonException $e) {
-            $this->alert('error', __('Error encoding JSON data!'));
+        file_put_contents($path, json_encode($translations, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
 
-            return;
-        }
-
-        $this->alert('success', __('Translated  successfully!'));
+        $this->alert('success', __('Data created successfully!'));
     }
 
     public function render()

@@ -4,82 +4,29 @@ declare(strict_types=1);
 
 namespace App\Livewire\Admin\Blog;
 
+use App\Livewire\Utils\Datatable;
 use App\Models\Blog;
-use Illuminate\Contracts\View\Factory;
-use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Gate;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
-use Livewire\WithPagination;
+use Livewire\Attributes\Layout;
 
+#[Layout('components.layouts.dashboard')]
 class Index extends Component
 {
-    use WithPagination;
     use Datatable;
     use LivewireAlert;
 
     public $listeners = [
-        'refreshIndex' => '$refresh',
         'delete',
     ];
 
     public $blog;
 
-    public int $perPage;
-
     public $deleteModal = false;
-
-    public array $orderable;
-
-    public string $search = '';
-
-    public array $selected = [];
-
-    public array $paginationOptions;
-
-    protected $queryString = [
-        'search' => [
-            'except' => '',
-        ],
-        'sortBy' => [
-            'except' => 'id',
-        ],
-        'sortDirection' => [
-            'except' => 'desc',
-        ],
-    ];
-
-    public function getSelectedCountProperty()
-    {
-        return count($this->selected);
-    }
-
-    public function updatingSearch()
-    {
-        $this->resetPage();
-    }
-
-    public function updatingPerPage()
-    {
-        $this->resetPage();
-    }
-
-    public function confirmed()
-    {
-        $this->emit('delete');
-    }
-
-    public function resetSelected()
-    {
-        $this->selected = [];
-    }
 
     public function mount()
     {
-        $this->sortBy = 'id';
-        $this->sortDirection = 'desc';
-        $this->perPage = 25;
-        $this->paginationOptions = [25, 50, 100];
         $this->orderable = (new Blog())->orderable;
     }
 
@@ -113,7 +60,7 @@ class Index extends Component
         $this->blog = $blog;
     }
 
-    public function render(): View|Factory
+    public function render()
     {
         $query = Blog::advancedFilter([
             's'               => $this->search ?: null,

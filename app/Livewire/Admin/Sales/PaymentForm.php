@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Gate;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
 use Throwable;
+use Livewire\Attributes\Rule;
 
 class PaymentForm extends Component
 {
@@ -20,7 +21,6 @@ class PaymentForm extends Component
 
     public $listeners = [
         'paymentModal',
-        'refreshIndex' => '$refresh',
     ];
 
     public $paymentModal;
@@ -31,17 +31,29 @@ class PaymentForm extends Component
 
     // public $reference;
 
+    #[Rule('required|date')]
     public $date;
 
+    #[Rule('required|numeric')]
     public $amount;
 
+    #[Rule('required|string|max:100')]
     public $payment_method;
 
+    #[Rule('nullable|numeric')]
+    public $total_amount;
+    #[Rule('nullable|numeric')]
+    public $due_amount;
+    #[Rule('nullable|numeric')]
+    public $paid_amount;
+    
+    #[Rule('nullable|string|max:1000')]
     public $note;
 
+
     protected $rules = [
-        'date'   => 'required|date',
-        'amount' => 'required|numeric',
+        'date'   => '',
+        'amount' => '',
         'note'   => 'nullable|string|max:1000',
         // 'sale_id' => 'nullable|integer',
         'payment_method' => 'required|string|max:255',
@@ -51,7 +63,7 @@ class PaymentForm extends Component
 
     public function paymentModal($id)
     {
-        // abort_if(Gate::denies('sale_access'), 403);
+        // abort_if(Gate::denies('sale access'), 403);
 
         $this->resetErrorBag();
 
@@ -105,7 +117,7 @@ class PaymentForm extends Component
 
             $this->paymentModal = false;
 
-            $this->dispatch('refreshIndex');
+            $this->dispatch('refreshIndex')->to(Index::class);
         } catch (Throwable $th) {
             $this->alert('error', __('Error.').$th->getMessage());
         }

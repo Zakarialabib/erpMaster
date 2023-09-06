@@ -26,11 +26,6 @@ class SearchBox extends Component
         ],
     ];
 
-    // public function mount($search = null)
-    // {
-    //     $this->search = $search;
-    // }
-
     public function updatedSearch()
     {
         if (strlen($this->search) > 3) {

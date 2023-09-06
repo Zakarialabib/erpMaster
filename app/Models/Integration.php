@@ -7,16 +7,14 @@ namespace App\Models;
 use App\Enums\IntegrationType;
 use App\Enums\Status;
 use App\Support\HasAdvancedFilter;
-use App\Traits\GetModelByUuid;
-use App\Traits\UuidGenerator;
+use App\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Integration extends Model
 {
     use HasAdvancedFilter;
-    use GetModelByUuid;
-    use UuidGenerator;
+    use HasUuid;
     use HasFactory;
 
     public const ATTRIBUTES = [
@@ -41,7 +39,7 @@ class Integration extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'uuid',
+        'id',
         'type',
         'store_url',
         'api_key',
@@ -58,16 +56,6 @@ class Integration extends Model
         'type'   => IntegrationType::class,
     ];
 
-    public function getTypeName(): string
-    {
-        return match ($this->type) {
-            IntegrationType::CUSTOM      => 'Custom',
-            IntegrationType::YOUCAN      => 'Youcan',
-            IntegrationType::WOOCOMMERCE => 'WooCommerce',
-            IntegrationType::SHOPIFY     => 'Shopify',
-            default                      => 'Unknown'
-        };
-    }
 
     public function scopeActive($query)
     {

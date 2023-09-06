@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\Status;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -37,7 +38,7 @@ class Popup extends Model
      * @var array
      */
     protected $casts = [
-        'status'     => 'boolean',
+        'status'     => Status::class,
         'delay'      => 'integer',
         'duration'   => 'integer',
         'visits'     => 'integer',

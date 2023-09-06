@@ -12,12 +12,6 @@
                             class="w-32 h-32 rounded-full">
                     </div>
                 </div>
-                <div class="w-full mb-3">
-                    <div class="flex justify-center px-3">
-                        <img src="{{ asset('images/brands/' . $brand?->featured_image) }}" alt="{{ $brand?->name }}"
-                            class="w-32 h-32 rounded-full">
-                    </div>
-                </div>
                 <div class="flex flex-row">
                     <div class="w-full px-4">
                         <x-table-responsive>

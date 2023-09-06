@@ -7,6 +7,8 @@ namespace App\Livewire\Admin\Customers;
 use App\Models\Customer;
 use Illuminate\Support\Facades\Gate;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
+use Livewire\Attributes\On;
+use Livewire\Attributes\Rule;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Throwable;
@@ -21,35 +23,33 @@ class Edit extends Component
     /** @var mixed */
     public $customer;
 
-    /** @var array<string> */
-    public $listeners = ['editModal'];
+    #[Rule('required|string|min:3|max:255', message: 'The name field is required and must be a string between 3 and 255 characters.')]
+    public string $name;
 
-    /** @var array */
-    protected $rules = [
-        'customer.name'       => 'required|string|min:3|max:255',
-        'customer.email'      => 'nullable|email|max:255',
-        'customer.phone'      => 'required|numeric',
-        'customer.city'       => 'nullable|max:255',
-        'customer.country'    => 'nullable|max:255',
-        'customer.address'    => 'nullable|max:255',
-        'customer.tax_number' => 'nullable|max:255',
-    ];
+    #[Rule('nullable|email|max:255', message: 'The email field must be a valid email address with a maximum of 255 characters.')]
+    public ?string $email;
 
-    protected $messages = [
-        'customer.name.required'  => 'The name field cannot be empty.',
-        'customer.phone.required' => 'The code field cannot be empty.',
-    ];
+    #[Rule('required|numeric', message: 'The phone field is required and must be a numeric value.')]
+    public string $phone;
 
-    public function updated($propertyName): void
-    {
-        $this->validateOnly($propertyName);
-    }
+    #[Rule('nullable|max:255', message: 'The city field must be a string with a maximum of 255 characters.')]
+    public ?string $city;
+
+    #[Rule('nullable|max:255', message: 'The country field must be a string with a maximum of 255 characters.')]
+    public ?string $country;
+
+    #[Rule('nullable|max:255', message: 'The address field must be a string with a maximum of 255 characters.')]
+    public ?string $address;
+
+    #[Rule('nullable|max:255', message: 'The tax number field must be a string with a maximum of 255 characters.')]
+    public ?string $tax_number;
 
     public function render()
     {
         return view('livewire.admin.customers.edit');
     }
 
+    #[On('editModal')]
     public function editModal($id)
     {
         abort_if(Gate::denies('customer_update'), 403);
@@ -60,6 +60,20 @@ class Edit extends Component
 
         $this->customer = Customer::findOrFail($id);
 
+        $this->name = $this->customer->name;
+
+        $this->email = $this->customer->email;
+
+        $this->phone = $this->customer->phone;
+
+        $this->city = $this->customer->city;
+
+        $this->country = $this->customer->country;
+
+        $this->address = $this->customer->address;
+
+        $this->tax_number = $this->customer->tax_number;
+
         $this->editModal = true;
     }
 
@@ -67,16 +81,12 @@ class Edit extends Component
     {
         $validatedData = $this->validate();
 
-        try {
-            $this->customer->save($validatedData);
+        $this->customer->update($validatedData);
 
-            $this->alert('success', __('Customer updated successfully.'));
+        $this->alert('success', __('Customer updated successfully.'));
 
-            $this->editModal = false;
+        $this->editModal = false;
 
-            $this->dispatch('refreshIndex');
-        } catch (Throwable $th) {
-            $this->alert('success', __('Error.').$th->getMessage());
-        }
+        $this->dispatch('refreshIndex')->to(Index::class);
     }
 }

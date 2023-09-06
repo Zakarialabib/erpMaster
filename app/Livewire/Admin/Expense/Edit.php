@@ -10,14 +10,13 @@ use App\Models\Expense;
 use App\Models\ExpenseCategory;
 use Illuminate\Support\Facades\Gate;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
+use Livewire\Attributes\Computed;
+use Livewire\Attributes\On;
+use Livewire\Attributes\Rule;
 
 class Edit extends Component
 {
     use LivewireAlert;
-
-    public $listeners = [
-        'editModal',
-    ];
 
     /** @var bool */
     public $editModal = false;
@@ -25,34 +24,31 @@ class Edit extends Component
     /** @var mixed */
     public $expense;
 
-    /** @var array */
-    protected $rules = [
-        'expense.reference'    => 'required|string|max:255',
-        'expense.category_id'  => 'required|integer|exists:expense_categories,id',
-        'expense.date'         => 'required|date',
-        'expense.amount'       => 'required|numeric',
-        'expense.details'      => 'nullable|string|max:255',
-        'expense.warehouse_id' => 'nullable',
-    ];
+    #[Rule('required|string|max:255')]
+    public $reference;
 
-    protected $messages = [
-        'expense.name.required'        => 'The name field cannot be empty.',
-        'expense.category_id.required' => 'The category field cannot be empty.',
-        'expense.date.required'        => 'The date field cannot be empty.',
-        'expense.amount.required'      => 'The amount field cannot be empty.',
-    ];
+    #[Rule('required|integer|exists:expense_categories,id')]
+    public $category_id;
 
-    public function updated($propertyName): void
-    {
-        $this->validateOnly($propertyName);
-    }
+    #[Rule('required|date')]
+    public $date;
 
-    public function getExpenseCategoriesProperty()
+    #[Rule('required|numeric')]
+    public $amount;
+
+    #[Rule('nullable|string|max:255')]
+    public $description;
+
+    #[Rule('nullable')]
+    public $warehouse_id;
+
+    public function ExpenseCategories()
     {
         return ExpenseCategory::select('name', 'id')->get();
     }
 
-    public function getWarehousesProperty()
+    #[Computed]
+    public function Warehouses()
     {
         return Warehouse::select('name', 'id')->get();
     }
@@ -62,15 +58,23 @@ class Edit extends Component
         return view('livewire.admin.expense.edit');
     }
 
-    public function editModal(Expense $expense): void
+    #[On('editModal')]
+    public function editModal($id): void
     {
-        abort_if(Gate::denies('expense_edit'), 403);
+        abort_if(Gate::denies('expense edit'), 403);
 
         $this->resetErrorBag();
 
         $this->resetValidation();
 
-        $this->expense = Expense::find($expense->id);
+        $this->expense = Expense::find($id);
+
+        $this->reference = $this->expense->reference;
+        $this->category_id = $this->expense->category_id;
+        $this->date = $this->expense->date;
+        $this->amount = $this->expense->amount;
+        $this->description = $this->expense->description;
+        $this->warehouse_id = $this->expense->warehouse_id;
 
         $this->editModal = true;
     }
@@ -79,11 +83,18 @@ class Edit extends Component
     {
         $this->validate();
 
-        $this->expense->save();
+        $this->expense->update([
+            'reference'    => $this->reference,
+            'category_id'  => $this->category_id,
+            'date'         => $this->date,
+            'amount'       => $this->amount,
+            'description'  => $this->description,
+            'warehouse_id' => $this->warehouse_id,
+        ]);
 
         $this->alert('success', __('Expense updated successfully.'));
 
-        $this->dispatch('refreshIndex');
+        $this->dispatch('refreshIndex')->to(Index::class);
 
         $this->editModal = false;
     }

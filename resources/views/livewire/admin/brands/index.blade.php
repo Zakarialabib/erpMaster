@@ -1,21 +1,25 @@
 <div>
+    @section('title', __('Brands'))
+    <x-theme.breadcrumb :title="__('Brands List')" :parent="route('admin.brands.index')" :parentName="__('Brands List')">
+        <x-button primary type="button" wire:click="dispatchTo('admin.brands.create', 'createModal')">
+            {{ __('Create Brand') }}
+        </x-button>
+    </x-theme.breadcrumb>    
     <div class="flex flex-wrap justify-center">
-        <div class="lg:w-1/2 md:w-1/2 sm:w-full flex flex-wrap my-2">
+        <div class="lg:w-1/2 md:w-1/2 sm:w-full flex flex-wrap gap-6 w-full">
             <select wire:model.live="perPage"
-                class="w-20 border border-gray-300 rounded-md shadow-sm py-2 px-4 bg-white text-sm leading-5 font-medium text-gray-700 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out">
+                class="w-auto shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block sm:text-sm border-gray-300 rounded-md focus:outline-none focus:shadow-outline-blue transition duration-150 ease-in-out">
                 @foreach ($paginationOptions as $value)
                     <option value="{{ $value }}">{{ $value }}</option>
                 @endforeach
             </select>
-            @can('brand_delete')
-                @if ($this->selected)
-                    <x-button danger type="button" wire:click="deleteSelected" class="ml-3">
-                        <i class="fas fa-trash"></i>
-                    </x-button>
-                @endif
-            @endcan
+            @if ($selected)
+                <x-button danger type="button" wire:click="deleteSelected" class="ml-3">
+                    <i class="fas fa-trash"></i>
+                </x-button>
+            @endif
             @if ($this->selectedCount)
-                <p class="text-sm leading-5">
+                <p class="text-sm  my-auto">
                     <span class="font-medium">
                         {{ $this->selectedCount }}
                     </span>
@@ -23,12 +27,11 @@
                 </p>
             @endif
         </div>
-        <div class="lg:w-1/2 md:w-1/2 sm:w-full my-2">
-            <div class="my-2">
-                <x-input wire:model.live.debounce.500ms="search" placeholder="{{ __('Search') }}" autofocus />
-            </div>
+        <div class="lg:w-1/2 md:w-1/2 sm:w-full ">
+            <x-input wire:model.live="search" placeholder="{{ __('Search') }}" autofocus />
         </div>
     </div>
+
 
     <x-table>
         <x-slot name="thead">
@@ -62,13 +65,13 @@
                     <x-table.td>
                         <div class="flex justify-start space-x-2">
                             @can('brand_update')
-                                <x-button primary wire:click="$dispatch('editModal', {{ $brand->id }})" type="button"
+                                <x-button primary wire:click="$dispatch('editModal',{ id : {{ $brand->id }}} )" type="button"
                                     wire:loading.attr="disabled">
                                     <i class="fas fa-edit"></i>
                                 </x-button>
                             @endcan
                             @can('brand_delete')
-                                <x-button danger wire:click="$dispatch('deleteModal', {{ $brand->id }})" type="button"
+                                <x-button danger wire:click="$dispatch('deleteModal',{ id : {{ $brand->id }}} )" type="button"
                                     wire:loading.attr="disabled">
                                     <i class="fas fa-trash"></i>
                                 </x-button>
@@ -93,15 +96,15 @@
     </div>
 
     <!-- Edit Modal -->
-    @livewire('admin.brands.edit', ['brand' => $brand])
+    <livewire:admin.brands.edit  :brand="$brand" lazy />
     <!-- End Edit modal -->
 
     <!-- Create modal -->
-    <livewire:admin.brands.create />
+    <livewire:admin.brands.create lazy />
     <!-- End Create modal -->
 
     <!-- Import modal -->
-    <x-modal wire:model.live="importModal">
+    <x-modal wire:model="importModal">
         <x-slot name="title">
             <div class="flex justify-between items-center">
                 {{ __('Import Excel') }}

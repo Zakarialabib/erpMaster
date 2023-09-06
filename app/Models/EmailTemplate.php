@@ -12,16 +12,28 @@ class EmailTemplate extends Model
 {
     use HasAdvancedFilter;
 
+    /** @var array<int, string> */
     public const ATTRIBUTES = [
         'id',
         'name',
+        'message',
+        'default',
+        'placeholders',
         'type',
         'subject',
+        'status',
+        'created_at',
+        'updated_at',
     ];
 
     public $orderable = self::ATTRIBUTES;
     public $filterable = self::ATTRIBUTES;
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
     protected $fillable = [
         'id',
         'name',
@@ -34,13 +46,19 @@ class EmailTemplate extends Model
         'status',
     ];
 
-    public function scopeDefault(Builder $query)
+    /**
+     * Scope a query to only include default email templates.
+     *
+     * @param   $query
+     * @return Builder
+     */
+    public function scopeDefault(Builder $query): Builder
     {
         return $query->where('default', true);
     }
 
-    public function scopeActive(Builder $query)
+    public function scopeActive($query)
     {
-        return $query->where('status', 'active');
+        return $query->where('status', true);
     }
 }

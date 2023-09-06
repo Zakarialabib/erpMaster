@@ -55,7 +55,7 @@ $maxWidth = [
                     x-transition:leave="ease-in duration-200"
                     x-transition:leave-start="opacity-100"
                     x-transition:leave-end="opacity-0">
-        <div class="absolute inset-0 bg-zinc500 opacity-75"></div>
+        <div class="absolute inset-0 bg-gray500 opacity-75"></div>
     </div>
 
     <div x-show="show" class="mb-6 bg-gray-50 rounded-lg overflow-hidden shadow-xl transform transition-all sm:w-full {{ $maxWidth }} sm:mx-auto"

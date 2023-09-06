@@ -1,4 +1,4 @@
-{
+`{
     "preset": "psr12",
     "exclude": [
         "config",
@@ -105,4 +105,4 @@
         },
         "concat_space": true
     }
-}
+}`

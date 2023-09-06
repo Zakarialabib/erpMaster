@@ -7,15 +7,14 @@ namespace App\Livewire\Admin\Categories;
 use App\Models\Category;
 use Illuminate\Support\Facades\Gate;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
+use Livewire\Attributes\On;
+use Livewire\Attributes\Rule;
 use Livewire\Component;
-use Throwable;
+use Illuminate\Support\Str;
 
 class Edit extends Component
 {
     use LivewireAlert;
-
-    /** @var array<string> */
-    public $listeners = ['editModal'];
 
     /** @var bool */
     public $editModal = false;
@@ -23,26 +22,25 @@ class Edit extends Component
     /** @var mixed */
     public $category;
 
-    /** @var array */
-    protected $rules = [
-        'category.name' => 'required|min:3|max:255',
-        'category.code' => 'required|max:255',
-    ];
+    #[Rule('required', message: 'Please provide a name')]
+    #[Rule('min:3', message: 'This name is too short')]
+    public string $name;
 
-    protected $messages = [
-        'category.name.required' => 'The name field cannot be empty.',
-    ];
+    #[Rule('nullable')]
+    public string $description;
+    #[Rule('nullable')]
+    public string $slug;
 
-    public function updated($propertyName): void
-    {
-        $this->validateOnly($propertyName);
-    }
+    public string $code;
+
+    public $image;
 
     public function render()
     {
         return view('livewire.admin.categories.edit');
     }
 
+    #[On('editModal')]
     public function editModal($id): void
     {
         abort_if(Gate::denies('category_update'), 403);
@@ -52,24 +50,37 @@ class Edit extends Component
         $this->resetValidation();
 
         $this->category = Category::where('id', $id)->firstOrFail();
+        $this->name = $this->category->name;
+        $this->description = $this->category->description;
+        $this->code = $this->category->code;
+        $this->slug = $this->category->slug;
+        $this->image = $this->category->image;
 
         $this->editModal = true;
     }
 
     public function update(): void
     {
-        try {
-            $validatedData = $this->validate();
+        $this->validate();
 
-            $this->category->save($validatedData);
-
-            $this->dispatch('refreshIndex');
-
-            $this->editModal = false;
-
-            $this->alert('success', __('Category updated successfully.'));
-        } catch (Throwable $th) {
-            $this->alert('error', $th->getMessage());
+        if ($this->slug !== $this->category->slug) {
+            $this->slug = Str::slug($this->name);
         }
+
+        if ($this->image) {
+            $imageName = Str::slug($this->name).'-'.Str::random(3).'.'.$this->image->extension();
+            $this->image->storeAs('categories', $imageName);
+            $this->image = $imageName;
+        }
+
+        $this->category->update($this->all());
+
+        $this->dispatch('refreshIndex')->to(Index::class);
+
+        $this->alert('success', __('Category updated successfully.'));
+
+        $this->reset('name', 'description', 'code', 'slug', 'image');
+
+        $this->editModal = false;
     }
 }

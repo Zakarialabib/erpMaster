@@ -40,7 +40,7 @@ class AddToCart extends Component
     {
         Cart::instance('shopping')->add($product_id, $this->quantity)->associate('App\Models\Product');
 
-        $this->emit('cartCountUpdated');
+        $this->dispatch('cartCountUpdated');
 
         // If the user cancels the confirmation, display a success message using Livewire's `alert` method
         $this->alert(

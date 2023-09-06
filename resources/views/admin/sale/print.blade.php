@@ -71,7 +71,7 @@
                                 <td class="right">{{ format_currency($sale->tax_amount) }}</td>
                             </tr>
                         @endif
-                        @if (settings()->show_shipping == true)
+                        @if (settings('show_shipping') == true)
                             <tr>
                                 <td class="left"><strong>{{ __('Shipping') }}</strong></td>
                                 <td class="right">{{ format_currency($sale->shipping_amount) }}</td>

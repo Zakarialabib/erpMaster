@@ -8,10 +8,14 @@ use App\Models\AdjustedProduct;
 use App\Models\Adjustment;
 use App\Models\Product;
 use App\Models\ProductWarehouse;
+use App\Models\Warehouse;
 use Illuminate\Support\Facades\Gate;
 use Livewire\Component;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
+use Livewire\Attributes\Computed;
+use Livewire\Attributes\Layout;
 
+#[Layout('components.layouts.dashboard')]
 class Edit extends Component
 {
     use LivewireAlert;
@@ -41,12 +45,13 @@ class Edit extends Component
         'products.*.type'     => 'required|in:add,sub',
     ];
 
-    public function mount($adjustment)
+    public function mount($id)
     {
         $this->adjustment = Adjustment::with('adjustedProducts', 'adjustedProducts.warehouse', 'adjustedProducts.product')
-            ->where('id', $adjustment->id)->first();
+            ->where('id', $id)->first();
 
         $this->date = $this->adjustment->date;
+        $this->warehouse_id = $this->adjustment->warehouse_id;
 
         $this->reference = $this->adjustment->reference;
 
@@ -55,7 +60,7 @@ class Edit extends Component
 
     public function update()
     {
-        abort_if(Gate::denies('adjustment_edit'), 403);
+        abort_if(Gate::denies('adjustment edit'), 403);
 
         $this->validate();
 
@@ -90,7 +95,7 @@ class Edit extends Component
             }
         }
 
-        return redirect()->route('adjustments.index');
+        return redirect()->route('admin.adjustments.index');
     }
 
     public function productSelected($product): void
@@ -135,6 +140,13 @@ class Edit extends Component
     public function updatedWarehouseId($value)
     {
         $this->warehouse_id = $value;
+        $this->dispatch('warehouseSelected', $this->warehouse_id);
+    }
+
+    #[Computed]
+    public function warehouses()
+    {
+        return Warehouse::pluck('name', 'id')->toArray();
     }
 
     public function render()

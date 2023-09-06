@@ -6,7 +6,6 @@ namespace App\Livewire\Front;
 
 use App\Enums\OrderType;
 use App\Enums\Status;
-use App\Helpers;
 use App\Models\OrderForms;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -52,7 +51,7 @@ class SubscribeForm extends Component
             'name'    => $this->name,
             'phone'   => $this->phone,
             'email'   => $this->email,
-            'type'    => OrderType::REGISTRATION,
+            'type'    => OrderType::PRODUCT,
             'status'  => Status::ACTIVE,
             'subject' => __('New request for ').$this->race->name,
             'message' => $this->name.__(' has sent a request for ').$this->race->name,
@@ -60,7 +59,7 @@ class SubscribeForm extends Component
 
         $this->alert('success', __('Your order has been sent successfully!'));
 
-        Mail::to(Helpers::settings('company_email_email'))->send(new OrderFormMail($order));
+        Mail::to(settings('company_email'))->send(new OrderFormMail($order));
 
         $this->reset();
     }
