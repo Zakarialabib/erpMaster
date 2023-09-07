@@ -18,7 +18,7 @@ class Index extends Component
 
     public array $listsForFields = [];
 
-    public function mount()
+    public function mount(): void
     {
         $this->orderable = (new OrderForms())->orderable;
     }

@@ -28,7 +28,7 @@ class Newsletters extends Component
     ];
 
     /* @var array */
-    private function resetInputFields()
+    private function resetInputFields(): void
     {
         $this->email = '';
     }
@@ -42,7 +42,7 @@ class Newsletters extends Component
         return view('livewire.front.newsletters');
     }
 
-    public function subscribe()
+    public function subscribe(): void
     {
         try {
             $validatedData = $this->validate();

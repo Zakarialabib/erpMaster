@@ -39,7 +39,7 @@ class SalesReturnController extends Controller
     // use livewire --------->
     public function store(StoreSaleReturnRequest $request)
     {
-        DB::transaction(static function () use ($request) {
+        DB::transaction(static function () use ($request): void {
             $due_amount = $request->total_amount - $request->paid_amount;
             if ($due_amount === $request->total_amount) {
                 $payment_status = PaymentStatus::DUE;
@@ -48,6 +48,7 @@ class SalesReturnController extends Controller
             } else {
                 $payment_status = PaymentStatus::PAID;
             }
+
             $sale_return = SaleReturn::create([
                 'date'                => $request->date,
                 'customer_id'         => $request->customer_id,
@@ -87,6 +88,7 @@ class SalesReturnController extends Controller
                     ]);
                 }
             }
+
             Cart::instance('sale_return')->destroy();
             if ($sale_return->paid_amount > 0) {
                 SaleReturnPayment::create([
@@ -147,7 +149,7 @@ class SalesReturnController extends Controller
 
     public function update(UpdateSaleReturnRequest $request, SaleReturn $sale_return)
     {
-        DB::transaction(static function () use ($request, $sale_return) {
+        DB::transaction(static function () use ($request, $sale_return): void {
             $due_amount = $request->total_amount - $request->paid_amount;
             if ($due_amount === $request->total_amount) {
                 $payment_status = PaymentStatus::DUE;
@@ -156,6 +158,7 @@ class SalesReturnController extends Controller
             } else {
                 $payment_status = PaymentStatus::PAID;
             }
+
             foreach ($sale_return->saleReturnDetails as $sale_return_detail) {
                 if ($sale_return->status === 'Completed') {
                     $product = Product::findOrFail($sale_return_detail->product_id);
@@ -166,6 +169,7 @@ class SalesReturnController extends Controller
 
                 $sale_return_detail->delete();
             }
+
             $sale_return->update([
                 'date'                => $request->date,
                 'reference'           => $request->reference,
@@ -205,6 +209,7 @@ class SalesReturnController extends Controller
                     ]);
                 }
             }
+
             Cart::instance('sale_return')->destroy();
         });
 

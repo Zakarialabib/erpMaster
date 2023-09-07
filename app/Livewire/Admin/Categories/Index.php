@@ -69,12 +69,12 @@ class Index extends Component
         $this->showModal = true;
     }
 
-    public function confirmed()
+    public function confirmed(): void
     {
         $this->dispatch('delete');
     }
 
-    public function deleteModal($category)
+    public function deleteModal($category): void
     {
         $this->confirm(__('Are you sure you want to delete this?'), [
             'toast'             => false,

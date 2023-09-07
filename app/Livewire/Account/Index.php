@@ -12,7 +12,7 @@ class Index extends Component
 {
     public $user;
 
-    public function mount()
+    public function mount(): void
     {
         $this->user = User::find(Auth::user()->id);
     }

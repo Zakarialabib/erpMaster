@@ -28,7 +28,7 @@ class ToggleButton extends Component
     }
 
     #[On('updating')]
-    public function updating($field, $value)
+    public function updating($field, $value): void
     {
         $this->model->setAttribute($this->field, $value)->save();
 

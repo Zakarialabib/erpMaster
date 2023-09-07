@@ -22,7 +22,7 @@ class Show extends Component
     }
 
     #[On('showModal')]
-    public function showModal($id)
+    public function showModal($id): void
     {
         abort_if(Gate::denies('quotation access'), 403);
 

@@ -50,7 +50,7 @@ class Create extends Component
     #[Rule('integer|min:0|max:100')]
     public $discount_percentage;
 
-    public function proceed()
+    public function proceed(): void
     {
         if ($this->customer_id !== null) {
             $this->store();
@@ -59,7 +59,7 @@ class Create extends Component
         }
     }
 
-    public function mount()
+    public function mount(): void
     {
         abort_if(Gate::denies('quotation create'), 403);
 
@@ -81,7 +81,7 @@ class Create extends Component
             return;
         }
 
-        DB::transaction(function () {
+        DB::transaction(function (): void {
             $this->validate();
 
             $quotation = Quotation::create([
@@ -95,8 +95,8 @@ class Create extends Component
                 'total_amount'        => $this->total_amount * 100,
                 'status'              => $this->status,
                 'note'                => $this->note,
-                'tax_amount'          => Cart::instance('quotation')->tax() * 100,
-                'discount_amount'     => Cart::instance('quotation')->discount() * 100,
+                'tax_amount'          => (int) Cart::instance('quotation')->tax() * 100,
+                'discount_amount'     => (int) Cart::instance('quotation')->discount() * 100,
             ]);
 
             foreach (Cart::instance('quotation')->content() as $cart_item) {
@@ -132,7 +132,7 @@ class Create extends Component
         return view('livewire.admin.quotations.create', ['cart_items' => $cart_items]);
     }
 
-    public function updatedWarehouseId($value)
+    public function updatedWarehouseId($value): void
     {
         $this->warehouse_id = $value;
         $this->dispatch('warehouseSelected', $this->warehouse_id);

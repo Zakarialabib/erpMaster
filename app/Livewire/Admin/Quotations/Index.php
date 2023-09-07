@@ -48,7 +48,7 @@ class Index extends Component
         return view('livewire.admin.quotations.index', ['quotations' => $quotations]);
     }
 
-    public function deleteSelected()
+    public function deleteSelected(): void
     {
         abort_if(Gate::denies('quotation_delete'), 403);
 
@@ -57,7 +57,7 @@ class Index extends Component
         $this->resetSelected();
     }
 
-    public function delete(Quotation $product)
+    public function delete(Quotation $product): void
     {
         abort_if(Gate::denies('quotation_delete'), 403);
 

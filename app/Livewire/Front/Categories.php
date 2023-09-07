@@ -40,7 +40,7 @@ class Categories extends Component
         'sorting'        => ['except' => '', 'as' => 'f'],
     ];
 
-    public function filterProducts($type, $value)
+    public function filterProducts($type, $value): void
     {
         switch ($type) {
             case 'category':
@@ -60,7 +60,7 @@ class Categories extends Component
         $this->resetPage();
     }
 
-    public function clearFilter($filter)
+    public function clearFilter($filter): void
     {
         switch ($filter) {
             case 'category':
@@ -83,7 +83,7 @@ class Categories extends Component
         $this->resetPage();
     }
 
-    public function mount()
+    public function mount(): void
     {
         $this->sortingOptions = [
             'name-asc'   => __('Order Alphabetic, A-Z'),
@@ -96,7 +96,7 @@ class Categories extends Component
     }
 
     #[On('load-more')]
-    public function loadMore()
+    public function loadMore(): void
     {
         $this->perPage += 25;
     }

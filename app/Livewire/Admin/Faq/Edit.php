@@ -29,7 +29,7 @@ class Edit extends Component
     ];
 
     #[On('editModal')]
-    public function editModal($faq)
+    public function editModal($faq): void
     {
         //abort_if(Gate::denies('category edit'), 403);
 
@@ -41,7 +41,7 @@ class Edit extends Component
         $this->editModal = true;
     }
 
-    public function update()
+    public function update(): void
     {
         //abort_if(Gate::denies('faq edit'), 403);
 

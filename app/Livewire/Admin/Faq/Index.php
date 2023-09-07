@@ -21,7 +21,7 @@ class Index extends Component
 
     public $faq;
 
-    public function mount()
+    public function mount(): void
     {
         $this->orderable = (new Faq())->orderable;
     }
@@ -39,7 +39,7 @@ class Index extends Component
         return view('livewire.admin.faq.index', ['faqs' => $faqs]);
     }
 
-    public function deleteSelected()
+    public function deleteSelected(): void
     {
         abort_if(Gate::denies('category_delete'), 403);
 
@@ -50,7 +50,7 @@ class Index extends Component
         $this->resetSelected();
     }
 
-    public function delete(Faq $faq)
+    public function delete(Faq $faq): void
     {
         abort_if(Gate::denies('faq_delete'), 403);
 

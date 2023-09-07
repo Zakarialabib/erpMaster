@@ -82,7 +82,7 @@ class Edit extends Component
         'options.*.value'                => ['string', 'max:255'],
     ];
 
-    public function addOption()
+    public function addOption(): void
     {
         $this->options[] = [
             'type'  => '',
@@ -90,20 +90,20 @@ class Edit extends Component
         ];
     }
 
-    public function removeOption($index)
+    public function removeOption($index): void
     {
         unset($this->options[$index]);
         $this->options = array_values($this->options);
     }
 
-    public function fetchSubcategories()
+    public function fetchSubcategories(): void
     {
         $selectedCategory = $this->product['category_id'];
         $this->subcategories = Subcategory::where('category_id', $selectedCategory)->get();
     }
 
     #[On('editModal')]
-    public function editModal($id)
+    public function editModal($id): void
     {
         $this->resetErrorBag();
 
@@ -117,7 +117,7 @@ class Edit extends Component
 
         $this->productWarehouses = $this->product->warehouses()->pivot('price', 'qty', 'cost')->get();
 
-        $this->productWarehouse = $this->productWarehouses->mapWithKeys(static fn($warehouse) => [$warehouse->id => [
+        $this->productWarehouse = $this->productWarehouses->mapWithKeys(static fn($warehouse): array => [$warehouse->id => [
             'price' => $warehouse->pivot->price,
             'qty'   => $warehouse->pivot->qty,
             'cost'  => $warehouse->pivot->cost,
@@ -126,7 +126,7 @@ class Edit extends Component
         $this->editModal = true;
     }
 
-    public function update()
+    public function update(): void
     {
         $this->validate();
 

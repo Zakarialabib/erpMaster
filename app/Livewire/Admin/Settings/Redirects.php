@@ -9,6 +9,7 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
+use Livewire\Attributes\On;
 use App\Livewire\Utils\Datatable;
 
 class Redirects extends Component
@@ -27,19 +28,19 @@ class Redirects extends Component
         'redirect.new_url' => 'nullable',
     ];
 
-    public function mount()
+    public function mount(): void
     {
         $this->orderable = (new Redirect())->orderable;
     }
 
     #[On('editModal')]
-    public function editModal($id)
+    public function editModal($id): void
     {
         $this->redirect = Redirect::find($id);
         $this->editModal = true;
     }
 
-    public function update()
+    public function update(): void
     {
         $this->validate();
 
@@ -50,7 +51,7 @@ class Redirects extends Component
         $this->editModal = false;
     }
 
-    public function delete(Redirect $redirect)
+    public function delete(Redirect $redirect): void
     {
         $redirect->delete();
 

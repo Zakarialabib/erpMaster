@@ -50,7 +50,7 @@ class Create extends Component
         'products.*.types'      => 'required|in:add,sub',
     ];
 
-    public function mount()
+    public function mount(): void
     {
         $this->products = [];
 
@@ -63,7 +63,7 @@ class Create extends Component
         return view('livewire.admin.adjustment.create');
     }
 
-    public function updatedWarehouseId($value)
+    public function updatedWarehouseId($value): void
     {
         $this->warehouse_id = $value;
         $this->dispatch('warehouseSelected', $this->warehouse_id);
@@ -119,7 +119,7 @@ class Create extends Component
         }
     }
 
-    public function productSelected($product): void
+    public function productSelected(array $product): void
     {
         switch ($this->hasAdjustments) {
             case true:

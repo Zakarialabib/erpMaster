@@ -52,7 +52,7 @@ class Index extends Component
         $this->orderable = (new Product())->orderable;
     }
 
-    public function deleteModal($product)
+    public function deleteModal($product): void
     {
         $confirmationMessage = __('Are you sure you want to delete this product? if something happens you can be recover it.');
 
@@ -124,7 +124,7 @@ class Index extends Component
                 'category',
                 'brand',
                 'movements',
-                'warehouses',
+                'warehouse',
             ])
             ->select('products.*')
             ->advancedFilter([
@@ -188,7 +188,7 @@ class Index extends Component
         return (new ProductExport($products))->download('products.xls', \Maatwebsite\Excel\Excel::XLS);
     }
 
-    public function clone(Product $product)
+    public function clone(Product $product): void
     {
         $product_details = Product::find($product->id);
         // dd($product_details);
@@ -210,12 +210,12 @@ class Index extends Component
         $this->alert('success', __('Product Cloned successfully!'));
     }
 
-    public function promoAllProducts()
+    public function promoAllProducts(): void
     {
         $this->promoAllProducts = true;
     }
 
-    public function discountSelected()
+    public function discountSelected(): void
     {
         $warehouseProducts = ProductWarehouse::whereIn('product_id', $this->selected)->get();
 

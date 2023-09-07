@@ -36,6 +36,12 @@ class Index extends Component
 
     public $amount;
 
+    public $due_amount;
+
+    public $total_amount;
+
+    public $paid_amount;
+
     public $payment_method;
 
     public $paymentModal = false;
@@ -73,7 +79,7 @@ class Index extends Component
         return view('livewire.admin.purchase-return.index', ['purchasereturns' => $purchasereturns]);
     }
 
-    public function deleteSelected()
+    public function deleteSelected(): void
     {
         abort_if(Gate::denies('purchase delete'), 403);
 
@@ -82,14 +88,14 @@ class Index extends Component
         $this->resetSelected();
     }
 
-    public function delete(PurchaseReturn $purchasereturn)
+    public function delete(PurchaseReturn $purchasereturn): void
     {
         abort_if(Gate::denies('purchase delete'), 403);
 
         $purchasereturn->delete();
     }
 
-    public function paymentModal(PurchaseReturn $purchasereturn)
+    public function paymentModal(PurchaseReturn $purchasereturn): void
     {
         abort_if(Gate::denies('purchase payment'), 403);
 
@@ -105,7 +111,7 @@ class Index extends Component
         $this->paymentModal = true;
     }
 
-    public function paymentSave()
+    public function paymentSave(): void
     {
         try {
             $this->validate(

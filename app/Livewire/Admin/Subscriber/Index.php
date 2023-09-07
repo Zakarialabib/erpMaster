@@ -14,7 +14,7 @@ class Index extends Component
 {
     use Datatable;
 
-    public function mount()
+    public function mount(): void
     {
         $this->orderable = (new Subscriber())->orderable;
     }

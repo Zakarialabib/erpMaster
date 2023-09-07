@@ -50,7 +50,7 @@ class Import extends Component
     }
 
     #[On('importModal')]
-    public function importModal()
+    public function importModal(): void
     {
         abort_if(Gate::denies('product access'), 403);
 
@@ -61,7 +61,7 @@ class Import extends Component
         $this->importModal = true;
     }
 
-    public function importUpdates()
+    public function importUpdates(): void
     {
         abort_if(Gate::denies('product access'), 403);
 
@@ -79,7 +79,7 @@ class Import extends Component
         $this->importModal = false;
     }
 
-    public function import()
+    public function import(): void
     {
         abort_if(Gate::denies('product access'), 403);
 

@@ -19,7 +19,7 @@ class Index extends Component
 
     public $email;
 
-    public function mount()
+    public function mount(): void
     {
         $this->orderable = (new EmailTemplate())->orderable;
     }
@@ -40,7 +40,7 @@ class Index extends Component
     }
 
     // Blog Category  Delete
-    public function delete(EmailTemplate $email)
+    public function delete(EmailTemplate $email): void
     {
         abort_if(Gate::denies('email delete'), 403);
 

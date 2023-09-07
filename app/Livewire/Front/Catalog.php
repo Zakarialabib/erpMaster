@@ -46,7 +46,7 @@ class Catalog extends Component
         'minPrice'       => ['except' => '', 'as' => 'min'],
     ];
 
-    public function filterProducts($type, $value)
+    public function filterProducts($type, $value): void
     {
         switch($type) {
             case 'category':
@@ -66,7 +66,7 @@ class Catalog extends Component
         $this->resetPage();
     }
 
-    public function clearFilter($filter)
+    public function clearFilter($filter): void
     {
         switch($filter) {
             case 'category':
@@ -89,7 +89,7 @@ class Catalog extends Component
         $this->resetPage();
     }
 
-    public function mount()
+    public function mount(): void
     {
         $this->paginationOptions = [25, 50, 100];
 

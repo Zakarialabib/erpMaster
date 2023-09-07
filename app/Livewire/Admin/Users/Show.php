@@ -20,7 +20,7 @@ class Show extends Component
         'showModal',
     ];
 
-    public function showModal($id)
+    public function showModal($id): void
     {
         $this->user = User::find($id);
 

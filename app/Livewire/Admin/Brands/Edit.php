@@ -35,8 +35,6 @@ class Edit extends Component
 
     public $image;
 
-    public $featured_image;
-
     #[Rule('nullable')]
     public string $meta_title;
 
@@ -59,7 +57,6 @@ class Edit extends Component
         $this->description = $this->brand->description;
         $this->slug = $this->brand->slug;
         $this->image = $this->brand->image;
-        $this->featured_image = $this->brand->featured_image;
         $this->meta_title = $this->brand->meta_title ?? '';
         $this->meta_description = $this->brand->meta_description ?? '';
         $this->origin = $this->brand->origin ?? '';
@@ -67,7 +64,7 @@ class Edit extends Component
         $this->editModal = true;
     }
 
-    public function update()
+    public function update(): void
     {
         $this->validate();
 

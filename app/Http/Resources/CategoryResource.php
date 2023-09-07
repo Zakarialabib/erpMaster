@@ -20,7 +20,7 @@ class CategoryResource extends JsonResource
      * @return array|\Illuminate\Contracts\Support\Arrayable|JsonSerializable
      * >>>>>>> Api
      */
-    public function toArray($request)
+    public function toArray($request): array
     {
         return [
             'name' => $this->name,

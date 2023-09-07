@@ -21,7 +21,7 @@ class Languages extends Component
 
     protected $listeners = ['sendUpdateLanguageStatus' => 'onUpdateLanguageStatus', 'sync'];
 
-    public function mount()
+    public function mount(): void
     {
         $this->languages = Language::all()->toArray();
     }
@@ -31,7 +31,7 @@ class Languages extends Component
         return view('livewire.translations');
     }
 
-    public function onSetDefault($id)
+    public function onSetDefault($id): void
     {
         try {
             Language::where('is_default', '=', true)->update(['is_default' => false]);
@@ -51,7 +51,7 @@ class Languages extends Component
      *  Sync Translations
      * -------------------------------------------------------------------------------
      */
-    public function sync($id)
+    public function sync($id): void
     {
         $languages = Language::findOrFail($id);
 
@@ -60,7 +60,7 @@ class Languages extends Component
         $this->alert('success', __('Translation updated successfully!'));
     }
 
-    public function delete(Language $language)
+    public function delete(Language $language): void
     {
         $language->delete();
 

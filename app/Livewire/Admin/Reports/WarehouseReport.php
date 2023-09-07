@@ -41,7 +41,7 @@ class WarehouseReport extends Component
         'end_date'   => 'required|date|after:start_date',
     ];
 
-    public function mount()
+    public function mount(): void
     {
         $this->warehouses = Warehouse::select(['id', 'name'])->get();
         $this->start_date = today()->subDays(30)->format('Y-m-d');
@@ -80,7 +80,7 @@ class WarehouseReport extends Component
 
     public function getExpensesProperty()
     {
-        return Expense::with('expenseCategory')
+        return Expense::with('category')
             ->where('warehouse_id', $this->warehouse_id)
             ->whereDate('created_at', '>=', $this->start_date)
             ->whereDate('created_at', '<=', $this->end_date)
@@ -88,7 +88,7 @@ class WarehouseReport extends Component
             ->get();
     }
 
-    public function warehouseReport()
+    public function warehouseReport(): void
     {
         $this->productPurchase = $this->purchases->map(static fn($purchase) => PurchaseDetail::where('purchase_id', $purchase->id)->get());
 

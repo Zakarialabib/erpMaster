@@ -26,7 +26,7 @@ class Edit extends Component
 
     public $message;
 
-    public function updatedMessage($value)
+    public function updatedMessage($value): void
     {
         $this->message = $value;
     }
@@ -49,7 +49,7 @@ class Edit extends Component
     }
 
     #[On('editModal')]
-    public function editModal($id)
+    public function editModal($id): void
     {
         $this->resetErrorBag();
         $this->resetValidation();
@@ -59,7 +59,7 @@ class Edit extends Component
         $this->editModal = true;
     }
 
-    public function update()
+    public function update(): void
     {
         $this->validate();
 

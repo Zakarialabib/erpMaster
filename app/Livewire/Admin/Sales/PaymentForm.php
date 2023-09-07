@@ -63,7 +63,7 @@ class PaymentForm extends Component
 
     //  Payment modal
 
-    public function paymentModal($id)
+    public function paymentModal($id): void
     {
         // abort_if(Gate::denies('sale access'), 403);
 
@@ -79,7 +79,7 @@ class PaymentForm extends Component
         $this->paymentModal = true;
     }
 
-    public function paymentSave()
+    public function paymentSave(): void
     {
         try {
             $this->validate();

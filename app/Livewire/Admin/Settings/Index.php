@@ -184,7 +184,7 @@ class Index extends Component
         $this->alert('success', __('Settings Updated successfully !'));
     }
 
-    protected function createHTMLfile($file, $name)
+    protected function createHTMLfile($file, string $name): string
     {
         $extension = $file->extension();
         $data = File::get($file->getRealPath());

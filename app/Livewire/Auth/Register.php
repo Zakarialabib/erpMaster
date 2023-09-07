@@ -27,10 +27,11 @@ class Register extends Component
     public $phone;
 
     public $city;
+
      // Set the default city to 'Casablanca'
     public $country; // Set
 
-    public function mount()
+    public function mount(): void
     {
         $this->city = 'Casablanca';
         $this->country = 'Morocco';

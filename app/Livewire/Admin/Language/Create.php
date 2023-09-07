@@ -28,12 +28,12 @@ class Create extends Component
     public $createModal = false;
 
     #[On('createModal')]
-    public function createModal()
+    public function createModal(): void
     {
         $this->createModal = true;
     }
 
-    public function create()
+    public function create(): void
     {
         $this->validate();
 

@@ -31,12 +31,12 @@ class Index extends Component
 
     public $image;
 
-    public function confirmed()
+    public function confirmed(): void
     {
         $this->dispatch('delete');
     }
 
-    public function mount()
+    public function mount(): void
     {
         $this->orderable = (new Subcategory())->orderable;
     }
@@ -54,7 +54,7 @@ class Index extends Component
         return view('livewire.admin.subcategory.index', ['subcategories' => $subcategories]);
     }
 
-    public function deleteModal($subcategory)
+    public function deleteModal($subcategory): void
     {
         $this->confirm(__('Are you sure you want to delete this?'), [
             'toast'             => false,
@@ -66,7 +66,7 @@ class Index extends Component
         $this->subcategory = $subcategory;
     }
 
-    public function delete()
+    public function delete(): void
     {
         abort_if(Gate::denies('subcategory_delete'), 403);
 
@@ -75,7 +75,7 @@ class Index extends Component
         $this->alert('success', __('Subcategory deleted successfully.'));
     }
 
-    public function deleteSelected()
+    public function deleteSelected(): void
     {
         abort_if(Gate::denies('subcategor delete'), 403);
 

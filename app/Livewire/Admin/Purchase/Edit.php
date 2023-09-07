@@ -85,7 +85,7 @@ class Edit extends Component
 
     public $listsForFields = [];
 
-    public function mount($id)
+    public function mount($id): void
     {
         $this->purchase = Purchase::findOrFail($id);
 
@@ -129,7 +129,7 @@ class Edit extends Component
         $this->warehouse_id = $this->purchase->warehouse_id;
     }
 
-    public function update()
+    public function update(): void
     {
         if ( ! $this->warehouse_id) {
             $this->alert('error', __('Please select a warehouse'));
@@ -265,13 +265,13 @@ class Edit extends Component
         Cart::instance($this->cart_instance)->destroy();
     }
 
-    public function updatedWarehouseId($warehouse_id)
+    public function updatedWarehouseId($warehouse_id): void
     {
         $this->warehouse_id = $warehouse_id;
         $this->dispatch('warehouseSelected', $warehouse_id);
     }
 
-    public function updatedStatus($value)
+    public function updatedStatus($value): void
     {
         $this->paid_amount = $value === PurchaseStatus::COMPLETED->value ? $this->total_amount : 0;
     }

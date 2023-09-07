@@ -34,51 +34,51 @@ class StepWizard extends Component
         'resetPage' => '$refresh',
     ];
 
-    public function nextStep()
+    public function nextStep(): void
     {
         ++$this->step;
     }
 
-    public function prevStep()
+    public function prevStep(): void
     {
         --$this->step;
     }
 
-    public function updateGiftOrSelf($giftOrSelf)
+    public function updateGiftOrSelf($giftOrSelf): void
     {
         $this->giftOrSelf = $giftOrSelf;
         $this->nextStep();
     }
 
-    public function updateCategoryId($category_id)
+    public function updateCategoryId($category_id): void
     {
         $this->category_id = $category_id;
         $this->nextStep();
     }
 
-    public function updateBrandId($brand_id)
+    public function updateBrandId($brand_id): void
     {
         $this->brand_id = $brand_id;
         $this->nextStep();
     }
 
-    public function updatedMinPrice($value)
+    public function updatedMinPrice($value): void
     {
         $this->minPrice = $value;
     }
 
-    public function updatedMaxPrice($value)
+    public function updatedMaxPrice($value): void
     {
         $this->maxPrice = $value;
     }
 
-    public function updateSubcategoryId($subcategory_id)
+    public function updateSubcategoryId($subcategory_id): void
     {
         $this->subcategory_id = $subcategory_id;
         $this->nextStep();
     }
 
-    public function clearFilter($filter)
+    public function clearFilter($filter): void
     {
         switch($filter) {
             case 'category_id':

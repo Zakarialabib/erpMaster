@@ -7,6 +7,7 @@ namespace App\Livewire\Admin\Currency;
 use App\Models\Currency;
 use Illuminate\Support\Facades\Gate;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
+use Livewire\Attributes\On;
 use Livewire\Component;
 use Throwable;
 

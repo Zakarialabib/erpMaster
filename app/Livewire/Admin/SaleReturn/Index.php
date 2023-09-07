@@ -8,7 +8,6 @@ use App\Enums\PaymentStatus;
 use App\Livewire\Utils\Datatable;
 use App\Models\SaleReturn;
 use App\Models\SaleReturnPayment;
-
 use Illuminate\Support\Facades\Gate;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
@@ -87,7 +86,7 @@ class Index extends Component
         return view('livewire.admin.sale-return.index', ['salereturns' => $salereturns]);
     }
 
-    public function showModal(SaleReturn $salereturn)
+    public function showModal(SaleReturn $salereturn): void
     {
         abort_if(Gate::denies('sale access'), 403);
 
@@ -96,7 +95,7 @@ class Index extends Component
         $this->showModal = true;
     }
 
-    public function deleteSelected()
+    public function deleteSelected(): void
     {
         abort_if(Gate::denies('sale delete'), 403);
 
@@ -105,7 +104,7 @@ class Index extends Component
         $this->resetSelected();
     }
 
-    public function delete(SaleReturn $product)
+    public function delete(SaleReturn $product): void
     {
         abort_if(Gate::denies('sale delete'), 403);
 
@@ -116,7 +115,7 @@ class Index extends Component
         $this->alert('success', __('SaleReturn deleted successfully.'));
     }
 
-    public function paymentModal(SaleReturn $salereturn)
+    public function paymentModal(SaleReturn $salereturn): void
     {
         abort_if(Gate::denies('sale access'), 403);
 
@@ -129,7 +128,7 @@ class Index extends Component
         $this->paymentModal = true;
     }
 
-    public function paymentSave()
+    public function paymentSave(): void
     {
         try {
             $this->validate(

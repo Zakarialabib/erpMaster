@@ -73,8 +73,6 @@ class Create extends Component
 
     public $price;
 
-    public $payment_status;
-
     public $date;
 
     public $discount_type;
@@ -92,8 +90,6 @@ class Create extends Component
         $this->payment_method = 'cash';
         $this->date = date('Y-m-d');
         // $this->warehouse_id = "";
-
-        $this->initListsForFields();
     }
 
     public function render()
@@ -110,7 +106,7 @@ class Create extends Component
         $this->total_amount = $this->calculateTotal();
     }
 
-    public function proceed()
+    public function proceed(): void
     {
         if ($this->supplier_id !== null) {
             $this->store();
@@ -119,7 +115,7 @@ class Create extends Component
         }
     }
 
-    public function store()
+    public function store(): void
     {
         if (!$this->warehouse_id) {
             $this->alert('error', __('Please select a warehouse'));
@@ -249,13 +245,13 @@ class Create extends Component
         Cart::instance($this->cart_instance)->destroy();
     }
 
-    public function updatedWarehouseId($warehouse_id)
+    public function updatedWarehouseId($warehouse_id): void
     {
         $this->warehouse_id = $warehouse_id;
         $this->dispatch('warehouseSelected', $warehouse_id);
     }
 
-    public function updatedStatus($value)
+    public function updatedStatus($value): void
     {
         if ($value === PurchaseStatus::COMPLETED) {
             $this->paid_amount = $this->total_amount;

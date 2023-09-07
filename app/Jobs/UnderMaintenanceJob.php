@@ -30,7 +30,7 @@ class UnderMaintenanceJob implements ShouldQueue
 
     public function handle(): void
     {
-        if (Helpers::settings('site_maintenance_status') === false) {
+        if (settings('site_maintenance_status') === false) {
             Artisan::call('up');
         } else {
             Artisan::call('down', [

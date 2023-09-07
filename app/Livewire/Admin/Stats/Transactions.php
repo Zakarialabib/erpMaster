@@ -86,7 +86,7 @@ class Transactions extends Component
 
     public $stockValue;
 
-    public function mount()
+    public function mount(): void
     {
         $this->startDate = Carbon::now()->startOfMonth()->toDateString();
         $this->endDate = Carbon::now()->endOfMonth()->toDateString();
@@ -164,7 +164,7 @@ class Transactions extends Component
         $this->chart();
     }
 
-    public function chart()
+    public function chart(): void
     {
         $query = Sale::selectRaw('SUM(total_amount) as total, SUM(due_amount) as due_amount')
             ->when($this->typeChart === 'monthly', static fn($q) => $q->selectRaw('MONTH(date) as labels, COUNT(*) as sales')
@@ -176,7 +176,7 @@ class Transactions extends Component
 
         $sales = [
             'total'      => array_column($query, 'total'),
-            'due_amount' => array_map(static fn($total, $dueAmount) => $total - $dueAmount, array_column($query, 'total'), array_column($query, 'due_amount')),
+            'due_amount' => array_map(static fn($total, $dueAmount): int|float => $total - $dueAmount, array_column($query, 'total'), array_column($query, 'due_amount')),
             'labels' => array_column($query, 'labels'),
         ];
 
@@ -190,7 +190,7 @@ class Transactions extends Component
 
         $purchases = [
             'total'      => array_column($query, 'total'),
-            'due_amount' => array_map(static fn($total, $dueAmount) => $total - $dueAmount, array_column($query, 'total'), array_column($query, 'due_amount')),
+            'due_amount' => array_map(static fn($total, $dueAmount): int|float => $total - $dueAmount, array_column($query, 'total'), array_column($query, 'due_amount')),
             'labels' => array_column($query, 'labels'),
         ];
 
@@ -207,7 +207,7 @@ class Transactions extends Component
         ], JSON_THROW_ON_ERROR);
     }
 
-    protected function getChart($sales, $purchases)
+    protected function getChart($sales, $purchases): string
     {
         $dataarray = [];
         $i = 0;

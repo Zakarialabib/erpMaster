@@ -29,7 +29,7 @@ class Smtp extends Component
 
     public $mail_encryption;
 
-    public function mount()
+    public function mount(): void
     {
         $this->mail_mailer = env('MAIL_MAILER');
         $this->mail_host = env('MAIL_HOST');
@@ -46,7 +46,7 @@ class Smtp extends Component
         return view('livewire.admin.settings.smtp');
     }
 
-    public function update()
+    public function update(): void
     {
         $toReplace = [
             'MAIL_MAILER='.env('MAIL_HOST'),

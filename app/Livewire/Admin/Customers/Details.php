@@ -22,6 +22,10 @@ class Details extends Component
 
     public $customer;
 
+    public $sales;
+
+    public $warehouse_id;
+
     public function mount($id): void
     {
         // dd($customer);
@@ -83,7 +87,7 @@ class Details extends Component
     }
 
     #[Computed]
-    public function Profit()
+    public function Profit(): int|float
     {
         // Step 1: Calculate total sales revenue for completed sales
         $salesTotal = Sale::where('customer_id', $this->customer_id)

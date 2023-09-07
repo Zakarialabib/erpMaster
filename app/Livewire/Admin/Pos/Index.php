@@ -273,7 +273,7 @@ class Index extends Component
         return Warehouse::select(['name', 'id'])->get();
     }
 
-    public function updatedWarehouseId($value)
+    public function updatedWarehouseId($value): void
     {
         $this->warehouse_id = $value;
         $this->dispatch('warehouseSelected', $this->warehouse_id);

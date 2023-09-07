@@ -40,7 +40,7 @@ class Messaging extends Component
         'message' => 'required',
     ];
 
-    public function mount()
+    public function mount(): void
     {
         $this->botToken = settings('telegram_channel');
     }
@@ -67,12 +67,12 @@ class Messaging extends Component
             ->get();
     }
 
-    public function updatedType()
+    public function updatedType(): void
     {
         $this->chatId = '';
     }
 
-    public function fillMessage($template)
+    public function fillMessage($template): void
     {
         switch ($template) {
             case 'productMessage':
@@ -97,7 +97,7 @@ class Messaging extends Component
         }
     }
 
-    public function sendDueAmount($saleId)
+    public function sendDueAmount($saleId): void
     {
         $sale = Sale::find($saleId);
 
@@ -117,22 +117,22 @@ class Messaging extends Component
         $this->sendMessage();
     }
 
-    public function openProductModal()
+    public function openProductModal(): void
     {
         $this->openProductModal = true;
     }
 
-    public function openClientModal()
+    public function openClientModal(): void
     {
         $this->openClientModal = true;
     }
 
-    public function openTemplate()
+    public function openTemplate(): void
     {
         $this->openTemplate = true;
     }
 
-    public function insertProduct($id)
+    public function insertProduct($id): void
     {
         $product = Product::find($id);
 
@@ -146,7 +146,7 @@ class Messaging extends Component
         $this->openProductModal = false;
     }
 
-    public function insertSale($id)
+    public function insertSale($id): void
     {
         $sale = Sale::find($id);
 
@@ -160,7 +160,7 @@ class Messaging extends Component
         $this->openProductModal = false;
     }
 
-    public function selectCustomer($customerId)
+    public function selectCustomer($customerId): void
     {
         $customer = Customer::find($customerId);
 
@@ -177,7 +177,7 @@ class Messaging extends Component
         $this->openClientModal = false;
     }
 
-    public function sendMessage()
+    public function sendMessage(): void
     {
         $message = urlencode((string) $this->message);
 

@@ -31,7 +31,7 @@ class ApiToken extends Component
     /** @var array<string> */
     public $listeners = ['refreshIndex' => '$refresh'];
 
-    public function mount()
+    public function mount(): void
     {
         $this->integrations = Integration::select('id', 'store_url', 'last_sync', 'type', 'products', 'status')->get();
         $this->integration = Integration::where('type', IntegrationType::CUSTOM)->first();
@@ -40,7 +40,7 @@ class ApiToken extends Component
         $this->inventoryProducts = Product::count();
     }
 
-    public function createToken()
+    public function createToken(): void
     {
         $this->resetErrorBag();
 
@@ -51,13 +51,13 @@ class ApiToken extends Component
         $this->token = $token;
     }
 
-    public function deleteToken()
+    public function deleteToken(): void
     {
         auth()->user()->tokens()->delete();
         $this->token = null;
     }
 
-    public function countNotExistingProducts()
+    public function countNotExistingProducts(): int
     {
         $inventoryProducts = Product::pluck('code')->toArray();
 

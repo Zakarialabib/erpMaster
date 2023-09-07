@@ -27,7 +27,7 @@ class NewslettersForm extends Component
         return view('livewire.front.newsletters-form');
     }
 
-    public function subscribe()
+    public function subscribe(): void
     {
         try {
             $validatedData = $this->validate();

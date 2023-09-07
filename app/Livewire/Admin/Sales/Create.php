@@ -81,7 +81,7 @@ class Create extends Component
 
     public $payment_method = 'cash';
 
-    public function mount()
+    public function mount(): void
     {
         abort_if(Gate::denies('sale create'), 403);
 
@@ -119,7 +119,7 @@ class Create extends Component
         ]);
     }
 
-    public function proceed()
+    public function proceed(): void
     {
         if ($this->customer_id !== null) {
             $this->store();
@@ -128,7 +128,7 @@ class Create extends Component
         }
     }
 
-    public function store()
+    public function store(): void
     {
         if ( ! $this->warehouse_id) {
             $this->alert('error', __('Please select a warehouse'));
@@ -236,12 +236,12 @@ class Create extends Component
         });
     }
 
-    public function calculateTotal()
+    public function calculateTotal(): float|int|array
     {
         return Cart::instance($this->cart_instance)->total() + $this->shipping_amount;
     }
 
-    public function resetCart()
+    public function resetCart(): void
     {
         Cart::instance($this->cart_instance)->destroy();
     }
@@ -252,13 +252,13 @@ class Create extends Component
         return Category::select('name', 'id')->get();
     }
 
-    public function updatedWarehouseId($value)
+    public function updatedWarehouseId($value): void
     {
         $this->warehouse_id = $value;
         $this->dispatch('warehouseSelected', $this->warehouse_id);
     }
 
-    public function updatedStatus($value)
+    public function updatedStatus($value): void
     {
         if ($value === SaleStatus::COMPLETED->value) {
             $this->paid_amount = $this->total_amount;

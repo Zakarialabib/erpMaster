@@ -46,17 +46,17 @@ class ProductShow extends Component
 
     // public $warehouseData;
 
-    public function decreaseQuantity()
+    public function decreaseQuantity(): void
     {
         --$this->quantity;
     }
 
-    public function increaseQuantity()
+    public function increaseQuantity(): void
     {
         ++$this->quantity;
     }
 
-    public function AddToCart($product_id)
+    public function AddToCart($product_id): void
     {
         $warehouse = ProductWarehouse::where('product_id', $product_id)->first();
 
@@ -87,7 +87,7 @@ class ProductShow extends Component
         );
     }
 
-    public function mount($slug)
+    public function mount($slug): void
     {
         $this->product = Product::whereSlug($slug)->firstOrFail();
         // $this->warehouseData = $this->product->warehouses();

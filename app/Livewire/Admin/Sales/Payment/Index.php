@@ -28,7 +28,7 @@ class Index extends Component
 
     public $sale_id;
 
-    public function mount($sale)
+    public function mount($sale): void
     {
         $this->sale = $sale;
 
@@ -50,7 +50,7 @@ class Index extends Component
         return view('livewire.admin.sales.payment.index', ['salepayments' => $salepayments]);
     }
 
-    public function showPayments($sale_id)
+    public function showPayments($sale_id): void
     {
         abort_if(Gate::denies('sale access'), 403);
 

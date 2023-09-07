@@ -52,7 +52,7 @@ class Index extends Component
     }
 
     #[On('showModal')]
-    public function showModal(Warehouse $warehouse)
+    public function showModal(Warehouse $warehouse): void
     {
         abort_if(Gate::denies('warehouse_show'), 403);
 
@@ -61,7 +61,7 @@ class Index extends Component
         $this->showModal = true;
     }
 
-    public function delete(Warehouse $warehouse)
+    public function delete(Warehouse $warehouse): void
     {
         abort_if(Gate::denies('warehouse_delete'), 403);
 
@@ -70,7 +70,7 @@ class Index extends Component
         $this->alert('warning', __('Warehouse successfully deleted.'));
     }
 
-    public function deleteSelected()
+    public function deleteSelected(): void
     {
         abort_if(Gate::denies('warehouse_delete'), 403);
 

@@ -18,7 +18,7 @@ class Show extends Component
 
     public $showModal = false;
 
-    public function showModal($id)
+    public function showModal($id): void
     {
         $this->sale = Sale::findOrFail($id);
 

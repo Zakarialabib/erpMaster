@@ -53,12 +53,12 @@ class Edit extends Component
     public $status;
 
     #[On('editorjs-save')]
-    public function saveEditorState($editorJsonData)
+    public function saveEditorState($editorJsonData): void
     {
         $this->description = $editorJsonData;
     }
 
-    public function mount($id)
+    public function mount($id): void
     {
         $this->page = Page::where('id', $id)->firstOrFail();
         $this->title = $this->page->title;
@@ -76,7 +76,7 @@ class Edit extends Component
         $this->status = $this->page->status;
     }
 
-    public function update()
+    public function update(): void
     {
         $this->validate();
 

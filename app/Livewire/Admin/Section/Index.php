@@ -41,7 +41,7 @@ class Index extends Component
         'section.description' => 'nullable',
     ];
 
-    public function mount()
+    public function mount(): void
     {
         $this->orderable = (new Section())->orderable;
     }
@@ -59,7 +59,7 @@ class Index extends Component
         return view('livewire.admin.section.index', ['sections' => $sections]);
     }
 
-    public function delete()
+    public function delete(): void
     {
         // abort_if(Gate::denies('section_delete'), 403);
 
@@ -68,7 +68,7 @@ class Index extends Component
         $this->alert('success', __('Section deleted successfully.'));
     }
 
-    public function deleteSelected()
+    public function deleteSelected(): void
     {
         // abort_if(Gate::denies('section_delete'), 403);
 
@@ -79,12 +79,12 @@ class Index extends Component
         $this->alert('success', __('Section deleted successfully.'));
     }
 
-    public function confirmed()
+    public function confirmed(): void
     {
         $this->dispatch('delete');
     }
 
-    public function deleteModal($section)
+    public function deleteModal($section): void
     {
         $this->confirm(__('Are you sure you want to delete this?'), [
             'toast'             => false,
@@ -97,13 +97,13 @@ class Index extends Component
     }
 
     // Section  Clone
-    public function clone(Section $section)
+    public function clone(Section $section): void
     {
         $section_details = Section::find($section->id);
 
         Section::create([
             'language_id' => $section_details->language_id,
-            'page'        => $section_details->page,
+            'page_id'        => $section_details->page_id,
             'title'       => $section_details->title,
             'subtitle'    => $section_details->subtitle,
             'link'        => $section_details->link,

@@ -32,7 +32,7 @@ class OrderForm extends Component
 
     public $product;
 
-    public function mount($product)
+    public function mount($product): void
     {
         $this->product = $product;
     }
@@ -42,7 +42,7 @@ class OrderForm extends Component
         return view('livewire.front.order-form');
     }
 
-    public function save()
+    public function save(): void
     {
         $this->validate([
             'name'    => 'required',

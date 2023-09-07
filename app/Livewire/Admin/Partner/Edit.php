@@ -29,7 +29,7 @@ class Edit extends Component
     public $description;
 
     #[On('editModal')]
-    public function editModal($id)
+    public function editModal($id): void
     {
         // abort_if(Gate::denies('partner_update'), 403);
 
@@ -48,7 +48,7 @@ class Edit extends Component
         $this->editModal = true;
     }
 
-    public function update()
+    public function update(): void
     {
         // abort_if(Gate::denies('partner_update'), 403);
 

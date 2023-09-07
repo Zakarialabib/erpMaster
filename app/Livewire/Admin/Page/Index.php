@@ -23,7 +23,7 @@ class Index extends Component
 
     public $page;
 
-    public function mount()
+    public function mount(): void
     {
         $this->orderable = (new Page())->orderable;
     }
@@ -42,7 +42,7 @@ class Index extends Component
     }
 
     #[On('delete')]
-    public function delete()
+    public function delete(): void
     {
         // abort_if(Gate::denies('page_delete'), 403);
 
@@ -51,7 +51,7 @@ class Index extends Component
         $this->alert('success', __('Page deleted successfully.'));
     }
 
-    public function deleteSelected()
+    public function deleteSelected(): void
     {
         // abort_if(Gate::denies('page_delete'), 403);
 
@@ -62,12 +62,12 @@ class Index extends Component
         $this->alert('success', __('Page deleted successfully.'));
     }
 
-    public function confirmed()
+    public function confirmed(): void
     {
         $this->dispatch('delete');
     }
 
-    public function deleteModal($page)
+    public function deleteModal($page): void
     {
         $this->confirm(__('Are you sure you want to delete this?'), [
             'toast'             => false,

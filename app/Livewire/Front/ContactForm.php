@@ -37,7 +37,7 @@ class ContactForm extends Component
         return view('livewire.front.contact-form');
     }
 
-    public function submit()
+    public function submit(): void
     {
         $this->validate();
 
@@ -57,7 +57,7 @@ class ContactForm extends Component
      *
      * @var array
      */
-    private function resetInputFields()
+    private function resetInputFields(): void
     {
         $this->name = '';
         $this->email = '';

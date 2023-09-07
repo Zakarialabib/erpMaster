@@ -60,7 +60,7 @@ class Index extends Component
         return view('livewire.admin.customers.index', ['customers' => $customers]);
     }
 
-    public function deleteSelected()
+    public function deleteSelected(): void
     {
         abort_if(Gate::denies('customer_delete'), 403);
 
@@ -69,7 +69,7 @@ class Index extends Component
         $this->resetSelected();
     }
 
-    public function delete(Customer $customer)
+    public function delete(Customer $customer): void
     {
         abort_if(Gate::denies('customer_delete'), 403);
 
@@ -124,7 +124,7 @@ class Index extends Component
         $this->import = true;
     }
 
-    public function importExcel()
+    public function importExcel(): void
     {
         abort_if(Gate::denies('customer access'), 403);
 

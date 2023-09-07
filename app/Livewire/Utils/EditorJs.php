@@ -44,7 +44,7 @@ class EditorJs extends Component
         $placeholder = null,
         $uploadDisk = null,
         $downloadDisk = null
-    ) {
+    ): void {
         if (is_null($uploadDisk)) {
             $uploadDisk = config('livewire-editorjs.default_img_upload_disk');
         }
@@ -73,11 +73,11 @@ class EditorJs extends Component
         $this->logLevel = config('livewire-editorjs.editorjs_log_level');
     }
 
-    public function completedImageUpload(string $uploadedFileName, string $eventName, $fileName = null)
+    public function completedImageUpload(string $uploadedFileName, string $eventName, $fileName = null): void
     {
         /** @var TemporaryUploadedFile $tmpFile */
         $tmpFile = collect($this->uploads)
-            ->filter(static fn(TemporaryUploadedFile $item) => $item->getFilename() === $uploadedFileName)
+            ->filter(static fn(TemporaryUploadedFile $item): bool => $item->getFilename() === $uploadedFileName)
             ->first();
 
         // When no file name is passed, we use the hashName of the tmp file
@@ -102,7 +102,7 @@ class EditorJs extends Component
         return Storage::disk($this->downloadDisk)->url($name);
     }
 
-    public function save()
+    public function save(): void
     {
         $this->dispatch('editorjs-save', editorJsonData: $this->data);
     }

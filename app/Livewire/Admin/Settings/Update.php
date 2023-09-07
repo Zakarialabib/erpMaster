@@ -13,7 +13,7 @@ class Update extends Component
 
     public $updateAvailable;
 
-    public function checkForUpdates()
+    public function checkForUpdates(): void
     {
         $gitHandler = new GitHandler();
         $updatesAvailable = $gitHandler->checkForUpdates();
@@ -26,7 +26,7 @@ class Update extends Component
         }
     }
 
-    public function updateSystem()
+    public function updateSystem(): void
     {
         $gitHandler = new GitHandler();
         $this->message = $gitHandler->fetchAndPull();

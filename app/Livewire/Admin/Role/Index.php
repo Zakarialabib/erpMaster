@@ -14,7 +14,7 @@ class Index extends Component
 {
     use Datatable;
 
-    public function mount()
+    public function mount(): void
     {
         $this->orderable = (new Role())->orderable;
     }
@@ -32,7 +32,7 @@ class Index extends Component
         return view('livewire.admin.role.index', ['roles' => $roles]);
     }
 
-    public function deleteSelected()
+    public function deleteSelected(): void
     {
         abort_if(Gate::denies('role_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
@@ -41,7 +41,7 @@ class Index extends Component
         $this->resetSelected();
     }
 
-    public function delete(Role $role)
+    public function delete(Role $role): void
     {
         abort_if(Gate::denies('role_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 

@@ -21,14 +21,14 @@ class PromoPrices extends Component
         'promoModal',
     ];
 
-    public function promoModal()
+    public function promoModal(): void
     {
         $this->resetErrorBag();
         $this->resetValidation();
         $this->promoModal = true;
     }
 
-    public function update()
+    public function update(): void
     {
         $warehouseProducts = ProductWarehouse::where('is_ecommerce', true)->get();
 

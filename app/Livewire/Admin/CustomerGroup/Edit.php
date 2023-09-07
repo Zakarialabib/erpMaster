@@ -7,6 +7,7 @@ namespace App\Livewire\Admin\CustomerGroup;
 use App\Models\CustomerGroup;
 use Illuminate\Support\Facades\Gate;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
+use Livewire\Attributes\On;
 use Livewire\Component;
 use Throwable;
 

@@ -8,6 +8,7 @@ use App\Models\Currency;
 use Illuminate\Support\Facades\Gate;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
+use Livewire\Attributes\On;
 use Throwable;
 
 class Create extends Component

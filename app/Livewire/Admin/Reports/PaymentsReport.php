@@ -52,18 +52,18 @@ class PaymentsReport extends Component
         ]);
     }
 
-    public function generateReport()
+    public function generateReport(): void
     {
         $this->validate();
         $this->render();
     }
 
-    public function updatedPayments($value)
+    public function updatedPayments($value): void
     {
         $this->resetPage();
     }
 
-    public function getQuery()
+    public function getQuery(): void
     {
         if ($this->payments === 'sale') {
             $this->query = SalePayment::query()->with('sale');

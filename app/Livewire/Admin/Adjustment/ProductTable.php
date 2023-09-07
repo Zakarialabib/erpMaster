@@ -17,7 +17,7 @@ class ProductTable extends Component
 
     protected $listeners = ['productSelected'];
 
-    public function mount($adjustedProducts = null)
+    public function mount($adjustedProducts = null): void
     {
         $this->products = [];
 

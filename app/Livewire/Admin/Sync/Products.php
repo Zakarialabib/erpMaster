@@ -39,7 +39,7 @@ class Products extends Component
         $this->syncModal = true;
     }
 
-    public function recieveData()
+    public function recieveData(): void
     {
         $integration = Integration::where('type', $this->type)->first();
         $client = Http::withHeaders([
@@ -75,9 +75,9 @@ class Products extends Component
                 $data = $response->json()['data'];
                 $batch = Bus::batch([
                     new SyncCustomProducts($data),
-                ])->then(function (Batch $batch) {
+                ])->then(function (Batch $batch): void {
                     $this->alert('success', 'Sync from ecommerce to inventory completed'.$batch->finished());
-                })->catch(function (Batch $batch, Throwable $e) {
+                })->catch(function (Batch $batch, Throwable $e): void {
                     $this->alert('success', 'Sync Failed'.$e->getMessage());
                 })->name('sync Custom Products')->dispatch();
 

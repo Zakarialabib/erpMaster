@@ -31,7 +31,7 @@ class PayDue extends Component
             ->get();
     }
 
-    public function makePayment()
+    public function makePayment(): void
     {
         $this->validate([
             'selectedPurchases' => 'required|array',

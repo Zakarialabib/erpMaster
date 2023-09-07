@@ -34,7 +34,7 @@ class QuotationController extends Controller
     // use livewire --------->
     public function store(StoreQuotationRequest $request)
     {
-        DB::transaction(static function () use ($request) {
+        DB::transaction(static function () use ($request): void {
             $quotation = Quotation::create([
                 'date'                => $request->date,
                 'customer_id'         => $request->customer_id,
@@ -63,6 +63,7 @@ class QuotationController extends Controller
                     'product_tax_amount'      => $cart_item->options->product_tax * 100,
                 ]);
             }
+
             Cart::instance('quotation')->destroy();
         });
 
@@ -105,10 +106,11 @@ class QuotationController extends Controller
 
     public function update(UpdateQuotationRequest $request, Quotation $quotation)
     {
-        DB::transaction(static function () use ($request, $quotation) {
+        DB::transaction(static function () use ($request, $quotation): void {
             foreach ($quotation->quotationDetails as $quotation_detail) {
                 $quotation_detail->delete();
             }
+
             $quotation->update([
                 'date'                => $request->date,
                 'reference'           => $request->reference,
@@ -137,6 +139,7 @@ class QuotationController extends Controller
                     'product_tax_amount'      => $cart_item->options->product_tax * 100,
                 ]);
             }
+
             Cart::instance('quotation')->destroy();
         });
 

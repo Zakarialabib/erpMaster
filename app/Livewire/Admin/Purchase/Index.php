@@ -44,7 +44,7 @@ class Index extends Component
         'note'                => 'nullable|string|max:1000',
     ];
 
-    public function filterByType($type)
+    public function filterByType($type): void
     {
         switch ($type) {
             case 'day':

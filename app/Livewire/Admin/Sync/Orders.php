@@ -35,7 +35,7 @@ class Orders extends Component
         }
     }
 
-    public function sync()
+    public function sync(): void
     {
         // Connect to the user's e-commerce store
         if ($this->type === 'woocommerce') {

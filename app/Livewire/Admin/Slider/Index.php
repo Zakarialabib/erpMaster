@@ -29,7 +29,7 @@ class Index extends Component
 
     public $showModal = false;
 
-    public function mount()
+    public function mount(): void
     {
         $this->orderable = (new Slider())->orderable;
     }
@@ -49,7 +49,7 @@ class Index extends Component
         return view('livewire.admin.slider.index', ['sliders' => $sliders]);
     }
 
-    public function setFeatured($id)
+    public function setFeatured($id): void
     {
         Slider::where('featured', '=', true)->update(['featured' => false]);
         $slider = Slider::findOrFail($id);
@@ -59,7 +59,7 @@ class Index extends Component
         $this->alert('success', __('Slider featured successfully!'));
     }
 
-    public function showModal(Slider $slider)
+    public function showModal(Slider $slider): void
     {
         $this->resetErrorBag();
 
@@ -70,7 +70,7 @@ class Index extends Component
         $this->showModal = true;
     }
 
-    public function delete(Slider $slider)
+    public function delete(Slider $slider): void
     {
         abort_if(Gate::denies('slider delete'), 403);
 

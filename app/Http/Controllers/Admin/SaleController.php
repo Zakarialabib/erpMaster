@@ -70,7 +70,7 @@ class SaleController extends Controller
 
     public function update(UpdateSaleRequest $request, Sale $sale)
     {
-        DB::transaction(static function () use ($request, $sale) {
+        DB::transaction(static function () use ($request, $sale): void {
             $due_amount = $request->total_amount - $request->paid_amount;
             if ($due_amount === $request->total_amount) {
                 $payment_status = PaymentStatus::PENDING;
@@ -79,6 +79,7 @@ class SaleController extends Controller
             } else {
                 $payment_status = PaymentStatus::PAID;
             }
+
             foreach ($sale->saleDetails as $sale_detail) {
                 if ($sale->status === SaleStatus::SHIPPED || $sale->status === SaleStatus::COMPLETED) {
                     $product = Product::findOrFail($sale_detail->product_id);
@@ -89,6 +90,7 @@ class SaleController extends Controller
 
                 $sale_detail->delete();
             }
+
             $sale->update([
                 'date'                => $request->date,
                 'reference'           => $request->reference,
@@ -128,6 +130,7 @@ class SaleController extends Controller
                     ]);
                 }
             }
+
             Cart::instance('sale')->destroy();
         });
 

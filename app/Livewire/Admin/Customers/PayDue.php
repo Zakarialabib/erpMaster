@@ -19,6 +19,10 @@ class PayDue extends Component
     public $amount;
 
     public $selectedSales;
+    
+    public $due_amount;
+
+    public $paid_amount;
 
     public $payment_method;
 
@@ -39,13 +43,13 @@ class PayDue extends Component
     }
 
     #[On('payModal')]
-    public function payModal($customer)
+    public function payModal($customer): void
     {
         $this->payModal = true;
         $this->customer_id = $customer;
     }
 
-    public function makePayment()
+    public function makePayment(): void
     {
         $this->validate();
 

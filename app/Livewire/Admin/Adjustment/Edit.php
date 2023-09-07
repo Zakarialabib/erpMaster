@@ -50,7 +50,7 @@ class Edit extends Component
         'products.*.type'     => 'required|in:add,sub',
     ];
 
-    public function mount($id)
+    public function mount($id): void
     {
         $this->adjustment = Adjustment::with('adjustedProducts', 'adjustedProducts.warehouse', 'adjustedProducts.product')
             ->where('id', $id)->first();
@@ -103,7 +103,7 @@ class Edit extends Component
         return redirect()->route('admin.adjustments.index');
     }
 
-    public function productSelected($product): void
+    public function productSelected(array $product): void
     {
         switch ($this->hasAdjustments) {
             case true:
@@ -140,7 +140,7 @@ class Edit extends Component
         unset($this->products[$key]);
     }
 
-    public function updatedWarehouseId($value)
+    public function updatedWarehouseId($value): void
     {
         $this->warehouse_id = $value;
         $this->dispatch('warehouseSelected', $this->warehouse_id);

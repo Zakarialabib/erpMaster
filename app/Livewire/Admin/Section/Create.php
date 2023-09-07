@@ -58,7 +58,7 @@ class Create extends Component
     ];
 
     #[On('createModal')]
-    public function createModal()
+    public function createModal(): void
     {
         $this->resetErrorBag();
 
@@ -72,7 +72,7 @@ class Create extends Component
         return view('livewire.admin.section.create');
     }
 
-    public function save()
+    public function save(): void
     {
         $this->validate();
 

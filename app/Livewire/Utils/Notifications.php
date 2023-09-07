@@ -18,7 +18,7 @@ class Notifications extends Component
 
     public $user;
 
-    public function mount()
+    public function mount(): void
     {
         $this->user = auth()->user();
 
@@ -28,26 +28,26 @@ class Notifications extends Component
             ->get();
     }
 
-    public function loadMore()
+    public function loadMore(): void
     {
         $this->how_many += 5;
         $this->mount();
     }
 
-    public function markAsRead($key)
+    public function markAsRead($key): void
     {
         $notification = $this->user->unreadNotifications[$key];
         $notification->markAsRead();
     }
 
-    public function readAll()
+    public function readAll(): void
     {
         // mark all notifications as read
         $user = auth()->user();
         $user->unreadNotifications->markAsRead();
     }
 
-    public function clear()
+    public function clear(): void
     {
         // clear all notifications
         $user = auth()->user();

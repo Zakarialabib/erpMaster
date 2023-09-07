@@ -52,7 +52,7 @@ class Edit extends Component
     }
 
     #[On('editModal')]
-    public function editModal($id)
+    public function editModal($id): void
     {
         // abort_if(Gate::denies('blog edit'), 403);
 
@@ -79,7 +79,7 @@ class Edit extends Component
         return view('livewire.admin.blog.edit');
     }
 
-    public function update()
+    public function update(): void
     {
         if ( ! $this->image) {
             $this->image = null;

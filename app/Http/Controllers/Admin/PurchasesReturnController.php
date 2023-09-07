@@ -40,7 +40,7 @@ class PurchasesReturnController extends Controller
 
     public function store(StorePurchaseReturnRequest $request)
     {
-        DB::transaction(static function () use ($request) {
+        DB::transaction(static function () use ($request): void {
             $due_amount = $request->total_amount - $request->paid_amount;
             if ($due_amount === $request->total_amount) {
                 $payment_status = PaymentStatus::DUE;
@@ -49,6 +49,7 @@ class PurchasesReturnController extends Controller
             } else {
                 $payment_status = PaymentStatus::PAID;
             }
+
             $purchase_return = PurchaseReturn::create([
                 'date'                => $request->date,
                 'supplier_id'         => $request->supplier_id,
@@ -88,6 +89,7 @@ class PurchasesReturnController extends Controller
                     ]);
                 }
             }
+
             Cart::instance('purchase_return')->destroy();
             if ($purchase_return->paid_amount > 0) {
                 PurchaseReturnPayment::create([
@@ -149,7 +151,7 @@ class PurchasesReturnController extends Controller
 
     public function update(UpdatePurchaseReturnRequest $request, PurchaseReturn $purchase_return)
     {
-        DB::transaction(static function () use ($request, $purchase_return) {
+        DB::transaction(static function () use ($request, $purchase_return): void {
             $due_amount = $request->total_amount - $request->paid_amount;
             if ($due_amount === $request->total_amount) {
                 $payment_status = PaymentStatus::DUE;
@@ -158,6 +160,7 @@ class PurchasesReturnController extends Controller
             } else {
                 $payment_status = PaymentStatus::PAID;
             }
+
             foreach ($purchase_return->purchaseReturnDetails as $purchase_return_detail) {
                 if ($purchase_return->status === 'Shipped' || $purchase_return->status === 'Completed') {
                     $product = Product::findOrFail($purchase_return_detail->product_id);
@@ -168,6 +171,7 @@ class PurchasesReturnController extends Controller
 
                 $purchase_return_detail->delete();
             }
+
             $purchase_return->update([
                 'date'                => $request->date,
                 'reference'           => $request->reference,
@@ -207,6 +211,7 @@ class PurchasesReturnController extends Controller
                     ]);
                 }
             }
+
             Cart::instance('purchase_return')->destroy();
         });
 

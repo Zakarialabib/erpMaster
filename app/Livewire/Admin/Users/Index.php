@@ -37,13 +37,13 @@ class Index extends Component
         'user.tax_number' => 'nullable',
     ];
 
-    public function filterRole($role)
+    public function filterRole($role): void
     {
         $this->filterRole = $role;
         $this->resetPage(); // Reset pagination to the first page
     }
 
-    public function mount()
+    public function mount(): void
     {
         $this->orderable = (new User())->orderable;
     }
@@ -70,12 +70,12 @@ class Index extends Component
     }
 
     // assign or change user role
-    public function assignRole(User $user, $role)
+    public function assignRole(User $user, $role): void
     {
         $user->assignRole($role);
     }
 
-    public function deleteSelected()
+    public function deleteSelected(): void
     {
         abort_if(Gate::denies('user_delete'), 403);
 
@@ -84,7 +84,7 @@ class Index extends Component
         $this->resetSelected();
     }
 
-    public function delete(User $user)
+    public function delete(User $user): void
     {
         abort_if(Gate::denies('user_delete'), 403);
 
@@ -93,7 +93,7 @@ class Index extends Component
         $this->alert('warning', __('User deleted successfully!'));
     }
 
-    public function showModal(User $user)
+    public function showModal(User $user): void
     {
         $this->user = $user;
 

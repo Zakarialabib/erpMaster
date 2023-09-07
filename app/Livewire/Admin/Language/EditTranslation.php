@@ -19,12 +19,12 @@ class EditTranslation extends Component
         'translations.*.value' => 'required',
     ];
 
-    public function mount($language)
+    public function mount($language): void
     {
         $this->language = Language::where('id', $language)->firstOrFail();
         // dd($this->all());
         $this->translations = $this->getTranslations();
-        $this->translations = collect($this->translations)->map(static fn($item, $key) => [
+        $this->translations = collect($this->translations)->map(static fn($item, $key): array => [
             'key'   => $key,
             'value' => $item,
         ])->toArray();
@@ -38,7 +38,7 @@ class EditTranslation extends Component
         return json_decode($content, true, 512, JSON_THROW_ON_ERROR);
     }
 
-    public function updateTranslation()
+    public function updateTranslation(): void
     {
         $this->validate();
 

@@ -62,7 +62,7 @@ class Create extends Component
         'product.condition'        => ['nullable'],
     ];
 
-    public function fetchSubcategories()
+    public function fetchSubcategories(): void
     {
         $selectedCategory = $this->product['category_id'];
         $this->subcategories = Subcategory::where('category_id', $selectedCategory)->get();
@@ -74,7 +74,7 @@ class Create extends Component
     }
 
     #[On('createModal')]
-    public function createModal()
+    public function createModal(): void
     {
         $this->resetErrorBag();
 
@@ -85,7 +85,7 @@ class Create extends Component
         $this->createModal = true;
     }
 
-    public function create()
+    public function create(): void
     {
         $this->validate();
 

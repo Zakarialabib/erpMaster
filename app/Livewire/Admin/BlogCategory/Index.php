@@ -25,17 +25,17 @@ class Index extends Component
 
     public $deleteModal = false;
 
-    public function confirmed()
+    public function confirmed(): void
     {
         $this->dispatch('delete');
     }
 
-    public function mount()
+    public function mount(): void
     {
         $this->orderable = (new BlogCategory())->orderable;
     }
 
-    public function deleteModal($blogcategory)
+    public function deleteModal($blogcategory): void
     {
         $this->confirm(__('Are you sure you want to delete this?'), [
             'toast'             => false,
@@ -47,7 +47,7 @@ class Index extends Component
         $this->blogcategory = $blogcategory;
     }
 
-    public function delete()
+    public function delete(): void
     {
         abort_if(Gate::denies('blogcategory_delete'), 403);
 
@@ -56,7 +56,7 @@ class Index extends Component
         $this->alert('success', __('BlogCategory deleted successfully.'));
     }
 
-    public function deleteSelected()
+    public function deleteSelected(): void
     {
         abort_if(Gate::denies('blogcategory_delete'), 403);
 

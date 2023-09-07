@@ -12,6 +12,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Support\Str;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
+use Livewire\Attributes\On;
 use Livewire\WithFileUploads;
 use Livewire\Attributes\Layout;
 use App\Livewire\Utils\Datatable;
@@ -47,7 +48,7 @@ class Index extends Component
         'featuredbanner.embeded_video' => ['nullable'],
     ];
 
-    public function mount()
+    public function mount(): void
     {
         $this->initListsForFields();
     }
@@ -65,7 +66,7 @@ class Index extends Component
         return view('livewire.admin.featured-banner.index', ['featuredbanners' => $featuredbanners]);
     }
 
-    public function setFeatured($id)
+    public function setFeatured($id): void
     {
         FeaturedBanner::where('featured', '=', true)->update(['featured' => false]);
         $featuredbanner = FeaturedBanner::findOrFail($id);
@@ -76,7 +77,7 @@ class Index extends Component
     }
 
     #[On('editModal')]
-    public function editModal(FeaturedBanner $featuredbanner)
+    public function editModal(FeaturedBanner $featuredbanner): void
     {
         $this->resetErrorBag();
 
@@ -87,7 +88,7 @@ class Index extends Component
         $this->editModal = true;
     }
 
-    public function update()
+    public function update(): void
     {
         $this->validate();
         // if product selected Helpers::productLink($product)
@@ -105,7 +106,7 @@ class Index extends Component
         $this->editModal = false;
     }
 
-    public function showModal(FeaturedBanner $featuredbanner)
+    public function showModal(FeaturedBanner $featuredbanner): void
     {
         $this->resetErrorBag();
 
@@ -116,7 +117,7 @@ class Index extends Component
         $this->showModal = true;
     }
 
-    public function delete(FeaturedBanner $featuredbanner)
+    public function delete(FeaturedBanner $featuredbanner): void
     {
         $featuredbanner->delete();
 

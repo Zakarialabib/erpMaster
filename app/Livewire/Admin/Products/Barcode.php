@@ -32,13 +32,13 @@ class Barcode extends Component
         'products.*.barcodeSize' => 'required|in:small,medium,large,extra,huge',
     ];
 
-    public function updatedWarehouseId($value)
+    public function updatedWarehouseId($value): void
     {
         $this->warehouse_id = $value;
         $this->dispatch('warehouseSelected', $this->warehouse_id);
     }
 
-    public function productSelected($product): void
+    public function productSelected(array $product): void
     {
         $productWarehouse = ProductWarehouse::where('product_id', $product['id'])
             ->where('warehouse_id', $this->warehouse_id)
@@ -57,7 +57,7 @@ class Barcode extends Component
         }
     }
 
-    public function generateBarcodes()
+    public function generateBarcodes(): void
     {
         if (empty($this->products)) {
             $this->alert('error', __('Please select at least one product to generate barcodes!'));
@@ -103,7 +103,7 @@ class Barcode extends Component
         return $pdf->download('barcodes-'.date('Y-m-d').'.pdf');
     }
 
-    public function deleteProduct($productId)
+    public function deleteProduct($productId): void
     {
         $index = null;
 

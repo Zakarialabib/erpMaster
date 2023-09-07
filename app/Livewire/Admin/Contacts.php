@@ -16,7 +16,7 @@ class Contacts extends Component
     use Datatable;
     use LivewireAlert;
 
-    public function mount()
+    public function mount(): void
     {
         $this->orderable = (new Contact())->orderable;
     }
@@ -34,14 +34,14 @@ class Contacts extends Component
         return view('livewire.admin.contacts', ['contacts' => $contacts]);
     }
 
-    public function deleteSelected()
+    public function deleteSelected(): void
     {
         Contact::whereIn('id', $this->selected)->delete();
 
         // $this->showDeleteModal = false;
     }
 
-    public function delete(Contact $contact)
+    public function delete(Contact $contact): void
     {
         $contact->delete();
 

@@ -55,7 +55,7 @@ class Create extends Component
     public $type;
 
     #[On('editorjs-save')]
-    public function saveEditorState($editorJsonData)
+    public function saveEditorState($editorJsonData): void
     {
         $this->description = $editorJsonData;
     }

@@ -44,12 +44,12 @@ class Brands extends Component
         'sorting'        => ['except' => '', 'as' => 'filters'],
     ];
 
-    public function updatingPerPage()
+    public function updatingPerPage(): void
     {
         $this->resetPage();
     }
 
-    public function filterProducts($type, $value)
+    public function filterProducts($type, $value): void
     {
         switch($type) {
             case 'category':
@@ -69,7 +69,7 @@ class Brands extends Component
         $this->resetPage();
     }
 
-    public function clearFilter($filter)
+    public function clearFilter($filter): void
     {
         switch($filter) {
             case 'category':
@@ -92,7 +92,7 @@ class Brands extends Component
         $this->resetPage();
     }
 
-    public function mount()
+    public function mount(): void
     {
         $this->sortingOptions = [
             'name-asc'   => __('Order Alphabetic, A-Z'),
@@ -106,7 +106,7 @@ class Brands extends Component
         $this->paginationOptions = [25, 50, 100];
     }
 
-    public function loadMore()
+    public function loadMore(): void
     {
         $this->perPage += 25;
     }

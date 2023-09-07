@@ -78,7 +78,7 @@ class Edit extends Component
 
     public $sale_details;
 
-    public function mount($id)
+    public function mount($id): void
     {
         $this->sale = Sale::findOrFail($id);
 
@@ -123,7 +123,7 @@ class Edit extends Component
         $this->total_amount = $this->sale->total_amount;
     }
 
-    public function proceed()
+    public function proceed(): void
     {
         if ($this->customer_id !== null) {
             $this->store();
@@ -132,7 +132,7 @@ class Edit extends Component
         }
     }
 
-    public function update()
+    public function update(): void
     {
         if ( ! $this->warehouse_id) {
             $this->alert('error', __('Please select a warehouse'));
@@ -239,13 +239,13 @@ class Edit extends Component
         return view('livewire.admin.sales.edit');
     }
 
-    public function updatedWarehouseId($value)
+    public function updatedWarehouseId($value): void
     {
         $this->warehouse_id = $value;
         $this->dispatch('warehouseSelected', $this->warehouse_id);
     }
 
-    public function updatedStatus($value)
+    public function updatedStatus($value): void
     {
         if ($value === SaleStatus::COMPLETED->value) {
             $this->paid_amount = $this->total_amount;

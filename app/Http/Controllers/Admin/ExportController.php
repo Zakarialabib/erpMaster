@@ -119,7 +119,7 @@ class ExportController extends Controller
         return $pdf->stream(__('Sale Return').$saleReturn->reference.'.pdf');
     }
 
-    private function getCompanyLogo()
+    private function getCompanyLogo(): string
     {
         return 'data:image/png;base64,'.base64_encode(file_get_contents(public_path('images/logo.png')));
     }

@@ -59,7 +59,7 @@ class Index extends Component
         $this->endDate = now()->endOfDay()->format('Y-m-d');
     }
 
-    public function filterByType($type)
+    public function filterByType($type): void
     {
         switch ($type) {
             case 'day':
@@ -97,7 +97,7 @@ class Index extends Component
         return view('livewire.admin.sales.index', ['sales' => $sales]);
     }
 
-    public function deleteSelected()
+    public function deleteSelected(): void
     {
         abort_if(Gate::denies('sale delete'), 403);
 
@@ -106,7 +106,7 @@ class Index extends Component
         $this->resetSelected();
     }
 
-    public function delete(Sale $sale)
+    public function delete(Sale $sale): void
     {
         abort_if(Gate::denies('sale delete'), 403);
 
@@ -117,7 +117,7 @@ class Index extends Component
         $this->alert('success', __('Sale deleted successfully.'));
     }
 
-    public function importModal()
+    public function importModal(): void
     {
         abort_if(Gate::denies('sale create'), 403);
 
@@ -129,7 +129,7 @@ class Index extends Component
         return Storage::disk('exports')->download('sales_import_sample.xls');
     }
 
-    public function import()
+    public function import(): void
     {
         abort_if(Gate::denies('sale create'), 403);
 
@@ -183,7 +183,7 @@ class Index extends Component
         return redirect()->away($url);
     }
 
-    public function openWhatapp($url)
+    public function openWhatapp($url): void
     {
         // open whatsapp url in another tab
     }

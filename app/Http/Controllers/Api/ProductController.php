@@ -13,7 +13,7 @@ use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    public function index()
+    public function index(): \App\Http\Resources\ProductCollection
     {
         return new ProductCollection(Product::with('category')->get());
     }
@@ -23,7 +23,7 @@ class ProductController extends Controller
      *
      *
      */
-    public function store(Request $request)
+    public function store(Request $request): \App\Http\Resources\ProductResource
     {
         $product = Product::create([
             'id'    => $request->id,
@@ -41,7 +41,7 @@ class ProductController extends Controller
      * @param  int  $id
      *
      */
-    public function show(Product $product)
+    public function show(Product $product): \App\Http\Resources\ProductResource
     {
         return new ProductResource($product);
     }
@@ -52,7 +52,7 @@ class ProductController extends Controller
      * @param  int  $id
      *
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id): void
     {
     }
 
@@ -62,7 +62,7 @@ class ProductController extends Controller
      * @param  int  $id
      *
      */
-    public function destroy($id)
+    public function destroy($id): void
     {
     }
 }

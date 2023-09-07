@@ -34,12 +34,12 @@ class Login extends Component
         'type'      => 'required',
     ];
 
-    public function loginModal()
+    public function loginModal(): void
     {
         $this->loginModal = true;
     }
 
-    public function authenticate()
+    public function authenticate(): void
     {
         $this->validate();
 
@@ -72,7 +72,7 @@ class Login extends Component
 
             $this->alert('success', __('Authentication successful !'));
 
-            $this->dispatch('refreshIndex')->to(Index::class);
+            // $this->dispatch('refreshIndex')->to(Index::class);
 
             $this->loginModal = false;
         }

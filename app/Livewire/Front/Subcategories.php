@@ -22,13 +22,13 @@ class Subcategories extends Component
 
     public $filterProductSubcategories;
 
-    public function filterProductSubcategories($subcategory_id)
+    public function filterProductSubcategories($subcategory_id): void
     {
         $this->subcategory_id = $subcategory_id;
         $this->resetPage();
     }
 
-    public function mount()
+    public function mount(): void
     {
         $this->orderable = (new Product())->orderable;
     }

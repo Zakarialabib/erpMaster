@@ -63,7 +63,7 @@ class Profile extends Component
         $this->alert('success', __('Profile updated successfully!'));
     }
 
-    public function updatePassword()
+    public function updatePassword(): void
     {
         $this->validate([
             'current_password' => ['required', 'max:255', new MatchCurrentPassword()],

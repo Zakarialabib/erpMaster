@@ -6,6 +6,7 @@ namespace App\Livewire\Admin\Faq;
 
 use App\Models\Faq;
 use Illuminate\Contracts\View\Factory;
+use Livewire\Attributes\On;
 use Illuminate\Contracts\View\View;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
@@ -29,7 +30,7 @@ class Create extends Component
     }
 
     #[On('createModal')]
-    public function createModal()
+    public function createModal(): void
     {
         $this->resetErrorBag();
 
@@ -38,7 +39,7 @@ class Create extends Component
         $this->createModal = true;
     }
 
-    public function create()
+    public function create(): void
     {
         $this->validate();
 

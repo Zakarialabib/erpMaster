@@ -31,14 +31,14 @@ class Edit extends Component
     ];
 
     #[On('editLanguage')]
-    public function editLanguage($id)
+    public function editLanguage($id): void
     {
         $this->language = Language::findOrFail($id);
 
         $this->editLanguage = true;
     }
 
-    public function update()
+    public function update(): void
     {
         $this->validate();
 

@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Rule;
 
 #[Layout('components.layouts.guest')]
 class Account extends Component
@@ -17,38 +18,31 @@ class Account extends Component
 
     public $user;
 
+    #[Rule('required', 'string', 'max:255')]
     public $name;
 
+    #[Rule('required', 'لnumeric')]
     public $phone;
 
+    #[Rule('required', 'string', 'email', 'max:255')]
     public $email;
 
+    #[Rule('required', 'string', 'max:255')]
     public $address;
 
+    #[Rule('required', 'string', 'max:255')]
     public $city;
 
+    #[Rule('required', 'string', 'max:255')]
     public $country;
 
     public string $password = '';
 
-    protected $listeners = [
-        'submit',
-    ];
 
-    protected $rules = [
-        'first_name' => ['required', 'string', 'max:255'],
-        'last_name'  => ['required', 'string', 'max:255'],
-        'email'      => ['required', 'string', 'email', 'max:255'],
-        'phone'      => ['required', 'string', 'max:255'],
-        'city'       => ['required', 'string', 'max:255'],
-        'address'    => ['required', 'string', 'max:255'],
-    ];
-
-    public function mount()
+    public function mount(): void
     {
         $this->user = User::find(Auth::user()->id);
-        $this->first_name = $this->user->first_name;
-        $this->last_name = $this->user->last_name;
+        $this->name = $this->user->name;
         $this->address = $this->user->address;
         $this->phone = $this->user->phone;
         $this->city = $this->user->city;
@@ -57,7 +51,7 @@ class Account extends Component
         $this->password = $this->user->password;
     }
 
-    public function save()
+    public function save(): void
     {
         $this->validate();
 

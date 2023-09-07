@@ -25,12 +25,12 @@ class Index extends Component
 
     public $deleteModal = false;
 
-    public function mount()
+    public function mount(): void
     {
         $this->orderable = (new Blog())->orderable;
     }
 
-    public function delete()
+    public function delete(): void
     {
         abort_if(Gate::denies('blog_delete'), 403);
 
@@ -39,7 +39,7 @@ class Index extends Component
         $this->alert('success', __('Blog deleted successfully.'));
     }
 
-    public function deleteSelected()
+    public function deleteSelected(): void
     {
         abort_if(Gate::denies('blog_delete'), 403);
 
@@ -48,7 +48,7 @@ class Index extends Component
         $this->resetSelected();
     }
 
-    public function deleteModal($blog)
+    public function deleteModal($blog): void
     {
         $this->confirm(__('Are you sure you want to delete this?'), [
             'toast'             => false,

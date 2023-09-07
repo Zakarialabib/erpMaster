@@ -30,7 +30,7 @@ class SubscribeForm extends Component
 
     public $race;
 
-    public function mount($race)
+    public function mount($race): void
     {
         $this->race = $race;
     }
@@ -40,7 +40,7 @@ class SubscribeForm extends Component
         return view('livewire.front.subscribe-form');
     }
 
-    public function save()
+    public function save(): void
     {
         $this->validate([
             'name'  => 'required',

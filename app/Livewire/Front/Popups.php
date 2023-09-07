@@ -31,19 +31,19 @@ class Popups extends Component
 
     protected $listeners = ['showDelay', 'showDuration', 'showInterval'];
 
-    public function showDelay($delay)
+    public function showDelay(int $delay): void
     {
         $this->delay = $delay;
         $this->show = true;
     }
 
-    public function showDuration($duration)
+    public function showDuration(int $duration): void
     {
         $this->duration = $duration;
         $this->show = true;
     }
 
-    public function showInterval($interval)
+    public function showInterval(int $interval): void
     {
         $this->interval = $interval;
         $this->show = true;
@@ -61,7 +61,7 @@ class Popups extends Component
         return view('front.popups');
     }
 
-    public function hide()
+    public function hide(): void
     {
         $this->show = false;
     }

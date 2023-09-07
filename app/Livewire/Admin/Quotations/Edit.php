@@ -55,7 +55,7 @@ class Edit extends Component
     #[Rule('integer|min:0|max:100')]
     public $discount_percentage;
 
-    public function mount($id)
+    public function mount($id): void
     {
         $this->quotation = Quotation::findOrFail($id);
 
@@ -98,7 +98,7 @@ class Edit extends Component
 
     public function update()
     {
-        DB::transaction(function () {
+        DB::transaction(function (): void {
             foreach ($this->quotation->quotationDetails as $quotation_detail) {
                 $quotation_detail->delete();
             }
@@ -150,7 +150,7 @@ class Edit extends Component
         return view('livewire.admin.quotations.edit');
     }
 
-    public function updatedWarehouseId($value)
+    public function updatedWarehouseId($value): void
     {
         $this->warehouse_id = $value;
         $this->dispatch('warehouseSelected', $this->warehouse_id);

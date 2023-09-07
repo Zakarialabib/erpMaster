@@ -30,12 +30,12 @@ class Template extends Component
         'createModal',
     ];
 
-    public function mount()
+    public function mount(): void
     {
         $this->templates = config('templates');
     }
 
-    public function createModal()
+    public function createModal(): void
     {
         $this->resetErrorBag();
 
@@ -44,12 +44,12 @@ class Template extends Component
         $this->createModal = true;
     }
 
-    public function updatedSelectTemplate()
+    public function updatedSelectTemplate(): void
     {
         $this->selectedTemplate = $this->templates[$this->selectTemplate];
     }
 
-    public function store()
+    public function store(): void
     {
         try {
             $page = [

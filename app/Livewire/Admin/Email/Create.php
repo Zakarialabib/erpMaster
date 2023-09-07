@@ -45,7 +45,7 @@ class Create extends Component
     }
 
     #[On('createModal')]
-    public function createModal()
+    public function createModal(): void
     {
         $this->resetErrorBag();
         $this->resetValidation();
@@ -54,7 +54,7 @@ class Create extends Component
         $this->createModal = true;
     }
 
-    public function create()
+    public function create(): void
     {
         $this->validate();
 

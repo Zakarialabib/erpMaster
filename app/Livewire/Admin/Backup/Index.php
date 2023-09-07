@@ -51,14 +51,14 @@ class Index extends Component
         'delete',
     ];
 
-    public function settingsModal()
+    public function settingsModal(): void
     {
         $this->backup_status = settings('backup_status');
         $this->backup_schedule = settings('backup_schedule');
         $this->settingsModal = true;
     }
 
-    public function saveToDriveManually($filename)
+    public function saveToDriveManually(string $filename): void
     {
         $fileData = Storage::get($filename);
         Storage::cloud()->put(env('APP_NAME').'/'.$filename, $fileData);
@@ -66,14 +66,14 @@ class Index extends Component
         $this->alert('success', __('Backup saved to Google Drive successfully!'));
     }
 
-    public function cleanBackups()
+    public function cleanBackups(): void
     {
         Artisan::call('backup:clean');
 
         $this->alert('success', __('Old backup cleaned.'));
     }
 
-    public function backupToDrive()
+    public function backupToDrive(): void
     {
         try {
             // Generate backup file
@@ -94,7 +94,7 @@ class Index extends Component
         }
     }
 
-    public function updateSettigns()
+    public function updateSettigns(): void
     {
         try {
             $this->validate();
@@ -117,7 +117,7 @@ class Index extends Component
         }
     }
 
-    public function generate()
+    public function generate(): void
     {
         try {
             Artisan::call('backup:run --only-db');
@@ -132,7 +132,7 @@ class Index extends Component
         return response()->download($file);
     }
 
-    public function delete($name)
+    public function delete($name): void
     {
         foreach (glob(storage_path().'/app/*') as $filename) {
             $path = storage_path().'/app/'.basename((string) $name);

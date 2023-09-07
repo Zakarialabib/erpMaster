@@ -27,7 +27,7 @@ class DynamicPage extends Component
 
     public int $is_sliders;
 
-    public function mount(?string $slug = 'home')
+    public function mount(?string $slug = 'home'): void
     {
         $this->page = Page::where('slug', $slug)->firstOrFail();
 

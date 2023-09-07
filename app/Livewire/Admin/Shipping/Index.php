@@ -25,12 +25,12 @@ class Index extends Component
 
     public $shipping;
 
-    public function confirmed()
+    public function confirmed(): void
     {
         $this->dispatch('delete');
     }
 
-    public function mount()
+    public function mount(): void
     {
         $this->orderable = (new Shipping())->orderable;
     }
@@ -50,7 +50,7 @@ class Index extends Component
         return view('livewire.admin.shipping.index', ['shippings' => $shippings]);
     }
 
-    public function deleteModal($shipping)
+    public function deleteModal($shipping): void
     {
         $this->confirm(__('Are you sure you want to delete this?'), [
             'toast'             => false,
@@ -62,7 +62,7 @@ class Index extends Component
         $this->shipping = $shipping;
     }
 
-    public function delete()
+    public function delete(): void
     {
         abort_if(Gate::denies('shipping delete'), 403);
 

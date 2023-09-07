@@ -41,7 +41,7 @@ class Edit extends Component
     }
 
     #[On('editModal')]
-    public function editModal($id)
+    public function editModal($id): void
     {
         abort_if(Gate::denies('warehouse_update'), 403);
 

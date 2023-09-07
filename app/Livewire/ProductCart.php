@@ -46,7 +46,7 @@ class ProductCart extends Component
 
     public $total_with_shipping;
 
-    public function mount($cartInstance, $data = null)
+    public function mount($cartInstance, $data = null): void
     {
         $this->cart_instance = $cartInstance;
 
@@ -86,15 +86,15 @@ class ProductCart extends Component
     }
 
 
-    public function productSelected($product): void
+    public function productSelected(array $product): void
     {
-        if (empty($product)) {
+        if ($product === []) {
             $this->alert('error', __('Something went wrong!'));
             return;
         }
 
         $cart = Cart::instance($this->cart_instance);
-        $exists = $cart->search(static fn($cartItem) => $cartItem->id === $product['id']);
+        $exists = $cart->search(static fn($cartItem): bool => $cartItem->id === $product['id']);
 
         if ($exists->isNotEmpty()) {
             $this->alert('error', __('Product already added to cart!'));
@@ -111,7 +111,7 @@ class ProductCart extends Component
         $this->updateQuantityAndCheckQuantity($product['id'], $productWarehouse->qty);
     }
 
-    public function calculate($product): array
+    public function calculate(array $product): array
     {
         $productWarehouse = ProductWarehouse::where('product_id', $product['id'])
             ->where('warehouse_id', $this->warehouse_id)
@@ -120,7 +120,7 @@ class ProductCart extends Component
         return $this->calculatePrices($product, $productWarehouse);
     }
 
-    private function calculatePrices($product, $productWarehouse)
+    private function calculatePrices(array $product, $productWarehouse): array
     {
         $price = $productWarehouse->price;
         $unit_price = $price;
@@ -143,14 +143,14 @@ class ProductCart extends Component
 
 
 
-    private function updateQuantityAndCheckQuantity($productId, $quantity)
+    private function updateQuantityAndCheckQuantity($productId, $quantity): void
     {
         $this->check_quantity[$productId] = $quantity;
         $this->quantity[$productId] = 1;
     }
 
 
-    private function createCartItem($product, $productWarehouse)
+    private function createCartItem(array $product, $productWarehouse): array
     {
         $calculation = $this->calculate($product);
 
@@ -170,7 +170,7 @@ class ProductCart extends Component
         ];
     }
 
-    public function updatePrice($row_id, $product_id)
+    public function updatePrice($row_id, $product_id): void
     {
         Cart::instance($this->cart_instance)->update($row_id, [
             'price' => $this->price[$product_id],
@@ -193,22 +193,22 @@ class ProductCart extends Component
     }
 
 
-    public function updatedGlobalTax()
+    public function updatedGlobalTax(): void
     {
         Cart::instance($this->cart_instance)->setGlobalTax((int) $this->global_tax);
     }
 
-    public function updatedGlobalDiscount()
+    public function updatedGlobalDiscount(): void
     {
         Cart::instance($this->cart_instance)->setGlobalDiscount((int) $this->global_discount);
     }
 
-    public function updatedTotalShipping()
+    public function updatedTotalShipping(): void
     {
         Cart::instance($this->cart_instance)->total();
     }
 
-    public function updatedShippingAmount($value)
+    public function updatedShippingAmount($value): void
     {
         $this->shipping_amount = $value;
     }
@@ -220,7 +220,7 @@ class ProductCart extends Component
         $this->discountModal = true;
     }
 
-    public function updateQuantity($row_id, $product_id)
+    public function updateQuantity($row_id, $product_id): void
     {
         if (($this->cart_instance === 'sale' || $this->cart_instance === 'purchase_return') && $this->check_quantity[$product_id] < $this->quantity[$product_id]) {
             $this->alert('error', 'Quantity is greater than in stock!');
@@ -245,12 +245,12 @@ class ProductCart extends Component
         ]);
     }
 
-    public function removeItem($row_id)
+    public function removeItem($row_id): void
     {
         Cart::instance($this->cart_instance)->remove($row_id);
     }
 
-    public function updatedDiscountType($value, $name)
+    public function updatedDiscountType($value, $name): void
     {
         $this->item_discount[$name] = 0;
     }
@@ -286,7 +286,7 @@ class ProductCart extends Component
     }
 
 
-    public function updateCartOptions($row_id, $product_id, $cart_item, $discount_amount)
+    public function updateCartOptions($row_id, $product_id, $cart_item, $discount_amount): void
     {
         Cart::instance($this->cart_instance)->update($row_id, [
             'options' => [
@@ -303,7 +303,7 @@ class ProductCart extends Component
     }
 
 
-    public function updatedWarehouseId($value)
+    public function updatedWarehouseId($value): void
     {
         $this->warehouse_id = $value;
     }

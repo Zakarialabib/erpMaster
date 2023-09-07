@@ -49,7 +49,7 @@ class Recent extends Component
         return view('livewire.admin.sales.recent', ['sales' => $sales]);
     }
 
-    public function showModal($id)
+    public function showModal($id): void
     {
         abort_if(Gate::denies('sale access'), 403);
 
@@ -58,7 +58,7 @@ class Recent extends Component
         $this->showModal = true;
     }
 
-    public function recentSales()
+    public function recentSales(): void
     {
         abort_if(Gate::denies('sale access'), 403);
 

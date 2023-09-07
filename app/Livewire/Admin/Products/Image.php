@@ -40,7 +40,7 @@ class Image extends Component
 
     public $height = 1000;
 
-    public function imageModal($id)
+    public function imageModal($id): void
     {
         $this->resetErrorBag();
 
@@ -51,7 +51,7 @@ class Image extends Component
         $this->imageModal = true;
     }
 
-    public function saveImage()
+    public function saveImage(): void
     {
         try {
             if ($this->image_url) {
@@ -72,13 +72,13 @@ class Image extends Component
 
                 // we need to resize image, otherwise it will be cropped
                 if ($img->width() > $this->width) {
-                    $img->resize($this->width, null, static function ($constraint) {
+                    $img->resize($this->width, null, static function ($constraint): void {
                         $constraint->aspectRatio();
                     });
                 }
 
                 if ($img->height() > $this->height) {
-                    $img->resize(null, $this->height, static function ($constraint) {
+                    $img->resize(null, $this->height, static function ($constraint): void {
                         $constraint->aspectRatio();
                     });
                 }
@@ -104,13 +104,13 @@ class Image extends Component
 
                     // we need to resize image, otherwise it will be cropped
                     if ($img->width() > $this->width) {
-                        $img->resize($this->width, null, static function ($constraint) {
+                        $img->resize($this->width, null, static function ($constraint): void {
                             $constraint->aspectRatio();
                         });
                     }
 
                     if ($img->height() > $this->height) {
-                        $img->resize(null, $this->height, static function ($constraint) {
+                        $img->resize(null, $this->height, static function ($constraint): void {
                             $constraint->aspectRatio();
                         });
                     }

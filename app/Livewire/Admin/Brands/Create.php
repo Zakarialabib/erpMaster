@@ -78,7 +78,7 @@ class Create extends Component
 
         $this->alert('success', __('Brand created successfully.'));
 
-        $this->reset('name', 'description', 'slug', 'image');
+        $this->reset(['name', 'description', 'slug', 'image']);
 
         $this->createModal = false;
     }

@@ -38,7 +38,7 @@ class CustomersReport extends Component
         'end_date'   => 'required|date|after:start_date',
     ];
 
-    public function mount()
+    public function mount(): void
     {
         $this->customers = Customer::select(['id', 'name'])->get();
         $this->start_date = today()->subDays(30)->format('Y-m-d');
@@ -82,7 +82,7 @@ class CustomersReport extends Component
         ]);
     }
 
-    public function generateReport()
+    public function generateReport(): void
     {
         $this->validate();
         $this->render();

@@ -31,7 +31,7 @@ class Edit extends Component
         'note'                => 'nullable|string|max:1000',
     ];
 
-    public function editModal($id)
+    public function editModal($id): void
     {
         abort_if(Gate::denies('purchase_update'), 403);
 

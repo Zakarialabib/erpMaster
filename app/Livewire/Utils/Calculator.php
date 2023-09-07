@@ -23,7 +23,7 @@ class Calculator extends Component
         return view('livewire.utils.calculator');
     }
 
-    public function calculate()
+    public function calculate(): void
     {
         $num1 = (float) $this->number1;
         $num2 = (float) $this->number2;
@@ -41,7 +41,7 @@ class Calculator extends Component
         }
     }
 
-    public function updated($property)
+    public function updated($property): void
     {
         $this->disabled = $this->number1 === '' || $this->number2 === '';
     }

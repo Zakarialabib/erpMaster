@@ -73,7 +73,7 @@ class Settings extends Component
 
     public $sectionTemplates;
 
-    public function mount()
+    public function mount(): void
     {
         // Load section templates from the database
         $this->sectionTemplates = Section::all();
@@ -81,17 +81,17 @@ class Settings extends Component
         $this->colorOptions = [100, 200, 300, 400, 500, 600, 700, 800, 900];
     }
 
-    public function selectedColor($color)
+    public function selectedColor($color): void
     {
         $this->bg_color = $color;
     }
 
-    public function selectedBgColor($color)
+    public function selectedBgColor($color): void
     {
         $this->bg_color = $color;
     }
 
-    public function applyTemplate()
+    public function applyTemplate(): void
     {
         if ($this->selectedTemplate) {
             $template = Section::find($this->selectedTemplate);
@@ -100,7 +100,7 @@ class Settings extends Component
         }
     }
 
-    public function updateSectionOrder($newSectionOrder)
+    public function updateSectionOrder($newSectionOrder): void
     {
         // Update the section order in the database
         foreach ($newSectionOrder as $section) {
@@ -112,18 +112,18 @@ class Settings extends Component
         $this->dispatch('sectionOrderUpdated');
     }
 
-    public function create()
+    public function create(): void
     {
         $this->setting = new PageSetting();
         $this->section_order = $this->settings->max('section_order') + 1;
     }
 
-    public function edit(PageSetting $setting)
+    public function edit(PageSetting $setting): void
     {
         $this->setting = $setting;
     }
 
-    public function save()
+    public function save(): void
     {
         $this->validate();
 
@@ -138,13 +138,13 @@ class Settings extends Component
         $this->resetForm();
     }
 
-    public function delete(PageSetting $setting)
+    public function delete(PageSetting $setting): void
     {
         $setting->delete();
         $this->resetForm();
     }
 
-    private function resetForm()
+    private function resetForm(): void
     {
         $this->setting = null;
         $this->resetValidation();

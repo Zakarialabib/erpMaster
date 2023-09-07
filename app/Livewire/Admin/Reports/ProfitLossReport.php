@@ -76,12 +76,12 @@ class ProfitLossReport extends Component
         return view('livewire.admin.reports.profit-loss-report');
     }
 
-    public function generateReport()
+    public function generateReport(): void
     {
         $this->validate();
     }
 
-    public function setValues()
+    public function setValues(): void
     {
         $this->total_sales = Sale::completed()
             ->when($this->start_date, fn($query) => $query->whereDate('date', '>=', $this->start_date))
@@ -136,7 +136,7 @@ class ProfitLossReport extends Component
         $this->payments_net_amount = $this->payments_received_amount - $this->payments_sent_amount;
     }
 
-    public function calculateProfit()
+    public function calculateProfit(): int|float
     {
         $product_costs = 0;
         $revenue = $this->sales_amount - $this->sale_returns_amount;
@@ -154,7 +154,7 @@ class ProfitLossReport extends Component
         return $revenue - $product_costs;
     }
 
-    public function calculatePaymentsReceived()
+    public function calculatePaymentsReceived(): int|float
     {
         $sale_payments = SalePayment::when($this->start_date, fn($query) => $query->whereDate('date', '>=', $this->start_date))
             ->when($this->end_date, fn($query) => $query->whereDate('date', '<=', $this->end_date))
@@ -167,7 +167,7 @@ class ProfitLossReport extends Component
         return $sale_payments + $purchase_return_payments;
     }
 
-    public function calculatePaymentsSent()
+    public function calculatePaymentsSent(): int|float
     {
         $purchase_payments = PurchasePayment::when($this->start_date, fn($query) => $query->whereDate('date', '>=', $this->start_date))
             ->when($this->end_date, fn($query) => $query->whereDate('date', '<=', $this->end_date))

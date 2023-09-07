@@ -50,7 +50,7 @@ class Create extends Component
     }
 
     #[On('createModal')]
-    public function createModal()
+    public function createModal(): void
     {
         $this->resetErrorBag();
 
@@ -59,7 +59,7 @@ class Create extends Component
         $this->createModal = true;
     }
 
-    public function create()
+    public function create(): void
     {
         $this->validate();
 
@@ -77,7 +77,7 @@ class Create extends Component
 
         $this->dispatch('refreshIndex')->to(Index::class);
 
-        $this->reset('name', 'slug', 'category_id', 'language_id', 'image');
+        $this->reset(['name', 'slug', 'category_id', 'language_id', 'image']);
 
         $this->createModal = false;
     }

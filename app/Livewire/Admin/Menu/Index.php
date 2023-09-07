@@ -43,7 +43,7 @@ class Index extends Component
         'menus.*.new_window' => 'boolean',
     ];
 
-    public function mount()
+    public function mount(): void
     {
         $this->menus = Menu::orderBy('sort_order')->get()->toArray();
         $this->resetErrorBag();
@@ -62,7 +62,7 @@ class Index extends Component
         return Menu::query()->paginate($this->perPage);
     }
 
-    public function update()
+    public function update(): void
     {
         $this->validate();
 
@@ -83,7 +83,7 @@ class Index extends Component
         $this->reset(['name', 'label', 'url', 'type', 'parent_id', 'new_window']);
     }
 
-    public function store()
+    public function store(): void
     {
         $this->validate([
             'name'       => 'required',
@@ -110,7 +110,7 @@ class Index extends Component
         $this->mount();
     }
 
-    public function updateMenuOrder($ids)
+    public function updateMenuOrder($ids): void
     {
         foreach ($ids as $index => $id) {
             $menu = Menu::find($id);
@@ -176,7 +176,7 @@ class Index extends Component
         $this->alert('success', __('Predefined menus created successfully.'));
     }
 
-    public function delete(Menu $menu)
+    public function delete(Menu $menu): void
     {
         // abort_if(Gate::denies('menu_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 

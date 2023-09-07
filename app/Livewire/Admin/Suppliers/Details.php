@@ -19,7 +19,11 @@ class Details extends Component
 
     public $supplier_id;
 
+    public $warehouse_id;
+
     public $supplier;
+
+    public $purchases;
 
     public function mount($id): void
     {
@@ -57,12 +61,12 @@ class Details extends Component
     public function Debit(): float
     {
         // Step 1: Calculate total purchases revenue for completed purchases
-        $purchasesTotal = Purchase::where('customer_id', $this->customer_id)
+        $purchasesTotal = Purchase::where('supplier_id', $this->supplier_id)
             ->completed()
             ->sum('total_amount');
 
         // Step 2: Calculate total purchases returns
-        $purchaseReturnsTotal = PurchaseReturn::where('customer_id', $this->customer_id)
+        $purchaseReturnsTotal = PurchaseReturn::where('supplier_id', $this->supplier_id)
             ->completed()
             ->sum('total_amount');
 

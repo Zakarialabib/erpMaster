@@ -70,27 +70,27 @@ class PopupSettings extends Component
         ],
     ];
 
-    public function getSelectedCountProperty()
+    public function getSelectedCountProperty(): int
     {
         return count($this->selected);
     }
 
-    public function updatingSearch()
+    public function updatingSearch(): void
     {
         $this->resetPage();
     }
 
-    public function updatingPerPage()
+    public function updatingPerPage(): void
     {
         $this->resetPage();
     }
 
-    public function resetSelected()
+    public function resetSelected(): void
     {
         $this->selected = [];
     }
 
-    public function setDefault($id)
+    public function setDefault($id): void
     {
         Popup::where('is_default', '=', true)->update(['is_default' => false]);
 
@@ -101,13 +101,13 @@ class PopupSettings extends Component
         $this->popup->save();
     }
 
-    public function popupModal($popup = null)
+    public function popupModal($popup = null): void
     {
         $this->popup = $popup;
         $this->popupModal = true;
     }
 
-    public function create()
+    public function create(): void
     {
         try {
             // save new popup
@@ -133,7 +133,7 @@ class PopupSettings extends Component
         }
     }
 
-    public function update($popup)
+    public function update($popup): void
     {
         $this->popup = Popup::find($popup->id); // retrieve the popup setting from the database
 

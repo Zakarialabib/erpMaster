@@ -24,12 +24,12 @@ class Index extends Component
 
     public $showModal = false;
 
-    public function confirmed()
+    public function confirmed(): void
     {
         $this->dispatch('delete');
     }
 
-    public function mount()
+    public function mount(): void
     {
         $this->orderable = (new Partner())->orderable;
     }
@@ -50,7 +50,7 @@ class Index extends Component
     }
 
     #[On('showModal')]
-    public function showModal(Partner $partner)
+    public function showModal(Partner $partner): void
     {
         // abort_if(Gate::denies('partner_show'), 403);
 
@@ -63,7 +63,7 @@ class Index extends Component
         $this->showModal = true;
     }
 
-    public function deleteModal($partner)
+    public function deleteModal($partner): void
     {
         $this->confirm(__('Are you sure you want to delete this?'), [
             'toast'             => false,
@@ -75,7 +75,7 @@ class Index extends Component
         $this->partner = $partner;
     }
 
-    public function deleteSelected()
+    public function deleteSelected(): void
     {
         abort_if(Gate::denies('partner_delete'), 403);
 
@@ -87,7 +87,7 @@ class Index extends Component
     }
 
     #[On('delete')]
-    public function delete()
+    public function delete(): void
     {
         abort_if(Gate::denies('partner_delete'), 403);
 

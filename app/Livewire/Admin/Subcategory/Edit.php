@@ -42,7 +42,7 @@ class Edit extends Component
     public $image;
 
     #[On('editModal')]
-    public function editModal($id)
+    public function editModal($id): void
     {
         abort_if(Gate::denies('subcategory update'), 403);
 
@@ -61,7 +61,7 @@ class Edit extends Component
         $this->editModal = true;
     }
 
-    public function update()
+    public function update(): void
     {
         $this->validate();
 

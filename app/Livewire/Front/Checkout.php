@@ -68,7 +68,7 @@ class Checkout extends Component
 
     public $productId;
 
-    public function confirmed()
+    public function confirmed(): void
     {
         Cart::instance('shopping')->remove($this->productId);
         $this->dispatch('cartCountUpdated');
@@ -160,7 +160,7 @@ class Checkout extends Component
         return redirect()->route('front.thankyou', ['order' => $order->id]);
     }
 
-    public function updateCartTotal()
+    public function updateCartTotal(): void
     {
         if ($this->shipping_id) {
             $shipping = Shipping::find($this->shipping_id);
@@ -171,7 +171,7 @@ class Checkout extends Component
         }
     }
 
-    public function decreaseQuantity($rowId)
+    public function decreaseQuantity($rowId): void
     {
         $cartItem = Cart::instance('shopping')->get($rowId);
         $qty = $cartItem->qty - 1;
@@ -179,7 +179,7 @@ class Checkout extends Component
         $this->dispatch('checkoutCartUpdated');
     }
 
-    public function increaseQuantity($rowId)
+    public function increaseQuantity($rowId): void
     {
         $cartItem = Cart::instance('shopping')->get($rowId);
         $qty = $cartItem->qty + 1;
@@ -187,7 +187,7 @@ class Checkout extends Component
         $this->dispatch('checkoutCartUpdated');
     }
 
-    public function removeFromCart($rowId)
+    public function removeFromCart($rowId): void
     {
         $this->productId = $rowId;
 

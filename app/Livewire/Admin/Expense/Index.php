@@ -46,7 +46,7 @@ class Index extends Component
         $this->endDate = now()->endOfDay()->format('Y-m-d');
     }
 
-    public function filterByType($type)
+    public function filterByType($type): void
     {
         switch ($type) {
             case 'day':

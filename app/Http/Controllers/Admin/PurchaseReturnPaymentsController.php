@@ -45,7 +45,7 @@ class PurchaseReturnPaymentsController extends Controller
             'payment_method'     => 'required|string|max:255',
         ]);
 
-        DB::transaction(static function () use ($request) {
+        DB::transaction(static function () use ($request): void {
             PurchaseReturnPayment::create([
                 'date'               => $request->date,
                 'reference'          => $request->reference,
@@ -63,6 +63,7 @@ class PurchaseReturnPaymentsController extends Controller
             } else {
                 $payment_status = PaymentStatus::PAID;
             }
+
             $purchase_return->update([
                 'paid_amount'    => ($purchase_return->paid_amount + $request->amount) * 100,
                 'due_amount'     => $due_amount * 100,
@@ -97,7 +98,7 @@ class PurchaseReturnPaymentsController extends Controller
             'payment_method'     => 'required|string|max:255',
         ]);
 
-        DB::transaction(static function () use ($request, $purchaseReturnPayment) {
+        DB::transaction(static function () use ($request, $purchaseReturnPayment): void {
             $purchase_return = $purchaseReturnPayment->purchaseReturn;
             $due_amount = $purchase_return->due_amount + $purchaseReturnPayment->amount - $request->amount;
             if ($due_amount === $purchase_return->total_amount) {
@@ -107,6 +108,7 @@ class PurchaseReturnPaymentsController extends Controller
             } else {
                 $payment_status = PaymentStatus::PAID;
             }
+
             $purchase_return->update([
                 'paid_amount'    => ($purchase_return->paid_amount - $purchaseReturnPayment->amount + $request->amount) * 100,
                 'due_amount'     => $due_amount * 100,

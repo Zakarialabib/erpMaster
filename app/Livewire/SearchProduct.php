@@ -36,12 +36,12 @@ class SearchProduct extends Component
         'showCount'   => ['except' => 9],
     ];
 
-    public function loadMore()
+    public function loadMore(): void
     {
         $this->showCount += 5;
     }
 
-    public function selectProduct($product)
+    public function selectProduct($product): void
     {
         if ($this->warehouse_id !== null) {
             $this->dispatch('productSelected', $product);
@@ -51,7 +51,7 @@ class SearchProduct extends Component
     }
 
     #[On('warehouseSelected')]
-    public function updatedWarehouseId($value)
+    public function updatedWarehouseId($value): void
     {
         $this->warehouse_id = $value;
         $this->resetPage();
@@ -62,7 +62,7 @@ class SearchProduct extends Component
         return Category::pluck('name', 'id');
     }
 
-    public function mount($warehouse_id = null)
+    public function mount($warehouse_id = null): void
     {
         if ($warehouse_id) {
             $this->warehouse_id = $warehouse_id;
@@ -73,24 +73,24 @@ class SearchProduct extends Component
 
     public function render()
     {
-        $query = Product::with(['warehouses' => static function ($query) {
+        $query = Product::with(['warehouses' => static function ($query): void {
             $query->withPivot('qty', 'price', 'cost');
         }, 'category'])
-            ->when($this->query, function ($query) {
-                $query->where(function ($query) {
+            ->when($this->query, function ($query): void {
+                $query->where(function ($query): void {
                     $query->where('name', 'like', '%'.$this->query.'%')
                         ->orWhere('code', 'like', '%'.$this->query.'%');
                 });
             })
-            ->when($this->category_id, function ($query) {
+            ->when($this->category_id, function ($query): void {
                 $query->where('category_id', $this->category_id);
             })
-            ->when($this->warehouse_id, function ($query) {
-                $query->whereHas('warehouses', function ($q) {
+            ->when($this->warehouse_id, function ($query): void {
+                $query->whereHas('warehouses', function ($q): void {
                     $q->where('warehouse_id', $this->warehouse_id);
                 });
             })
-            ->when($this->featured, static function ($query) {
+            ->when($this->featured, static function ($query): void {
                 $query->where('featured', true);
             });
 
@@ -102,13 +102,13 @@ class SearchProduct extends Component
     }
 
     // Reset query, category, and featured
-    public function resetQuery()
+    public function resetQuery(): void
     {
         // Reset query, category, and featured
         $this->reset(['query', 'category_id', 'featured', 'warehouse_id']);
     }
 
-    public function updatedQuery()
+    public function updatedQuery(): void
     {
         if ( ! empty($this->search_results)) {
             $this->product = $this->search_results[0];

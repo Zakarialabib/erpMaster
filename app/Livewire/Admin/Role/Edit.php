@@ -21,7 +21,7 @@ class Edit extends Component
 
     public array $listsForFields = [];
 
-    public function mount(Role $role)
+    public function mount(Role $role): void
     {
         $this->role = $role;
         $this->permissions = $this->role->permissions->pluck('id')->toArray();

@@ -34,20 +34,20 @@ class Edit extends Component
     #[Rule('required|numeric')]
     public $phone;
 
-    #[Rule('nullable')]
+    #[Rule('nullable|string')]
     public $city;
 
-    #[Rule('nullable')]
+    #[Rule('nullable|string')]
     public $country;
 
-    #[Rule('nullable')]
+    #[Rule('nullable|string')]
     public $address;
 
     #[Rule('nullable')]
     public $tax_number;
 
     #[On('editModal')]
-    public function editModal($id)
+    public function editModal($id): void
     {
         abort_if(Gate::denies('user edit'), 403);
 
@@ -78,7 +78,7 @@ class Edit extends Component
         $this->editModal = true;
     }
 
-    public function update()
+    public function update(): void
     {
         $this->validate();
 

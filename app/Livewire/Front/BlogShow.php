@@ -15,7 +15,7 @@ class BlogShow extends Component
 {
     public $blog;
 
-    public function mount($slug)
+    public function mount($slug): void
     {
         $this->blog = Blog::where('slug', $slug)->firstOrFail();
     }

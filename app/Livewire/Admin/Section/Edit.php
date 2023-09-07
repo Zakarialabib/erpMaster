@@ -41,7 +41,7 @@ class Edit extends Component
 
     public string $text_color;
 
-    public string $page_id;
+    public int $page_id;
 
     public string $position;
 
@@ -57,7 +57,7 @@ class Edit extends Component
     ];
 
     #[On('editModal')]
-    public function editModal($id)
+    public function editModal($id): void
     {
         $this->resetErrorBag();
 
@@ -84,7 +84,7 @@ class Edit extends Component
         $this->editModal = true;
     }
 
-    public function update()
+    public function update(): void
     {
         $this->validate();
 

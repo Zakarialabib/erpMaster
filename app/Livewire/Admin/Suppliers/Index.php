@@ -58,7 +58,7 @@ class Index extends Component
         return view('livewire.admin.suppliers.index', ['suppliers' => $suppliers]);
     }
 
-    public function showModal($id)
+    public function showModal($id): void
     {
         abort_if(Gate::denies('supplier_show'), 403);
 
@@ -71,7 +71,7 @@ class Index extends Component
         $this->showModal = true;
     }
 
-    public function delete(Supplier $supplier)
+    public function delete(Supplier $supplier): void
     {
         abort_if(Gate::denies('supplier_delete'), 403);
 
@@ -80,7 +80,7 @@ class Index extends Component
         $this->alert('warning', __('Supplier Deleted Successfully'));
     }
 
-    public function deleteSelected()
+    public function deleteSelected(): void
     {
         abort_if(Gate::denies('supplier_delete'), 403);
 
@@ -89,7 +89,7 @@ class Index extends Component
         $this->selected = [];
     }
 
-    public function importModal()
+    public function importModal(): void
     {
         abort_if(Gate::denies('supplier_import'), 403);
 
@@ -101,7 +101,7 @@ class Index extends Component
         return Storage::disk('exports')->download('suppliers_import_sample.xls');
     }
 
-    public function import()
+    public function import(): void
     {
         abort_if(Gate::denies('supplier import'), 403);
 

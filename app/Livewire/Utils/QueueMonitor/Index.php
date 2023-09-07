@@ -42,7 +42,7 @@ class Index extends Component
 
     public $averageExecutionTime;
 
-    public function mount()
+    public function mount(): void
     {
         $aggregationColumns = [
             DB::raw('COUNT(*) as count'),
@@ -59,7 +59,7 @@ class Index extends Component
         $this->averageExecutionTime = ceil((float) $this->aggregatedInfo->average_time_elapsed).'s' ?? 0;
     }
 
-    public function delete()
+    public function delete(): void
     {
         $this->model->delete();
 
