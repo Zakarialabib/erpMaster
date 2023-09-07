@@ -70,6 +70,6 @@ class Index extends Component
 
         $blogs = $query->paginate($this->perPage);
 
-        return view('livewire.admin.blog.index', compact('blogs'));
+        return view('livewire.admin.blog.index', ['blogs' => $blogs]);
     }
 }

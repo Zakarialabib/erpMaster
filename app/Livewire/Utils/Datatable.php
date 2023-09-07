@@ -25,7 +25,9 @@ trait Datatable
     public array $paginationOptions;
 
     public bool $selectPage = false;
+
     public string $sortBy = '';
+
     public string $sortDirection = '';
 
     public function mountDatatable(): void

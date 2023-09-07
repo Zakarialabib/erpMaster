@@ -24,7 +24,7 @@ class Create extends Component
 
     #[Rule('nullable')]
 
-    public ?string $description;
+    public ?string $description = null;
 
     protected $messages = [
         'expenseCategory.name.required' => 'The name field cannot be empty.',

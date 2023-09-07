@@ -35,6 +35,6 @@ class Index extends Component
 
         $orders = $query->paginate($this->perPage);
 
-        return view('livewire.admin.order.index', compact('orders'));
+        return view('livewire.admin.order.index', ['orders' => $orders]);
     }
 }

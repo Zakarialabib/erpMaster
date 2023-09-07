@@ -24,7 +24,7 @@ class Edit extends Component
     public string $name;
 
     #[Rule('nullable')]
-    public ?string $description;
+    public ?string $description = null;
 
     public function render()
     {

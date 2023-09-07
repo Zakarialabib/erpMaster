@@ -24,9 +24,9 @@ class Image extends Component
 
     public $image;
 
-    public $image_url = null;
+    public $image_url;
 
-    public $embeded_video = null;
+    public $embeded_video;
 
     public $gallery = [];
 
@@ -72,13 +72,13 @@ class Image extends Component
 
                 // we need to resize image, otherwise it will be cropped
                 if ($img->width() > $this->width) {
-                    $img->resize($this->width, null, function ($constraint) {
+                    $img->resize($this->width, null, static function ($constraint) {
                         $constraint->aspectRatio();
                     });
                 }
 
                 if ($img->height() > $this->height) {
-                    $img->resize(null, $this->height, function ($constraint) {
+                    $img->resize(null, $this->height, static function ($constraint) {
                         $constraint->aspectRatio();
                     });
                 }
@@ -104,13 +104,13 @@ class Image extends Component
 
                     // we need to resize image, otherwise it will be cropped
                     if ($img->width() > $this->width) {
-                        $img->resize($this->width, null, function ($constraint) {
+                        $img->resize($this->width, null, static function ($constraint) {
                             $constraint->aspectRatio();
                         });
                     }
 
                     if ($img->height() > $this->height) {
-                        $img->resize(null, $this->height, function ($constraint) {
+                        $img->resize(null, $this->height, static function ($constraint) {
                             $constraint->aspectRatio();
                         });
                     }
@@ -122,7 +122,7 @@ class Image extends Component
                     $gallery[] = $imageName;
                 }
 
-                $this->product->gallery = json_encode($gallery);
+                $this->product->gallery = json_encode($gallery, JSON_THROW_ON_ERROR);
             }
 
             $this->product->save();
@@ -130,7 +130,7 @@ class Image extends Component
             $this->alert('success', __('Product image updated successfully.'));
 
             $this->imageModal = false;
-        } catch (Exception $e) {
+        } catch (Exception) {
             $this->alert('warning', __('Product image was not updated.'));
         }
     }

@@ -28,6 +28,7 @@ class Edit extends Component
 
     #[Rule('nullable')]
     public string $description;
+
     #[Rule('nullable')]
     public string $slug;
 

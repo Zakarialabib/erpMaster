@@ -73,7 +73,7 @@ class SearchProduct extends Component
 
     public function render()
     {
-        $query = Product::with(['warehouses' => function ($query) {
+        $query = Product::with(['warehouses' => static function ($query) {
             $query->withPivot('qty', 'price', 'cost');
         }, 'category'])
             ->when($this->query, function ($query) {
@@ -90,7 +90,7 @@ class SearchProduct extends Component
                     $q->where('warehouse_id', $this->warehouse_id);
                 });
             })
-            ->when($this->featured, function ($query) {
+            ->when($this->featured, static function ($query) {
                 $query->where('featured', true);
             });
 

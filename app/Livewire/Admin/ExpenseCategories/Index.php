@@ -45,7 +45,7 @@ class Index extends Component
 
         $expenseCategories = $query->paginate($this->perPage);
 
-        return view('livewire.admin.expense-categories.index', compact('expenseCategories'));
+        return view('livewire.admin.expense-categories.index', ['expenseCategories' => $expenseCategories]);
     }
 
     public function showModal($id): void

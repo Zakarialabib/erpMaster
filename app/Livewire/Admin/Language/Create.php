@@ -18,8 +18,10 @@ class Create extends Component
     public array $languages = [];
 
     public $language;
+
     #[Rule('required|max:191')]
     public $name;
+
     #[Rule('required')]
     public $code;
 

@@ -40,23 +40,19 @@ class SubcategoryPage extends Component
 
     public function filterProducts($type, $value)
     {
-        switch ($type) {
-            case 'brand':
-                $this->brand_id = $value;
-
-                break;
+        if ($type === 'brand') {
+            $this->brand_id = $value;
         }
+
         $this->resetPage();
     }
 
     public function clearFilter($filter)
     {
-        switch ($filter) {
-            case 'brand':
-                $this->brand_id = null;
-
-                break;
+        if ($filter === 'brand') {
+            $this->brand_id = null;
         }
+
         $this->resetPage();
     }
 
@@ -83,9 +79,7 @@ class SubcategoryPage extends Component
     {
         $query = \App\Helpers::getEcommerceProducts()
             ->where('subcategories', 'like', '%"'.$this->subcategory->id.'"%')
-            ->when($this->brand_id, function ($query) {
-                return $query->where('brand_id', $this->brand_id);
-            });
+            ->when($this->brand_id, fn($query) => $query->where('brand_id', $this->brand_id));
 
         if ($this->sorting === 'name') {
             $query->orderBy('name', 'asc');

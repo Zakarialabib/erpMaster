@@ -27,6 +27,7 @@ class Index extends Component
     ];
 
     public $startDate;
+
     public $endDate;
 
     /** @var array */
@@ -83,7 +84,7 @@ class Index extends Component
 
         $purchases = $query->paginate($this->perPage);
 
-        return view('livewire.admin.purchase.index', compact('purchases'));
+        return view('livewire.admin.purchase.index', ['purchases' => $purchases]);
     }
 
     public function deleteSelected(): void

@@ -12,6 +12,7 @@ use Livewire\Component;
 class Show extends Component
 {
     public $purchasereturn;
+
     public $showModal = false;
 
     #[On('showModal')]

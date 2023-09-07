@@ -20,11 +20,9 @@ class ExportController extends Controller
     /**
      * Return a response with the PDF to show in the browser
      *
-     * @param mixed $id
      *
-     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function salePos($id): Response
+    public function salePos(mixed $id): Response
     {
         $sale = Sale::where('id', $id)->firstOrFail();
 

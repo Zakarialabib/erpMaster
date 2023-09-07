@@ -21,16 +21,25 @@ class Create extends Component
     public Section $section;
 
     public $image;
+
     public $page_id;
+
     public $title;
+
     public $featured_title;
+
     public $subtitle;
+
     public $description;
 
     public $label;
+
     public $link;
+
     public $bg_color;
+
     public $text_color;
+
     public $embeded_video;
 
     public $createModal = false;

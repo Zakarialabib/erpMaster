@@ -46,7 +46,7 @@ class Recent extends Component
 
         $sales = $query->paginate($this->perPage);
 
-        return view('livewire.admin.sales.recent', compact('sales'));
+        return view('livewire.admin.sales.recent', ['sales' => $sales]);
     }
 
     public function showModal($id)

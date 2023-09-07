@@ -43,10 +43,6 @@ class Calculator extends Component
 
     public function updated($property)
     {
-        if ($this->number1 === '' || $this->number2 === '') {
-            $this->disabled = true;
-        } else {
-            $this->disabled = false;
-        }
+        $this->disabled = $this->number1 === '' || $this->number2 === '';
     }
 }

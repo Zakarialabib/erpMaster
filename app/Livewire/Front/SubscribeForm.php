@@ -21,6 +21,7 @@ class SubscribeForm extends Component
     public $name;
 
     public $phone;
+
     public $email;
 
     public $type;

@@ -18,15 +18,21 @@ class Catalog extends Component
     use WithModels;
 
     public $maxPrice;
+
     public $minPrice;
+
     public $category_id;
 
     public $subcategory_id;
 
     public $brand_id;
+
     public int $perPage = 25;
+
     public $sorting;
+
     public $sortingOptions;
+
     public $paginationOptions;
 
     public $selectedFilters = [];
@@ -56,6 +62,7 @@ class Catalog extends Component
 
                 break;
         }
+
         $this->resetPage();
     }
 
@@ -78,6 +85,7 @@ class Catalog extends Component
 
                 break;
         }
+
         $this->resetPage();
     }
 
@@ -98,21 +106,11 @@ class Catalog extends Component
     public function render(): View|Factory
     {
         $query = \App\Helpers::getEcommerceProducts()
-            ->when($this->minPrice, function ($query) {
-                return $query->where('price', '>=', $this->minPrice);
-            })
-            ->when($this->maxPrice, function ($query) {
-                return $query->where('price', '<=', $this->maxPrice);
-            })
-            ->when($this->category_id, function ($query) {
-                return $query->where('category_id', $this->category_id);
-            })
-            ->when($this->subcategory_id, function ($query) {
-                return $query->whereIn('subcategories', $this->subcategory_id);
-            })
-            ->when($this->brand_id, function ($query) {
-                return $query->where('brand_id', $this->brand_id);
-            });
+            ->when($this->minPrice, fn($query) => $query->where('price', '>=', $this->minPrice))
+            ->when($this->maxPrice, fn($query) => $query->where('price', '<=', $this->maxPrice))
+            ->when($this->category_id, fn($query) => $query->where('category_id', $this->category_id))
+            ->when($this->subcategory_id, fn($query) => $query->whereIn('subcategories', $this->subcategory_id))
+            ->when($this->brand_id, fn($query) => $query->where('brand_id', $this->brand_id));
 
         if ($this->sorting === 'name') {
             $products = $query->orderBy('name', 'asc')->paginate($this->perPage);
@@ -130,6 +128,6 @@ class Catalog extends Component
             $products = $query->paginate($this->perPage);
         }
 
-        return view('livewire.front.catalog', compact('products'));
+        return view('livewire.front.catalog', ['products' => $products]);
     }
 }

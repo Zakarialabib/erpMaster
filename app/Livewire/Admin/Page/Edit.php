@@ -21,23 +21,35 @@ class Edit extends Component
     use WithFileUploads;
 
     public $page;
+
     public $image;
+
     #[Rule('required|min:3|max:255')]
     public $title;
+
     #[Rule('required|min:3|max:255')]
     public $slug;
+
     public $description;
+
     #[Rule('nullable')]
     public $meta_title;
+
     #[Rule('nullable')]
     public $meta_description;
 
     public $is_sliders;
+
     public $is_contact;
+
     public $is_offer;
+
     public $is_title;
+
     public $is_description;
+
     public $type;
+
     public $status;
 
     #[On('editorjs-save')]

@@ -16,14 +16,23 @@ class Messaging extends Component
     use LivewireAlert;
 
     public $botToken;
+
     public $chatId;
+
     public $message;
+
     public $type;
+
     public $sale_id;
+
     public $product_id;
+
     public $selectedProduct;
+
     public $openTemplate;
+
     public $openProductModal;
+
     public $openClientModal;
 
     protected $rules = [
@@ -98,7 +107,7 @@ class Messaging extends Component
             return;
         }
 
-        $message = "Due Amount for Sale {$sale->id}: ".format_currency($sale->due_amount);
+        $message = sprintf('Due Amount for Sale %s: ', $sale->id).format_currency($sale->due_amount);
 
         $this->chatId = settings('telegram_channel'); // Use your Telegram channel chat ID here
         $this->message = $message;
@@ -132,6 +141,7 @@ class Messaging extends Component
 
             return;
         }
+
         $this->message .= ' '.$product->name.' : '.format_currency($product->price);
         $this->openProductModal = false;
     }
@@ -145,6 +155,7 @@ class Messaging extends Component
 
             return;
         }
+
         $this->message .= ' '.$sale->id.' : '.format_currency($sale->due_amount);
         $this->openProductModal = false;
     }
@@ -157,8 +168,8 @@ class Messaging extends Component
         $phone = $customer->phone;
 
         // Delete the leading zero from the phone number, if it exists.
-        if (strpos($phone, '0') === 0) {
-            $phone = substr($phone, 1);
+        if (str_starts_with((string) $phone, '0')) {
+            $phone = substr((string) $phone, 1);
         }
 
         $this->chatId = $phone;
@@ -168,15 +179,15 @@ class Messaging extends Component
 
     public function sendMessage()
     {
-        $message = urlencode($this->message);
+        $message = urlencode((string) $this->message);
 
         // Construct the WhatsApp API endpoint URL or the Telegram API endpoint URL
         if ($this->type == 'whatsapp') {
-            $url = "https://web.whatsapp.com/send/?phone={$this->chatId}&text={$message}";
+            $url = sprintf('https://web.whatsapp.com/send/?phone=%s&text=%s', $this->chatId, $message);
             // emit url to the view in order to open the link in a new tab
             $this->dispatch('openUrl', $url);
         } elseif ($this->type == 'telegram') {
-            $url = "https://api.telegram.org/bot{$this->botToken}/sendMessage?chat_id={$this->chatId}&text={$message}";
+            $url = sprintf('https://api.telegram.org/bot%s/sendMessage?chat_id=%s&text=%s', $this->botToken, $this->chatId, $message);
 
             $response = Http::post($url);
 

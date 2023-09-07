@@ -62,7 +62,7 @@ class Index extends Component
 
         $featuredbanners = $query->paginate($this->perPage);
 
-        return view('livewire.admin.featured-banner.index', compact('featuredbanners'));
+        return view('livewire.admin.featured-banner.index', ['featuredbanners' => $featuredbanners]);
     }
 
     public function setFeatured($id)

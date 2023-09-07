@@ -17,13 +17,17 @@ class Template extends Component
     use WithFileUploads;
 
     public $templates = [];
+
     public $selectedTemplate = [];
-    public $createTemplate = null;
+
+    public $createModal;
+
     public $pages = [];
+
     public $selectTemplate;
 
     public $listeners = [
-        'createTemplate',
+        'createModal',
     ];
 
     public function mount()
@@ -31,13 +35,13 @@ class Template extends Component
         $this->templates = config('templates');
     }
 
-    public function createTemplate()
+    public function createModal()
     {
         $this->resetErrorBag();
 
         $this->resetValidation();
 
-        $this->createTemplate = true;
+        $this->createModal = true;
     }
 
     public function updatedSelectTemplate()
@@ -63,10 +67,10 @@ class Template extends Component
 
             $this->dispatch('refreshIndex')->to(Index::class);
 
-            $this->createTemplate = false;
+            $this->createModal = false;
 
             $this->alert('success', __('Page created successfully!'));
-        } catch (Throwable $th) {
+        } catch (Throwable) {
             $this->alert('warning', __('Page Was not created!'));
         }
     }

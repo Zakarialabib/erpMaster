@@ -18,9 +18,13 @@ class DynamicPage extends Component
 {
     use LazySpinner;
     public Page $page;
+
     public $section;
+
     public string $description;
+
     public string $type;
+
     public int $is_sliders;
 
     public function mount(?string $slug = 'home')

@@ -48,7 +48,7 @@ class Index extends Component
 
         $warehouses = $query->paginate($this->perPage);
 
-        return view('livewire.admin.warehouses.index', compact('warehouses'));
+        return view('livewire.admin.warehouses.index', ['warehouses' => $warehouses]);
     }
 
     #[On('showModal')]

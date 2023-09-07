@@ -45,15 +45,9 @@ class PaymentsReport extends Component
 
         return view('livewire.admin.reports.payments-report', [
             'information' => $this->query ? $this->query->orderBy('date', 'desc')
-                ->when($this->start_date, function ($query) {
-                    return $query->whereDate('date', '>=', $this->start_date);
-                })
-                ->when($this->end_date, function ($query) {
-                    return $query->whereDate('date', '<=', $this->end_date);
-                })
-                ->when($this->payment_method, function ($query) {
-                    return $query->where('payment_method', $this->payment_method);
-                })
+                ->when($this->start_date, fn($query) => $query->whereDate('date', '>=', $this->start_date))
+                ->when($this->end_date, fn($query) => $query->whereDate('date', '<=', $this->end_date))
+                ->when($this->payment_method, fn($query) => $query->where('payment_method', $this->payment_method))
                 ->paginate(10) : collect(),
         ]);
     }

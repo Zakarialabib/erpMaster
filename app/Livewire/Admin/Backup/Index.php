@@ -21,11 +21,17 @@ class Index extends Component
     public $data = [];
 
     public $backup_status;
+
     public $backup_schedule;
+
     public $backup_include;
+
     public $clientId;
+
     public $clientSecret;
+
     public $refreshToken;
+
     public $folderId;
 
     public $settingsModal = false;
@@ -83,8 +89,8 @@ class Index extends Component
             $drive->put($latestBackup, Storage::get($latestBackup));
 
             $this->alert('success', __('Backup generated and saved to Google Drive.'));
-        } catch (Throwable $th) {
-            $this->alert('danger', __('Backup failed: '.$th->getMessage()));
+        } catch (Throwable $throwable) {
+            $this->alert('danger', __('Backup failed: '.$throwable->getMessage()));
         }
     }
 
@@ -106,8 +112,8 @@ class Index extends Component
             $this->alert('success', __('Settings backuped saved.'));
 
             $this->settingsModal = false;
-        } catch (Throwable $th) {
-            $this->alert('success', __('Failed.'.$th->getMessage()));
+        } catch (Throwable $throwable) {
+            $this->alert('success', __('Failed.'.$throwable->getMessage()));
         }
     }
 
@@ -116,7 +122,7 @@ class Index extends Component
         try {
             Artisan::call('backup:run --only-db');
             $this->alert('success', __('Backup Generated with success.'));
-        } catch (Throwable $th) {
+        } catch (Throwable) {
             $this->alert('success', __('Database backup failed.'));
         }
     }
@@ -129,7 +135,7 @@ class Index extends Component
     public function delete($name)
     {
         foreach (glob(storage_path().'/app/*') as $filename) {
-            $path = storage_path().'/app/'.basename($name);
+            $path = storage_path().'/app/'.basename((string) $name);
 
             if (file_exists($path)) {
                 @unlink($path);

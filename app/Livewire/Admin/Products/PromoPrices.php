@@ -12,7 +12,9 @@ use Livewire\Component;
 class PromoPrices extends Component
 {
     public $percentage;
+
     public $copyPriceToOldPrice;
+
     public $promoModal = false;
 
     protected $listeners = [
@@ -34,7 +36,7 @@ class PromoPrices extends Component
             if ($this->copyPriceToOldPrice) {
                 $warehouse->old_price = $warehouse->price;
             } else {
-                $warehouse->price = $warehouse->price * (1 - $this->percentage / 100);
+                $warehouse->price *= 1 - $this->percentage / 100;
                 $warehouse->save();
             }
         }

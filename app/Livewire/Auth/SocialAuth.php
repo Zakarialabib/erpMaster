@@ -43,16 +43,10 @@ class SocialAuth extends Component
 
         Auth::login($user, true);
 
-        switch (true) {
-            case $user->hasRole('admin'):
-                $homePage = RouteServiceProvider::ADMIN_HOME;
-
-                break;
-            default:
-                $homePage = RouteServiceProvider::HOME;
-
-                break;
-        }
+        $homePage = match (true) {
+            $user->hasRole('admin') => RouteServiceProvider::ADMIN_HOME,
+            default => RouteServiceProvider::HOME,
+        };
 
         return redirect()->intended($homePage);
     }

@@ -27,8 +27,10 @@ class Create extends Component
 
     #[Rule('nullable')]
     public string $description;
+
     #[Rule('nullable')]
     public string $slug;
+
     public $image;
 
     #[On('createModal')]

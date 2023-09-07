@@ -20,10 +20,13 @@ class Create extends Component
     public Shipping $shipping;
 
     public bool $is_pickup = false;
+
     #[Rule('required|max:255')]
     public string $title;
+
     #[Rule('nullable|max:255')]
     public string $subtitle;
+
     #[Rule('required|numeric')]
     public $cost;
 

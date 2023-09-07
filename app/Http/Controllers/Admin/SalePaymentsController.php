@@ -16,6 +16,6 @@ class SalePaymentsController extends Controller
 
         $sale = Sale::findOrFail($sale_id);
 
-        return view('admin.sale.payments.index', compact('sale'));
+        return view('admin.sale.payments.index', ['sale' => $sale]);
     }
 }

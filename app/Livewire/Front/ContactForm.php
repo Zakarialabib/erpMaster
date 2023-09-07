@@ -18,8 +18,11 @@ class ContactForm extends Component
     public Contact $contact;
 
     public $name;
+
     public $email;
+
     public $phone_number;
+
     public $message;
 
     protected $rules = [

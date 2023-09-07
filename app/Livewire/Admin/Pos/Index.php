@@ -122,6 +122,7 @@ class Index extends Component
         if ($this->payment_method === 'cash') {
             $this->paid_amount = $this->total_amount;
         }
+
         $this->total_amount = $this->calculateTotal();
     }
 
@@ -208,7 +209,7 @@ class Index extends Component
                     'quantity'     => $cart_item->qty,
                     'price'        => $cart_item->price * 100,
                     'date'         => date('Y-m-d'),
-                    'movable_type' => get_class($product),
+                    'movable_type' => $product::class,
                     'movable_id'   => $product->id,
                     'user_id'      => Auth::user()->id,
                 ]);

@@ -17,23 +17,32 @@ class Edit extends Component
     use LivewireAlert;
 
     public $editModal = false;
+
     public $selectedWarehouses = [];
 
     public $user;
+
     #[Rule('required|string|max:255')]
     public $name;
+
     #[Rule('required|email|unique:users,email')]
     public $email;
+
     #[Rule('required|string|min:8')]
     public $password;
+
     #[Rule('required|numeric')]
     public $phone;
+
     #[Rule('nullable')]
     public $city;
+
     #[Rule('nullable')]
     public $country;
+
     #[Rule('nullable')]
     public $address;
+
     #[Rule('nullable')]
     public $tax_number;
 

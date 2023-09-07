@@ -83,7 +83,7 @@ class Edit extends Component
 
         $this->dispatch('refreshIndex')->to(Index::class);
 
-        $this->reset('name', 'slug', 'category_id', 'language_id', 'image');
+        $this->reset(['name', 'slug', 'category_id', 'language_id', 'image']);
 
         $this->editModal = false;
     }

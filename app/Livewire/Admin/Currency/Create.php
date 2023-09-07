@@ -64,8 +64,8 @@ class Create extends Component
             $this->dispatch('refreshIndex')->to(Index::class);
 
             $this->createModal = false;
-        } catch (Throwable $th) {
-            $this->alert('success', __('Error.').$th->getMessage());
+        } catch (Throwable $throwable) {
+            $this->alert('success', __('Error.').$throwable->getMessage());
         }
     }
 }

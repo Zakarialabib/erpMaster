@@ -47,7 +47,7 @@ class Index extends Component
 
         $salepayments = $query->paginate($this->perPage);
 
-        return view('livewire.admin.sales.payment.index', compact('salepayments'));
+        return view('livewire.admin.sales.payment.index', ['salepayments' => $salepayments]);
     }
 
     public function showPayments($sale_id)

@@ -16,9 +16,13 @@ class Livesearch extends Component
     public $query = '';
 
     public $product;
+
     public $customer;
+
     public $supplier;
+
     public $sale;
+
     public $purchase;
 
     protected $queryString = [

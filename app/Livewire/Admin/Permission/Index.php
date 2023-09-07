@@ -45,7 +45,7 @@ class Index extends Component
 
         $permissions = $query->paginate($this->perPage);
 
-        return view('livewire.admin.permission.index', compact('permissions'));
+        return view('livewire.admin.permission.index', ['permissions' => $permissions]);
     }
 
     #[On('createModal')]
@@ -100,8 +100,8 @@ class Index extends Component
             $this->dispatch('refreshIndex')->to(Index::class);
 
             $this->editModal = false;
-        } catch (Exception $e) {
-            $this->alert('error', 'Something goes wrong while updating permission!!'.$e->getMessage());
+        } catch (Exception $exception) {
+            $this->alert('error', 'Something goes wrong while updating permission!!'.$exception->getMessage());
         }
     }
 

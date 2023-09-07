@@ -39,9 +39,8 @@ class SalesReturnController extends Controller
     // use livewire --------->
     public function store(StoreSaleReturnRequest $request)
     {
-        DB::transaction(function () use ($request) {
+        DB::transaction(static function () use ($request) {
             $due_amount = $request->total_amount - $request->paid_amount;
-
             if ($due_amount === $request->total_amount) {
                 $payment_status = PaymentStatus::DUE;
             } elseif ($due_amount > 0) {
@@ -49,7 +48,6 @@ class SalesReturnController extends Controller
             } else {
                 $payment_status = PaymentStatus::PAID;
             }
-
             $sale_return = SaleReturn::create([
                 'date'                => $request->date,
                 'customer_id'         => $request->customer_id,
@@ -67,7 +65,6 @@ class SalesReturnController extends Controller
                 'tax_amount'          => Cart::instance('sale_return')->tax() * 100,
                 'discount_amount'     => Cart::instance('sale_return')->discount() * 100,
             ]);
-
             foreach (Cart::instance('sale_return')->content() as $cart_item) {
                 SaleReturnDetail::create([
                     'sale_return_id'  => $sale_return->id,
@@ -90,9 +87,7 @@ class SalesReturnController extends Controller
                     ]);
                 }
             }
-
             Cart::instance('sale_return')->destroy();
-
             if ($sale_return->paid_amount > 0) {
                 SaleReturnPayment::create([
                     'date'           => $request->date,
@@ -115,7 +110,7 @@ class SalesReturnController extends Controller
 
         $customer = Customer::findOrFail($sale_return->customer_id);
 
-        return view('admin.salesreturn.show', compact('sale_return', 'customer'));
+        return view('admin.salesreturn.show', ['sale_return' => $sale_return, 'customer' => $customer]);
     }
 
     public function edit(SaleReturn $sale_return)
@@ -147,14 +142,13 @@ class SalesReturnController extends Controller
             ]);
         }
 
-        return view('admin.salesreturn.edit', compact('sale_return'));
+        return view('admin.salesreturn.edit', ['sale_return' => $sale_return]);
     }
 
     public function update(UpdateSaleReturnRequest $request, SaleReturn $sale_return)
     {
-        DB::transaction(function () use ($request, $sale_return) {
+        DB::transaction(static function () use ($request, $sale_return) {
             $due_amount = $request->total_amount - $request->paid_amount;
-
             if ($due_amount === $request->total_amount) {
                 $payment_status = PaymentStatus::DUE;
             } elseif ($due_amount > 0) {
@@ -162,7 +156,6 @@ class SalesReturnController extends Controller
             } else {
                 $payment_status = PaymentStatus::PAID;
             }
-
             foreach ($sale_return->saleReturnDetails as $sale_return_detail) {
                 if ($sale_return->status === 'Completed') {
                     $product = Product::findOrFail($sale_return_detail->product_id);
@@ -170,9 +163,9 @@ class SalesReturnController extends Controller
                         'quantity' => $product->quantity - $sale_return_detail->quantity,
                     ]);
                 }
+
                 $sale_return_detail->delete();
             }
-
             $sale_return->update([
                 'date'                => $request->date,
                 'reference'           => $request->reference,
@@ -190,7 +183,6 @@ class SalesReturnController extends Controller
                 'tax_amount'          => Cart::instance('sale_return')->tax() * 100,
                 'discount_amount'     => Cart::instance('sale_return')->discount() * 100,
             ]);
-
             foreach (Cart::instance('sale_return')->content() as $cart_item) {
                 SaleReturnDetail::create([
                     'sale_return_id'  => $sale_return->id,
@@ -213,7 +205,6 @@ class SalesReturnController extends Controller
                     ]);
                 }
             }
-
             Cart::instance('sale_return')->destroy();
         });
 

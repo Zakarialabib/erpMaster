@@ -29,6 +29,6 @@ class Index extends Component
 
         $subscribers = $query->paginate($this->perPage);
 
-        return view('livewire.admin.subscriber.index', compact('subscribers'));
+        return view('livewire.admin.subscriber.index', ['subscribers' => $subscribers]);
     }
 }

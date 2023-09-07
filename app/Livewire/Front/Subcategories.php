@@ -17,7 +17,9 @@ class Subcategories extends Component
     use Datatable;
 
     public $subcategory_id;
+
     public $sorting;
+
     public $filterProductSubcategories;
 
     public function filterProductSubcategories($subcategory_id)
@@ -63,6 +65,6 @@ class Subcategories extends Component
             $products = $query->paginate($this->perPage);
         }
 
-        return view('livewire.front.subcategories', compact('products'));
+        return view('livewire.front.subcategories', ['products' => $products]);
     }
 }

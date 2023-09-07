@@ -127,7 +127,7 @@ class PopupSettings extends Component
             $this->alert§('succes', __('Popup settings created successfully !'));
 
             $this->popupModal = false;
-        } catch (Throwable $th) {
+        } catch (Throwable) {
             // show error message
             $this->alert§('warning', __('Something not working !'));
         }
@@ -162,7 +162,7 @@ class PopupSettings extends Component
             $this->alert§('succes', __('Popup settings updated successfully!'));
 
             $this->popupModal = false;
-        } catch (Throwable $th) {
+        } catch (Throwable) {
             // Show error message
             $this->alert§('warning', __('Something not working !'));
         }
@@ -172,6 +172,6 @@ class PopupSettings extends Component
     {
         $popups = Popup::all();
 
-        return view('livewire.admin.settings.popup-settings', compact('popups'));
+        return view('livewire.admin.settings.popup-settings', ['popups' => $popups]);
     }
 }

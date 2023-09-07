@@ -129,7 +129,7 @@ class Create extends Component
 
         $cart_items = Cart::instance($this->cart_instance)->content();
 
-        return view('livewire.admin.quotations.create', compact('cart_items'));
+        return view('livewire.admin.quotations.create', ['cart_items' => $cart_items]);
     }
 
     public function updatedWarehouseId($value)

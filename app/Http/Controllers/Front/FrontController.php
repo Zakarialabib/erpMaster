@@ -24,7 +24,7 @@ class FrontController extends Controller
     {
         $products = Product::active()->paginate(3);
 
-        return view('front.index', compact('products'));
+        return view('front.index', ['products' => $products]);
     }
 
     public function changeLanguage($locale)
@@ -43,7 +43,7 @@ class FrontController extends Controller
     {
         $product = Product::where('slug', $slug)->first() ?? abort(404);
 
-        return view('front.product', compact('product'));
+        return view('front.product', ['product' => $product]);
     }
 
     public function categories()
@@ -55,7 +55,7 @@ class FrontController extends Controller
     {
         $category = Category::where('slug', $slug)->first() ?? abort(404);
 
-        return view('front.category-page', compact('category'));
+        return view('front.category-page', ['category' => $category]);
     }
 
     public function subcategories()
@@ -67,7 +67,7 @@ class FrontController extends Controller
     {
         $subcategory = Subcategory::where('slug', $slug)->first() ?? abort(404);
 
-        return view('front.subcategory-page', compact('subcategory'));
+        return view('front.subcategory-page', ['subcategory' => $subcategory]);
     }
 
     public function brands()
@@ -79,7 +79,7 @@ class FrontController extends Controller
     {
         $brand = Brand::where('slug', $slug)->first() ?? abort(404);
 
-        return view('front.brand-page', compact('brand'));
+        return view('front.brand-page', ['brand' => $brand]);
     }
 
     public function cart()
@@ -106,27 +106,27 @@ class FrontController extends Controller
     {
         $blogs = Blog::with('category')->get();
 
-        return view('front.blog', compact('blogs'));
+        return view('front.blog', ['blogs' => $blogs]);
     }
 
     public function blogPage($slug)
     {
         $blog = Blog::where('slug', $slug)->first() ?? abort(404);
 
-        return view('front.blog-page', compact('blog'));
+        return view('front.blog-page', ['blog' => $blog]);
     }
 
     // thanks page
     public function thankyou(Order $order)
     {
-        return view('front.order-summary', compact('order'));
+        return view('front.order-summary', ['order' => $order]);
     }
 
     public function dynamicPage($slug)
     {
         $page = Page::where('slug', $slug)->first() ?? abort(404);
 
-        return view('front.dynamic-page', compact('page'));
+        return view('front.dynamic-page', ['page' => $page]);
     }
 
     public function myaccount(User $customer)
@@ -144,8 +144,8 @@ class FrontController extends Controller
             Log::info('Sitemap generated successfully!');
 
             return back();
-        } catch (Throwable $th) {
-            Log::info('Sitemap generation failed!', $th->getMessage());
+        } catch (Throwable $throwable) {
+            Log::info('Sitemap generation failed!', $throwable->getMessage());
 
             return back();
         }

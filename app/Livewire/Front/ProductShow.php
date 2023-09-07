@@ -48,24 +48,24 @@ class ProductShow extends Component
 
     public function decreaseQuantity()
     {
-        $this->quantity -= 1;
+        --$this->quantity;
     }
 
     public function increaseQuantity()
     {
-        $this->quantity += 1;
+        ++$this->quantity;
     }
 
     public function AddToCart($product_id)
     {
         $warehouse = ProductWarehouse::where('product_id', $product_id)->first();
 
-        $cartItem = Cart::instance('shopping')->add(
+        Cart::instance('shopping')->add(
             $product_id,
             $warehouse->product->name,
             $this->quantity,
             $warehouse->price
-        )->associate('App\Models\Product');
+        )->associate(\App\Models\Product::class);
 
         // $cartItem->save();
 

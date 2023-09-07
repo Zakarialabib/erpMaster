@@ -42,11 +42,13 @@ class PaymentForm extends Component
 
     #[Rule('nullable|numeric')]
     public $total_amount;
+
     #[Rule('nullable|numeric')]
     public $due_amount;
+
     #[Rule('nullable|numeric')]
     public $paid_amount;
-    
+
     #[Rule('nullable|string|max:1000')]
     public $note;
 
@@ -118,8 +120,8 @@ class PaymentForm extends Component
             $this->paymentModal = false;
 
             $this->dispatch('refreshIndex')->to(Index::class);
-        } catch (Throwable $th) {
-            $this->alert('error', __('Error.').$th->getMessage());
+        } catch (Throwable $throwable) {
+            $this->alert('error', __('Error.').$throwable->getMessage());
         }
     }
 

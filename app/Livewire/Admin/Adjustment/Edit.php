@@ -23,10 +23,15 @@ class Edit extends Component
     public $adjustment;
 
     public $date;
+
     public $note;
+
     public $reference;
+
     public $quantity;
+
     public $type;
+
     public $warehouse_id;
 
     public $products;
@@ -69,7 +74,7 @@ class Edit extends Component
             'note'      => $this->note,
         ]);
 
-        foreach ($this->products as $key => $product) {
+        foreach ($this->products as $product) {
             AdjustedProduct::updateOrCreate(
                 [
                     'adjustment_id' => $this->adjustment->id,
@@ -102,9 +107,7 @@ class Edit extends Component
     {
         switch ($this->hasAdjustments) {
             case true:
-                if (in_array($product, array_map(function ($adjustment) {
-                    return $adjustment['product'];
-                }, $this->products))) {
+                if (in_array($product, array_map(static fn($adjustment) => $adjustment['product'], $this->products))) {
                     $this->alert('error', __('Product added succesfully'));
 
                     return;
@@ -129,7 +132,7 @@ class Edit extends Component
         $product['quantity'] = 10;
         $product['type'] = 'add';
 
-        array_push($this->products, $product);
+        $this->products[] = $product;
     }
 
     public function removeProduct($key): void

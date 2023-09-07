@@ -13,6 +13,6 @@ class LogController extends Controller
     {
         $logs = File::files(storage_path('logs'));
 
-        return view('admin.log.index', compact('logs'));
+        return view('admin.log.index', ['logs' => $logs]);
     }
 }

@@ -19,6 +19,7 @@ class Index extends Component
     use LivewireAlert;
 
     public $partner;
+
     public $deleteModal = false;
 
     public $showModal = false;
@@ -45,7 +46,7 @@ class Index extends Component
 
         $partners = $query->paginate($this->perPage);
 
-        return view('livewire.admin.partners.index', compact('partners'));
+        return view('livewire.admin.partners.index', ['partners' => $partners]);
     }
 
     #[On('showModal')]

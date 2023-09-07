@@ -16,13 +16,21 @@ class CustomersReport extends Component
     use WithPagination;
 
     public $customer_id;
+
     public $customers;
+
     public $start_date;
+
     public $end_date;
+
     public $payment_status;
+
     public $sales;
+
     public $saleReturns;
+
     public $purchase_status;
+
     public $quotations;
 
     protected $rules = [
@@ -44,12 +52,8 @@ class CustomersReport extends Component
     {
         return Sale::whereDate('date', '>=', $this->start_date)
             ->whereDate('date', '<=', $this->end_date)
-            ->when($this->customer_id, function ($query) {
-                return $query->where('customer_id', $this->customer_id);
-            })
-            ->when($this->payment_status, function ($query) {
-                return $query->where('payment_status', $this->payment_status);
-            })
+            ->when($this->customer_id, fn($query) => $query->where('customer_id', $this->customer_id))
+            ->when($this->payment_status, fn($query) => $query->where('payment_status', $this->payment_status))
             ->orderBy('date', 'desc')->paginate(10);
     }
 
@@ -57,12 +61,8 @@ class CustomersReport extends Component
     {
         return SaleReturn::whereDate('date', '>=', $this->start_date)
             ->whereDate('date', '<=', $this->end_date)
-            ->when($this->customer_id, function ($query) {
-                return $query->where('customer_id', $this->customer_id);
-            })
-            ->when($this->payment_status, function ($query) {
-                return $query->where('payment_status', $this->payment_status);
-            })
+            ->when($this->customer_id, fn($query) => $query->where('customer_id', $this->customer_id))
+            ->when($this->payment_status, fn($query) => $query->where('payment_status', $this->payment_status))
             ->orderBy('date', 'desc')->paginate(10);
     }
 
@@ -70,12 +70,8 @@ class CustomersReport extends Component
     {
         return Quotation::whereDate('date', '>=', $this->start_date)
             ->whereDate('date', '<=', $this->end_date)
-            ->when($this->customer_id, function ($query) {
-                return $query->where('customer_id', $this->customer_id);
-            })
-            ->when($this->payment_status, function ($query) {
-                return $query->where('payment_status', $this->payment_status);
-            })
+            ->when($this->customer_id, fn($query) => $query->where('customer_id', $this->customer_id))
+            ->when($this->payment_status, fn($query) => $query->where('payment_status', $this->payment_status))
             ->orderBy('date', 'desc')->paginate(10);
     }
 

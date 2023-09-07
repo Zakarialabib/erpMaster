@@ -20,7 +20,7 @@ class PurchaseReturnPaymentsController extends Controller
 
         $purchase_return = PurchaseReturn::findOrFail($purchase_return_id);
 
-        return view('purchasesreturn::payments.index', compact('purchase_return'));
+        return view('purchasesreturn::payments.index', ['purchase_return' => $purchase_return]);
     }
 
     public function create($purchase_return_id)
@@ -29,7 +29,7 @@ class PurchaseReturnPaymentsController extends Controller
 
         $purchase_return = PurchaseReturn::findOrFail($purchase_return_id);
 
-        return view('purchasesreturn::payments.create', compact('purchase_return'));
+        return view('purchasesreturn::payments.create', ['purchase_return' => $purchase_return]);
     }
 
     public function store(Request $request)
@@ -45,7 +45,7 @@ class PurchaseReturnPaymentsController extends Controller
             'payment_method'     => 'required|string|max:255',
         ]);
 
-        DB::transaction(function () use ($request) {
+        DB::transaction(static function () use ($request) {
             PurchaseReturnPayment::create([
                 'date'               => $request->date,
                 'reference'          => $request->reference,
@@ -54,11 +54,8 @@ class PurchaseReturnPaymentsController extends Controller
                 'purchase_return_id' => $request->purchase_return_id,
                 'payment_method'     => $request->payment_method,
             ]);
-
             $purchase_return = PurchaseReturn::findOrFail($request->purchase_return_id);
-
             $due_amount = $purchase_return->due_amount - $request->amount;
-
             if ($due_amount === $purchase_return->total_amount) {
                 $payment_status = PaymentStatus::DUE;
             } elseif ($due_amount > 0) {
@@ -66,7 +63,6 @@ class PurchaseReturnPaymentsController extends Controller
             } else {
                 $payment_status = PaymentStatus::PAID;
             }
-
             $purchase_return->update([
                 'paid_amount'    => ($purchase_return->paid_amount + $request->amount) * 100,
                 'due_amount'     => $due_amount * 100,
@@ -85,7 +81,7 @@ class PurchaseReturnPaymentsController extends Controller
 
         $purchase_return = PurchaseReturn::findOrFail($purchase_return_id);
 
-        return view('purchasesreturn::payments.edit', compact('purchaseReturnPayment', 'purchase_return'));
+        return view('purchasesreturn::payments.edit', ['purchaseReturnPayment' => $purchaseReturnPayment, 'purchase_return' => $purchase_return]);
     }
 
     public function update(Request $request, PurchaseReturnPayment $purchaseReturnPayment)
@@ -101,11 +97,9 @@ class PurchaseReturnPaymentsController extends Controller
             'payment_method'     => 'required|string|max:255',
         ]);
 
-        DB::transaction(function () use ($request, $purchaseReturnPayment) {
+        DB::transaction(static function () use ($request, $purchaseReturnPayment) {
             $purchase_return = $purchaseReturnPayment->purchaseReturn;
-
             $due_amount = $purchase_return->due_amount + $purchaseReturnPayment->amount - $request->amount;
-
             if ($due_amount === $purchase_return->total_amount) {
                 $payment_status = PaymentStatus::DUE;
             } elseif ($due_amount > 0) {
@@ -113,13 +107,11 @@ class PurchaseReturnPaymentsController extends Controller
             } else {
                 $payment_status = PaymentStatus::PAID;
             }
-
             $purchase_return->update([
                 'paid_amount'    => ($purchase_return->paid_amount - $purchaseReturnPayment->amount + $request->amount) * 100,
                 'due_amount'     => $due_amount * 100,
                 'payment_status' => $payment_status,
             ]);
-
             $purchaseReturnPayment->update([
                 'date'               => $request->date,
                 'reference'          => $request->reference,

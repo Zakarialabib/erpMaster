@@ -25,6 +25,7 @@ class Create extends Component
     public $createModal = false;
 
     public $product;
+
     public $subcategories;
 
     public $image;
@@ -35,7 +36,7 @@ class Create extends Component
 
     public $uploadLink;
 
-    public $description = null;
+    public $description;
 
     public $width = 1000;
 
@@ -106,7 +107,8 @@ class Create extends Component
                 $image->storeAs('products', $imageName);
                 $gallery[] = $imageName;
             }
-            $this->product->gallery = json_encode($gallery);
+
+            $this->product->gallery = json_encode($gallery, JSON_THROW_ON_ERROR);
         }
 
         $this->product->subcategories = $this->subcategories;

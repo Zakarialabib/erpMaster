@@ -25,22 +25,22 @@ class Create extends Component
     public string $name;
 
     #[Rule('nullable|email|max:255', message: 'The email field must be a valid email address with a maximum of 255 characters.')]
-    public ?string $email;
+    public ?string $email = null;
 
     #[Rule('required|numeric', message: 'The phone field is required and must be a numeric value.')]
     public string $phone;
 
     #[Rule('nullable|min:3|max:255', message: 'The city field must be a string between 3 and 255 characters.')]
-    public ?string $city;
+    public ?string $city = null;
 
     #[Rule('nullable|min:3|max:255', message: 'The country field must be a string between 3 and 255 characters.')]
-    public ?string $country;
+    public ?string $country = null;
 
     #[Rule('nullable|max:255', message: 'The address field must be a string with a maximum of 255 characters.')]
-    public ?string $address;
+    public ?string $address = null;
 
     #[Rule('nullable|max:255', message: 'The tax number field must be a string with a maximum of 255 characters.')]
-    public ?string $tax_number;
+    public ?string $tax_number = null;
 
     #[On('createModal')]
     public function createModal(): void
@@ -65,13 +65,14 @@ class Create extends Component
                     'balance'     => 0,
                 ]);
             }
+
             $this->alert('success', __('Customer created successfully'));
 
             $this->dispatch('refreshIndex')->to(Index::class);
 
             $this->createModal = false;
-        } catch (Throwable $th) {
-            $this->alert('success', __('Error.').$th->getMessage());
+        } catch (Throwable $throwable) {
+            $this->alert('success', __('Error.').$throwable->getMessage());
         }
     }
 

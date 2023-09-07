@@ -58,9 +58,9 @@ class Newsletters extends Component
             $user_email = $user->email;
 
             Mail::to($user_email)->send(new SubscribedMail());
-        } catch (Throwable $th) {
+        } catch (Throwable $throwable) {
             $this->alert('error', __('Something went wrong. Please try again.'));
-            Log::error($th->getMessage());
+            Log::error($throwable->getMessage());
         }
     }
 }

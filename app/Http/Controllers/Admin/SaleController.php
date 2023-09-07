@@ -33,7 +33,7 @@ class SaleController extends Controller
 
         $product_categories = Category::select(['id', 'name'])->get();
 
-        return view('admin.sale.create', compact('product_categories'));
+        return view('admin.sale.create', ['product_categories' => $product_categories]);
     }
 
     public function edit(Sale $sale)
@@ -65,14 +65,13 @@ class SaleController extends Controller
             ]);
         }
 
-        return view('admin.sale.edit', compact('sale'));
+        return view('admin.sale.edit', ['sale' => $sale]);
     }
 
     public function update(UpdateSaleRequest $request, Sale $sale)
     {
-        DB::transaction(function () use ($request, $sale) {
+        DB::transaction(static function () use ($request, $sale) {
             $due_amount = $request->total_amount - $request->paid_amount;
-
             if ($due_amount === $request->total_amount) {
                 $payment_status = PaymentStatus::PENDING;
             } elseif ($due_amount > 0) {
@@ -80,7 +79,6 @@ class SaleController extends Controller
             } else {
                 $payment_status = PaymentStatus::PAID;
             }
-
             foreach ($sale->saleDetails as $sale_detail) {
                 if ($sale->status === SaleStatus::SHIPPED || $sale->status === SaleStatus::COMPLETED) {
                     $product = Product::findOrFail($sale_detail->product_id);
@@ -88,9 +86,9 @@ class SaleController extends Controller
                         'quantity' => $product->quantity + $sale_detail->quantity,
                     ]);
                 }
+
                 $sale_detail->delete();
             }
-
             $sale->update([
                 'date'                => $request->date,
                 'reference'           => $request->reference,
@@ -108,7 +106,6 @@ class SaleController extends Controller
                 'tax_amount'          => Cart::instance('sale')->tax() * 100,
                 'discount_amount'     => Cart::instance('sale')->discount() * 100,
             ]);
-
             foreach (Cart::instance('sale')->content() as $cart_item) {
                 SaleDetails::create([
                     'sale_id'                 => $sale->id,
@@ -131,7 +128,6 @@ class SaleController extends Controller
                     ]);
                 }
             }
-
             Cart::instance('sale')->destroy();
         });
 

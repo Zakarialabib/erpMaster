@@ -30,10 +30,13 @@ class Index extends Component
     ];
 
     public $showModal = false;
+
     public $showFilters = false;
 
     public $startDate;
+
     public $endDate;
+
     public $filterType;
 
     public function mount(): void
@@ -77,7 +80,7 @@ class Index extends Component
 
         $expenses = $query->paginate($this->perPage);
 
-        return view('livewire.admin.expense.index', compact('expenses'));
+        return view('livewire.admin.expense.index', ['expenses' => $expenses]);
     }
 
     public function deleteSelected(): void

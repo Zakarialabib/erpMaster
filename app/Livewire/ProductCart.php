@@ -69,7 +69,7 @@ class ProductCart extends Component
 
             $cart_items = Cart::instance($this->cart_instance)->content();
 
-            foreach ($cart_items as $index => $cart_item) {
+            foreach ($cart_items as $cart_item) {
                 $this->check_quantity[$cart_item->id] = [$cart_item->options->stock];
                 $this->quantity[$cart_item->id] = $cart_item->qty;
                 $this->discount_type[$cart_item->id] = $cart_item->options->product_discount_type;
@@ -94,7 +94,7 @@ class ProductCart extends Component
         }
 
         $cart = Cart::instance($this->cart_instance);
-        $exists = $cart->search(fn ($cartItem) => $cartItem->id === $product['id']);
+        $exists = $cart->search(static fn($cartItem) => $cartItem->id === $product['id']);
 
         if ($exists->isNotEmpty()) {
             $this->alert('error', __('Product already added to cart!'));
@@ -205,7 +205,7 @@ class ProductCart extends Component
 
     public function updatedTotalShipping()
     {
-        Cart::instance($this->cart_instance)->total() + (float) $this->shipping_amount;
+        Cart::instance($this->cart_instance)->total();
     }
 
     public function updatedShippingAmount($value)
@@ -222,12 +222,9 @@ class ProductCart extends Component
 
     public function updateQuantity($row_id, $product_id)
     {
-        if ($this->cart_instance === 'sale' || $this->cart_instance === 'purchase_return') {
-            if ($this->check_quantity[$product_id] < $this->quantity[$product_id]) {
-                $this->alert('error', 'Quantity is greater than in stock!');
-
-                return;
-            }
+        if (($this->cart_instance === 'sale' || $this->cart_instance === 'purchase_return') && $this->check_quantity[$product_id] < $this->quantity[$product_id]) {
+            $this->alert('error', 'Quantity is greater than in stock!');
+            return;
         }
 
         Cart::instance($this->cart_instance)->update($row_id, $this->quantity[$product_id]);
@@ -282,6 +279,7 @@ class ProductCart extends Component
 
             $this->updateCartOptions($row_id, $product_id, $cart_item, $discount_amount);
         }
+
         $this->alert('success', __('Product discount set successfully!'));
 
         $this->discountModal = false;
@@ -314,12 +312,13 @@ class ProductCart extends Component
     {
         $cart_items = Cart::instance($this->cart_instance)->content();
 
-        foreach ($cart_items as $index => $cart_item) {
+        foreach ($cart_items as $cart_item) {
             $this->discount_type[$cart_item->id] = $cart_item->options->product_discount_type;
             $this->item_discount[$cart_item->id] = ($cart_item->options->product_discount_type === 'fixed')
                 ? $cart_item->options->product_discount
                 : round(100 * $cart_item->options->product_discount / $cart_item->price);
         }
+
         return view('livewire.product-cart', [
             'cart_items' => $cart_items,
         ]);

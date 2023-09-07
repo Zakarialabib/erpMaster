@@ -23,10 +23,15 @@ class Create extends Component
     use LivewireAlert;
 
     public $date;
+
     public $note;
+
     public $reference;
+
     public $quantities;
+
     public $types;
+
     public $warehouse_id;
 
     public $products;
@@ -109,8 +114,8 @@ class Create extends Component
             $this->alert('success', __('Adjustment created successfully'));
 
             return redirect()->route('admin.adjustments.index');
-        } catch (Throwable $th) {
-            $this->alert('error', 'Error Occurred in '.$th->getMessage());
+        } catch (Throwable $throwable) {
+            $this->alert('error', 'Error Occurred in '.$throwable->getMessage());
         }
     }
 
@@ -118,9 +123,7 @@ class Create extends Component
     {
         switch ($this->hasAdjustments) {
             case true:
-                if (in_array($product, array_map(function ($adjustment) {
-                    return $adjustment['product'];
-                }, $this->products))) {
+                if (in_array($product, array_map(static fn($adjustment) => $adjustment['product'], $this->products))) {
                     $this->alert('error', __('Product added succesfully'));
 
                     return;
@@ -145,7 +148,7 @@ class Create extends Component
         $product['quantities'] = 10;
         $product['types'] = 'add';
 
-        array_push($this->products, $product);
+        $this->products[] = $product;
     }
 
     public function removeProduct($key): void

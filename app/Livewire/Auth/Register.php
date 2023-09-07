@@ -17,11 +17,17 @@ use Livewire\Attributes\Layout;
 class Register extends Component
 {
     public $name = '';
+
     public $email = '';
+
     public $password = '';
+
     public $passwordConfirmation = '';
+
     public $phone;
-    public $city; // Set the default city to 'Casablanca'
+
+    public $city;
+     // Set the default city to 'Casablanca'
     public $country; // Set
 
     public function mount()
@@ -57,16 +63,10 @@ class Register extends Component
 
         Auth::login($user, true);
 
-        switch (true) {
-            case $user->hasRole('admin'):
-                $homePage = '/admin/dashboard';
-
-                break;
-            default:
-                $homePage = '/';
-
-                break;
-        }
+        $homePage = match (true) {
+            $user->hasRole('admin') => '/admin/dashboard',
+            default => '/',
+        };
 
         return $this->redirect($homePage, navigate: true);
     }

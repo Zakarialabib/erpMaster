@@ -67,8 +67,8 @@ class Edit extends Component
             $this->dispatch('refreshIndex')->to(Index::class);
 
             $this->editModal = false;
-        } catch (Throwable $th) {
-            $this->alert('success', __('Error.').$th->getMessage());
+        } catch (Throwable $throwable) {
+            $this->alert('success', __('Error.').$throwable->getMessage());
         }
     }
 }

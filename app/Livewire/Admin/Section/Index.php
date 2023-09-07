@@ -48,9 +48,7 @@ class Index extends Component
 
     public function render()
     {
-        $query = Section::when($this->language_id, function ($query) {
-            return $query->where('language_id', $this->language_id);
-        })->advancedFilter([
+        $query = Section::when($this->language_id, fn($query) => $query->where('language_id', $this->language_id))->advancedFilter([
             's'               => $this->search ?: null,
             'order_column'    => $this->sortBy,
             'order_direction' => $this->sortDirection,
@@ -58,7 +56,7 @@ class Index extends Component
 
         $sections = $query->paginate($this->perPage);
 
-        return view('livewire.admin.section.index', compact('sections'));
+        return view('livewire.admin.section.index', ['sections' => $sections]);
     }
 
     public function delete()

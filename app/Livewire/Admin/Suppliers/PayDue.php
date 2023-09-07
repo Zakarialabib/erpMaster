@@ -13,10 +13,15 @@ use Livewire\Component;
 class PayDue extends Component
 {
     public $amount;
+
     public $supplier_id;
+
     public $payment_method;
+
     public $selectedPurchases;
+
     public $due_amount;
+
     public $paid_amount;
 
     public function getPurchasesSupplierDueProperty()

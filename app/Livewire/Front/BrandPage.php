@@ -76,12 +76,8 @@ class BrandPage extends Component
     {
         $query = \App\Helpers::getEcommerceProducts()
             ->where('brand_id', $this->brand->id)
-            ->when($this->category_id, function ($query) {
-                return $query->where('category_id', $this->category_id);
-            })
-            ->when($this->subcategory_id, function ($query) {
-                return $query->whereIn('subcategories', $this->subcategory_id);
-            });
+            ->when($this->category_id, fn($query) => $query->where('category_id', $this->category_id))
+            ->when($this->subcategory_id, fn($query) => $query->whereIn('subcategories', $this->subcategory_id));
 
         if ($this->sorting === 'name') {
             $query->orderBy('name', 'asc');
@@ -101,6 +97,6 @@ class BrandPage extends Component
 
         $this->dispatch('productsLoaded', $brandproducts->count());
 
-        return view('livewire.front.brand-page', compact('brandproducts'));
+        return view('livewire.front.brand-page', ['brandproducts' => $brandproducts]);
     }
 }

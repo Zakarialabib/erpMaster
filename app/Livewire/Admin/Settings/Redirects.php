@@ -67,6 +67,6 @@ class Redirects extends Component
 
         $redirects = $query->paginate($this->perPage);
 
-        return view('livewire.admin.settings.redirects', compact('redirects'));
+        return view('livewire.admin.settings.redirects', ['redirects' => $redirects]);
     }
 }

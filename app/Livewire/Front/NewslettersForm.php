@@ -43,8 +43,8 @@ class NewslettersForm extends Component
             $user_email = $user->email;
 
             Mail::to($user_email)->send(new SubscribedMail());
-        } catch (Throwable $th) {
-            $this->alert('error', __('Error').$th->getMessage());
+        } catch (Throwable $throwable) {
+            $this->alert('error', __('Error').$throwable->getMessage());
         }
     }
 }

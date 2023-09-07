@@ -18,7 +18,9 @@ class Edit extends Component
     public array $languages = [];
 
     public $language;
+
     public $name;
+
     public $code;
 
     public $editLanguage = false;

@@ -43,21 +43,33 @@ class Edit extends Component
     public $description;
 
     public int $tax_type;
+
     public bool $featured;
+
     public string $condition;
+
     public $embeded_video;
+
     public $category_id;
+
     public $brand_id;
 
     #[Rule('required', 'array', 'min:1')]
     public array $subcategories = [];
+
     #[Rule('array')]
     public array $options = [];
+
     public string $meta_title;
+
     public string $meta_description;
+
     public $image;
+
     public bool $best;
+
     public bool $hot;
+
     public $productWarehouse = [];
 
     /** @var array */
@@ -105,13 +117,11 @@ class Edit extends Component
 
         $this->productWarehouses = $this->product->warehouses()->pivot('price', 'qty', 'cost')->get();
 
-        $this->productWarehouse = $this->productWarehouses->mapWithKeys(function ($warehouse) {
-            return [$warehouse->id => [
-                'price' => $warehouse->pivot->price,
-                'qty'   => $warehouse->pivot->qty,
-                'cost'  => $warehouse->pivot->cost,
-            ]];
-        })->toArray();
+        $this->productWarehouse = $this->productWarehouses->mapWithKeys(static fn($warehouse) => [$warehouse->id => [
+            'price' => $warehouse->pivot->price,
+            'qty'   => $warehouse->pivot->qty,
+            'cost'  => $warehouse->pivot->cost,
+        ]])->toArray();
 
         $this->editModal = true;
     }
@@ -133,12 +143,12 @@ class Edit extends Component
         if ($this->gallery) {
             $gallery = [];
 
-            foreach ($this->gallery as $key => $value) {
+            foreach ($this->gallery as $value) {
                 $imageName = Helpers::handleUpload($value, $this->width, $this->height, $this->product->name);
                 $gallery[] = $imageName;
             }
 
-            $this->product->gallery = json_encode($gallery);
+            $this->product->gallery = json_encode($gallery, JSON_THROW_ON_ERROR);
         }
 
         $this->product->update($this->all());

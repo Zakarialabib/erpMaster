@@ -55,7 +55,7 @@ class Index extends Component
 
         $suppliers = $query->paginate($this->perPage);
 
-        return view('livewire.admin.suppliers.index', compact('suppliers'));
+        return view('livewire.admin.suppliers.index', ['suppliers' => $suppliers]);
     }
 
     public function showModal($id)

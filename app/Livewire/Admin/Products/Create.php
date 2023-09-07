@@ -24,9 +24,10 @@ class Create extends Component
     use WithFileUploads;
 
     /** @var bool */
-    public $createModal = null;
+    public $createModal = false;
 
     public $image;
+
     public $gallery = [];
 
     public Product $product;
@@ -43,17 +44,29 @@ class Create extends Component
     public int $order_tax;
 
     public $description;
+
     public int $tax_type;
+
     public bool $featured;
+
     public string $condition;
+
     public $embeded_video;
+
     public $category_id;
+
     public $brand_id;
+
     public array $subcategories = [];
+
     public array $options = [];
+
     public string $meta_title;
+
     public string $meta_description;
+
     public bool $best;
+
     public bool $hot;
 
     public $productWarehouse = [];

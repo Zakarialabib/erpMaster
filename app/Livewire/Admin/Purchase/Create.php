@@ -32,25 +32,36 @@ class Create extends Component
     use LivewireAlert;
     use WithModels;
     public $cart_instance = 'purchase';
+
     public $cart_item;
+
     #[Rule('required')]
     public $warehouse_id;
+
     #[Rule('required')]
     public $supplier_id;
+
     #[Rule('required|integer|min:0|max:100')]
     public $tax_percentage;
+
     #[Rule('required|integer|min:0|max:100')]
     public $discount_percentage;
+
     #[Rule('required|numeric')]
     public $shipping_amount;
+
     #[Rule('required|numeric')]
     public $total_amount;
+
     #[Rule('required|numeric')]
     public $paid_amount;
+
     #[Rule('required|string|max:50')]
     public $status;
+
     #[Rule('required|string|max:50')]
     public $payment_method;
+
     #[Rule('nullable|string|max:1000')]
     public $note;
 
@@ -196,7 +207,7 @@ class Create extends Component
                     'quantity'     => $cart_item->qty,
                     'price'        => $cart_item->price * 100,
                     'date'         => date('Y-m-d'),
-                    'movable_type' => get_class($product),
+                    'movable_type' => $product::class,
                     'movable_id'   => $product->id,
                     'user_id'      => Auth::user()->id,
                 ]);

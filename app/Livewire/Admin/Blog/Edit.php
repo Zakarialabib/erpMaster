@@ -19,14 +19,23 @@ class Edit extends Component
     use WithFileUploads;
 
     public $editModal = false;
+
     public $blog;
+
     public $title;
+
     public $category_id;
+
     public $slug;
+
     public $meta_title;
+
     public $meta_description;
+
     public $image;
+
     public $description;
+
     protected $rules = [
         'title'            => 'required|min:3|max:255',
         'category_id'      => 'required|integer',

@@ -21,12 +21,19 @@ class Create extends Component
     public $createModal = false;
 
     public Blog $blog;
+
     public $title;
+
     public $category_id;
+
     public $slug;
+
     public $meta_title;
+
     public $meta_description;
+
     public $image;
+
     public $description;
 
     protected $rules = [

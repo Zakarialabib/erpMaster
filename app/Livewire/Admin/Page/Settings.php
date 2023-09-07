@@ -23,26 +23,42 @@ class Settings extends Component
     public PageSetting $setting;
 
     public bool $is_sliders = false;
+
     public bool $is_contact = false;
+
     public bool $is_offer = false;
+
     public bool $is_partners = false;
+
     public bool $is_title = true;
+
     public bool $is_description = true;
+
     public bool $is_package = false;
+
     public bool $is_visible = true;
+
     public bool $darkMode = false;
+
     public $colorOptions = [];
 
     public $colors;
+
     public $selectedColor;
 
 
     public $section_order;
+
     public $bg_color;
+
     public $text_color;
+
     public $font_size;
+
     public $custom_properties = [];
+
     public $status;
+
     #[Rule('nullable')]
     public $page_id;
 
@@ -50,10 +66,11 @@ class Settings extends Component
     public function render()
     {
         $settings = PageSetting::orderBy('section_order')->paginate(10);
-        return view('livewire.admin.page.settings', compact('settings'));
+        return view('livewire.admin.page.settings', ['settings' => $settings]);
     }
 
     public $selectedTemplate;
+
     public $sectionTemplates;
 
     public function mount()
@@ -115,6 +132,7 @@ class Settings extends Component
         } else {
             PageSetting::create($this->all());
         }
+
         $this->alert('success', 'Page setting successfully saved.');
 
         $this->resetForm();

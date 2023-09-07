@@ -16,6 +16,6 @@ class SettingController extends Controller
 
         $settings = Setting::firstOrFail();
 
-        return view('admin.settings.index', compact('settings'));
+        return view('admin.settings.index', ['settings' => $settings]);
     }
 }

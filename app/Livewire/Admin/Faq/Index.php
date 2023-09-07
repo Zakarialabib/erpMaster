@@ -36,7 +36,7 @@ class Index extends Component
 
         $faqs = $query->paginate($this->perPage);
 
-        return view('livewire.admin.faq.index', compact('faqs'));
+        return view('livewire.admin.faq.index', ['faqs' => $faqs]);
     }
 
     public function deleteSelected()

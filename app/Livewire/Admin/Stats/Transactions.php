@@ -29,36 +29,63 @@ class Transactions extends Component
     public $typeChart = 'monthly';
 
     public $categoriesCount;
+
     public $topProducts;
+
     public $productCount;
+
     public $salesCount;
+
     public $profit;
+
     public $purchase;
+
     public $purchaseCount;
+
     public $lastPurchases;
+
     public $supplierCount;
+
     public $customerCount;
+
     public $profitCount;
+
     public $bestSales;
+
     public $lastSales;
+
     public $charts;
+
     public $purchases;
+
     public $purchases_count;
+
     public $sales;
+
     public $sales_count;
 
     public $subscribersCount;
+
     public $orderFormProduct;
+
     public $ordersCount;
+
     public $recentOrders;
+
     public $contactsCount;
+
     public $recentContacts;
+
     public $startDate;
+
     public $endDate;
+
     public $purchasesCount;
+
     public $salesTotal;
+
     public $stockValue;
-    
+
     public function mount()
     {
         $this->startDate = Carbon::now()->startOfMonth()->toDateString();
@@ -82,8 +109,8 @@ class Transactions extends Component
 
         $this->contactsCount = Contact::whereBetween('created_at', [$this->startDate, $this->endDate])->count();
         $this->recentContacts = Contact::select('created_at', 'type', 'subject', 'name', 'id')->orderBy('created_at', 'desc')->take(10)->get();
-      
-      
+
+
         $this->salesCount = Sale::whereBetween('created_at', [$this->startDate, $this->endDate])
             ->count();
         $this->purchasesCount = Purchase::whereBetween('created_at', [$this->startDate, $this->endDate])
@@ -119,8 +146,7 @@ class Transactions extends Component
                 'SUM(sale_details.quantity) as qtyItem, products.name as name, products.code as code, SUM(sale_details.sub_total) as totalSalesAmount, sale_details.id'
             )
             ->join('products', 'products.id', '=', 'sale_details.product_id')
-            ->whereMonth('sale_details.created_at', Carbon::now()->startOfMonth())
-            ->groupBy('sale_details.id', 'sale_details.product_id', 'products.name', 'products.code')
+            ->whereMonth('sale_details.created_at', Carbon::now()->startOfMonth())->groupBy(['sale_details.id', 'sale_details.product_id', 'products.name', 'products.code'])
             ->orderByDesc('qtyItem')
             ->limit(5)
             ->get();
@@ -141,42 +167,30 @@ class Transactions extends Component
     public function chart()
     {
         $query = Sale::selectRaw('SUM(total_amount) as total, SUM(due_amount) as due_amount')
-            ->when($this->typeChart === 'monthly', function ($q) {
-                return $q->selectRaw('MONTH(date) as labels, COUNT(*) as sales')
-                    ->whereYear('date', '=', date('Y'))
-                    ->groupByRaw('MONTH(date)');
-            }, function ($q) {
-                return $q->selectRaw('YEAR(date) as labels, COUNT(*) as sales')
-                    ->groupByRaw('YEAR(date)');
-            })
+            ->when($this->typeChart === 'monthly', static fn($q) => $q->selectRaw('MONTH(date) as labels, COUNT(*) as sales')
+                ->whereYear('date', '=', date('Y'))
+                ->groupByRaw('MONTH(date)'), static fn($q) => $q->selectRaw('YEAR(date) as labels, COUNT(*) as sales')
+                ->groupByRaw('YEAR(date)'))
             ->get()
             ->toArray();
 
         $sales = [
             'total'      => array_column($query, 'total'),
-            'due_amount' => array_map(function ($total, $dueAmount) {
-                return $total - $dueAmount;
-            }, array_column($query, 'total'), array_column($query, 'due_amount')),
+            'due_amount' => array_map(static fn($total, $dueAmount) => $total - $dueAmount, array_column($query, 'total'), array_column($query, 'due_amount')),
             'labels' => array_column($query, 'labels'),
         ];
 
         $query = Purchase::selectRaw('SUM(total_amount) as total, SUM(due_amount) as due_amount')
-            ->when($this->typeChart === 'monthly', function ($q) {
-                return $q->selectRaw('MONTH(date) as labels, COUNT(*) as purchases')
-                    ->whereYear('date', '=', date('Y'))
-                    ->groupByRaw('MONTH(date)');
-            }, function ($q) {
-                return $q->selectRaw('YEAR(date) as labels, COUNT(*) as purchases')
-                    ->groupByRaw('YEAR(date)');
-            })
+            ->when($this->typeChart === 'monthly', static fn($q) => $q->selectRaw('MONTH(date) as labels, COUNT(*) as purchases')
+                ->whereYear('date', '=', date('Y'))
+                ->groupByRaw('MONTH(date)'), static fn($q) => $q->selectRaw('YEAR(date) as labels, COUNT(*) as purchases')
+                ->groupByRaw('YEAR(date)'))
             ->get()
             ->toArray();
 
         $purchases = [
             'total'      => array_column($query, 'total'),
-            'due_amount' => array_map(function ($total, $dueAmount) {
-                return $total - $dueAmount;
-            }, array_column($query, 'total'), array_column($query, 'due_amount')),
+            'due_amount' => array_map(static fn($total, $dueAmount) => $total - $dueAmount, array_column($query, 'total'), array_column($query, 'due_amount')),
             'labels' => array_column($query, 'labels'),
         ];
 
@@ -190,7 +204,7 @@ class Transactions extends Component
                 'purchase' => $purchases['due_amount'],
             ],
             'labels' => $sales['labels'],
-        ]);
+        ], JSON_THROW_ON_ERROR);
     }
 
     protected function getChart($sales, $purchases)
@@ -202,7 +216,7 @@ class Transactions extends Component
             $dataarray['total']['sales'][$i] = $sale['total'];
             $dataarray['due_amount']['sales'][$i] = $sale['total'] - $sale['due_amount'];
             $dataarray['labels'][$i] = $sale['labels'];
-            $i++;
+            ++$i;
         }
 
         $i = 0;
@@ -210,10 +224,10 @@ class Transactions extends Component
         foreach ($purchases as $purchase) {
             $dataarray['total']['purchase'][$i] = $purchase['total'];
             $dataarray['due_amount']['purchase'][$i] = $purchase['total'] - $purchase['due_amount'];
-            $i++;
+            ++$i;
         }
 
-        return json_encode($dataarray);
+        return json_encode($dataarray, JSON_THROW_ON_ERROR);
     }
 
     #[Computed]
@@ -225,7 +239,7 @@ class Transactions extends Component
         $daysInMonth = [];
         $currentDay = Carbon::now()->startOfMonth();
 
-        while ($currentDay->month == $currentMonth->month) {
+        while ($currentDay->month === $currentMonth->month) {
             $daysInMonth[] = $currentDay->format('Y-m-d');
             $currentDay->addDay();
         }

@@ -19,9 +19,11 @@ class Create extends Component
     use WithFileUploads;
 
     public $createModal;
+
     public EmailTemplate $email_setting;
 
     public $description;
+
     public $message;
 
     protected $rules = [

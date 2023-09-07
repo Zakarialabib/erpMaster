@@ -57,6 +57,6 @@ class PurchaseController extends Controller
             ]);
         }
 
-        return view('admin.purchases.edit', compact('purchase'));
+        return view('admin.purchases.edit', ['purchase' => $purchase]);
     }
 }

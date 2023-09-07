@@ -4,7 +4,7 @@
     <x-theme.breadcrumb :title="__('Sections List')" :parent="route('admin.sections.index')" :parentName="__('Sections List')">
 
         <!-- Button trigger livewire modal -->
-        <x-button primary type="button" wire:click="$dispatch('admin.section.template','createTemplate')">
+        <x-button primary type="button" wire:click="$dispatch('admin.section.template','createModal')">
             {{ __('Create from template') }}
         </x-button>
         <!-- Button trigger livewire modal -->

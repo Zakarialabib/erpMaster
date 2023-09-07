@@ -13,7 +13,9 @@ class Notifications extends Component
     use WithPagination;
 
     public $low_quantity_products;
+
     public $how_many = 5;
+
     public $user;
 
     public function mount()

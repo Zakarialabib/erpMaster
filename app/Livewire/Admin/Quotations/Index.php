@@ -45,7 +45,7 @@ class Index extends Component
 
         $quotations = $query->paginate($this->perPage);
 
-        return view('livewire.admin.quotations.index', compact('quotations'));
+        return view('livewire.admin.quotations.index', ['quotations' => $quotations]);
     }
 
     public function deleteSelected()

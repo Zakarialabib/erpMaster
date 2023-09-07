@@ -27,11 +27,17 @@ class Edit extends Component
     use LivewireAlert;
 
     public $sale;
+
     public $products;
+
     public $product;
+
     public $quantity;
+
     public $reference;
+
     public $check_quantity;
+
     public $price;
 
     #[Rule('integer|min:0|max:100')]
@@ -63,9 +69,13 @@ class Edit extends Component
 
     #[Rule('required|string|max:255')]
     public $payment_method;
+
     public $date;
+
     public $discount_type;
+
     public $item_discount;
+
     public $sale_details;
 
     public function mount($id)
@@ -208,7 +218,7 @@ class Edit extends Component
                     'quantity'     => $cart_item->qty,
                     'price'        => $cart_item->price * 100,
                     'date'         => date('Y-m-d'),
-                    'movable_type' => get_class($product),
+                    'movable_type' => $product::class,
                     'movable_id'   => $product->id,
                     'user_id'      => Auth::user()->id,
                 ]);

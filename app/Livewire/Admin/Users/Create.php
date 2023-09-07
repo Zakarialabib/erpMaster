@@ -21,21 +21,28 @@ class Create extends Component
 
     #[Rule('required|string|max:255')]
     public $name;
+
     #[Rule('required|email|unique:users,email')]
     public $email;
+
     #[Rule('required|string|min:8')]
     public $password;
+
     #[Rule('required|numeric')]
     public $phone;
+
     #[Rule('nullable')]
     public $city;
+
     #[Rule('nullable')]
     public $country;
+
     #[Rule('nullable')]
     public $address;
+
     #[Rule('nullable')]
     public $tax_number;
-    
+
     public $selectedWarehouses = [];
 
     public $warehouse_id;
@@ -59,7 +66,7 @@ class Create extends Component
         $this->validate();
 
         $this->user = User::create($this->all());
-       
+
         $this->user->warehouses()->sync($this->selectedWarehouses);
 
         $this->dispatch('refreshIndex')->to(Index::class);

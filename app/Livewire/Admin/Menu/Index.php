@@ -19,12 +19,19 @@ class Index extends Component
     public int $perPage = 100;
 
     public $menu;
+
     public $menus;
+
     public $name;
+
     public $label;
+
     public $url;
+
     public $type;
+
     public $parent_id;
+
     public $new_window;
 
     protected $rules = [
@@ -47,7 +54,7 @@ class Index extends Component
     {
         $menus = $this->getMenus();
 
-        return view('livewire.admin.menu.index', compact('menus'));
+        return view('livewire.admin.menu.index', ['menus' => $menus]);
     }
 
     protected function getMenus()
@@ -57,7 +64,7 @@ class Index extends Component
 
     public function update()
     {
-        $validatedData = $this->validate();
+        $this->validate();
 
         if ($this->menu) {
             $this->menu->name = $this->menu['name'];
@@ -110,6 +117,7 @@ class Index extends Component
             $menu->sort_order = $index + 1;
             $menu->save();
         }
+
         $this->mount();
         $this->alert('success', __('Menu order updated successfully.'));
     }
@@ -163,6 +171,7 @@ class Index extends Component
         foreach ($this->menus as $menu) {
             Menu::create($menu);
         }
+
         $this->mount();
         $this->alert('success', __('Predefined menus created successfully.'));
     }

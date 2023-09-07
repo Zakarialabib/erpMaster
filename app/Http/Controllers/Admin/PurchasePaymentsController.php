@@ -27,7 +27,7 @@ class PurchasePaymentsController extends Controller
 
         $purchase = Purchase::findOrFail($purchase_id);
 
-        return view('admin.purchases.payments.create', compact('purchase'));
+        return view('admin.purchases.payments.create', ['purchase' => $purchase]);
     }
 
     public function store(Request $request)
@@ -41,7 +41,7 @@ class PurchasePaymentsController extends Controller
             'payment_method' => 'required|string|max:255',
         ]);
 
-        DB::transaction(function () use ($request) {
+        DB::transaction(static function () use ($request) {
             PurchasePayment::create([
                 'date'           => $request->date,
                 'amount'         => $request->amount,
@@ -49,11 +49,8 @@ class PurchasePaymentsController extends Controller
                 'purchase_id'    => $request->purchase_id,
                 'payment_method' => $request->payment_method,
             ]);
-
             $purchase = Purchase::findOrFail($request->purchase_id);
-
             $due_amount = $purchase->due_amount - $request->amount;
-
             if ($due_amount === $purchase->total_amount) {
                 $payment_status = PaymentStatus::DUE;
             } elseif ($due_amount > 0) {
@@ -61,7 +58,6 @@ class PurchasePaymentsController extends Controller
             } else {
                 $payment_status = PaymentStatus::PAID;
             }
-
             $purchase->update([
                 'paid_amount'    => ($purchase->paid_amount + $request->amount) * 100,
                 'due_amount'     => $due_amount * 100,
@@ -80,7 +76,7 @@ class PurchasePaymentsController extends Controller
 
         $purchase = Purchase::findOrFail($purchase_id);
 
-        return view('admin.purchases.payments.edit', compact('purchasePayment', 'purchase'));
+        return view('admin.purchases.payments.edit', ['purchasePayment' => $purchasePayment, 'purchase' => $purchase]);
     }
 
     public function update(Request $request, PurchasePayment $purchasePayment)
@@ -94,11 +90,9 @@ class PurchasePaymentsController extends Controller
             'payment_method' => 'required|string|max:255',
         ]);
 
-        DB::transaction(function () use ($request, $purchasePayment) {
+        DB::transaction(static function () use ($request, $purchasePayment) {
             $purchase = $purchasePayment->purchase;
-
             $due_amount = $purchase->due_amount + $purchasePayment->amount - $request->amount;
-
             if ($due_amount === $purchase->total_amount) {
                 $payment_status = PaymentStatus::DUE;
             } elseif ($due_amount > 0) {
@@ -106,13 +100,11 @@ class PurchasePaymentsController extends Controller
             } else {
                 $payment_status = PaymentStatus::PAID;
             }
-
             $purchase->update([
                 'paid_amount'    => ($purchase->paid_amount - $purchasePayment->amount + $request->amount) * 100,
                 'due_amount'     => $due_amount * 100,
                 'payment_status' => $payment_status,
             ]);
-
             $purchasePayment->update([
                 'date'           => $request->date,
                 'reference'      => $request->reference,

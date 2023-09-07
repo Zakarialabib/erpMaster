@@ -12,6 +12,7 @@ class EditTranslation extends Component
 {
     use LivewireAlert;
     public $language;
+
     public $translations;
 
     public $rules = [
@@ -23,32 +24,30 @@ class EditTranslation extends Component
         $this->language = Language::where('id', $language)->firstOrFail();
         // dd($this->all());
         $this->translations = $this->getTranslations();
-        $this->translations = collect($this->translations)->map(function ($item, $key) {
-            return [
-                'key'   => $key,
-                'value' => $item,
-            ];
-        })->toArray();
+        $this->translations = collect($this->translations)->map(static fn($item, $key) => [
+            'key'   => $key,
+            'value' => $item,
+        ])->toArray();
     }
 
     private function getTranslations()
     {
-        $path = base_path("lang/{$this->language->code}.json");
+        $path = base_path(sprintf('lang/%s.json', $this->language->code));
         $content = file_get_contents($path);
 
-        return json_decode($content, true);
+        return json_decode($content, true, 512, JSON_THROW_ON_ERROR);
     }
 
     public function updateTranslation()
     {
         $this->validate();
 
-        $path = base_path("lang/{$this->language->code}.json");
+        $path = base_path(sprintf('lang/%s.json', $this->language->code));
 
         $data = file_get_contents($path);
-        $translations = json_decode($data, true);
+        $translations = json_decode($data, true, 512, JSON_THROW_ON_ERROR);
 
-        foreach ($this->translations as $key => $translation) {
+        foreach ($this->translations as $translation) {
             $translations[$translation['key']] = $translation['value'];
         }
 

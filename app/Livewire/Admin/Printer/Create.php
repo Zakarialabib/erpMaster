@@ -19,7 +19,9 @@ class Create extends Component
     public $createPrinter;
 
     public $printer;
+
     public $capability_profiles;
+
     public $connection_types;
 
     /** @var array */

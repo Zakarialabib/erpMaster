@@ -30,7 +30,7 @@ class ReportsController extends Controller
 
         $customers = Customer::select(['id', 'name'])->get();
 
-        return view('admin.reports.sales.index', compact('customers'));
+        return view('admin.reports.sales.index', ['customers' => $customers]);
     }
 
     public function purchasesReport()

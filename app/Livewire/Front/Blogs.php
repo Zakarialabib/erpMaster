@@ -54,6 +54,6 @@ class Blogs extends Component
                 $query->where('category_id', $this->category);
             })->paginate(6);
 
-        return view('livewire.front.blogs', compact('blogs'));
+        return view('livewire.front.blogs', ['blogs' => $blogs]);
     }
 }

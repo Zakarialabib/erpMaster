@@ -24,18 +24,31 @@ class Edit extends Component
     public $section;
 
     public $title = '';
+
     public $image;
+
     public $featured_title = '';
+
     public $subtitle = '';
+
     public $label = '';
+
     public string $link;
+
     public $description = '';
+
     public string $bg_color;
+
     public string $text_color;
+
     public string $page_id;
+
     public string $position;
+
     public $language_id;
+
     public $embeded_video;
+
     protected $rules = [
         'page_id'     => ['nullable'],
         'title'       => ['nullable', 'string', 'max:255'],

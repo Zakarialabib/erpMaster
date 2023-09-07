@@ -18,10 +18,15 @@ class Edit extends Component
     public $blogcategory;
 
     public $title;
+
     public $description;
+
     public $meta_title;
+
     public $meta_description;
+
     public $language_id;
+
     public $editModal = false;
 
     protected $rules = [

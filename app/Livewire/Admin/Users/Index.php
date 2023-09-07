@@ -60,7 +60,7 @@ class Index extends Component
 
         $users = $query->paginate($this->perPage);
 
-        return view('livewire.admin.users.index', compact('users'));
+        return view('livewire.admin.users.index', ['users' => $users]);
     }
 
     // getrolesproperty

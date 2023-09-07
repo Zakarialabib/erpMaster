@@ -38,9 +38,7 @@ class ProductTable extends Component
     {
         switch ($this->hasAdjustments) {
             case true:
-                if (in_array($product, array_map(function ($adjustment) {
-                    return $adjustment['product'];
-                }, $this->products))) {
+                if (in_array($product, array_map(static fn($adjustment) => $adjustment['product'], $this->products))) {
                     $this->alert('error', __('Product added succesfully'));
 
                     return;
@@ -61,7 +59,7 @@ class ProductTable extends Component
                 return;
         }
 
-        array_push($this->products, $product);
+        $this->products[] = $product;
     }
 
     public function removeProduct($key): void

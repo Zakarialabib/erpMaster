@@ -65,6 +65,7 @@ class Brands extends Component
 
                 break;
         }
+
         $this->resetPage();
     }
 
@@ -87,6 +88,7 @@ class Brands extends Component
 
                 break;
         }
+
         $this->resetPage();
     }
 
@@ -112,15 +114,9 @@ class Brands extends Component
     public function render(): View|Factory
     {
         $query = \App\Helpers::getEcommerceProducts()
-            ->when($this->category_id, function ($query) {
-                return $query->where('category_id', $this->category_id);
-            })
-            ->when($this->subcategory_id, function ($query) {
-                return $query->whereIn('subcategories', $this->subcategory_id);
-            })
-            ->when($this->brand_id, function ($query) {
-                return $query->where('brand_id', $this->brand_id);
-            });
+            ->when($this->category_id, fn($query) => $query->where('category_id', $this->category_id))
+            ->when($this->subcategory_id, fn($query) => $query->whereIn('subcategories', $this->subcategory_id))
+            ->when($this->brand_id, fn($query) => $query->where('brand_id', $this->brand_id));
 
         if ($this->sorting === 'name') {
             $query->orderBy('name', 'asc');
@@ -140,6 +136,6 @@ class Brands extends Component
 
         $this->dispatch('productsLoaded', $products->count());
 
-        return view('livewire.front.brands', compact('products'));
+        return view('livewire.front.brands', ['products' => $products]);
     }
 }

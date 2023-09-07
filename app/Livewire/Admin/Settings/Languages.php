@@ -41,8 +41,8 @@ class Languages extends Component
             $trans->save();
 
             $this->alert('success', __('Language updated successfully!'));
-        } catch (Exception $e) {
-            $this->alert('error', __($e->getMessage()));
+        } catch (Exception $exception) {
+            $this->alert('error', __($exception->getMessage()));
         }
     }
 

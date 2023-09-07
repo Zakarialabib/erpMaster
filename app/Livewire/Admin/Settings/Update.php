@@ -10,6 +10,7 @@ use Livewire\Component;
 class Update extends Component
 {
     public $message;
+
     public $updateAvailable;
 
     public function checkForUpdates()

@@ -18,8 +18,11 @@ class Barcode extends Component
     use LivewireAlert;
 
     public $warehouse_id;
+
     public $products = [];
+
     public $barcodes = [];
+
     public $paperSize = 'A4';
 
     protected $listeners = ['productSelected'];
@@ -42,7 +45,7 @@ class Barcode extends Component
             ->first();
 
         if ($productWarehouse) {
-            array_push($this->products, [
+            $this->products[] = [
                 'id'                => $productWarehouse->product_id,
                 'name'              => $productWarehouse->product->name,
                 'code'              => $productWarehouse->product->code,
@@ -50,7 +53,7 @@ class Barcode extends Component
                 'quantity'          => 1,
                 'barcode_symbology' => $productWarehouse->product->barcode_symbology,
                 'barcodeSize'       => 1,
-            ]);
+            ];
         }
     }
 
@@ -75,10 +78,10 @@ class Barcode extends Component
                 continue;
             }
 
-            for ($i = 0; $i < $quantity; $i++) {
+            for ($i = 0; $i < $quantity; ++$i) {
                 $barcode = DNS1DFacade::getBarCodeSVG($product['code'], $product['barcode_symbology'], $product['barcodeSize'], 60, 'black', false);
 
-                array_push($this->barcodes, ['barcode' => $barcode, 'name' => $name, 'price' => $price]);
+                $this->barcodes[] = ['barcode' => $barcode, 'name' => $name, 'price' => $price];
             }
         }
     }

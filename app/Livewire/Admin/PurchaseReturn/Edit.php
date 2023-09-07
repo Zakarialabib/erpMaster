@@ -14,6 +14,7 @@ class Edit extends Component
     use LivewireAlert;
 
     public $purchasereturn;
+
     public bool $editModal = false;
 
     /** @var array */

@@ -35,14 +35,13 @@ class PurchasesReturnController extends Controller
 
         Cart::instance('purchase_return')->destroy();
 
-        return view('admin.purchasesreturn.create', compact('supplier'));
+        return view('admin.purchasesreturn.create', ['supplier' => $supplier]);
     }
 
     public function store(StorePurchaseReturnRequest $request)
     {
-        DB::transaction(function () use ($request) {
+        DB::transaction(static function () use ($request) {
             $due_amount = $request->total_amount - $request->paid_amount;
-
             if ($due_amount === $request->total_amount) {
                 $payment_status = PaymentStatus::DUE;
             } elseif ($due_amount > 0) {
@@ -50,7 +49,6 @@ class PurchasesReturnController extends Controller
             } else {
                 $payment_status = PaymentStatus::PAID;
             }
-
             $purchase_return = PurchaseReturn::create([
                 'date'                => $request->date,
                 'supplier_id'         => $request->supplier_id,
@@ -68,7 +66,6 @@ class PurchasesReturnController extends Controller
                 'tax_amount'          => Cart::instance('purchase_return')->tax() * 100,
                 'discount_amount'     => Cart::instance('purchase_return')->discount() * 100,
             ]);
-
             foreach (Cart::instance('purchase_return')->content() as $cart_item) {
                 PurchaseReturnDetail::create([
                     'purchase_return_id'      => $purchase_return->id,
@@ -91,9 +88,7 @@ class PurchasesReturnController extends Controller
                     ]);
                 }
             }
-
             Cart::instance('purchase_return')->destroy();
-
             if ($purchase_return->paid_amount > 0) {
                 PurchaseReturnPayment::create([
                     'date'               => $request->date,
@@ -116,7 +111,7 @@ class PurchasesReturnController extends Controller
 
         $supplier = Supplier::findOrFail($purchase_return->supplier_id);
 
-        return view('admin.purchasesreturn.show', compact('purchase_return', 'supplier'));
+        return view('admin.purchasesreturn.show', ['purchase_return' => $purchase_return, 'supplier' => $supplier]);
     }
 
     public function edit(PurchaseReturn $purchase_return)
@@ -149,14 +144,13 @@ class PurchasesReturnController extends Controller
             ]);
         }
 
-        return view('admin.purchasesreturn.edit', compact('purchase_return', 'supplier'));
+        return view('admin.purchasesreturn.edit', ['purchase_return' => $purchase_return, 'supplier' => $supplier]);
     }
 
     public function update(UpdatePurchaseReturnRequest $request, PurchaseReturn $purchase_return)
     {
-        DB::transaction(function () use ($request, $purchase_return) {
+        DB::transaction(static function () use ($request, $purchase_return) {
             $due_amount = $request->total_amount - $request->paid_amount;
-
             if ($due_amount === $request->total_amount) {
                 $payment_status = PaymentStatus::DUE;
             } elseif ($due_amount > 0) {
@@ -164,7 +158,6 @@ class PurchasesReturnController extends Controller
             } else {
                 $payment_status = PaymentStatus::PAID;
             }
-
             foreach ($purchase_return->purchaseReturnDetails as $purchase_return_detail) {
                 if ($purchase_return->status === 'Shipped' || $purchase_return->status === 'Completed') {
                     $product = Product::findOrFail($purchase_return_detail->product_id);
@@ -172,9 +165,9 @@ class PurchasesReturnController extends Controller
                         'quantity' => $product->quantity + $purchase_return_detail->quantity,
                     ]);
                 }
+
                 $purchase_return_detail->delete();
             }
-
             $purchase_return->update([
                 'date'                => $request->date,
                 'reference'           => $request->reference,
@@ -192,7 +185,6 @@ class PurchasesReturnController extends Controller
                 'tax_amount'          => Cart::instance('purchase_return')->tax() * 100,
                 'discount_amount'     => Cart::instance('purchase_return')->discount() * 100,
             ]);
-
             foreach (Cart::instance('purchase_return')->content() as $cart_item) {
                 PurchaseReturnDetail::create([
                     'purchase_return_id'      => $purchase_return->id,
@@ -215,7 +207,6 @@ class PurchasesReturnController extends Controller
                     ]);
                 }
             }
-
             Cart::instance('purchase_return')->destroy();
         });
 

@@ -46,7 +46,7 @@ class Index extends Component
 
         $sliders = $query->paginate($this->perPage);
 
-        return view('livewire.admin.slider.index', compact('sliders'));
+        return view('livewire.admin.slider.index', ['sliders' => $sliders]);
     }
 
     public function setFeatured($id)

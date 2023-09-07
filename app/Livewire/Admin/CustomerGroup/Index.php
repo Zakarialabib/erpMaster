@@ -46,7 +46,7 @@ class Index extends Component
 
         $customergroups = $query->paginate($this->perPage);
 
-        return view('livewire.admin.customer-group.index', compact('customergroups'));
+        return view('livewire.admin.customer-group.index', ['customergroups' => $customergroups]);
     }
 
     public function showModal($id): void

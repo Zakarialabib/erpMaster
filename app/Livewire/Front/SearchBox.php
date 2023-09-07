@@ -13,7 +13,7 @@ class SearchBox extends Component
 {
     public $listeners = ['updatedSearch' => 'search'];
 
-    public $search = null;
+    public $search;
 
     public $results = [];
 
@@ -28,7 +28,7 @@ class SearchBox extends Component
 
     public function updatedSearch()
     {
-        if (strlen($this->search) > 3) {
+        if (strlen((string) $this->search) > 3) {
             $this->results = Product::active()
                 ->where('name', 'like', '%'.$this->search.'%')
                 ->orWhere('description', 'like', '%'.$this->search.'%')

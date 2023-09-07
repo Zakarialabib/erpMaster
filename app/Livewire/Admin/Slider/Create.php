@@ -24,16 +24,22 @@ class Create extends Component
 
     #[Rule('required|max:255')]
     public $title;
+
     #[Rule('nullable')]
     public $subtitle;
+
     #[Rule('nullable')]
     public $description;
+
     #[Rule('nullable')]
     public $link;
+
     #[Rule('nullable')]
     public $bg_color;
+
     #[Rule('nullable')]
     public $embeded_video;
+
     #[Rule('required')]
     public $image;
 

@@ -20,6 +20,7 @@ class Index extends Component
     use LivewireAlert;
 
     public $deleteModal = false;
+
     public $page;
 
     public function mount()
@@ -37,7 +38,7 @@ class Index extends Component
 
         $pages = $query->paginate($this->perPage);
 
-        return view('livewire.admin.page.index', compact('pages'));
+        return view('livewire.admin.page.index', ['pages' => $pages]);
     }
 
     #[On('delete')]

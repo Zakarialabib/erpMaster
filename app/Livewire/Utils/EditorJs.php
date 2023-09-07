@@ -58,7 +58,7 @@ class EditorJs extends Component
         }
 
         if (is_string($value)) {
-            $value = json_decode($value, true);
+            $value = json_decode($value, true, 512, JSON_THROW_ON_ERROR);
         }
 
         $this->editorId = $editorId;
@@ -77,9 +77,7 @@ class EditorJs extends Component
     {
         /** @var TemporaryUploadedFile $tmpFile */
         $tmpFile = collect($this->uploads)
-            ->filter(function (TemporaryUploadedFile $item) use ($uploadedFileName) {
-                return $item->getFilename() === $uploadedFileName;
-            })
+            ->filter(static fn(TemporaryUploadedFile $item) => $item->getFilename() === $uploadedFileName)
             ->first();
 
         // When no file name is passed, we use the hashName of the tmp file

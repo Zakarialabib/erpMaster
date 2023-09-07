@@ -17,9 +17,13 @@ class PayDue extends Component
     use LivewireAlert;
 
     public $amount;
+
     public $selectedSales;
+
     public $payment_method;
+
     public $customer_id;
+
     public $payModal = false;
 
     protected $rules = [

@@ -19,8 +19,11 @@ class Profile extends Component
     public $user;
 
     public $name;
+
     public $email;
+
     public $image;
+
     public $password;
 
     /** @var array */
@@ -50,7 +53,7 @@ class Profile extends Component
             'email' => $this->email,
         ]);
 
-        if (isset($this->image)) {
+        if ($this->image !== null) {
             $this->image->store('users', 'public');
             auth()->user()->update([
                 'image' => $this->image->hashName(),

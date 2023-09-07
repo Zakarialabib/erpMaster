@@ -167,11 +167,7 @@ class Checkout extends Component
             $cost = $shipping->cost;
             $total = Cart::instance('shopping')->total();
 
-            if ($cost > 0) {
-                $this->cartTotal = $total + $cost;
-            } else {
-                $this->cartTotal = $total;
-            }
+            $this->cartTotal = $cost > 0 ? $total + $cost : $total;
         }
     }
 

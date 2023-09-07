@@ -38,9 +38,13 @@ class Index extends Component
     public $sendTelegram;
 
     public $promoAllProducts;
+
     public $copyPriceToOldPrice;
+
     public $copyOldPriceToPrice;
+
     public $percentage;
+
     public $product;
 
     public function mount(): void
@@ -106,6 +110,7 @@ class Index extends Component
         if ($productWarehouse) {
             $productWarehouse->delete();
         }
+
         $product->delete();
         $this->alert('success', __('Product and related warehouse deleted successfully!'));
     }
@@ -131,7 +136,7 @@ class Index extends Component
 
         $products = $query->paginate($this->perPage);
 
-        return view('livewire.admin.products.index', compact('products'));
+        return view('livewire.admin.products.index', ['products' => $products]);
     }
 
     public function sendTelegram($product): void
@@ -221,10 +226,11 @@ class Index extends Component
                 $warehouse->price = $warehouse->old_price;
                 $warehouse->old_price = null;
             } elseif ($this->percentageMethod === '+') {
-                $warehouse->price = round(floatval($warehouse->price) * (1 + $this->percentage / 100));
+                $warehouse->price = round((float) $warehouse->price * (1 + $this->percentage / 100));
             } else {
-                $warehouse->price = round(floatval($warehouse->price) * (1 - $this->percentage / 100));
+                $warehouse->price = round((float) $warehouse->price * (1 - $this->percentage / 100));
             }
+
             $warehouse->save();
         }
 

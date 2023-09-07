@@ -20,6 +20,7 @@ class Edit extends Component
     use LivewireAlert;
 
     public $product;
+
     public $subcategories;
 
     public $editModal = false;
@@ -83,12 +84,12 @@ class Edit extends Component
         if ($this->gallery) {
             $gallery = [];
 
-            foreach ($this->gallery as $key => $value) {
+            foreach ($this->gallery as $value) {
                 $imageName = Helpers::handleUpload($value, $this->width, $this->height, $this->product->name);
                 $gallery[] = $imageName;
             }
 
-            $this->product->gallery = json_encode($gallery);
+            $this->product->gallery = json_encode($gallery, JSON_THROW_ON_ERROR);
         }
 
         $this->product->options = $this->options;

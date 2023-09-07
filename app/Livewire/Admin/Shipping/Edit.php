@@ -24,10 +24,13 @@ class Edit extends Component
     public $langauges;
 
     public $is_pickup = false;
+
     #[Rule('required|max:255')]
     public string $title;
+
     #[Rule('nullable|max:255')]
     public string $subtitle;
+
     #[Rule('required|numeric')]
     public $cost;
 

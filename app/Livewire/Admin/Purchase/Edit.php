@@ -28,26 +28,36 @@ class Edit extends Component
     use LivewireAlert;
     use WithModels;
     public $cart_instance;
+
     public $purchase_details;
 
     #[Rule('required')]
     public $warehouse_id;
+
     #[Rule('required')]
     public $supplier_id;
+
     #[Rule('required|integer|min:0|max:100')]
     public $tax_percentage;
+
     #[Rule('required|integer|min:0|max:100')]
     public $discount_percentage;
+
     #[Rule('required|numeric')]
     public $shipping_amount;
+
     #[Rule('required|numeric')]
     public $total_amount;
+
     #[Rule('required|numeric')]
     public $paid_amount;
+
     #[Rule('required|string|max:50')]
     public $status;
+
     #[Rule('required|string|max:50')]
     public $payment_method;
+
     #[Rule('nullable|string|max:1000')]
     public $note;
 
@@ -68,8 +78,11 @@ class Edit extends Component
     public $price;
 
     public $date;
+
     public $discount_type;
+
     public $item_discount;
+
     public $listsForFields = [];
 
     public function mount($id)
@@ -214,7 +227,7 @@ class Edit extends Component
                     'quantity'     => $cart_item->qty,
                     'price'        => $cart_item->price * 100,
                     'date'         => date('Y-m-d'),
-                    'movable_type' => get_class($product),
+                    'movable_type' => $product::class,
                     'movable_id'   => $product->id,
                     'user_id'      => Auth::user()->id,
                 ]);
@@ -260,10 +273,6 @@ class Edit extends Component
 
     public function updatedStatus($value)
     {
-        if ($value === PurchaseStatus::COMPLETED->value) {
-            $this->paid_amount = $this->total_amount;
-        } else {
-            $this->paid_amount = 0;
-        }
+        $this->paid_amount = $value === PurchaseStatus::COMPLETED->value ? $this->total_amount : 0;
     }
 }

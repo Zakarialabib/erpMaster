@@ -20,9 +20,11 @@ class Login extends Component
     public $listeners = ['loginModal'];
 
     public $email;
+
     public $password;
 
     public $store_url;
+
     public $type;
 
     protected $rules = [
@@ -55,7 +57,7 @@ class Login extends Component
         ]);
 
         if ($response->getStatusCode() === Response::HTTP_OK) {
-            $data = json_decode((string) $response->getBody(), true);
+            $data = json_decode((string) $response->getBody(), true, 512, JSON_THROW_ON_ERROR);
             $ecommerceToken = $data['api_token'];
 
             $integration = Integration::firstOrNew(['type' => $this->type]);

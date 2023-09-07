@@ -54,7 +54,7 @@ class Index extends Component
 
         $printers = $query->paginate($this->perPage);
 
-        return view('livewire.admin.printer.index', compact('printers'));
+        return view('livewire.admin.printer.index', ['printers' => $printers]);
     }
 
     public function showModal(Printer $printer): void

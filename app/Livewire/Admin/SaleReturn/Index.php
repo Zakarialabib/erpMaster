@@ -37,12 +37,19 @@ class Index extends Component
     public $paymentModal = false;
 
     public $salereturn_id;
+
     public $date;
+
     public $reference;
+
     public $amount;
+
     public $payment_method;
+
     public $total_amount;
+
     public $due_amount;
+
     public $paid_amount;
 
     /** @var array */
@@ -77,7 +84,7 @@ class Index extends Component
 
         $salereturns = $query->paginate($this->perPage);
 
-        return view('livewire.admin.sale-return.index', compact('salereturns'));
+        return view('livewire.admin.sale-return.index', ['salereturns' => $salereturns]);
     }
 
     public function showModal(SaleReturn $salereturn)
@@ -167,8 +174,8 @@ class Index extends Component
             $this->dispatch('refreshIndex');
 
             $this->paymentModal = false;
-        } catch (Throwable $th) {
-            $this->alert('error', __('Error.').$th->getMessage());
+        } catch (Throwable $throwable) {
+            $this->alert('error', __('Error.').$throwable->getMessage());
         }
     }
 }

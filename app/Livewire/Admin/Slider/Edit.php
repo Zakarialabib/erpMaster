@@ -22,11 +22,17 @@ class Edit extends Component
     public $slider;
 
     public $title;
+
     public $subtitle;
+
     public $link;
+
     public $bg_color;
+
     public $embeded_video;
+
     public $image;
+
     public $description;
 
     protected $rules = [

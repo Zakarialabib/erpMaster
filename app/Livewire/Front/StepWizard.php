@@ -13,13 +13,21 @@ class StepWizard extends Component
     use WithModels;
 
     public $step = 0;
+
     public $giftOrSelf;
+
     public $category_id;
+
     public $brand_id;
+
     public $subcategory_id;
+
     public $minPrice = 0;
+
     public $maxPrice = '1000';
-    public $options = null;
+
+    public $options;
+
     public $price = 0;
 
     public $listeners = [
@@ -28,12 +36,12 @@ class StepWizard extends Component
 
     public function nextStep()
     {
-        $this->step++;
+        ++$this->step;
     }
 
     public function prevStep()
     {
-        $this->step--;
+        --$this->step;
     }
 
     public function updateGiftOrSelf($giftOrSelf)
@@ -90,6 +98,7 @@ class StepWizard extends Component
 
                 break;
         }
+
         $this->dispatch('resetPage');
     }
 

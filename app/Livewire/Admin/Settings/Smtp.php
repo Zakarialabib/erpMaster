@@ -14,12 +14,19 @@ class Smtp extends Component
     use LivewireAlert;
 
     public $mail_mailer;
+
     public $mail_host;
+
     public $mail_port;
+
     public $mail_from_address;
+
     public $mail_from_name;
+
     public $mail_username;
+
     public $mail_password;
+
     public $mail_encryption;
 
     public function mount()
@@ -68,8 +75,8 @@ class Smtp extends Component
             Artisan::call('cache:clear');
 
             $this->alert('success', __('Email configuration updated successfully!'));
-        } catch (Exception $e) {
-            $this->alert('error', __($e->getMessage()));
+        } catch (Exception $exception) {
+            $this->alert('error', __($exception->getMessage()));
         }
     }
 }

@@ -29,7 +29,7 @@ class Index extends Component
 
         $roles = $query->paginate($this->perPage);
 
-        return view('livewire.admin.role.index', compact('roles'));
+        return view('livewire.admin.role.index', ['roles' => $roles]);
     }
 
     public function deleteSelected()

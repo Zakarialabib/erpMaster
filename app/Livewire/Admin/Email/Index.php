@@ -36,7 +36,7 @@ class Index extends Component
 
         $emails = $query->paginate($this->perPage);
 
-        return view('livewire.admin.email.index', compact('emails'));
+        return view('livewire.admin.email.index', ['emails' => $emails]);
     }
 
     // Blog Category  Delete

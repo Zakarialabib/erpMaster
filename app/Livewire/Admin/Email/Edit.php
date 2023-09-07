@@ -19,8 +19,11 @@ class Edit extends Component
     use WithFileUploads;
 
     public $editModal = false;
+
     public $email_setting;
+
     public $description;
+
     public $message;
 
     public function updatedMessage($value)

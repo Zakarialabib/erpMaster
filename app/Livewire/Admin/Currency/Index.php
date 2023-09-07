@@ -46,7 +46,7 @@ class Index extends Component
 
         $currencies = $query->paginate($this->perPage);
 
-        return view('livewire.admin.currency.index', compact('currencies'));
+        return view('livewire.admin.currency.index', ['currencies' => $currencies]);
     }
 
     public function showModal(Currency $currency): void

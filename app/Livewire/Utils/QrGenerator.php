@@ -12,23 +12,39 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
 class QrGenerator extends Component
 {
     public $activeTab = 'url';
+
     public $email;
+
     public $phone;
+
     public $name;
+
     public $company_name;
+
     public $address;
+
     public $websiteUrl;
+
     public $qrImage;
+
     public $qrCodeData;
+
     public $instagramLink;
+
     public $facebookLink;
+
     public $tiktokLink;
+
     public $whatsappLink;
 
     public $utmBuilder = false;
+
     public $utmSource;
+
     public $utmMedium;
+
     public $utmCampaign;
+
     public $utmTerm;
 
     public function render(): View
@@ -48,7 +64,7 @@ class QrGenerator extends Component
         }
 
         // Remove existing UTM parameters from the website URL, if any
-        $parsedUrl = parse_url($this->websiteUrl);
+        $parsedUrl = parse_url((string) $this->websiteUrl);
         $this->websiteUrl = $parsedUrl['scheme'].'://'.$parsedUrl['host'].$parsedUrl['path'];
 
         $utmParams = [
@@ -112,7 +128,7 @@ class QrGenerator extends Component
         ];
 
         // Return the response with the QR code image for download
-        return response()->streamDownload(function () use ($qrCode): void {
+        return response()->streamDownload(static function () use ($qrCode) : void {
             echo $qrCode;
         }, 'qr_code.svg', $headers);
     }

@@ -33,6 +33,7 @@ class Index extends Component
     ];
 
     public $startDate;
+
     public $endDate;
 
     public $importModal = false;
@@ -93,7 +94,7 @@ class Index extends Component
 
         $sales = $query->paginate($this->perPage);
 
-        return view('livewire.admin.sales.index', compact('sales'));
+        return view('livewire.admin.sales.index', ['sales' => $sales]);
     }
 
     public function deleteSelected()
@@ -159,8 +160,8 @@ class Index extends Component
         $dueAmount = format_currency($this->sale->due_amount);
 
         // Delete the leading zero from the phone number, if it exists.
-        if (strpos($phone, '0') === 0) {
-            $phone = substr($phone, 1);
+        if (str_starts_with((string) $phone, '0')) {
+            $phone = substr((string) $phone, 1);
         }
 
         // Add the country code to the beginning of the phone number.
@@ -171,13 +172,13 @@ class Index extends Component
         $message = __('You have a due amount of');
 
         // Construct the message text.
-        $message = "{$greeting} {$name} {$message} {$dueAmount}.";
+        $message = sprintf('%s %s %s %s.', $greeting, $name, $message, $dueAmount);
 
         // Encode the message text for use in the URL.
         $message = urlencode($message);
 
         // Construct the WhatsApp API endpoint URL.
-        $url = "https://api.whatsapp.com/send?phone={$phone}&text={$message}";
+        $url = sprintf('https://api.whatsapp.com/send?phone=%s&text=%s', $phone, $message);
 
         return redirect()->away($url);
     }

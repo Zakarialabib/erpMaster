@@ -31,7 +31,7 @@ class Contacts extends Component
 
         $contacts = $query->paginate($this->perPage);
 
-        return view('livewire.admin.contacts', compact('contacts'));
+        return view('livewire.admin.contacts', ['contacts' => $contacts]);
     }
 
     public function deleteSelected()

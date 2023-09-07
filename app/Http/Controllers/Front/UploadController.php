@@ -22,7 +22,5 @@ class UploadController extends Controller
                 'url' => $path,
             ], 200);
         }
-
-        return;
     }
 }

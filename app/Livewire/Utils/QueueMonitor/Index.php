@@ -11,21 +11,35 @@ use Livewire\Component;
 class Index extends Component
 {
     public $search;
+
     public $sortBy = 'created_at';
+
     public $sortDirection = 'desc';
+
     public $perPage = 10;
 
     public $job_id;
+
     public $name;
+
     public $queue;
+
     public $started_at;
+
     public $finished_at;
+
     public $failed;
+
     public $attempt;
+
     public $exception_message;
+
     public $aggregatedInfo;
+
     public $totalJobsExecuted;
+
     public $totalExecutionTime;
+
     public $averageExecutionTime;
 
     public function mount()
@@ -64,6 +78,6 @@ class Index extends Component
 
         $jobs = $query->paginate($this->perPage);
 
-        return view('livewire.utils.queue-monitor.index', compact('jobs'));
+        return view('livewire.utils.queue-monitor.index', ['jobs' => $jobs]);
     }
 }

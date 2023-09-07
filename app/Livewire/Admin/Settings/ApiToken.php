@@ -15,13 +15,17 @@ class ApiToken extends Component
     public $token;
 
     public $integration;
+
     public $integrations;
 
     public $inventoryProducts;
+
     public $missingProducts;
 
     public $type;
+
     public $store_url;
+
     public $api_key;
 
     /** @var array<string> */

@@ -27,19 +27,19 @@ class Create extends Component
     public int $phone;
 
     #[Rule('nullable|email|max:255', message: 'The email field must be a valid email address with a maximum of 255 characters.')]
-    public ?string $email;
+    public ?string $email = null;
 
     #[Rule('nullable|string|max:255', message: 'The address field must be a string with a maximum of 255 characters.')]
-    public ?string $address;
+    public ?string $address = null;
 
     #[Rule('nullable|string|max:255', message: 'The city field must be a string with a maximum of 255 characters.')]
-    public ?string $city;
+    public ?string $city = null;
 
     #[Rule('nullable|string|max:255', message: 'The country field must be a string with a maximum of 255 characters.')]
-    public ?string $country;
+    public ?string $country = null;
 
     #[Rule('nullable|numeric|max:255', message: 'The tax number field must be a numeric value with a maximum of 255 characters.')]
-    public ?int $tax_number;
+    public ?int $tax_number = null;
 
     public function render()
     {

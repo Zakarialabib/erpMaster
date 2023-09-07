@@ -29,10 +29,15 @@ class Index extends Component
     ];
 
     public $purchase_id;
+
     public $date;
+
     public $reference;
+
     public $amount;
+
     public $payment_method;
+
     public $paymentModal = false;
 
     /** @var array */
@@ -65,7 +70,7 @@ class Index extends Component
 
         $purchasereturns = $query->paginate($this->perPage);
 
-        return view('livewire.admin.purchase-return.index', compact('purchasereturns'));
+        return view('livewire.admin.purchase-return.index', ['purchasereturns' => $purchasereturns]);
     }
 
     public function deleteSelected()
@@ -145,8 +150,8 @@ class Index extends Component
             $this->paymentModal = false;
 
             $this->dispatch('refreshIndex');
-        } catch (Throwable $th) {
-            $this->alert('error', 'Error'.$th->getMessage());
+        } catch (Throwable $throwable) {
+            $this->alert('error', 'Error'.$throwable->getMessage());
         }
     }
 }

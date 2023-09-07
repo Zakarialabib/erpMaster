@@ -16,11 +16,17 @@ class Account extends Component
     use LivewireAlert;
 
     public $user;
+
     public $name;
+
     public $phone;
+
     public $email;
+
     public $address;
+
     public $city;
+
     public $country;
 
     public string $password = '';

@@ -45,7 +45,7 @@ class Index extends Component
 
         $adjustments = $query->paginate($this->perPage);
 
-        return view('livewire.admin.adjustment.index', compact('adjustments'));
+        return view('livewire.admin.adjustment.index', ['adjustments' => $adjustments]);
     }
 
     public function deleteSelected(): void

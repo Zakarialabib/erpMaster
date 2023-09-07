@@ -21,13 +21,20 @@ class PaymentForm extends Component
     public $paymentModal = false;
 
     public $purchase;
+
     public $purchase_id;
+
     public $date;
+
     // public $reference;
     public $amount;
+
     public $payment_method;
+
     public $due_amount;
+
     public $paid_amount;
+
     public $note;
 
     public $listeners = [
@@ -106,8 +113,8 @@ class PaymentForm extends Component
             $this->paymentModal = false;
 
             $this->dispatch('refreshIndex')->to(Index::class);
-        } catch (Throwable $th) {
-            $this->alert('error', 'Error'.$th->getMessage());
+        } catch (Throwable $throwable) {
+            $this->alert('error', 'Error'.$throwable->getMessage());
         }
     }
 }

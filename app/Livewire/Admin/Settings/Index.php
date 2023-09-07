@@ -31,52 +31,82 @@ class Index extends Component
     public $listsForFields = [];
 
     public $invoice_header;
+
     public $invoice_footer;
 
     public $image;
+
     public $site_logo;
+
     public $siteImage;
+
     public $favicon;
+
     #[Rule('required|string|min:1|max:255')]
     public $company_name;
+
     #[Rule('required|string|min:1|max:255')]
     public $company_email;
+
     #[Rule('required|string|min:1|max:255')]
     public $company_phone;
+
     #[Rule('nullable|string|min:0|max:255')]
     public $company_logo;
+
     #[Rule('required|string|min:1|max:255')]
     public $company_address;
+
     #[Rule('nullable|string|min:0|max:255')]
     public $company_tax;
+
     #[Rule('nullable|string|min:0|max:255')]
     public $telegram_channel;
+
     #[Rule('required|integer|min:0|max:192')]
     public $default_currency_id;
+
     #[Rule('required|string|min:1|max:255')]
     public $default_currency_position;
+
     #[Rule('required|string|min:1|max:255')]
     public $default_date_format;
+
     #[Rule('nullable|integer|min:0|max:192')]
     public $default_client_id;
+
     #[Rule('nullable|integer|min:0|max:192')]
     public $default_warehouse_id;
+
     #[Rule('required|string|min:1|max:255')]
     public $default_language;
+
     public $invoice_footer_text;
 
     public $sale_prefix;
+
     public $saleReturn_prefix;
+
     public $purchase_prefix;
+
     public $purchaseReturn_prefix;
+
     public $quotation_prefix;
+
     public $salePayment_prefix;
+
     public $purchasePayment_prefix;
+
     public $is_rtl;
+
     public $show_email;
+
     public $show_address;
+
     public $show_order_tax;
+
     public $show_discount;
+
     public $show_shipping;
 
     public function render()

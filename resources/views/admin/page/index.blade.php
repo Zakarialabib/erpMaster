@@ -36,7 +36,7 @@
                 </div>
             </div>
             <div class="float-right">
-                <x-button primary type="button" wire:click="dispatch('createTemplate')">
+                <x-button primary type="button" wire:click="dispatch('createModal')">
                     {{ __('Create from template') }}
                 </x-button>
                 <x-button primary type="button" wire:click="dispatch('createPage')">

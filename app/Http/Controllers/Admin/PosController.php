@@ -18,6 +18,6 @@ class PosController extends Controller
         $customers = Customer::select(['id', 'name'])->get();
         $product_categories = Category::select(['id', 'name'])->get();
 
-        return view('admin.sale.pos.index', compact('product_categories', 'customers'));
+        return view('admin.sale.pos.index', ['product_categories' => $product_categories, 'customers' => $customers]);
     }
 }

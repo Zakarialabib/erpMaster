@@ -13,6 +13,6 @@ class ProductController extends Controller
     {
         $product = Product::findorfail($id);
 
-        return view('front.product', compact('product'));
+        return view('front.product', ['product' => $product]);
     }
 }

@@ -1,5 +1,5 @@
 <div>
-    <x-modal wire:model="createTemplate">
+    <x-modal wire:model="createModal">
         <x-slot name="title">
             {{ __('Create from template') }}
         </x-slot>

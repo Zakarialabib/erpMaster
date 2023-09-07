@@ -102,7 +102,7 @@ class Highlighted extends Component
             $this->alert('success', 'Product highlighted successfully.');
 
             $this->highlightModal = false;
-        } catch (Throwable $th) {
+        } catch (Throwable) {
             $this->alert('success', 'Unable to updated Product highlighted.');
         }
     }

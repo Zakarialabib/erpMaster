@@ -57,7 +57,7 @@ class Index extends Component
 
         $customers = $query->paginate($this->perPage);
 
-        return view('livewire.admin.customers.index', compact('customers'));
+        return view('livewire.admin.customers.index', ['customers' => $customers]);
     }
 
     public function deleteSelected()

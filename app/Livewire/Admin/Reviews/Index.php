@@ -30,6 +30,6 @@ class Index extends Component
 
         $reviews = $query->paginate($this->perPage);
 
-        return view('livewire.admin.reviews.index', compact('reviews'));
+        return view('livewire.admin.reviews.index', ['reviews' => $reviews]);
     }
 }

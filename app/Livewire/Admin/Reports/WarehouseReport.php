@@ -17,14 +17,23 @@ use Livewire\Component;
 class WarehouseReport extends Component
 {
     public $warehouses;
+
     public $warehouse_id;
+
     public $start_date;
+
     public $end_date;
+
     public $purchases;
+
     public $sales;
+
     public $quotations;
+
     public $productPurchase;
+
     public $productSale;
+
     public $productQuotation;
 
     protected $rules = [
@@ -81,17 +90,11 @@ class WarehouseReport extends Component
 
     public function warehouseReport()
     {
-        $this->productPurchase = $this->purchases->map(function ($purchase) {
-            return PurchaseDetail::where('purchase_id', $purchase->id)->get();
-        });
+        $this->productPurchase = $this->purchases->map(static fn($purchase) => PurchaseDetail::where('purchase_id', $purchase->id)->get());
 
-        $this->productSale = $this->sales->map(function ($sale) {
-            return SaleDetails::where('sale_id', $sale->id)->get();
-        });
+        $this->productSale = $this->sales->map(static fn($sale) => SaleDetails::where('sale_id', $sale->id)->get());
 
-        $this->productQuotation = $this->quotations->map(function ($quotation) {
-            return QuotationDetails::where('quotation_id', $quotation->id)->get();
-        });
+        $this->productQuotation = $this->quotations->map(static fn($quotation) => QuotationDetails::where('quotation_id', $quotation->id)->get());
     }
 
     public function render()

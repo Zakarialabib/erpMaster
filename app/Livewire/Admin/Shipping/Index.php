@@ -47,7 +47,7 @@ class Index extends Component
 
         $shippings = $query->paginate($this->perPage);
 
-        return view('livewire.admin.shipping.index', compact('shippings'));
+        return view('livewire.admin.shipping.index', ['shippings' => $shippings]);
     }
 
     public function deleteModal($shipping)

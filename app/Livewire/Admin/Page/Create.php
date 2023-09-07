@@ -26,20 +26,32 @@ class Create extends Component
 
     #[Rule('required|min:3|max:255')]
     public $title;
+
     #[Rule('required|min:3|max:255')]
     public $slug;
+
     public $description;
+
     #[Rule('nullable')]
     public $meta_title;
+
     #[Rule('nullable')]
     public $meta_description;
+
     public $image = '';
+
     public bool $is_sliders = false;
+
     public bool $is_contact = false;
+
     public bool $is_offer = false;
+
     public bool $is_title = true;
+
     public bool $is_description = true;
+
     public $status;
+
     public $type;
 
     #[On('editorjs-save')]
@@ -59,7 +71,7 @@ class Create extends Component
         }
 
         $this->slug = Str::slug($this->title);
-        $this->description = json_encode($this->description);
+        $this->description = json_encode($this->description, JSON_THROW_ON_ERROR);
 
         $this->meta_title = Str::limit($this->title, 55);
 

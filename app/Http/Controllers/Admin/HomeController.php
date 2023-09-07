@@ -166,7 +166,7 @@ class HomeController extends Controller
             $months[] = $key;
         }
 
-        foreach ($dates_sent as $key => $value) {
+        foreach ($dates_sent as $value) {
             $sent_payments[] = $value;
         }
 
