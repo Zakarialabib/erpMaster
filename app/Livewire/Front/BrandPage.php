@@ -76,8 +76,8 @@ class BrandPage extends Component
     {
         $query = \App\Helpers::getEcommerceProducts()
             ->where('brand_id', $this->brand->id)
-            ->when($this->category_id, fn($query) => $query->where('category_id', $this->category_id))
-            ->when($this->subcategory_id, fn($query) => $query->whereIn('subcategories', $this->subcategory_id));
+            ->when($this->category_id, fn ($query) => $query->where('category_id', $this->category_id))
+            ->when($this->subcategory_id, fn ($query) => $query->whereIn('subcategories', $this->subcategory_id));
 
         if ($this->sorting === 'name') {
             $query->orderBy('name', 'asc');

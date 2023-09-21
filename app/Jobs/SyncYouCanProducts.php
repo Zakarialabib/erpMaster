@@ -21,24 +21,13 @@ class SyncYouCanProducts implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
-    protected $data;
-
-    /**
-     * Create a new job instance.
-     *
-     * @param array $data
-     */
-    public function __construct(array $data)
+    /** Create a new job instance. */
+    public function __construct(protected array $data)
     {
-        $this->data = $data;
     }
 
-    /**
-     * Execute the job.
-     *
-     * @return void
-     */
-    public function handle()
+    /** Execute the job. */
+    public function handle(): void
     {
         try {
             Log::info('Sync begin');
@@ -64,9 +53,10 @@ class SyncYouCanProducts implements ShouldQueue
                     'updated_at'        => $product['updated_at'],
                 ]);
             }
+
             Log::info('Sync finish');
-        } catch (Throwable $th) {
-            Log::info('Sync problem'.$th->getMessage());
+        } catch (Throwable $throwable) {
+            Log::info('Sync problem'.$throwable->getMessage());
         }
     }
 }

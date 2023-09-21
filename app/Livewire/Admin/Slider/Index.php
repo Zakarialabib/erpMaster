@@ -29,10 +29,7 @@ class Index extends Component
 
     public $showModal = false;
 
-    public function mount(): void
-    {
-        $this->orderable = (new Slider())->orderable;
-    }
+    public $model = Slider::class;
 
     public function render()
     {

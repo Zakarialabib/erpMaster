@@ -5,7 +5,7 @@
                 <div class="p-4">
                     <form wire:submit="generateReport">
                         <div class="flex flex-wrap -mx-2 mb-3">
-                            <div class="w-full md:w-1/3 px-3 mb-4 md:mb-0">
+                            <div class="w-full md:w-1/3 px-2 mb-2">
                                 <div class="mb-4">
                                     <label>{{ __('Start Date') }} <span class="text-red-500">*</span></label>
                                     <x-input wire:model="start_date" type="date" name="start_date" />
@@ -14,7 +14,7 @@
                                     @enderror
                                 </div>
                             </div>
-                            <div class="w-full md:w-1/3 px-3 mb-4 md:mb-0">
+                            <div class="w-full md:w-1/3 px-2 mb-2">
                                 <div class="mb-4">
                                     <label>{{ __('End Date') }} <span class="text-red-500">*</span></label>
                                     <x-input wire:model="end_date" type="date" name="end_date" />
@@ -23,7 +23,7 @@
                                     @enderror
                                 </div>
                             </div>
-                            <div class="w-full md:w-1/3 px-3 mb-4 md:mb-0">
+                            <div class="w-full md:w-1/3 px-2 mb-2">
                                 <div class="mb-4">
                                     <label>{{ __('Customer') }}</label>
                                     <x-select-list :options="$customers" name="customer_id" id="customer_id"
@@ -109,7 +109,7 @@
                                             $badgeType = $sale->status->getBadgeType();
                                         @endphp
 
-                                        <x-badge :type="$badgeType">{{ $sale->status->getName() }}</x-badge>
+                                        <x-badge :type="$badgeType">{{ $sale->status->label() }}</x-badge>
                                     </x-table.td>
                                     <x-table.td>{{ format_currency($sale->total_amount) }}</x-table.td>
                                     <x-table.td>{{ format_currency($sale->paid_amount) }}</x-table.td>
@@ -118,7 +118,7 @@
                                         @php
                                             $type = $sale->payment_status->getBadgeType();
                                         @endphp
-                                        <x-badge :type="$type">{{ $sale->payment_status->getName() }}</x-badge>
+                                        <x-badge :type="$type">{{ $sale->payment_status->label() }}</x-badge>
                                     </x-table.td>
                                 </x-table.tr>
                             @empty

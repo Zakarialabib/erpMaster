@@ -13,17 +13,13 @@ use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    public function index(): \App\Http\Resources\ProductCollection
+    public function index(): ProductCollection
     {
         return new ProductCollection(Product::with('category')->get());
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     *
-     */
-    public function store(Request $request): \App\Http\Resources\ProductResource
+    /** Store a newly created resource in storage. */
+    public function store(Request $request): ProductResource
     {
         $product = Product::create([
             'id'    => $request->id,
@@ -41,7 +37,7 @@ class ProductController extends Controller
      * @param  int  $id
      *
      */
-    public function show(Product $product): \App\Http\Resources\ProductResource
+    public function show(Product $product): ProductResource
     {
         return new ProductResource($product);
     }

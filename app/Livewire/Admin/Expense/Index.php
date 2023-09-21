@@ -39,9 +39,10 @@ class Index extends Component
 
     public $filterType;
 
+    public $model = Expense::class;
+
     public function mount(): void
     {
-        $this->orderable = (new Expense())->orderable;
         $this->startDate = now()->startOfYear()->format('Y-m-d');
         $this->endDate = now()->endOfDay()->format('Y-m-d');
     }

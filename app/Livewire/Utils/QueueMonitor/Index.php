@@ -10,6 +10,8 @@ use Livewire\Component;
 
 class Index extends Component
 {
+    public $model = QueueMonitor::class;
+
     public $search;
 
     public $sortBy = 'created_at';

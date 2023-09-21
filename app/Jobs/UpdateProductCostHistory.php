@@ -17,24 +17,17 @@ class UpdateProductCostHistory implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
-    protected $cart_item;
-
     /**
      * Create a new job instance.
      *
      * @param $cart_item
      */
-    public function __construct($cart_item)
+    public function __construct(protected $cart_item)
     {
-        $this->cart_item = $cart_item;
     }
 
-    /**
-     * Execute the job.
-     *
-     * @return void
-     */
-    public function handle()
+    /** Execute the job. */
+    public function handle(): void
     {
     }
 }

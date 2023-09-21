@@ -29,7 +29,7 @@
     <x-table>
         <x-slot name="thead">
             <x-table.th>#</x-table.th>
-            <x-table.th sortable wire:click="sortBy('title')" :direction="$sorts['title'] ?? null">
+            <x-table.th sortable wire:click="sortingBy('title')" field="title" :direction="$sorts['title'] ?? null">
                 {{ __('Title') }}
             </x-table.th>
             <x-table.th>
@@ -88,24 +88,3 @@
 
 </div>
 
-@push('scripts')
-    <script>
-        document.addEventListener('livewire:init', function() {
-            window.livewire.on('deleteModal', roleId => {
-                Swal.fire({
-                    title: 'Are you sure?',
-                    text: "You won't be able to revert this!",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, delete it!'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        window.livewire.emit('delete', roleId)
-                    }
-                })
-            })
-        })
-    </script>
-@endpush

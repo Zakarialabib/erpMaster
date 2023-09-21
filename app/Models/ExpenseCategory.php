@@ -14,7 +14,7 @@ class ExpenseCategory extends Model
     use HasAdvancedFilter;
     use HasFactory;
 
-    public const ATTRIBUTES = [
+    final public const ATTRIBUTES = [
         'id',
         'name',
         'updated_at',
@@ -22,6 +22,7 @@ class ExpenseCategory extends Model
     ];
 
     public $orderable = self::ATTRIBUTES;
+
     public $filterable = self::ATTRIBUTES;
 
     /**

@@ -12,26 +12,16 @@ use App\Notifications\Admin\NewOrderNotification;
 
 class OrderObserver
 {
-    /**
-     * Handle the Order "created" event.
-     *
-     * @param  \App\Models\Order  $order
-     * @return void
-     */
-    public function created(Order $order)
+    /** Handle the Order "created" event. */
+    public function created(Order $order): void
     {
         // Notify the admin users
         $users = User::all();
         Notification::send($users, new NewOrderNotification($order));
     }
 
-    /**
-     * Handle the Order "updated" event.
-     *
-     * @param  \App\Models\Order  $order
-     * @return void
-     */
-    public function updated(Order $order)
+    /** Handle the Order "updated" event. */
+    public function updated(Order $order): void
     {
         // if ($order->isDirty('status')) {
         //     $order->orderLogs()->create([
@@ -44,33 +34,18 @@ class OrderObserver
         // }
     }
 
-    /**
-     * Handle the Order "deleted" event.
-     *
-     * @param  \App\Models\Order  $order
-     * @return void
-     */
-    public function deleted(Order $order)
+    /** Handle the Order "deleted" event. */
+    public function deleted(Order $order): void
     {
     }
 
-    /**
-     * Handle the Order "restored" event.
-     *
-     * @param  \App\Models\Order  $order
-     * @return void
-     */
-    public function restored(Order $order)
+    /** Handle the Order "restored" event. */
+    public function restored(Order $order): void
     {
     }
 
-    /**
-     * Handle the Order "force deleted" event.
-     *
-     * @param  \App\Models\Order  $order
-     * @return void
-     */
-    public function forceDeleted(Order $order)
+    /** Handle the Order "force deleted" event. */
+    public function forceDeleted(Order $order): void
     {
     }
 }

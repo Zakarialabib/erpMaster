@@ -114,9 +114,9 @@ class Brands extends Component
     public function render(): View|Factory
     {
         $query = \App\Helpers::getEcommerceProducts()
-            ->when($this->category_id, fn($query) => $query->where('category_id', $this->category_id))
-            ->when($this->subcategory_id, fn($query) => $query->whereIn('subcategories', $this->subcategory_id))
-            ->when($this->brand_id, fn($query) => $query->where('brand_id', $this->brand_id));
+            ->when($this->category_id, fn ($query) => $query->where('category_id', $this->category_id))
+            ->when($this->subcategory_id, fn ($query) => $query->whereIn('subcategories', $this->subcategory_id))
+            ->when($this->brand_id, fn ($query) => $query->where('brand_id', $this->brand_id));
 
         if ($this->sorting === 'name') {
             $query->orderBy('name', 'asc');

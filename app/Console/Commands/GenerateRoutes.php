@@ -15,6 +15,7 @@ class GenerateRoutes extends Command
      * @var string
      */
     protected $signature = 'generate:routes';
+
     protected $description = 'Generate route definitions based on Livewire index files';
 
     public function handle()
@@ -29,7 +30,7 @@ class GenerateRoutes extends Command
                 foreach ($livewireFiles as $file) {
                     $className = 'App\\Livewire\\'.basename($directory).'\\Index';
                     $routePath = strtolower(basename($directory));
-                    $routeDefinitions .= "- Route::get('$routePath', $className::class);\n";
+                    $routeDefinitions .= "- Route::get('{$routePath}', {$className}::class);\n";
                 }
             }
 
@@ -39,7 +40,7 @@ class GenerateRoutes extends Command
             foreach ($adminLivewireFiles as $file) {
                 $className = 'App\\Livewire\\Admin\\'.basename($file, '.php');
                 $routePath = 'admin/'.strtolower(basename($file, '.php'));
-                $routeDefinitions .= "- Route::get('$routePath', $className::class);\n";
+                $routeDefinitions .= "- Route::get('{$routePath}', {$className}::class);\n";
             }
 
             $frontLivewireFiles = glob('app/Livewire/Front/*');
@@ -47,7 +48,7 @@ class GenerateRoutes extends Command
             foreach ($frontLivewireFiles as $file) {
                 $className = 'App\\Livewire\\Front\\'.basename($file, '.php');
                 $routePath = 'front/'.strtolower(basename($file, '.php'));
-                $routeDefinitions .= "- Route::get('$routePath', $className::class);\n";
+                $routeDefinitions .= "- Route::get('{$routePath}', {$className}::class);\n";
             }
 
             file_put_contents(base_path('docs/guide/routes.md'), $routeDefinitions);
@@ -55,8 +56,8 @@ class GenerateRoutes extends Command
             $this->info('Routes generated successfully!');
 
             return 0; // Command executed successfully
-        } catch (Exception $e) {
-            $this->error('An error occurred: '.$e->getMessage());
+        } catch (Exception $exception) {
+            $this->error('An error occurred: '.$exception->getMessage());
 
             return 1; // Command failed
         }

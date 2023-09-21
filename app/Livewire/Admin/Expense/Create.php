@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Livewire\Admin\Expense;
 
+use App\Livewire\Utils\Admin\WithModels;
 use App\Models\Expense;
 use App\Models\ExpenseCategory;
-use App\Models\Warehouse;
 use Illuminate\Support\Facades\Gate;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Attributes\On;
@@ -16,6 +16,7 @@ use Livewire\Attributes\Rule;
 class Create extends Component
 {
     use LivewireAlert;
+    use WithModels;
 
     public $createModal = false;
 
@@ -79,10 +80,5 @@ class Create extends Component
     public function getExpenseCategoriesProperty()
     {
         return ExpenseCategory::select('name', 'id')->get();
-    }
-
-    public function getWarehousesProperty()
-    {
-        return Warehouse::select('name', 'id')->get();
     }
 }

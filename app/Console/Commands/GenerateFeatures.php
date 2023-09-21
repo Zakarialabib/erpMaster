@@ -14,13 +14,13 @@ use RecursiveIteratorIterator;
 class GenerateFeatures extends Command
 {
     protected $signature = 'generate:features';
+
     protected $description = 'Generate features table in Markdown format';
 
     public function handle()
     {
         try {
             $livewireFiles = $this->getLivewireFiles();
-            $existingTableContent = $this->getExistingTableContent();
 
             $output = new ConsoleOutput();
             $progressBar = new ProgressBar($output, count($livewireFiles));
@@ -28,24 +28,48 @@ class GenerateFeatures extends Command
 
             $this->info('Extracting feature names from files...');
 
+            $tableContent = "| Controller/Path | Methods |\n| --- | --- |\n";
+
             foreach ($livewireFiles as $file) {
-                $this->processFile($file, $existingTableContent, $progressBar);
+                $this->processFile($file, $tableContent, $progressBar);
             }
 
-            $this->updateTableContent($existingTableContent);
+            $markdownContent = "---\ntitle: Features\nlang: en-US\n---\n\n# Livewire Features\n\n".$tableContent;
+
+            $this->saveTableContentToFile($markdownContent);
 
             $progressBar->finish();
             $this->info("\nFeatures generated successfully!");
 
             return 0; // Command executed successfully
-        } catch (Exception $e) {
-            $this->error('An error occurred: '.$e->getMessage());
+        } catch (Exception $exception) {
+            $this->error('An error occurred: '.$exception->getMessage());
 
             return 1; // Command failed
         }
     }
 
-    private function getLivewireFiles($directory = 'app/Livewire')
+    private function processFile($file, string &$tableContent, ProgressBar $progressBar): void
+    {
+        $featureName = str_replace('.php', '', basename((string) $file));
+        $folderName = basename(dirname((string) $file));
+        $content = file_get_contents($file);
+        $methods = $this->getMethods($content);
+        $methodsString = implode(', ', $methods);
+
+        $tableContent .= "| {$folderName}/{$featureName} | {$methodsString} |\n";
+
+        $progressBar->advance();
+    }
+
+    private function saveTableContentToFile(string $content): void
+    {
+        $fileName = 'features.md';
+        file_put_contents(base_path('docs/guide/'.$fileName), $content);
+    }
+
+    /** @return mixed[] */
+    private function getLivewireFiles($directory = 'app/Livewire'): array
     {
         $livewireFiles = [];
 
@@ -62,52 +86,8 @@ class GenerateFeatures extends Command
         return $livewireFiles;
     }
 
-    private function getExistingTableContent()
-    {
-        $existingContent = file_get_contents(base_path('docs/guide/features.md'));
-        $tableStartPos = strpos($existingContent, '| Features |');
-        $tableEndPos = strpos($existingContent, '| --- |', $tableStartPos);
-        $existingTableContent = substr($existingContent, $tableStartPos, $tableEndPos - $tableStartPos);
-
-        return $existingTableContent;
-    }
-
-    private function processFile($file, &$existingTableContent, $progressBar)
-    {
-        $featureName = str_replace('.php', '', basename($file));
-        $folderName = basename(dirname($file));
-        $content = file_get_contents($file);
-        $status = $this->getStatus($content);
-        $coolness = $this->getCoolness($content);
-        $methods = $this->getMethods($content);
-        $methodsString = implode(', ', $methods);
-
-        $existingTableContent .= "| $folderName/$featureName | $status | $coolness | $methodsString |\n";
-
-        $progressBar->advance();
-    }
-
-    private function updateTableContent($newContent)
-    {
-        $existingContent = file_get_contents(base_path('docs/guide/features.md'));
-        $tableStartPos = strpos($existingContent, '| Features |');
-        $tableEndPos = strpos($existingContent, '| --- |', $tableStartPos);
-        // | --- | --- | --- | --- |
-        $existingContent = substr_replace($existingContent, $newContent, $tableStartPos, $tableEndPos - $tableStartPos);
-
-        file_put_contents(base_path('docs/guide/features.md'), $existingContent);
-    }
-
-    private function getStatus($content)
-    {
-        if (strpos($content, 'done') !== false) {
-            return 'done';
-        } else {
-            return 'in progress';
-        }
-    }
-
-    private function getMethods($content)
+    /** @return string[] */
+    private function getMethods(string|bool $content): array
     {
         $methods = [];
         $lines = explode("\n", $content);
@@ -115,21 +95,12 @@ class GenerateFeatures extends Command
         foreach ($lines as $line) {
             $trimmedLine = trim($line);
 
-            if (strpos($trimmedLine, 'public function') === 0) {
+            if (str_starts_with($trimmedLine, 'public function')) {
                 $method = trim(str_replace(['public function', '()'], '', $trimmedLine));
                 $methods[] = $method;
             }
         }
 
         return $methods;
-    }
-
-    private function getCoolness($content)
-    {
-        if (strpos($content, 'cool') !== false) {
-            return '🎉 :100:';
-        } else {
-            return '😐';
-        }
     }
 }

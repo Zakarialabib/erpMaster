@@ -46,10 +46,7 @@ class Index extends Component
     /** @var bool */
     public $importModal = false;
 
-    public function mount(): void
-    {
-        $this->orderable = (new Brand())->orderable;
-    }
+    public $model = Brand::class;
 
     public function render()
     {
@@ -123,7 +120,7 @@ class Index extends Component
 
     public function downloadSample()
     {
-        return Storage::disk('exports')->download('brands_import_sample.xls.csv');   
+        return Storage::disk('exports')->download('brands_import_sample.xls.csv');
     }
 
     public function import(): void

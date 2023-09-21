@@ -11,20 +11,14 @@
 
             <form wire:submit="create">
 
-                <div class="grid lg:grid-cols-2 sm:grid-cols-1 gap-4">
+                <div class="grid lg:grid-cols-2 sm:grid-cols-1 gap-4 px-2">
                     <div>
                         <x-label for="name" :value="__('Name')" />
                         <x-input id="name" class="block mt-1 w-full" type="text" name="name"
                             wire:model="name" />
                         <x-input-error :messages="$errors->get('name')" for="name" class="mt-2" />
                     </div>
-                    <div>
-                        <x-label for="slug" :value="__('Slug')" />
-                        <x-input id="slug" class="block mt-1 w-full" type="text" name="slug"
-                            wire:model="slug" />
-                        <x-input-error :messages="$errors->get('slug')" for="slug" class="mt-2" />
-                    </div>
-
+               
                     <div>
                         <x-label for="meta_title" :value="__('Meta title')" />
                         <x-input id="meta_title" class="block mt-1 w-full" type="text" name="meta_title"
@@ -39,7 +33,7 @@
                     </div>
                 </div>
 
-                <div class="w-full px-3 mb-4">
+                <div class="w-full px-2 mb-4">
                     <x-label for="description" :value="__('Description')" />
                     <textarea id="description" class="block mt-1 w-full" type="text" name="description" wire:model="description"></textarea>
                     <x-input-error :messages="$errors->get('description')" for="description" class="mt-2" />

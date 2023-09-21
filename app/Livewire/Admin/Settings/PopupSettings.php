@@ -4,19 +4,20 @@ declare(strict_types=1);
 
 namespace App\Livewire\Admin\Settings;
 
+use App\Livewire\Utils\Datatable;
 use App\Models\Popup;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
-use Livewire\WithPagination;
 use Throwable;
 
 class PopupSettings extends Component
 {
     use LivewireAlert;
-    use WithPagination;
     use Datatable;
 
     public $popup;
+
+    public $model = Popup::class;
 
     public $popupModal = false;
 
@@ -49,46 +50,6 @@ class PopupSettings extends Component
         'ctaText'         => ['required', 'string'],
         'ctaUrl'          => ['required', 'string'],
     ];
-
-    public array $orderable;
-
-    public string $search = '';
-
-    public array $selected = [];
-
-    public array $paginationOptions;
-
-    protected $queryString = [
-        'search' => [
-            'except' => '',
-        ],
-        'sortBy' => [
-            'except' => 'id',
-        ],
-        'sortDirection' => [
-            'except' => 'desc',
-        ],
-    ];
-
-    public function getSelectedCountProperty(): int
-    {
-        return count($this->selected);
-    }
-
-    public function updatingSearch(): void
-    {
-        $this->resetPage();
-    }
-
-    public function updatingPerPage(): void
-    {
-        $this->resetPage();
-    }
-
-    public function resetSelected(): void
-    {
-        $this->selected = [];
-    }
 
     public function setDefault($id): void
     {
@@ -124,12 +85,12 @@ class PopupSettings extends Component
             ]);
 
             // show succes message
-            $this->alert§('succes', __('Popup settings created successfully !'));
+            $this->alert('succes', __('Popup settings created successfully !'));
 
             $this->popupModal = false;
         } catch (Throwable) {
             // show error message
-            $this->alert§('warning', __('Something not working !'));
+            $this->alert('warning', __('Something not working !'));
         }
     }
 
@@ -159,12 +120,12 @@ class PopupSettings extends Component
             };
 
             // Show success message
-            $this->alert§('succes', __('Popup settings updated successfully!'));
+            $this->alert('succes', __('Popup settings updated successfully!'));
 
             $this->popupModal = false;
         } catch (Throwable) {
             // Show error message
-            $this->alert§('warning', __('Something not working !'));
+            $this->alert('warning', __('Something not working !'));
         }
     }
 

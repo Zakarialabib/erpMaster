@@ -10,24 +10,24 @@
             <form wire:submit="update">
                 <div class="flex flex-col">
                     <div class="flex flex-col">
-                        <x-label for="currency.name" :value="__('Name')" />
+                        <x-label for="name" :value="__('Name')" />
                         <x-input id="name" class="block mt-1 w-full" required type="text"
-                            wire:model="currency.name" />
+                            wire:model="name" />
                     </div>
                     <div class="flex flex-col">
-                        <x-label for="currency.code" :value="__('Code')" />
+                        <x-label for="code" :value="__('Code')" />
                         <x-input id="code" class="block mt-1 w-full" type="text"
-                            wire:model="currency.code" />
+                            wire:model="code" />
                     </div>
                     <div class="flex flex-col">
-                        <x-label for="currency.symbol" :value="__('Symbol')" />
+                        <x-label for="symbol" :value="__('Symbol')" />
                         <x-input id="symbol" class="block mt-1 w-full" type="text"
-                            wire:model="currency.symbol" />
+                            wire:model="symbol" />
                     </div>
                     <div class="flex flex-col">
-                        <x-label for="currency.exchange_rate" :value="__('Rate')" />
+                        <x-label for="exchange_rate" :value="__('Rate')" />
                         <x-input id="exchange_rate" class="block mt-1 w-full" type="text"
-                            wire:model="currency.exchange_rate" />
+                            wire:model="exchange_rate" />
                     </div>
                 </div>
 

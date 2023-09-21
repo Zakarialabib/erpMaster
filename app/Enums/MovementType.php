@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Enums;
 
-use Illuminate\Support\Str;
-
 enum MovementType: int
 {
     case SALE = 0;
@@ -20,9 +18,16 @@ enum MovementType: int
 
     case PURCHASETRANSFER = 5;
 
-    public function getName(): string
+    public function label(): string
     {
-        return __(Str::studly($this->name));
+        return match ($this) {
+            static::SALE             => __('SALE'),
+            static::PURCHASE         => __('PURCHASE'),
+            static::SALERETURN       => __('SALERETURN'),
+            static::PURCHASERETURN   => __('PURCHASERETURN'),
+            static::SALETRANSFER     => __('SALETRANSFER'),
+            static::PURCHASETRANSFER => __('PURCHASETRANSFER'),
+        };
     }
 
     public function getValue()
@@ -30,11 +35,11 @@ enum MovementType: int
         return $this->value;
     }
 
-    public static function getLabel($value)
+    public static function getLabel($value): ?string
     {
         foreach (self::cases() as $case) {
             if ($case->getValue() === $value) {
-                return $case->getName();
+                return $case->label();
             }
         }
 

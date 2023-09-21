@@ -13,18 +13,17 @@ class Subcategory extends Model
 {
     use HasAdvancedFilter;
 
-    public $orderable = [
+    /** @var array<int, string> */
+    final public const ATTRIBUTES = [
         'id', 'category_id', 'name', 'slug', 'language_id',
     ];
 
-    public $timestamps = false;
+    public $orderable = self::ATTRIBUTES;
+
+    public $filterable = self::ATTRIBUTES;
 
     protected $fillable = [
         'category_id', 'name', 'slug', 'language_id',
-    ];
-
-    protected $filterable = [
-        'id', 'category_id', 'name', 'slug', 'language_id',
     ];
 
     /**
@@ -32,19 +31,17 @@ class Subcategory extends Model
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      *
-     * @return void
      */
-    public function scopeActive($query)
+    public function scopeActive($query): void
     {
         $query->where('status', 1);
     }
 
-    /** @return BelongsTo<Category> */
     public function category(): BelongsTo
     {
         return $this->belongsTo(
             related: Category::class,
-            foreignKey: 'category_id'    
+            foreignKey: 'category_id'
         );
     }
 
@@ -54,8 +51,8 @@ class Subcategory extends Model
         return $this->hasMany(Product::class);
     }
 
-    public function setSlugAttribute($value)
+    public function setSlugAttribute($value): void
     {
-        $this->attributes['slug'] = str_replace(' ', '-', $value);
+        $this->attributes['slug'] = str_replace(' ', '-', (string) $value);
     }
 }

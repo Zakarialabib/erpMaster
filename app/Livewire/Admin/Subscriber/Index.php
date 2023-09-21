@@ -14,10 +14,9 @@ class Index extends Component
 {
     use Datatable;
 
-    public function mount(): void
-    {
-        $this->orderable = (new Subscriber())->orderable;
-    }
+    public $model = Subscriber::class;
+
+    public $subscriber;
 
     public function render(): View|Factory
     {

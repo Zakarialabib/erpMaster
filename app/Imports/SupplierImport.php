@@ -9,18 +9,7 @@ use Maatwebsite\Excel\Concerns\ToModel;
 
 class SupplierImport implements ToModel
 {
-    /**  */
-    public function __construct()
-    {
-    }
-
-    /**
-     * @param  array $row
-     *
-     * @return \App\Models\Supplier
-     * @return \Illuminate\Database\Eloquent\Model|null
-     */
-    public function model(array $row)
+    public function model(array $row): Supplier
     {
         return new Supplier([
             'name'       => $row['name'],

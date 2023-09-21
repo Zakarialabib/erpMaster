@@ -12,9 +12,11 @@ use Livewire\Component;
 use Livewire\WithFileUploads;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Rule;
+use App\Livewire\Utils\Admin\WithMeta;
 
 class Edit extends Component
 {
+    use WithMeta;
     use LivewireAlert;
     use WithFileUploads;
 
@@ -34,12 +36,6 @@ class Edit extends Component
     public string $slug;
 
     public $image;
-
-    #[Rule('nullable')]
-    public string $meta_title;
-
-    #[Rule('nullable')]
-    public string $meta_description;
 
     #[Rule('nullable')]
     public string $origin;

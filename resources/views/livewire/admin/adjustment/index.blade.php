@@ -33,10 +33,10 @@
             <x-table.th>
                 <input type="checkbox" wire:model.live="selectPage" />
             </x-table.th>
-            <x-table.th sortable wire:click="sortBy('date')" :direction="$sorts['date'] ?? null">
+            <x-table.th sortable :direction="$sorts['date'] ?? null" field="date" wire:click="sortingBy('date')">
                 {{ __('Date') }}
             </x-table.th>
-            <x-table.th sortable wire:click="sortBy('reference')" :direction="$sorts['reference'] ?? null">
+            <x-table.th sortable :direction="$sorts['reference'] ?? null" field="reference" wire:click="sortingBy('reference')">
                 {{ __('Reference') }}
             </x-table.th>
             <x-table.th>{{ __('Actions') }}</x-table.th>
@@ -97,32 +97,8 @@
         </div>
     </div>
 
-
     @if ($adjustment)
         @livewire('admin.adjustment.show', ['adjustment' => $adjustment])
     @endif
 
 </div>
-
-
-@push('scripts')
-    <script>
-        document.addEventListener('livewire:init', function() {
-            window.livewire.on('deleteModal', adjustmentId => {
-                Swal.fire({
-                    title: 'Are you sure?',
-                    text: "You won't be able to revert this!",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, delete it!'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        window.livewire.emit('delete', adjustmentId)
-                    }
-                })
-            })
-        })
-    </script>
-@endpush

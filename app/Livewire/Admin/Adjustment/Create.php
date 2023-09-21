@@ -4,30 +4,34 @@ declare(strict_types=1);
 
 namespace App\Livewire\Admin\Adjustment;
 
+use App\Livewire\Utils\Admin\WithModels;
 use App\Models\AdjustedProduct;
 use App\Models\Adjustment;
 use App\Models\Product;
 use App\Models\ProductWarehouse;
-use App\Models\Warehouse;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
 use Livewire\Component;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
-use Livewire\Attributes\Computed;
 use Throwable;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\On;
+use Livewire\Attributes\Rule;
 
 #[Layout('components.layouts.dashboard')]
 class Create extends Component
 {
     use LivewireAlert;
+    use WithModels;
 
+    #[Rule('required|date')]
     public $date;
 
+    #[Rule('nullable|string|max:1000')]
     public $note;
 
+    #[Rule('required|string|max:255')]
     public $reference;
-
     public $quantities;
 
     public $types;
@@ -38,14 +42,7 @@ class Create extends Component
 
     public $hasAdjustments;
 
-    protected $listeners = [
-        'productSelected',
-    ];
-
     protected $rules = [
-        'reference'             => 'required|string|max:255',
-        'date'                  => 'required|date',
-        'note'                  => 'nullable|string|max:1000',
         'products.*.quantities' => 'required|integer|min:1',
         'products.*.types'      => 'required|in:add,sub',
     ];
@@ -83,8 +80,10 @@ class Create extends Component
             $this->validate();
 
             $adjustment = Adjustment::create([
-                'date' => $this->date,
-                'note' => $this->note,
+                'date'         => $this->date,
+                'note'         => $this->note,
+                'user_id'      => auth()->id(),
+                'warehouse_id' => $this->warehouse_id,
             ]);
 
             foreach ($this->products as $product) {
@@ -119,11 +118,12 @@ class Create extends Component
         }
     }
 
+    #[On('productSelected')]
     public function productSelected(array $product): void
     {
         switch ($this->hasAdjustments) {
             case true:
-                if (in_array($product, array_map(static fn($adjustment) => $adjustment['product'], $this->products))) {
+                if (in_array($product, array_map(static fn ($adjustment) => $adjustment['product'], $this->products))) {
                     $this->alert('error', __('Product added succesfully'));
 
                     return;
@@ -154,11 +154,5 @@ class Create extends Component
     public function removeProduct($key): void
     {
         unset($this->products[$key]);
-    }
-
-    #[Computed]
-    public function warehouses()
-    {
-        return Warehouse::pluck('name', 'id')->toArray();
     }
 }

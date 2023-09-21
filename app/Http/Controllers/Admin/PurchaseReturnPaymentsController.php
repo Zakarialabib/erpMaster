@@ -56,6 +56,7 @@ class PurchaseReturnPaymentsController extends Controller
             ]);
             $purchase_return = PurchaseReturn::findOrFail($request->purchase_return_id);
             $due_amount = $purchase_return->due_amount - $request->amount;
+
             if ($due_amount === $purchase_return->total_amount) {
                 $payment_status = PaymentStatus::DUE;
             } elseif ($due_amount > 0) {
@@ -101,6 +102,7 @@ class PurchaseReturnPaymentsController extends Controller
         DB::transaction(static function () use ($request, $purchaseReturnPayment): void {
             $purchase_return = $purchaseReturnPayment->purchaseReturn;
             $due_amount = $purchase_return->due_amount + $purchaseReturnPayment->amount - $request->amount;
+
             if ($due_amount === $purchase_return->total_amount) {
                 $payment_status = PaymentStatus::DUE;
             } elseif ($due_amount > 0) {

@@ -34,9 +34,8 @@
                 <x-table.th>
                     {{ __('Customer Infos') }}
                 </x-table.th>
-                <x-table.th sortable wire:click="sortBy('status')" :direction="$sorts['status'] ?? null">
+            <x-table.th sortable :direction="$sorts['status'] ?? null" field="status" wire:click="sortingBy('status')">
                     {{ __('Status') }}
-                    @include('components.table.sort', ['field' => 'status'])
                 </x-table.th>
                 <x-table.th>
                     {{ __('Total Qty') }}

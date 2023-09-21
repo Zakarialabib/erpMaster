@@ -4,7 +4,7 @@
         <x-button primary type="button" wire:click="dispatchTo('admin.users.create', 'createModal')">
             {{ __('Create User') }}
         </x-button>
-    </x-theme.breadcrumb> 
+    </x-theme.breadcrumb>
     <div class="flex flex-wrap justify-center">
         <div class="lg:w-1/2 md:w-1/2 sm:w-full flex flex-wrap my-2">
             <select wire:model.live="perPage"
@@ -40,19 +40,19 @@
             <x-table.th>
                 <input type="checkbox" wire:model.live="selectPage" />
             </x-table.th>
-            <x-table.th sortable wire:click="sortBy('created_at')" :direction="$sorts['created_at'] ?? null">
+            <x-table.th sortable wire:click="sortingBy('created_at')" field="created_at" :direction="$sorts['created_at'] ?? null">
                 {{ __('Date') }}
             </x-table.th>
-            <x-table.th sortable wire:click="sortBy('name')" :direction="$sorts['name'] ?? null">
+            <x-table.th sortable wire:click="sortingBy('name')" field="name" :direction="$sorts['name'] ?? null">
                 {{ __('Name') }}
             </x-table.th>
-            <x-table.th sortable wire:click="sortBy('email')" :direction="$sorts['email'] ?? null">
+            <x-table.th sortable wire:click="sortingBy('email')" field="email" :direction="$sorts['email'] ?? null">
                 {{ __('Email') }}
             </x-table.th>
-            <x-table.th>
+            <x-table.th sortable wire:click="sortingBy('phone')" field="phone" :direction="$sorts['phone'] ?? null">
                 {{ __('Phone') }}
             </x-table.th>
-            <x-table.th sortable wire:click="sortBy('status')" :direction="$sorts['status'] ?? null">
+            <x-table.th sortable wire:click="sortingBy('status')" field="status" :direction="$sorts['status'] ?? null">
                 {{ __('Status') }}
             </x-table.th>
             <x-table.th>
@@ -87,7 +87,8 @@
                         </a>
                     </x-table.td>
                     <x-table.td>
-                        <livewire:utils.toggle-button :model="$user" field="status" key="{{ $user->id }}" lazy />
+                        <livewire:utils.toggle-button :model="$user" field="status" key="{{ $user->id }}"
+                            lazy />
                     </x-table.td>
                     <x-table.td>
                         @foreach ($user->roles as $role)
@@ -98,16 +99,16 @@
                     </x-table.td>
                     <x-table.td>
                         <div class="flex justify-start space-x-2">
-                            <x-button secondary wire:click="$dispatch('showModal', { id ;{{ $user->id }} })"  type="button"
-                                wire:loading.attr="disabled">
+                            <x-button secondary wire:click="$dispatch('showModal', { id ;{{ $user->id }} })"
+                                type="button" wire:loading.attr="disabled">
                                 <i class="fas fa-eye"></i>
                             </x-button>
-                            <x-button primary wire:click="$dispatch('editModal', { id ; {{ $user->id }} })" type="button"
-                                wire:loading.attr="disabled">
+                            <x-button primary wire:click="$dispatch('editModal', { id ; {{ $user->id }} })"
+                                type="button" wire:loading.attr="disabled">
                                 <i class="fas fa-edit"></i>
                             </x-button>
-                            <x-button danger wire:click="$dispatch('deleteModal', { id ; {{ $user->id }} })" type="button"
-                                wire:loading.attr="disabled">
+                            <x-button danger wire:click="$dispatch('deleteModal', { id ; {{ $user->id }} })"
+                                type="button" wire:loading.attr="disabled">
                                 <i class="fas fa-trash"></i>
                             </x-button>
                         </div>
@@ -143,25 +144,4 @@
 
     <livewire:admin.users.create lazy />
 
-    @push('scripts')
-        <script>
-            document.addEventListener('livewire:init', function() {
-                window.livewire.on('deleteModal', UserId => {
-                    Swal.fire({
-                        title: 'Are you sure?',
-                        text: "You won't be able to revert this!",
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonColor: '#3085d6',
-                        cancelButtonColor: '#d33',
-                        confirmButtonText: 'Yes, delete it!'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            window.livewire.emit('delete', UserId)
-                        }
-                    })
-                })
-            })
-        </script>
-    @endpush
 </div>

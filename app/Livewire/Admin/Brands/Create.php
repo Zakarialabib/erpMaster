@@ -12,11 +12,13 @@ use Livewire\Attributes\On;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
 use Livewire\WithFileUploads;
+use App\Livewire\Utils\Admin\WithMeta;
 
 class Create extends Component
 {
     use LivewireAlert;
     use WithFileUploads;
+    use WithMeta;
 
     public $createModal = false;
 
@@ -35,12 +37,6 @@ class Create extends Component
     public $image;
 
     public $featured_image;
-
-    #[Rule('nullable')]
-    public string $meta_title;
-
-    #[Rule('nullable')]
-    public string $meta_description;
 
     #[Rule('nullable')]
     public string $origin;

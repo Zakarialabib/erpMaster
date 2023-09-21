@@ -14,7 +14,7 @@ class PurchasePayment extends Model
 {
     use HasAdvancedFilter;
 
-    public const ATTRIBUTES = [
+    final public const ATTRIBUTES = [
         'id',
         'purchase_id',
         'payment_method',
@@ -26,6 +26,7 @@ class PurchasePayment extends Model
     ];
 
     public $orderable = self::ATTRIBUTES;
+
     public $filterable = self::ATTRIBUTES;
 
     protected $guarded = [];
@@ -39,39 +40,24 @@ class PurchasePayment extends Model
     {
         parent::boot();
 
-        static::creating(function ($purchasePayment) {
+        static::creating(static function ($purchasePayment): void {
             $prefix = settings('purchasePayment_prefix');
-
             $latestPurchasePayment = self::latest()->first();
-
-            if ($latestPurchasePayment) {
-                $number = intval(substr($latestPurchasePayment->reference, -3)) + 1;
-            } else {
-                $number = 1;
-            }
-
-            $purchasePayment->reference = $prefix.str_pad(strval($number), 3, '0', STR_PAD_LEFT);
+            $number = $latestPurchasePayment ? (int) substr((string) $latestPurchasePayment->reference, -3) + 1 : 1;
+            $purchasePayment->reference = $prefix.str_pad((string) $number, 3, '0', STR_PAD_LEFT);
         });
     }
 
-    /**
-     * Get ajustement date.
-     *
-     * @return \Illuminate\Database\Eloquent\Casts\Attribute
-     */
+    /** Get ajustement date. */
     public function date(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => Carbon::parse($value)->format('d M, Y'),
+            get: static fn ($value) => Carbon::parse($value)->format('d M, Y'),
         );
     }
 
-    /**
-     * @param mixed $query
-     *
-     * @return mixed
-     */
-    public function scopeByPurchase($query)
+    /** @return mixed */
+    public function scopeByPurchase(mixed $query)
     {
         return $query->wherePurchaseId(request()->route('purchase_id'));
     }
@@ -79,8 +65,8 @@ class PurchasePayment extends Model
     protected function amount(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => $value / 100,
-            set: fn ($value) => $value * 100,
+            get: static fn ($value): int|float => $value / 100,
+            set: static fn ($value): int|float => $value * 100,
         );
     }
 }

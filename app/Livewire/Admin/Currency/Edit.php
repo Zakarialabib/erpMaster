@@ -8,8 +8,8 @@ use App\Models\Currency;
 use Illuminate\Support\Facades\Gate;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Attributes\On;
+use Livewire\Attributes\Rule;
 use Livewire\Component;
-use Throwable;
 
 class Edit extends Component
 {
@@ -20,20 +20,22 @@ class Edit extends Component
     /** @var mixed */
     public $currency;
 
-    /** @var array */
-    protected $rules = [
-        'currency.name'          => 'required|string|min:3|max:255',
-        'currency.code'          => 'required|string|max:255',
-        'currency.symbol'        => 'required|string|max:255',
-        'currency.exchange_rate' => 'required|numeric',
-    ];
+    #[Rule('required', message: 'The name field cannot be empty.')]
+    #[Rule('min:3', message: 'The name must be at least 3 characters.')]
+    #[Rule('max:255', message: 'The name may not be greater than 255 characters.')]
+    public $name;
 
-    protected $messages = [
-        'currency.name.required'          => 'The name field cannot be empty.',
-        'currency.code.required'          => 'The code field cannot be empty.',
-        'currency.symbol.required'        => 'The symbol field cannot be empty.',
-        'currency.exchange_rate.required' => 'The exchange rate field cannot be empty.',
-    ];
+    #[Rule('required', message: 'The code field cannot be empty.')]
+    #[Rule('max:255', message: 'The code may not be greater than 255 characters.')]
+    public $code;
+
+    #[Rule('required', message: 'The symbol field cannot be empty.')]
+    #[Rule('max:255', message: 'The symbol may not be greater than 255 characters.')]
+    public $symbol;
+
+    #[Rule('required', message: 'The exchange rate field cannot be empty.')]
+    #[Rule('numeric', message: 'The exchange rate must be a number.')]
+    public $exchange_rate;
 
     public function render()
     {
@@ -53,23 +55,30 @@ class Edit extends Component
 
         $this->currency = Currency::where('id', $id)->firstOrFail();
 
+        $this->name = $this->currency->name;
+
+        $this->code = $this->currency->code;
+
+        $this->symbol = $this->currency->symbol;
+
+        $this->exchange_rate = $this->currency->exchange_rate;
+
         $this->editModal = true;
     }
 
     public function update(): void
     {
-        try {
-            $validatedData = $this->validate();
 
-            $this->currency->save($validatedData);
+        $this->validate();
 
-            $this->alert('success', __('Currency updated successfully.'));
+        $this->currency->update(
+            $this->all(),
+        );
 
-            $this->dispatch('refreshIndex')->to(Index::class);
+        $this->alert('success', __('Currency updated successfully.'));
 
-            $this->editModal = false;
-        } catch (Throwable $throwable) {
-            $this->alert('success', __('Error.').$throwable->getMessage());
-        }
+        $this->dispatch('refreshIndex')->to(Index::class);
+
+        $this->editModal = false;
     }
 }

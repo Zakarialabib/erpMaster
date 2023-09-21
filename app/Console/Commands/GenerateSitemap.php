@@ -91,8 +91,8 @@ class GenerateSitemap extends Command
     protected function generateProductsSitemap(): void
     {
         $sitemap = Sitemap::create();
-        Product::select('id', 'slug', 'updated_at')->active()->get()->each(function (Product $product) use ($sitemap): void {
-            $sitemap->add(Url::create("catalog/{$product->slug}")
+        Product::select('id', 'slug', 'updated_at')->active()->get()->each(static function (Product $product) use ($sitemap): void {
+            $sitemap->add(Url::create('catalog/'.$product->slug)
                 ->setLastModificationDate($product->updated_at));
         });
         $sitemap->writeToFile(public_path('products_sitemap.xml'));
@@ -101,8 +101,8 @@ class GenerateSitemap extends Command
     protected function generateBrandsSitemap(): void
     {
         $sitemap = Sitemap::create();
-        Brand::select('id', 'slug', 'updated_at')->get()->each(function (Brand $brand) use ($sitemap): void {
-            $sitemap->add(Url::create("/marque/{$brand->slug}")
+        Brand::select('id', 'slug', 'updated_at')->get()->each(static function (Brand $brand) use ($sitemap): void {
+            $sitemap->add(Url::create('/marque/'.$brand->slug)
                 ->setLastModificationDate($brand->updated_at));
         });
         $sitemap->writeToFile(public_path('brands_sitemap.xml'));
@@ -112,8 +112,8 @@ class GenerateSitemap extends Command
     {
         $sitemap = Sitemap::create();
 
-        Subcategory::select('id', 'slug', 'updated_at')->get()->each(function (Subcategory $subcategory) use ($sitemap): void {
-            $sitemap->add(Url::create("/categorie/{$subcategory->slug}"));
+        Subcategory::select('id', 'slug', 'updated_at')->get()->each(static function (Subcategory $subcategory) use ($sitemap): void {
+            $sitemap->add(Url::create('/categorie/'.$subcategory->slug));
         });
 
         $sitemap->writeToFile(public_path('subcategories_sitemap.xml'));

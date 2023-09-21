@@ -8,7 +8,22 @@
                     <h1 class="mb-8 md:text-3xl lg:text-4xl font-medium text-center">
                         {{ __('Login to your account') }}
                     </h1>
-
+                    <div class="w-full flex flex-wrap gap-6 justify-center mb-6">
+                        <a class="bg-white active:bg-gray-100 text-gray-800 px-4 py-2 rounded outline-none focus:outline-none mr-2 mb-1 uppercase shadow hover:shadow-md inline-flex items-center font-bold text-xs"
+                            href="{{ route('login.facebook') }}">
+                            <span class="mr-1">
+                                <img alt="..." class="w-5 mr-1" src="{{ asset('images/login/facebook.svg') }}">
+                            </span>
+                            <p>{{ __('Login with Facebook') }}</p>
+                        </a>
+                        <a class="bg-white active:bg-gray-100 text-gray-800 px-4 py-2 rounded outline-none focus:outline-none mr-2 mb-1 uppercase shadow hover:shadow-md inline-flex items-center font-bold text-xs"
+                            href="{{ route('login.google') }}">
+                            <span class="mr-1">
+                                <img alt="..." class="w-5 mr-1" src="{{ asset('images/login/google.svg') }}">
+                            </span>
+                            <p>{{ __('Login with Google') }}</p>
+                        </a>
+                    </div>
                     <div class="w-full h-screen">
                         <!-- Session Status -->
                         <x-auth-session-status class="mb-4" :status="session('status')" />

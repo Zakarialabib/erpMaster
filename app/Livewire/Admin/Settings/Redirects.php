@@ -28,10 +28,7 @@ class Redirects extends Component
         'redirect.new_url' => 'nullable',
     ];
 
-    public function mount(): void
-    {
-        $this->orderable = (new Redirect())->orderable;
-    }
+    public $model = Redirect::class;
 
     #[On('editModal')]
     public function editModal($id): void

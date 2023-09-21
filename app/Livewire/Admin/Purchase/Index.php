@@ -21,6 +21,8 @@ class Index extends Component
 
     public $purchase;
 
+    public $model = Purchase::class;
+
     /** @var array<string> */
     public $listeners = [
         'delete',
@@ -67,14 +69,13 @@ class Index extends Component
 
     public function mount(): void
     {
-        $this->orderable = (new Purchase())->orderable;
         $this->startDate = now()->startOfYear()->format('Y-m-d');
         $this->endDate = now()->endOfDay()->format('Y-m-d');
     }
 
     public function render()
     {
-        $query = Purchase::with(['supplier', 'user', 'purchaseDetails', 'purchasePayments','purchaseDetails.product'])
+        $query = Purchase::with(['supplier', 'user', 'purchaseDetails', 'purchasePayments', 'purchaseDetails.product'])
             ->whereBetween('date', [$this->startDate, $this->endDate])
             ->advancedFilter([
                 's'               => $this->search ?: null,

@@ -3,7 +3,7 @@
         <div class="w-full">
             <form wire:submit="generateReport">
                 <div class="flex flex-wrap -mx-2 mb-3">
-                    <div class="w-full md:w-1/3 px-3 mb-4 md:mb-0">
+                    <div class="w-full md:w-1/3 px-2 mb-2">
                         <div class="mb-4">
                             <label>{{ __('Start Date') }} <span class="text-red-500">*</span></label>
                             <x-input wire:model="start_date" type="date" name="start_date" />
@@ -12,7 +12,7 @@
                             @enderror
                         </div>
                     </div>
-                    <div class="w-full md:w-1/3 px-3 mb-4 md:mb-0">
+                    <div class="w-full md:w-1/3 px-2 mb-2">
                         <div class="mb-4">
                             <label>{{ __('End Date') }} <span class="text-red-500">*</span></label>
                             <x-input wire:model="end_date" type="date" name="end_date" />
@@ -21,7 +21,7 @@
                             @enderror
                         </div>
                     </div>
-                    <div class="w-full md:w-1/3 px-3 mb-4 md:mb-0">
+                    <div class="w-full md:w-1/3 px-2 mb-2">
                         <div class="mb-4">
                             <label>{{ __('Supplier') }}</label>
                             <select wire:model="supplier_id"
@@ -110,7 +110,7 @@
                                     $badgeType = $purchase->status->getBadgeType();
                                 @endphp
 
-                                <x-badge :type="$badgeType">{{ $purchase->status->getName() }}</x-badge>
+                                <x-badge :type="$badgeType">{{ $purchase->status->label() }}</x-badge>
 
                             </x-table.td>
                             <x-table.td>{{ format_currency($purchase->total_amount) }}</x-table.td>
@@ -120,7 +120,7 @@
                                 @php
                                     $type = $purchase->payment_status->getBadgeType();
                                 @endphp
-                                <x-badge :type="$type">{{ $purchase->payment_status->getName() }}</x-badge>
+                                <x-badge :type="$type">{{ $purchase->payment_status->label() }}</x-badge>
                             </x-table.td>
                         </x-table.tr>
                     @empty

@@ -4,8 +4,8 @@
         <x-button primary type="button" wire:click="dispatchTo('admin.suppliers.create', 'createModal')">
             {{ __('Create Supplier') }}
         </x-button>
-    </x-theme.breadcrumb> 
-   
+    </x-theme.breadcrumb>
+
     <div class="flex flex-wrap justify-center">
         <div class="lg:w-1/2 md:w-1/2 sm:w-full flex flex-wrap my-2">
             <select wire:model.live="perPage"
@@ -46,13 +46,16 @@
             <x-table.th>
                 <input type="checkbox" wire:model.live="selectPage" />
             </x-table.th>
-            <x-table.th sortable wire:click="sortBy('name')" :direction="$sorts['name'] ?? null">
+            <x-table.th sortable :direction="$sorts['name'] ?? null" :field="'name'" wire:click="sortingBy('name')">
                 {{ __('Name') }}
             </x-table.th>
-            <x-table.th sortable wire:click="sortBy('phone')" :direction="$sorts['phone'] ?? null">
+
+            <x-table.th sortable :direction="$sorts['phone'] ?? null" :field="'phone'" wire:click="sortingBy('phone')">
                 {{ __('Phone') }}
             </x-table.th>
-            <x-table.th sortable wire:click="sortBy('address')" :direction="$sorts['address'] ?? null">
+
+            <x-table.th sortable :direction="$sorts['address'] ?? null" :field="'address'" wire:click="sortingBy('address')">
+
                 {{ __('Address') }}
             </x-table.th>
             <x-table.th>
@@ -200,25 +203,3 @@
     </x-modal>
     {{-- End Import modal --}}
 </div>
-
-@push('scripts')
-    <script>
-        document.addEventListener('livewire:init', function() {
-            window.livewire.on('deleteModal', supplierId => {
-                Swal.fire({
-                    title: 'Are you sure?',
-                    text: "You won't be able to revert this!",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, delete it!'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        window.livewire.emit('delete', supplierId)
-                    }
-                })
-            })
-        })
-    </script>
-@endpush

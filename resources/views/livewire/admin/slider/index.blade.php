@@ -41,13 +41,13 @@
             <x-table.th>
                 {{ __('Image') }}
             </x-table.th>
-            <x-table.th>
+            <x-table.th sortable wire:click="sortingBy('title')" field="title" :direction="$sorts['title'] ?? null">
                 {{ __('Title') }}
             </x-table.th>
-            <x-table.th>
+            <x-table.th sortable wire:click="sortingBy('status')" field="status" :direction="$sorts['status'] ?? null">
                 {{ __('Status') }}
             </x-table.th>
-            <x-table.th>
+            <x-table.th sortable wire:click="sortingBy('featured')" field="featured" :direction="$sorts['featured'] ?? null">
                 {{ __('Featured') }}
             </x-table.th>
             <x-table.th>

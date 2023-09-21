@@ -21,10 +21,7 @@ class Index extends Component
 
     public $faq;
 
-    public function mount(): void
-    {
-        $this->orderable = (new Faq())->orderable;
-    }
+    public $model = Faq::class;
 
     public function render(): View|Factory
     {

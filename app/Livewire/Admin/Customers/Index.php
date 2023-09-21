@@ -40,10 +40,7 @@ class Index extends Component
 
     public $import;
 
-    public function mount(): void
-    {
-        $this->orderable = (new Customer())->orderable;
-    }
+    public $model = Customer::class;
 
     public function render(): View|Factory
     {

@@ -7,17 +7,20 @@ namespace App\Enums;
 enum ShippingStatus: string
 {
     public const  PENDING = '0';
+
     public const  PREPARING = '1';
+
     public const SUBMITTED = '2';
+
     public const  SHIPPING = '3';
+
     public const  DELIVERED = '4';
+
     public const  CANCELLED = '5';
+
     public const  FAILED = '6';
 
-    /**
-     * Return a human-readable description of this payment method.
-     * @return string
-     */
+    /** Return a human-readable description of this payment method. */
     public function getDescription(): string
     {
         return match ($this) {

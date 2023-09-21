@@ -24,7 +24,7 @@ return new class () extends Migration {
 
             $table->float('price', 10, 2);
             $table->float('cost', 10, 2);
-            $table->float('old_price', 10, 2);
+            $table->float('old_price', 10, 2)->nullable();
             $table->integer('qty');
             $table->integer('stock_alert');
             $table->boolean('is_ecommerce')->default(false);

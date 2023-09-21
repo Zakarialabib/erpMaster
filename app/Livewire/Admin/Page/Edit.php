@@ -12,6 +12,7 @@ use Illuminate\Support\Str;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Livewire\Attributes\Rule;
+use App\Livewire\Utils\Admin\WithMeta;
 
 Should:
 #[Layout('components.layouts.dashboard')]
@@ -19,6 +20,7 @@ class Edit extends Component
 {
     use LivewireAlert;
     use WithFileUploads;
+    use WithMeta;
 
     public $page;
 
@@ -31,12 +33,6 @@ class Edit extends Component
     public $slug;
 
     public $description;
-
-    #[Rule('nullable')]
-    public $meta_title;
-
-    #[Rule('nullable')]
-    public $meta_description;
 
     public $is_sliders;
 

@@ -87,14 +87,13 @@
         <x-table>
             <x-slot name="thead">
                 <x-table.th>#</x-table.th>
-                <x-table.th sortable wire:click="sortBy('title')" :direction="$sorts['title'] ?? null">
+                <x-table.th sortable :direction="$sorts['title'] ?? null" field="title" wire:click="sortingBy('title')">
                     {{ __('Title') }}
-                    @include('components.table.sort', ['field' => 'title'])
                 </x-table.th>
-                <x-table.th sortable wire:click="sortBy('slug')" :direction="$sorts['slug'] ?? null">
+                <x-table.th sortable wire:click="sortingBy('slug')" field="slug" :direction="$sorts['slug'] ?? null">
                     {{ __('Slug') }}
                 </x-table.th>
-                <x-table.th sortable wire:click="sortBy('status')" :direction="$sorts['status'] ?? null">
+                <x-table.th sortable :direction="$sorts['status'] ?? null" field="status" wire:click="sortingBy('status')">
                     {{ __('Status') }}
                 </x-table.th>
                 <x-table.th>

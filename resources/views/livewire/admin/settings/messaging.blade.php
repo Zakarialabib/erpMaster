@@ -38,14 +38,12 @@
                     </div>
                     <div class="mb-4">
                         <label for="chat-id" class="block font-medium mb-1">{{ __('Chat ID') }}:</label>
-                        <input type="text" wire:model="chatId" id="chat-id"
-                            class="w-full p-2 border rounded-lg">
+                        <input type="text" wire:model="chatId" id="chat-id" class="w-full p-2 border rounded-lg">
                     </div>
                 @elseif($type == 'whatsapp')
                     <div class="mb-4">
                         <label for="chat-id" class="block font-medium mb-1">{{ __('Phone') }}:</label>
-                        <input type="text" wire:model="chatId" id="chat-id"
-                            class="w-full p-2 border rounded-lg">
+                        <input type="text" wire:model="chatId" id="chat-id" class="w-full p-2 border rounded-lg">
                     </div>
                     <div class="px-4 pb-2">
                         <button class="w-full bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
@@ -72,7 +70,7 @@
                     </div>
                     <div class="px-4">
                         <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full"
-                            wire:click="sendMessage">
+                            wire:click="sendMessage" type="button" wire:loading.attr="disabled">
                             {{ __('Send Message') }}
                         </button>
                     </div>
@@ -157,7 +155,7 @@
 
         {{-- selectCustomer --}}
     </div>
-    
+
     @push('scripts')
         <script>
             Livewire.on('openUrl', url => {
@@ -166,4 +164,3 @@
         </script>
     @endpush
 </div>
-

@@ -32,17 +32,15 @@
             <x-table.th>
                 <input type="checkbox" wire:model="selectPage" />
             </x-table.th>
-            <x-table.th sortable wire:click="sortBy('name')" :direction="$sorts['name'] ?? null">
+            <x-table.th sortable wire:click="sortingBy('name')" field="name" :direction="$sorts['name'] ?? null">
                 {{ __('Name') }}
-                @include('components.table.sort', ['field' => 'name'])
             </x-table.th>
-            <x-table.th>
+            <x-table.th sortable wire:click="sortingBy('price')" field="price" :direction="$sorts['price'] ?? null">
                 {{ __('Price') }}
             </x-table.th>
             <x-table.th>
                 {{ __('Is pickup') }}
             </x-table.th>
-
             <x-table.th>
                 {{ __('Actions') }}
             </x-table.th>

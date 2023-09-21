@@ -8,24 +8,14 @@ use Illuminate\Validation\ValidationException;
 
 trait HasAdvancedFilter
 {
-    /**
-     * @param mixed $query
-     * @param mixed $data
-     *
-     * @return mixed
-     */
-    public function scopeAdvancedFilter($query, $data)
+    /** @return mixed */
+    public function scopeAdvancedFilter(mixed $query, mixed $data)
     {
         return $this->processQuery($query, $data);
     }
 
-    /**
-     * @param mixed $query
-     * @param mixed $data
-     *
-     * @return mixed
-     */
-    public function processQuery($query, $data)
+    /** @return mixed */
+    public function processQuery(mixed $query, mixed $data)
     {
         $data = $this->processGlobalSearch($data);
 
@@ -53,20 +43,17 @@ trait HasAdvancedFilter
         return (new FilterQueryBuilder())->apply($query, $data);
     }
 
-    /** @return string */
-    protected function orderableColumns()
+    protected function orderableColumns(): string
     {
         return implode(',', $this->orderable);
     }
 
-    /** @return string */
-    protected function whiteListColumns()
+    protected function whiteListColumns(): string
     {
         return implode(',', $this->filterable);
     }
 
-    /** @return string */
-    protected function allowedOperators()
+    protected function allowedOperators(): string
     {
         return implode(',', [
             'contains',
@@ -78,7 +65,7 @@ trait HasAdvancedFilter
      *
      * @return mixed
      */
-    protected function processGlobalSearch($data)
+    protected function processGlobalSearch(array $data)
     {
         if (isset($data['f']) || ! isset($data['s'])) {
             return $data;
@@ -86,7 +73,7 @@ trait HasAdvancedFilter
 
         $data['filter_match'] = 'or';
 
-        $data['f'] = array_map(function ($column) use ($data) {
+        $data['f'] = array_map(static function ($column) use ($data): array {
             return [
                 'column'   => $column,
                 'operator' => 'contains',

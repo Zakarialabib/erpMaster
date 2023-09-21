@@ -14,7 +14,7 @@ class SalePayment extends Model
 {
     use HasAdvancedFilter;
 
-    public const ATTRIBUTES = [
+    final public const ATTRIBUTES = [
         'id',
         'sale_id',
         'payment_method',
@@ -26,7 +26,9 @@ class SalePayment extends Model
     ];
 
     public $orderable = self::ATTRIBUTES;
+
     public $filterable = self::ATTRIBUTES;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -47,15 +49,11 @@ class SalePayment extends Model
         return $this->belongsTo(Sale::class, 'sale_id', 'id');
     }
 
-    /**
-     * Get ajustement date.
-     *
-     * @return \Illuminate\Database\Eloquent\Casts\Attribute
-     */
+    /** Get ajustement date. */
     public function date(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => Carbon::parse($value)->format('d M, Y'),
+            get: static fn ($value) => Carbon::parse($value)->format('d M, Y'),
         );
     }
 
@@ -63,41 +61,26 @@ class SalePayment extends Model
     {
         parent::boot();
 
-        static::creating(function ($salePayment) {
+        static::creating(static function ($salePayment): void {
             $prefix = settings('salePayment_prefix');
-
             $latestSalePayment = self::latest()->first();
-
-            if ($latestSalePayment) {
-                $number = intval(substr($latestSalePayment->reference, -3)) + 1;
-            } else {
-                $number = 1;
-            }
-
-            $salePayment->reference = $prefix.str_pad(strval($number), 3, '0', STR_PAD_LEFT);
+            $number = $latestSalePayment ? (int) substr((string) $latestSalePayment->reference, -3) + 1 : 1;
+            $salePayment->reference = $prefix.str_pad((string) $number, 3, '0', STR_PAD_LEFT);
         });
     }
 
-    /**
-     * @param mixed $query
-     *
-     * @return mixed
-     */
-    public function scopeBySale($query)
+    /** @return mixed */
+    public function scopeBySale(mixed $query)
     {
         return $query->whereSaleId(request()->route('sale_id'));
     }
 
-    /**
-     * Interact with the expenses amount
-     *
-     * @return \Illuminate\Database\Eloquent\Casts\Attribute
-     */
+    /** Interact with the expenses amount */
     protected function amount(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => $value / 100,
-            set: fn ($value) => $value * 100,
+            get: static fn ($value): int|float => $value / 100,
+            set: static fn ($value): int|float => $value * 100,
         );
     }
 }

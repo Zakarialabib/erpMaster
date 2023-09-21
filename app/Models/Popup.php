@@ -32,11 +32,6 @@ class Popup extends Model
         'is_default',
     ];
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array
-     */
     protected $casts = [
         'status'     => Status::class,
         'delay'      => 'integer',

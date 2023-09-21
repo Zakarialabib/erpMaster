@@ -23,7 +23,6 @@ class PaymentDue extends Notification
     /**
      * Create a new notification instance.
      *
-     * @param  \App\Models\Sale  $sale
      *
      * @return void
      */
@@ -32,26 +31,14 @@ class PaymentDue extends Notification
         $this->sale = $sale;
     }
 
-    /**
-     * Get the notification's delivery channels.
-     *
-     * @param  mixed  $notifiable
-     *
-     * @return array
-     */
-    public function via($notifiable)
+    /** Get the notification's delivery channels. */
+    public function via(mixed $notifiable): array
     {
         return ['database'];
     }
 
-    /**
-     * Get the array representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     *
-     * @return array
-     */
-    public function toDatabase($notifiable)
+    /** Get the array representation of the notification. */
+    public function toDatabase(mixed $notifiable): array
     {
         if ( ! $this->sale->due_amount || ! $this->sale->payment_date) {
             $payment_date = Carbon::parse($this->sale->date)->addDays(15);

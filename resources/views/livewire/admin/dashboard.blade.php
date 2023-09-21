@@ -7,7 +7,8 @@
 
         <div class="w-full px-4 pt-4 pb-10">
 
-            <livewire:admin.stats.transactions />
+            <livewire:admin.customers.google-contact  />
+            {{-- <livewire:admin.stats.transactions /> --}}
 
         </div>
     @endcan

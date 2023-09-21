@@ -59,6 +59,6 @@ class Create extends Component
 
         $this->createModal = false;
 
-        $this->reset('title', 'subtitle', 'cost', 'is_pickup');
+        $this->reset(['title', 'subtitle', 'cost', 'is_pickup']);
     }
 }

@@ -58,7 +58,7 @@ class Edit extends Component
 
         $this->dispatch('refreshIndex')->to(Index::class);
 
-        $this->reset('name', 'description');
+        $this->reset(['name', 'description']);
 
         $this->editModal = false;
     }

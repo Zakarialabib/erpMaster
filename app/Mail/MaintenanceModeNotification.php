@@ -15,6 +15,7 @@ class MaintenanceModeNotification extends Mailable
     use Queueable;
     use SerializesModels;
 
+    /** @var bool */
     public $status;
 
     public function __construct(bool $status)
@@ -40,11 +41,7 @@ class MaintenanceModeNotification extends Mailable
         );
     }
 
-    /**
-     * Get the attachments for the message.
-     *
-     * @return array
-     */
+    /** Get the attachments for the message. */
     public function attachments(): array
     {
         return [];

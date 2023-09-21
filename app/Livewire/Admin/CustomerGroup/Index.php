@@ -23,16 +23,13 @@ class Index extends Component
 
     public $showModal = false;
 
+    public $model = CustomerGroup::class;
+
     /** @var array<string> */
     public $listeners = [
         'showModal',
         'delete',
     ];
-
-    public function mount(): void
-    {
-        $this->orderable = (new CustomerGroup())->orderable;
-    }
 
     public function render()
     {

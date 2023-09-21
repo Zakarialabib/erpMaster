@@ -38,7 +38,6 @@ class Account extends Component
 
     public string $password = '';
 
-
     public function mount(): void
     {
         $this->user = User::find(Auth::user()->id);

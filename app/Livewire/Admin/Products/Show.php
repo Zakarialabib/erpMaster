@@ -18,7 +18,7 @@ class Show extends Component
     #[On('showModal')]
     public function showModal($id): void
     {
-        $this->product = Product::findOrFail($id);
+        $this->product = Product::where('id', $id)->first();
 
         $this->showModal = true;
     }

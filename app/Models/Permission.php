@@ -11,13 +11,14 @@ class Permission extends SpatiePermission
 {
     use HasAdvancedFilter;
 
-    public const ATTRIBUTES = [
+    final public const ATTRIBUTES = [
         'id',
         'name',
         'guard_name',
     ];
 
     public $orderable = self::ATTRIBUTES;
+
     public $filterable = self::ATTRIBUTES;
 
     /**
@@ -30,11 +31,10 @@ class Permission extends SpatiePermission
     /**
      * Determine if the permission belongs to the role.
      *
-     * @param  mixed  $role
      *
      * @return bool
      */
-    public function inRole($role)
+    public function inRole(mixed $role)
     {
         if (is_string($role)) {
             return $this->roles->contains('name', $role);

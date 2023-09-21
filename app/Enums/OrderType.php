@@ -4,20 +4,22 @@ declare(strict_types=1);
 
 namespace App\Enums;
 
-use Illuminate\Support\Str;
-
 enum OrderType: int
 {
-    case PRODUCT = 1;
+    case PRODUCT = 0;
+    case SERVICE = 1;
 
     public static function values(): array
     {
         return array_column(self::cases(), 'name', 'value');
     }
 
-    public function getName(): string
+    public function label(): string
     {
-        return __(Str::studly($this->name));
+        return match ($this) {
+            static::PRODUCT => __('Product'),
+            static::SERVICE => __('Service'),
+        };
     }
 
     public function getValue(): int
@@ -29,7 +31,7 @@ enum OrderType: int
     {
         foreach (self::cases() as $case) {
             if ($case->getValue() === $value) {
-                return $case->getName();
+                return $case->label();
             }
         }
 

@@ -20,6 +20,8 @@ class Index extends Component
 
     public $showModal = false;
 
+    public $model = User::class;
+
     public $user;
 
     public $role;
@@ -41,11 +43,6 @@ class Index extends Component
     {
         $this->filterRole = $role;
         $this->resetPage(); // Reset pagination to the first page
-    }
-
-    public function mount(): void
-    {
-        $this->orderable = (new User())->orderable;
     }
 
     public function render()

@@ -7,8 +7,10 @@ namespace App\Livewire\Account;
 use App\Models\Order;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\Layout;
 use Livewire\Component;
 
+#[Layout('components.layouts.guest')]
 class Orders extends Component
 {
     public $orders;
@@ -17,7 +19,7 @@ class Orders extends Component
     {
         $user = User::find(Auth::user()->id);
 
-        $this->orders = Order::where('user_id', $user->id)->get();
+        $this->orders = Order::where('customer_id', auth()->user()->id)->get();
     }
 
     public function render()

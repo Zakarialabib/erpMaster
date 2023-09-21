@@ -21,24 +21,17 @@ class ProductJob implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
-    protected $filename;
-
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct($filename)
+    public function __construct(protected $filename)
     {
-        $this->filename = $filename;
     }
 
-    /**
-     * Execute the job.
-     *
-     * @return void
-     */
-    public function handle()
+    /** Execute the job. */
+    public function handle(): void
     {
         Excel::import(new ProductImport(), public_path('images/products/'.$this->filename));
 

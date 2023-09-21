@@ -29,10 +29,7 @@ class Index extends Component
 
     public $editModal = false;
 
-    public function mount(): void
-    {
-        $this->orderable = (new Currency())->orderable;
-    }
+    public $model = Currency::class;
 
     public function render()
     {

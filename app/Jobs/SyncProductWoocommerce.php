@@ -15,10 +15,8 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Str;
 use Mimey\MimeTypes;
-use RvMedia;
-use SlugHelper;
+use App\Helpers;
 
 class SyncProductWooCommerce implements ShouldQueue
 {
@@ -27,11 +25,7 @@ class SyncProductWooCommerce implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
-    public $consumer_sec;
-    public $site_url;
-    public $consumer_key;
     public $wooClient;
-    public $current_page;
 
     /**
      * @param $consumer_sec
@@ -39,15 +33,11 @@ class SyncProductWooCommerce implements ShouldQueue
      * @param $consumer_key
      * @param $current_page
      */
-    public function __construct($site_url, $consumer_key, $consumer_sec, $current_page)
+    public function __construct(public $site_url, public $consumer_key, public $consumer_sec, public $current_page)
     {
-        $this->consumer_sec = $consumer_sec;
-        $this->site_url = $site_url;
-        $this->consumer_key = $consumer_key;
-        $this->current_page = $current_page;
     }
 
-    public function handle()
+    public function handle(): void
     {
         $this->wooClient = new Client($this->site_url, $this->consumer_key, $this->consumer_sec);
         @set_time_limit(900);
@@ -74,8 +64,6 @@ class SyncProductWooCommerce implements ShouldQueue
             $categories = [];
 
             foreach ($product->categories as $category) {
-                $slug = Slug::where(['key' => $category->slug, 'reference_type' => ProductCategory::class])->first();
-
                 if ($slug) {
                     $categories[] = $slug->reference_id;
                 } else {
@@ -86,53 +74,37 @@ class SyncProductWooCommerce implements ShouldQueue
                         'order'       => $category->menu_order ?? 0,
                         'image'       => $category->image ?? '',
                     ]);
-                    Slug::create([
-                        'reference_type' => ProductCategory::class,
-                        'reference_id'   => $newCategory->id,
-                        'key'            => Str::slug((string) $category->slug),
-                        'prefix'         => SlugHelper::getPrefix(ProductCategory::class),
-                    ]);
+
                     $categories[] = $newCategory->id;
                 }
             }
+
             $newProducts[$product->slug] = [
                 'name'        => $product->name,
                 'description' => $product->short_description,
                 'content'     => $product->short_description,
-                'price'       => $product->price,
-                'categories'  => array_unique($categories),
-                'image'       => $images[rand(0, count($images) - 1)],
-                'images'      => json_encode($images),
+                // 'price'       => $product->price,
+                'categories' => array_unique($categories),
+                'image'      => $images[rand(0, count($images) - 1)],
+                'images'     => json_encode($images),
             ];
-            //print_r("Import product " . $product->name . PHP_EOL);
-            $newProduct = app(ProductInterface::class)->createOrUpdate($newProducts[$product->slug]);
-            $slugDb = app(SlugInterface::class)->getFirstBy(['key' => Str::slug((string) $product->slug)]);
 
-            if ($slugDb) {
-                app(SlugInterface::class)->delete($slugDb);
-            }
-            Slug::create([
-                'reference_type' => Product::class,
-                'reference_id'   => $newProduct->id,
-                'key'            => Str::slug((string) $product->slug),
-                'prefix'         => SlugHelper::getPrefix(Product::class),
-            ]);
-            $newProduct->tags()->sync(array_unique($tags));
+            $newProduct = Product::createOrUpdate($newProducts[$product->slug]);
         }
     }
 
     protected function getImage($image)
     {
         if ( ! empty($image)) {
-            $info = pathinfo($image);
+            $info = pathinfo((string) $image);
 
             try {
                 $contents = file_get_contents($image);
-            } catch (Exception $exception) {
+            } catch (Exception) {
                 return $image;
             }
 
-            if (empty($contents)) {
+            if ($contents === '' || $contents === false) {
                 return $image;
             }
 
@@ -149,7 +121,7 @@ class SyncProductWooCommerce implements ShouldQueue
 
             $fileUpload = new UploadedFile($path, $info['basename'], $mimeType, null, true);
 
-            $result = RvMedia::handleUpload($fileUpload, 0, 'products');
+            $result = Helpers::handleUpload($fileUpload, 0, 'products');
 
             File::delete($path);
 
@@ -169,9 +141,9 @@ class SyncProductWooCommerce implements ShouldQueue
         $imageTags = $htmlDom->getElementsByTagName('img');
 
         foreach ($imageTags as $imageTag) {
-            if (str_contains(parse_url($this->site_url, PHP_URL_HOST), $imageTag->getAttribute('src'))) {
+            if (str_contains(parse_url((string) $this->site_url, PHP_URL_HOST), $imageTag->getAttribute('src'))) {
                 $newImage = $this->getImage($imageTag->getAttribute('src'));
-                $content = str_replace($imageTag->getAttribute('src'), $newImage, $content);
+                $content = str_replace($imageTag->getAttribute('src'), $newImage, (string) $content);
             }
         }
 

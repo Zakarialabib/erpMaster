@@ -38,7 +38,7 @@ class ProductTable extends Component
     {
         switch ($this->hasAdjustments) {
             case true:
-                if (in_array($product, array_map(static fn($adjustment) => $adjustment['product'], $this->products))) {
+                if (in_array($product, array_map(static fn ($adjustment) => $adjustment['product'], $this->products))) {
                     $this->alert('error', __('Product added succesfully'));
 
                     return;

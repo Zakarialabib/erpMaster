@@ -5,7 +5,6 @@ declare(strict_types=1);
 use App\Http\Controllers\Admin\ExportController;
 use App\Http\Controllers\Admin\HomeController;
 use App\Http\Controllers\Admin\IntegrationController;
-use App\Http\Controllers\Admin\LogController;
 use App\Http\Controllers\Admin\PosController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\PurchasePaymentsController;
@@ -42,6 +41,7 @@ use App\Livewire\Admin\Products\Barcode as BarcodeIndex;
 use App\Livewire\Admin\Reviews\Index as ReviewsIndex;
 use App\Livewire\Admin\Role\Index as RolesIndex;
 use App\Livewire\Admin\Section\Index as Sectionsindex;
+use App\Livewire\Admin\Section\Settings as SectionSettings;
 use App\Livewire\Admin\Slider\Index as SlidersIndex;
 use App\Livewire\Admin\Subcategory\Index as SubcategoryIndex;
 use App\Livewire\Admin\Suppliers\Index  as SuppliersIndex;
@@ -71,6 +71,7 @@ use App\Livewire\Admin\Settings\Index as SettingsIndex;
 use App\Livewire\Admin\Subscriber\Index as SubscriberIndex;
 use App\Livewire\Admin\Contacts as ContactsIndex;
 use App\Livewire\Admin\Page\Settings as PageSettings;
+use App\Livewire\Utils\Logs as LogIndex;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -191,7 +192,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth', 'r
     Route::get('/purchases-return-report', [ReportsController::class, 'purchasesReturnReport'])->name('purchases-return-report.index');
 
     //POS
-    Route::get('/pos', [PosController::class, 'index'])->name('pos.index');
+    Route::get('/pos', PosIndex::class)->name('pos.index');
     Route::post('/app/pos', [PosController::class, 'store'])->name('pos.store');
 
     //Generate Sale PDF
@@ -222,7 +223,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth', 'r
     Route::get('permissions', PermissionsIndex::class)->name('permissions.index');
 
     //Logs
-    Route::get('logs', LogController::class)->name('logs.index');
+    Route::get('logs', LogIndex::class)->name('logs.index');
 
     //Language Settings
     Route::get('languages', LanguageIndex::class)->name('languages.index');
@@ -237,6 +238,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth', 'r
     Route::get('/orders', OrdersIndex::class)->name('orders.index');
 
     Route::get('/sections', Sectionsindex::class)->name('sections.index');
+    Route::get('/section/settings', SectionSettings::class)->name('section.settings');
 
     Route::get('/featuredBanners', FeaturedBannersIndex::class)->name('featuredBanners');
     Route::get('/pages', PagesIndex::class)->name('pages.index');
@@ -268,7 +270,6 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth', 'r
 
     // Route::get('/package', PackageIndex::class);
     // Route::get('/partner', PartnerIndex::class);
-    // Route::get('/pos', PosIndex::class);
     // Route::get('/purchasereturn', PurchaseReturnIndex::class);
     // Route::get('/salereturn', SaleReturnIndex::class);
 });

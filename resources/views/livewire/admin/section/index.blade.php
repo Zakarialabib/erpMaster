@@ -3,11 +3,12 @@
 
     <x-theme.breadcrumb :title="__('Sections List')" :parent="route('admin.sections.index')" :parentName="__('Sections List')">
 
-        <!-- Button trigger livewire modal -->
-        <x-button primary type="button" wire:click="$dispatch('admin.section.template','createModal')">
-            {{ __('Create from template') }}
+        <x-button primary href="{{ route('admin.section.settings') }}">
+            {{ __('Section Settings') }}
         </x-button>
-        <!-- Button trigger livewire modal -->
+        <x-button primary type="button" wire:click="dispatchTo('admin.section.create', 'createModal')">
+            {{ __('Create Section') }}
+        </x-button>
         <x-button primary type="button" wire:click="dispatchTo('admin.section.create', 'createModal')">
             {{ __('Create Section') }}
         </x-button>
@@ -45,13 +46,13 @@
     <x-table>
         <x-slot name="thead">
             <x-table.th>#</x-table.th>
-            <x-table.th>
+            <x-table.th sortable wire:click="sortingBy('page')" field="page" :direction="$sorts['page'] ?? null">
                 {{ __('Page') }}
             </x-table.th>
-            <x-table.th>
+            <x-table.th sortable wire:click="sortingBy('title')" field="title" :direction="$sorts['title'] ?? null">
                 {{ __('Title') }}
             </x-table.th>
-            <x-table.th>
+            <x-table.th sortable wire:click="sortingBy('status')" field="status" :direction="$sorts['status'] ?? null">
                 {{ __('Status') }}
             </x-table.th>
             <x-table.th>
@@ -72,7 +73,8 @@
                     </x-table.td>
 
                     <x-table.td>
-                        <livewire:utils.toggle-button :model="$section" field="status" key="{{ $section->id }}"  lazy/>
+                        <livewire:utils.toggle-button :model="$section" field="status" key="{{ $section->id }}"
+                            lazy />
                     </x-table.td>
                     <x-table.td>
                         <div class="inline-flex space-x-2">
@@ -112,6 +114,6 @@
 
     <livewire:admin.section.create lazy />
 
-    <livewire:admin.section.template lazy />
+    {{-- <livewire:admin.section.template lazy /> --}}
 
 </div>

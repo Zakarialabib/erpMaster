@@ -29,7 +29,7 @@ class Import extends Component
     use WithFileUploads;
 
     public $listeners = [
-         'import',
+        'import',
         'importUpdates',
     ];
 

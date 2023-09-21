@@ -12,7 +12,7 @@ class Wallet extends Model
 {
     use HasAdvancedFilter;
 
-    public const ATTRIBUTES = [
+    final public const ATTRIBUTES = [
         'id',
         'name',
         'recieved_amount',
@@ -27,6 +27,7 @@ class Wallet extends Model
     ];
 
     public $orderable = self::ATTRIBUTES;
+
     public $filterable = self::ATTRIBUTES;
 
     /**

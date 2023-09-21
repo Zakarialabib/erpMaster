@@ -15,6 +15,7 @@ class CustomerRegistrationMail extends Mailable
     use Queueable;
     use SerializesModels;
 
+    /** @var \App\Models\User */
     public $user;
 
     public function __construct(User $user)
@@ -25,13 +26,13 @@ class CustomerRegistrationMail extends Mailable
     public function build()
     {
         return $this->view('emails.customer-registration')
-            ->subject('Welcome to our website!', $this->user->name)
+            ->subject(__('Welcome ').$this->user->name.' '.__('to').' '.settings('site_name'))
             ->with([
                 'user' => $this->user,
             ]);
     }
 
-    public function envelope()
+    public function envelope(): Envelope
     {
         return new Envelope(
             subject: sprintf('Welcome, %s!', $this->user->name),

@@ -15,11 +15,12 @@ class Brand extends Model
     use HasFactory;
 
     /** @var array<int, string> */
-    public const ATTRIBUTES = [
+    final public const ATTRIBUTES = [
         'id', 'name', 'slug', 'status',
     ];
 
     public $orderable = self::ATTRIBUTES;
+
     public $filterable = self::ATTRIBUTES;
 
     /**

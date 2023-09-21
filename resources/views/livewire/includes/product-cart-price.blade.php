@@ -9,9 +9,8 @@
         <i class="fa fa-pen text-red-500"></i>
     </button>
 
-    <div x-show="editPrice && selectedRowId === '{{ $cart_item->rowId }}'">
-        <form wire:change="updatePrice('{{ $cart_item->rowId }}', '{{ $cart_item->id }}')" class="flex  justify-center">
-            <x-input type="text" wire:model="price.{{ $cart_item->id }}" />
-        </form>
-    </div>
+    <form wire:change="updatePrice('{{ $cart_item->rowId }}', '{{ $cart_item->id }}')" class="flex  justify-center">
+        <x-input type="text" wire:model.live="price.{{ $cart_item->id }}" value="{{ $cart_item->qty }}"
+            name="price{{ $cart_item->id }}" />
+    </form>
 </div>

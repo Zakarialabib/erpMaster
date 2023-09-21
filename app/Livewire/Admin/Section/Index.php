@@ -23,6 +23,8 @@ class Index extends Component
 
     public $section;
 
+    public $model = Section::class;
+
     public $listeners = [
         'showModal',  'delete',
     ];
@@ -41,14 +43,9 @@ class Index extends Component
         'section.description' => 'nullable',
     ];
 
-    public function mount(): void
-    {
-        $this->orderable = (new Section())->orderable;
-    }
-
     public function render()
     {
-        $query = Section::when($this->language_id, fn($query) => $query->where('language_id', $this->language_id))->advancedFilter([
+        $query = Section::when($this->language_id, fn ($query) => $query->where('language_id', $this->language_id))->advancedFilter([
             's'               => $this->search ?: null,
             'order_column'    => $this->sortBy,
             'order_direction' => $this->sortDirection,
@@ -103,7 +100,7 @@ class Index extends Component
 
         Section::create([
             'language_id' => $section_details->language_id,
-            'page_id'        => $section_details->page_id,
+            'page_id'     => $section_details->page_id,
             'title'       => $section_details->title,
             'subtitle'    => $section_details->subtitle,
             'link'        => $section_details->link,

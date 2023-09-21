@@ -37,7 +37,7 @@
             <x-table.th>
                 <input wire:model.live="selectPage" type="checkbox" />
             </x-table.th>
-            <x-table.th sortable wire:click="sortBy('name')" :direction="$sorts['name'] ?? null">
+            <x-table.th sortable :direction="$sorts['name'] ?? null" field="name" wire:click="sortingBy('name')">
                 {{ __('Name') }}
             </x-table.th>
             <x-table.th>

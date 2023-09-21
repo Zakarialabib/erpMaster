@@ -41,9 +41,8 @@
             <x-table.th>
                 {{ __('Image') }}
             </x-table.th>
-            <x-table.th sortable wire:click="sortBy('name')" :direction="$sorts['name'] ?? null">
+            <x-table.th sortable :direction="$sorts['name'] ?? null" :field="'name'" wire:click="sortingBy('name')">
                 {{ __('Name') }}
-                @include('components.table.sort', ['field' => 'name'])
             </x-table.th>
             <x-table.th>
                 {{ __('Category') }}

@@ -16,7 +16,7 @@ class Blog extends Model
     use HasFactory;
 
     /** @var array<int, string> */
-    public const ATTRIBUTES = [
+    final public const ATTRIBUTES = [
         'id',
         'title',
         'slug',
@@ -27,6 +27,7 @@ class Blog extends Model
     ];
 
     public $orderable = self::ATTRIBUTES;
+
     public $filterable = self::ATTRIBUTES;
 
     /**

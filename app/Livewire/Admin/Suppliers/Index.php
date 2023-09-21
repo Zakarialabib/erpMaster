@@ -26,6 +26,8 @@ class Index extends Component
     /** @var mixed */
     public $supplier;
 
+    public $model = Supplier::class;
+
     /** @var array<string> */
     public $listeners = [
         'importModal', 'showModal',
@@ -37,11 +39,6 @@ class Index extends Component
 
     /** @var bool */
     public $importModal = false;
-
-    public function mount(): void
-    {
-        $this->orderable = (new Supplier())->orderable;
-    }
 
     public function render()
     {

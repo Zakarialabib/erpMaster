@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Livewire\Admin\Products;
 
+use App\Livewire\Utils\Admin\WithMeta;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
@@ -22,11 +23,14 @@ class Create extends Component
 {
     use LivewireAlert;
     use WithFileUploads;
+    use WithMeta;
 
     /** @var bool */
     public $createModal = false;
 
     public $image;
+
+    public $code;
 
     public $gallery = [];
 
@@ -60,10 +64,6 @@ class Create extends Component
     public array $subcategories = [];
 
     public array $options = [];
-
-    public string $meta_title;
-
-    public string $meta_description;
 
     public bool $best;
 

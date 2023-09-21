@@ -14,7 +14,7 @@ class PurchaseReturnPayment extends Model
 {
     use HasAdvancedFilter;
 
-    public const ATTRIBUTES = [
+    final public const ATTRIBUTES = [
         'id',
         'date',
         'reference',
@@ -27,6 +27,7 @@ class PurchaseReturnPayment extends Model
     ];
 
     public $orderable = self::ATTRIBUTES;
+
     public $filterable = self::ATTRIBUTES;
 
     protected $guarded = [];
@@ -39,30 +40,22 @@ class PurchaseReturnPayment extends Model
     public function date(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => Carbon::parse($value)->format('d M, Y'),
+            get: static fn ($value) => Carbon::parse($value)->format('d M, Y'),
         );
     }
 
-    /**
-     * @param mixed $query
-     *
-     * @return mixed
-     */
-    public function scopeByPurchaseReturn($query)
+    /** @return mixed */
+    public function scopeByPurchaseReturn(mixed $query)
     {
         return $query->wherePurchaseReturnId(request()->route('purchase_return_id'));
     }
 
-    /**
-     * Interact with the expenses amount
-     *
-     * @return \Illuminate\Database\Eloquent\Casts\Attribute
-     */
+    /** Interact with the expenses amount */
     protected function amount(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => $value / 100,
-            set: fn ($value) => $value * 100,
+            get: static fn ($value): int|float => $value / 100,
+            set: static fn ($value): int|float => $value * 100,
         );
     }
 }

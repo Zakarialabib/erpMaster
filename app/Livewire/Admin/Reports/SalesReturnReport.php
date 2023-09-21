@@ -6,6 +6,7 @@ namespace App\Livewire\Admin\Reports;
 
 use App\Models\Customer;
 use App\Models\SaleReturn;
+use Livewire\Attributes\Rule;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -15,8 +16,14 @@ class SalesReturnReport extends Component
 
     public $customers;
 
+    #[Rule('required', message: 'The start date field is required.')]
+    #[Rule('date', message: 'The start date field must be a valid date.')]
+    #[Rule('before:end_date', message: 'The start date field must be before the end date field.')]
     public $start_date;
 
+    #[Rule('required', message: 'The end date field is required.')]
+    #[Rule('date', message: 'The end date field must be a valid date.')]
+    #[Rule('after:start_date', message: 'The end date field must be after the start date field.')]
     public $end_date;
 
     public $customer_id;
@@ -25,10 +32,6 @@ class SalesReturnReport extends Component
 
     public $payment_status;
 
-    protected $rules = [
-        'start_date' => 'required|date|before:end_date',
-        'end_date'   => 'required|date|after:start_date',
-    ];
 
     public function mount(): void
     {

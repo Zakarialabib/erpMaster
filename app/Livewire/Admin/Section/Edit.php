@@ -13,6 +13,7 @@ use Livewire\Attributes\Computed;
 use Livewire\WithFileUploads;
 use Livewire\Attributes\On;
 use App\Models\Language;
+use Livewire\Attributes\Rule;
 
 class Edit extends Component
 {
@@ -22,39 +23,48 @@ class Edit extends Component
     public $editModal = false;
 
     public $section;
+    #[Rule('required', message: 'The title is required')]
+    #[Rule('max:255', message: 'The title must not exceed 255 characters')]
+    public $title;
 
-    public $title = '';
+    #[Rule('nullable')]
+    #[Rule('max:255', message: 'The subtitle must not exceed 255 characters')]
+    public $subtitle;
 
+    #[Rule('nullable')]
+    #[Rule('min:3', message: 'The description must be at least 3 characters')]
+    public $description;
+
+    #[Rule('nullable')]
+    public $link;
+
+    #[Rule('nullable')]
+    #[Rule('max:255', message: 'The label must not exceed 255 characters')]
+    public $label;
+
+    public $bg_color;
+
+    #[Rule('nullable')]
+    #[Rule('integer')]
+    #[Rule('exists:pages,id', 'The selected page does not exist')]
+    public $page_id;
+
+    #[Rule('required', message: 'The type is required')]
+    #[Rule('max:255', message: 'The type must not exceed 255 characters')]
+    public $type;
+
+    #[Rule('nullable')]
+    #[Rule('max:255', message: 'The featured title must not exceed 255 characters')]
+    public $featured_title;
+
+    public $text_color;
     public $image;
 
-    public $featured_title = '';
-
-    public $subtitle = '';
-
-    public $label = '';
-
-    public string $link;
-
-    public $description = '';
-
-    public string $bg_color;
-
-    public string $text_color;
-
-    public int $page_id;
-
-    public string $position;
+    public $position;
 
     public $language_id;
 
     public $embeded_video;
-
-    protected $rules = [
-        'page_id'     => ['nullable'],
-        'title'       => ['nullable', 'string', 'max:255'],
-        'subtitle'    => ['nullable', 'string', 'max:255'],
-        'description' => ['nullable'],
-    ];
 
     #[On('editModal')]
     public function editModal($id): void

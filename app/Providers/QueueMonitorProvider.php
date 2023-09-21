@@ -16,26 +16,22 @@ use Throwable;
 
 class QueueMonitorProvider extends ServiceProvider
 {
-    /**
-     * Bootstrap services.
-     *
-     * @return void
-     */
-    public function boot()
+    /** Bootstrap services. */
+    public function boot(): void
     {
-        Queue::before(static function (JobProcessing $event) {
+        Queue::before(static function (JobProcessing $event): void {
             self::jobStarted($event->job);
         });
 
-        Queue::after(static function (JobProcessed $event) {
+        Queue::after(static function (JobProcessed $event): void {
             self::jobFinished($event->job);
         });
 
-        Queue::failing(static function (JobFailed $event) {
+        Queue::failing(static function (JobFailed $event): void {
             self::jobFinished($event->job, true, $event->exception);
         });
 
-        Queue::exceptionOccurred(static function (JobExceptionOccurred $event) {
+        Queue::exceptionOccurred(static function (JobExceptionOccurred $event): void {
             self::jobFinished($event->job, true, $event->exception);
         });
     }
@@ -66,7 +62,7 @@ class QueueMonitorProvider extends ServiceProvider
             ->where('job_id', $jobId)
             ->where('failed', false)
             ->whereNull('finished_at')
-            ->each(function (QueueMonitor $monitor) {
+            ->each(static function (QueueMonitor $monitor): void {
                 $monitor->finished_at = now();
                 $monitor->failed = true;
                 $monitor->save();
@@ -92,7 +88,7 @@ class QueueMonitorProvider extends ServiceProvider
             'failed'      => $failed,
         ];
 
-        if (null !== $exception) {
+        if ($exception instanceof Throwable) {
             $attributes += [
                 'exception_message' => mb_strcut($exception->getMessage(), 0, 65535),
             ];

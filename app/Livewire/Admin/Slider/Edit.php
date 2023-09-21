@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Livewire\Admin\Slider;
 
+use Livewire\Attributes\Rule;
 use Livewire\Component;
 use Illuminate\Contracts\View\View;
 use App\Models\Slider;
@@ -21,29 +22,25 @@ class Edit extends Component
 
     public $slider;
 
+    #[Rule('required', message: 'Title is required')]
     public $title;
 
+    #[Rule('nullable', 'max:255')]
     public $subtitle;
 
+    #[Rule('nullable')]
     public $link;
 
+    #[Rule('nullable')]
     public $bg_color;
 
+    #[Rule('nullable')]
     public $embeded_video;
 
     public $image;
 
+    #[Rule('nullable')]
     public $description;
-
-    protected $rules = [
-        'title'         => ['required', 'string', 'max:255'],
-        'subtitle'      => ['nullable', 'string', 'max:255'],
-        'description'   => ['nullable'],
-        'link'          => ['nullable', 'string'],
-        'bg_color'      => ['nullable', 'string'],
-        'embeded_video' => ['nullable'],
-        'image'         => ['nullable'],
-    ];
 
     #[On('editModal')]
     public function editModal($id): void

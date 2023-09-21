@@ -8,6 +8,7 @@ use App\Enums\MovementType;
 use App\Enums\PaymentStatus;
 use App\Enums\SaleStatus;
 use App\Jobs\PaymentNotification;
+use App\Livewire\Utils\Admin\WithModels;
 use App\Models\Customer;
 use App\Models\Warehouse;
 use App\Models\Movement;
@@ -20,17 +21,19 @@ use App\Models\SalePayment;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Support\Facades\Auth;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
+use Livewire\Attributes\Rule;
 use Livewire\Component;
+use Livewire\Attributes\Layout;
 
+#[Layout('components.layouts.pos')]
 class Index extends Component
 {
     use LivewireAlert;
+    use WithModels;
 
-    public $cart_instance;
+    public $cart_instance = 'sale';
 
     public $discountModal;
-
-    public $warehouse_id;
 
     public $global_discount;
 
@@ -48,31 +51,15 @@ class Index extends Component
 
     public $data;
 
-    public $customer_id;
-
-    public $total_amount;
-
     public $checkoutModal;
 
     public $product;
-
-    public $paid_amount;
-
-    public $tax_percentage;
-
-    public $discount_percentage;
 
     public $discount_amount;
 
     public $tax_amount;
 
-    public $grand_total;
-
-    public $shipping_amount;
-
     public $payment_method;
-
-    public $note;
 
     public $total_with_shipping;
 
@@ -80,23 +67,43 @@ class Index extends Component
 
     public $default_warehouse;
 
-    public function rules(): array
-    {
-        return [
-            'customer_id'         => 'required|numeric',
-            'tax_percentage'      => 'required|integer|min:0|max:100',
-            'discount_percentage' => 'required|integer|min:0|max:100',
-            'shipping_amount'     => 'nullable|numeric',
-            'total_amount'        => 'required|numeric',
-            'paid_amount'         => 'nullable|numeric',
-            'note'                => 'nullable|string|max:1000',
-            'price'               => 'nullable|numeric',
-        ];
-    }
+    #[Rule('required', message: 'Please provide a customer ID')]
+    public $customer_id;
 
-    public function mount($cartInstance): void
+    #[Rule('required', message: 'Please provide a warehouse ID')]
+    public $warehouse_id;
+
+    #[Rule('required', message: 'Please provide a tax percentage')]
+    #[Rule('integer', message: 'The tax percentage must be an integer')]
+    #[Rule('min:0', message: 'The tax percentage must be at least 0')]
+    #[Rule('max:100', message: 'The tax percentage must not exceed 100')]
+    public $tax_percentage;
+
+    #[Rule('required', message: 'Please provide a discount percentage')]
+    #[Rule('integer', message: 'The discount percentage must be an integer')]
+    #[Rule('min:0', message: 'The discount percentage must be at least 0')]
+    #[Rule('max:100', message: 'The discount percentage must not exceed 100')]
+    public $discount_percentage;
+
+    #[Rule('nullable', message: 'Shipping amount must be a numeric value')]
+    public $shipping_amount;
+
+    #[Rule('required', message: 'Please provide a total amount')]
+    #[Rule('numeric', message: 'The total amount must be a numeric value')]
+    public $total_amount;
+
+    #[Rule('nullable', message: 'Paid amount must be a numeric value')]
+    public $paid_amount;
+
+    #[Rule('nullable', message: 'Note must be a string with a maximum length of 1000')]
+    #[Rule('string', message: 'Note must be a string')]
+    #[Rule('max:1000', message: 'Note must not exceed 1000 characters')]
+    public $note;
+
+    public function mount(): void
     {
-        $this->cart_instance = $cartInstance;
+        Cart::instance('sale')->destroy();
+
         $this->global_discount = 0;
         $this->global_tax = 0;
 
@@ -137,7 +144,7 @@ class Index extends Component
 
     public function store(): void
     {
-        if (!$this->warehouse_id) {
+        if ( ! $this->warehouse_id) {
             $this->alert('error', __('Please select a warehouse'));
 
             return;
@@ -160,7 +167,7 @@ class Index extends Component
             $sale = Sale::create([
                 'date'                => date('Y-m-d'),
                 'customer_id'         => $this->customer_id,
-                'warehouse_id'         => $this->warehouse_id,
+                'warehouse_id'        => $this->warehouse_id,
                 'user_id'             => Auth::user()->id,
                 'tax_percentage'      => $this->tax_percentage,
                 'discount_percentage' => $this->discount_percentage,
@@ -201,7 +208,7 @@ class Index extends Component
                 $new_quantity = $product_warehouse->qty - $cart_item->qty;
 
                 $product_warehouse->update([
-                    'qty'  => $new_quantity,
+                    'qty' => $new_quantity,
                 ]);
 
                 $movement = new Movement([
@@ -244,10 +251,8 @@ class Index extends Component
     public function proceed(): void
     {
         if ($this->customer_id !== null) {
-
             $this->checkoutModal = true;
             $this->cart_instance = 'sale';
-
         } else {
             $this->alert('error', __('Please select a customer!'));
         }
@@ -261,16 +266,6 @@ class Index extends Component
     public function resetCart(): void
     {
         Cart::instance($this->cart_instance)->destroy();
-    }
-
-    public function getCustomersProperty()
-    {
-        return Customer::select(['name', 'id'])->get();
-    }
-
-    public function getWarehousesProperty()
-    {
-        return Warehouse::select(['name', 'id'])->get();
     }
 
     public function updatedWarehouseId($value): void

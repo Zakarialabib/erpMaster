@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 class Printer extends Model
 {
     use HasAdvancedFilter;
-    public const ATTRIBUTES = [
+    final public const ATTRIBUTES = [
         'id',
         'name',
         'connection_type',
@@ -18,6 +18,7 @@ class Printer extends Model
     ];
 
     public $orderable = self::ATTRIBUTES;
+
     public $filterable = self::ATTRIBUTES;
 
     public $fillable = [
@@ -30,7 +31,7 @@ class Printer extends Model
         'path',
     ];
 
-    public static function capabilityProfiles()
+    public static function capabilityProfiles(): array
     {
         return [
             'default'  => 'Default',
@@ -48,7 +49,7 @@ class Printer extends Model
         return $profiles[$profile] ?? '';
     }
 
-    public static function connectionTypes()
+    public static function connectionTypes(): array
     {
         return [
             'network' => 'Network',

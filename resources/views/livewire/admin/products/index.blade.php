@@ -75,11 +75,11 @@
             <x-table.th>
                 <input wire:model.live="selected" type="checkbox" />
             </x-table.th>
-            <x-table.th sortable wire:click="sortBy('name')" :direction="$sorts['name'] ?? null">
+            <x-table.th sortable wire:click="sortingBy('name')" field="name" :direction="$sorts['name'] ?? null">
                 {{ __('Name') }}
             </x-table.th>
             <x-table.th>
-                {{ __('Quantity') }}
+                {{ __('Total Quantity') }}
             </x-table.th>
             <x-table.th>
                 {{ __('Price') }}
@@ -87,7 +87,7 @@
             <x-table.th>
                 {{ __('Cost') }}
             </x-table.th>
-            <x-table.th sortable wire:click="sortBy('category_id')" :direction="$sorts['category_id'] ?? null">
+            <x-table.th sortable wire:click="sortingBy('category_id')" field="category_id" :direction="$sorts['category_id'] ?? null">
                 {{ __('Category') }}
             </x-table.th>
             <x-table.th>
@@ -104,7 +104,7 @@
                         <input type="checkbox" value="{{ $product->id }}" wire:model.live="selected">
                     </x-table.td>
                     <x-table.td>
-                        <button type="button" wire:click="$dispatch('showModal',{{ $product->id }})"
+                        <button type="button" wire:click="$dispatch('showModal',{ id : {{ $product->id }}})"
                             class="whitespace-nowrap hover:text-blue-400 active:text-blue-400">
                             {{ $product->name }} <br>
                             <x-badge type="success">
@@ -128,11 +128,15 @@
                     </x-table.td>
                     <x-table.td>
                         <div class="flex flex-wrap">
-                            @forelse ($product->warehouses as $warehouse)
-                                <x-badge type="info"><small>{{ $warehouse->name }}</small></x-badge>
-                            @empty
-                                {{ __('No warehouse assigned') }}
-                            @endforelse
+                            @foreach ($product->warehouses as $warehouse)
+                                <x-badge type="info">
+                                        {{ $warehouse->name }}
+                                        <span
+                                            class="rounded-full p-1 text-xs font-semibold bg-red-500 text-white ml-2">
+                                            {{ $warehouse->pivot->qty }}
+                                        </span>
+                                </x-badge>
+                            @endforeach
                         </div>
                     </x-table.td>
                     <x-table.td>
@@ -144,14 +148,10 @@
                             </x-slot>
 
                             <x-slot name="content">
-                                <x-dropdown-link wire:click="$emit('highlightModal',{{ $product->id }})"
+                                <x-dropdown-link wire:click="$dispatch('highlightModal',{{ $product->id }})"
                                     wire:loading.attr="disabled">
                                     <i class="fas fa-eye"></i>
                                     {{ __('Highlighted') }}
-                                </x-dropdown-link>
-                                <x-dropdown-link wire:click="clone({{ $product->id }})" wire:loading.attr="disabled">
-                                    <i class="fas fa-clone"></i>
-                                    {{ __('Clone') }}
                                 </x-dropdown-link>
                                 <x-dropdown-link wire:click="$dispatch('showModal',{ id : {{ $product->id }} })"
                                     wire:loading.attr="disabled">
@@ -210,11 +210,11 @@
     </div>
 
     <!-- Show Modal -->
-    <livewire:admin.products.show product="$product" lazy />
+    <livewire:admin.products.show :product="$product" lazy />
     <!-- End Show Modal -->
 
     <!-- Edit Modal -->
-    <livewire:admin.products.edit product="$product" lazy />
+    <livewire:admin.products.edit :product="$product" lazy />
     <!-- End Edit Modal -->
 
     <livewire:admin.products.create lazy />

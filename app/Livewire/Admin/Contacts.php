@@ -16,10 +16,7 @@ class Contacts extends Component
     use Datatable;
     use LivewireAlert;
 
-    public function mount(): void
-    {
-        $this->orderable = (new Contact())->orderable;
-    }
+    public $model = Contact::class;
 
     public function render()
     {

@@ -9,6 +9,7 @@ use Illuminate\Contracts\View\Factory;
 use Livewire\Attributes\On;
 use Illuminate\Contracts\View\View;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
+use Livewire\Attributes\Rule;
 use Livewire\Component;
 
 class Create extends Component
@@ -19,10 +20,14 @@ class Create extends Component
 
     public Faq $faq;
 
-    protected $rules = [
-        'faq.name'        => ['required', 'max:255'],
-        'faq.description' => ['required'],
-    ];
+    #[Rule('required', message: 'The name field cannot be empty.')]
+    #[Rule('min:3', message: 'The name must be at least 3 characters.')]
+    #[Rule('max:255', message: 'The name may not be greater than 255 characters.')]
+    public $name;
+
+    #[Rule('required', message: 'The description field cannot be empty.')]
+    public $description;
+
 
     public function render(): View|Factory
     {
@@ -43,7 +48,7 @@ class Create extends Component
     {
         $this->validate();
 
-        $this->faq->save();
+        Faq::create($this->all());
 
         $this->alert('success', __('Faq created successfully.'));
 

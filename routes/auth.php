@@ -12,6 +12,7 @@ use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Livewire\Auth\Index as AuthIndex;
 use App\Livewire\Auth\Login as AuthLogin;
 use App\Livewire\Auth\Register as AuthRegister;
+use App\Livewire\Auth\SocialAuth;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
@@ -35,6 +36,13 @@ Route::middleware('guest')->group(function () {
 
     Route::post('reset-password', [NewPasswordController::class, 'store'])
         ->name('password.update');
+
+    Route::get('/login/facebook', [SocialAuth::class, 'redirectToFacebook'])->name('login.facebook');
+    Route::get('/login/facebook/callback', [SocialAuth::class, 'handleFacebookCallback']);
+
+    Route::get('/login/google', [SocialAuth::class, 'redirectToGoogle'])->name('login.google');
+    Route::get('/login/google/callback', [SocialAuth::class, 'handleGoogleCallback']);
+
 });
 
 Route::middleware('auth')->group(function () {

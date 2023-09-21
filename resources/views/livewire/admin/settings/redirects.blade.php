@@ -139,24 +139,3 @@
     </x-modal>
 </div>
 
-@push('scripts')
-    <script>
-        document.addEventListener('livewire:load', function() {
-            window.livewire.on('deleteModal', redirectId => {
-                Swal.fire({
-                    title: __("Are you sure?") ,
-                    text: __("You won't be able to revert this!") ,
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: __("Yes, delete it!") 
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        window.livewire.emit('delete', redirectId)
-                    }
-                })
-            })
-        })
-    </script>
-@endpush

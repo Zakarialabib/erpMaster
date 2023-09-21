@@ -11,7 +11,6 @@ use Livewire\Attributes\On;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
 use Livewire\WithFileUploads;
-use Throwable;
 
 class Edit extends Component
 {

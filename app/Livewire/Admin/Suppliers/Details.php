@@ -10,6 +10,7 @@ use App\Models\PurchaseReturn;
 use App\Models\Supplier;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Locked;
 use Livewire\Component;
 
 #[Layout('components.layouts.dashboard')]
@@ -17,7 +18,10 @@ class Details extends Component
 {
     use Datatable;
 
+    #[Locked]
     public $supplier_id;
+
+    public $model = Supplier::class;
 
     public $warehouse_id;
 
@@ -29,7 +33,6 @@ class Details extends Component
     {
         $this->supplier = Supplier::findOrFail($id);
         $this->supplier_id = $this->supplier->id;
-        $this->orderable = (new Supplier())->orderable;
     }
 
     #[Computed]
@@ -77,6 +80,7 @@ class Details extends Component
             foreach ($purchase->purchaseDetails as $purchaseDetail) {
                 // Assuming you have a warehouses relationship defined on the Product model
                 $productWarehouse = $purchaseDetail->product->warehouses->where('warehouse_id', $this->warehouse_id)->first();
+
                 if ($productWarehouse) {
                     $productCosts += $productWarehouse->cost * $purchaseDetail->quantity;
                 }

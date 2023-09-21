@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Livewire\Admin\Adjustment;
 
+use App\Livewire\Utils\Admin\WithModels;
 use App\Models\AdjustedProduct;
 use App\Models\Adjustment;
 use App\Models\Product;
@@ -14,25 +15,30 @@ use Livewire\Component;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Rule;
 
 #[Layout('components.layouts.dashboard')]
 class Edit extends Component
 {
     use LivewireAlert;
+    use WithModels;
 
     public $adjustment;
 
     public $date;
 
+    #[Rule('nullable|string|max:1000')]
     public $note;
 
+    #[Rule('required|string|max:255')]
     public $reference;
-
+    
+    #[Rule('required', message: 'Please provide warehouse')]
+    public $warehouse_id;
     public $quantity;
 
     public $type;
 
-    public $warehouse_id;
 
     public $products;
 
@@ -44,8 +50,6 @@ class Edit extends Component
     ];
 
     protected $rules = [
-        'reference'           => 'required|string|max:255',
-        'note'                => 'nullable|string|max:1000',
         'products.*.quantity' => 'required|integer|min:1',
         'products.*.type'     => 'required|in:add,sub',
     ];
@@ -70,8 +74,11 @@ class Edit extends Component
         $this->validate();
 
         $this->adjustment->update([
-            'reference' => $this->reference,
-            'note'      => $this->note,
+            'reference'    => $this->reference,
+            'note'         => $this->note,
+            'date'         => $this->date,
+            'user_id'      => auth()->id(),
+            'warehouse_id' => $this->warehouse_id,
         ]);
 
         foreach ($this->products as $product) {
@@ -107,7 +114,7 @@ class Edit extends Component
     {
         switch ($this->hasAdjustments) {
             case true:
-                if (in_array($product, array_map(static fn($adjustment) => $adjustment['product'], $this->products))) {
+                if (in_array($product, array_map(static fn ($adjustment) => $adjustment['product'], $this->products))) {
                     $this->alert('error', __('Product added succesfully'));
 
                     return;

@@ -23,6 +23,8 @@ class Index extends Component
 
     public $purchasereturn;
 
+    public $model = PurchaseReturn::class;
+
     /** @var array<string> */
     public $listeners = [
         'delete', 'paymentModal', 'paymentSave',
@@ -59,11 +61,6 @@ class Index extends Component
         'payment_method'      => 'required|integer|max:255',
         'note'                => 'nullable|string|max:1000',
     ];
-
-    public function mount(): void
-    {
-        $this->orderable = (new PurchaseReturn())->orderable;
-    }
 
     public function render()
     {

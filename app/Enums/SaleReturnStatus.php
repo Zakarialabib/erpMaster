@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Enums;
 
-use Illuminate\Support\Str;
-
 enum SaleReturnStatus: int
 {
     case PENDING = 0;
@@ -20,9 +18,16 @@ enum SaleReturnStatus: int
 
     case CANCELED = 5;
 
-    public function getName(): string
+    public function label(): string
     {
-        return __(Str::studly($this->name));
+        return match ($this) {
+            static::PENDING   => __('Pending'),
+            static::ORDERED   => __('Order'),
+            static::COMPLETED => __('Completed'),
+            static::SHIPPED   => __('Shipped'),
+            static::RETURNED  => __('Returned'),
+            static::CANCELED  => __('Canceled'),
+        };
     }
 
     public function getValue()
@@ -30,11 +35,11 @@ enum SaleReturnStatus: int
         return $this->value;
     }
 
-    public static function getLabel($value)
+    public static function getLabel($value): ?string
     {
         foreach (self::cases() as $case) {
             if ($case->getValue() === $value) {
-                return $case->getName();
+                return $case->label();
             }
         }
 
@@ -43,21 +48,14 @@ enum SaleReturnStatus: int
 
     public function getBadgeType(): string
     {
-        switch ($this) {
-            case self::PENDING:
-                return 'warning';
-            case self::ORDERED:
-                return 'info';
-            case self::COMPLETED:
-                return 'success';
-            case self::SHIPPED:
-                return 'primary';
-            case self::RETURNED:
-                return 'alert';
-            case self::CANCELED:
-                return 'danger';
-            default:
-                return 'secondary';
-        }
+        return match ($this) {
+            self::PENDING   => 'warning',
+            self::ORDERED   => 'info',
+            self::COMPLETED => 'success',
+            self::SHIPPED   => 'primary',
+            self::RETURNED  => 'alert',
+            self::CANCELED  => 'danger',
+            default         => 'secondary',
+        };
     }
 }

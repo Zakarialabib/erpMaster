@@ -11,7 +11,7 @@ class Role extends SpatieRole
 {
     use HasAdvancedFilter;
 
-    public const ATTRIBUTES = [
+    final public const ATTRIBUTES = [
         'id',
         'name',
         'guard_name',
@@ -19,6 +19,7 @@ class Role extends SpatieRole
     ];
 
     public $orderable = self::ATTRIBUTES;
+
     public $filterable = self::ATTRIBUTES;
 
     /**

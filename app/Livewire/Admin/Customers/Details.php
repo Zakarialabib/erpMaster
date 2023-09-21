@@ -7,17 +7,20 @@ namespace App\Livewire\Admin\Customers;
 use App\Livewire\Utils\Datatable;
 use App\Models\Customer;
 use App\Models\Sale;
-use App\Models\SaleDetails;
 use App\Models\SaleReturn;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Locked;
 
 #[Layout('components.layouts.dashboard')]
 class Details extends Component
 {
     use Datatable;
 
+    public $model = Customer::class;
+
+    #[Locked]
     public $customer_id;
 
     public $customer;
@@ -31,7 +34,6 @@ class Details extends Component
         // dd($customer);
         $this->customer = Customer::where('id', $id)->first();
         $this->customer_id = $this->customer->id;
-        $this->orderable = (new Customer())->orderable;
     }
 
     public function getSalesProperty()
@@ -106,6 +108,7 @@ class Details extends Component
             foreach ($sale->saleDetails as $saleDetail) {
                 // Assuming you have a warehouses relationship defined on the Product model
                 $productWarehouse = $saleDetail->product->warehouses->where('warehouse_id', $this->warehouse_id)->first();
+
                 if ($productWarehouse) {
                     $productCosts += $productWarehouse->cost * $saleDetail->quantity;
                 }

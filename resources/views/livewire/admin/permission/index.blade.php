@@ -26,7 +26,7 @@
     <x-table>
         <x-slot name="thead">
             <x-table.th>#</x-table.th>
-            <x-table.th sortable wire:click="sortBy('title')" :direction="$sorts['title'] ?? null">
+            <x-table.th sortable :direction="$sorts['title'] ?? null" field="title" wire:click="sortingBy('title')">
                 {{ __('Title') }}
             </x-table.th>
         </x-slot>

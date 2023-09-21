@@ -11,22 +11,29 @@ use Livewire\Attributes\Computed;
 
 trait WithModels
 {
+    public $selectCount = 10;
+
     #[Computed(cache: true)]
     public function categories()
     {
         return Category::select('id', 'name', 'slug', 'image')
+            ->take($this->selectCount)
             ->get();
     }
 
     #[Computed(cache: true)]
     public function brands()
     {
-        return Brand::select('id', 'name', 'slug', 'image')->get();
+        return Brand::select('id', 'name', 'slug', 'image')
+            ->take($this->selectCount)
+            ->get();
     }
 
     #[Computed(cache: true)]
     public function subcategories()
     {
-        return Subcategory::select('id', 'name', 'slug', 'image')->get();
+        return Subcategory::select('id', 'name', 'slug', 'image')
+            ->take($this->selectCount)
+            ->get();
     }
 }

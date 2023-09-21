@@ -19,7 +19,7 @@ class Customer extends Model
     use HasFactory;
 
     /** @var array<int, string> */
-    public const ATTRIBUTES = [
+    final public const ATTRIBUTES = [
         'id',
         'name',
         'email',
@@ -31,6 +31,7 @@ class Customer extends Model
     ];
 
     public $orderable = self::ATTRIBUTES;
+
     public $filterable = self::ATTRIBUTES;
 
     /**
@@ -53,73 +54,5 @@ class Customer extends Model
     public function sales(): HasOne
     {
         return $this->HasOne(Sale::class);
-    }
-
-    /**
-     * Get the total sales attribute.
-     *
-     * @return int|float
-     */
-    public function getTotalSalesAttribute()
-    {
-        return $this->customerSum('total_amount', Sale::class);
-    }
-
-    /**
-     * Get the total sales return attribute.
-     *
-     * @return int|float
-     */
-    public function getTotalSaleReturnsAttribute(): int|float
-    {
-        return $this->customerSum('total_amount', SaleReturn::class);
-    }
-
-    /**
-     * Get the total purchases attribute.
-     *
-     * @return int|float
-     */
-    public function getTotalPaymentsAttribute(): int|float
-    {
-        return $this->customerSum('paid_amount', Sale::class);
-    }
-
-    /**
-     * Get the total purchases attribute.
-     *
-     * @return int|float
-     */
-    public function getTotalDueAttribute(): int|float
-    {
-        return $this->customerSum('due_amount', Sale::class);
-    }
-
-    /**
-     * Get the total purchases attribute.
-     *
-     * @return int|float
-     */
-    public function getProfit(): int|float
-    {
-        $sales = Sale::where('customer_id', $this->id)
-            ->completed()->sum('total_amount');
-
-        $sale_returns = SaleReturn::where('customer_id', $this->id)
-            ->completed()->sum('total_amount');
-
-        $product_costs = 0;
-
-        foreach (Sale::where('customer_id', $this->id)->with('saleDetails', 'saleDetails.product')->get() as $sale) {
-            foreach ($sale->saleDetails as $saleDetail) {
-                $product_costs += $saleDetail->product->warehouses->sum(function ($warehouse) {
-                    return $warehouse->pivot->cost * $warehouse->pivot->qty;
-                });
-            }
-        }
-
-        $revenue = ($sales - $sale_returns) / 100;
-
-        return $revenue - $product_costs;
     }
 }

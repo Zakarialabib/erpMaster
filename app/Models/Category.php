@@ -17,11 +17,12 @@ class Category extends Model
     use HasFactory;
 
     /** @var array<int, string> */
-    public const ATTRIBUTES = [
+    final public const ATTRIBUTES = [
         'id', 'code', 'name', 'status',
     ];
 
     public $orderable = self::ATTRIBUTES;
+
     public $filterable = self::ATTRIBUTES;
 
     /**

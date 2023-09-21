@@ -16,6 +16,8 @@ class Subcategories extends Component
 {
     use Datatable;
 
+    public $model = Product::class;
+
     public $subcategory_id;
 
     public $sorting;
@@ -26,11 +28,6 @@ class Subcategories extends Component
     {
         $this->subcategory_id = $subcategory_id;
         $this->resetPage();
-    }
-
-    public function mount(): void
-    {
-        $this->orderable = (new Product())->orderable;
     }
 
     #[Computed]

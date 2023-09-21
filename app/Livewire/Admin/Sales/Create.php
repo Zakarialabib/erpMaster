@@ -10,12 +10,14 @@ use App\Enums\SaleStatus;
 use App\Jobs\PaymentNotification;
 use App\Livewire\Utils\Admin\WithModels;
 use App\Models\Category;
+use App\Models\Customer;
 use App\Models\Movement;
 use App\Models\Product;
 use App\Models\Sale;
 use App\Models\SaleDetails;
 use App\Models\SalePayment;
 use App\Models\ProductWarehouse;
+use App\Models\Warehouse;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Support\Facades\Auth;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
@@ -52,28 +54,41 @@ class Create extends Component
 
     public $price;
 
-    #[Rule('integer|min:0|max:100')]
-    public $tax_percentage;
+    public $default_client;
 
-    #[Rule('integer|min:0|max:100')]
-    public $discount_percentage;
+    public $default_warehouse;
 
-    #[Rule('required')]
+    #[Rule('required', message: 'Please provide a customer ID')]
     public $customer_id;
 
-    #[Rule('required')]
+    #[Rule('required', message: 'Please provide a warehouse ID')]
     public $warehouse_id;
 
-    #[Rule('required|numeric')]
-    public $total_amount;
+    #[Rule('required', message: 'Please provide a tax percentage')]
+    #[Rule('integer', message: 'The tax percentage must be an integer')]
+    #[Rule('min:0', message: 'The tax percentage must be at least 0')]
+    #[Rule('max:100', message: 'The tax percentage must not exceed 100')]
+    public $tax_percentage;
 
-    #[Rule('numeric')]
-    public $paid_amount;
+    #[Rule('required', message: 'Please provide a discount percentage')]
+    #[Rule('integer', message: 'The discount percentage must be an integer')]
+    #[Rule('min:0', message: 'The discount percentage must be at least 0')]
+    #[Rule('max:100', message: 'The discount percentage must not exceed 100')]
+    public $discount_percentage;
 
-    #[Rule('numeric')]
+    #[Rule('nullable', message: 'Shipping amount must be a numeric value')]
     public $shipping_amount;
 
-    #[Rule('nullable')]
+    #[Rule('required', message: 'Please provide a total amount')]
+    #[Rule('numeric', message: 'The total amount must be a numeric value')]
+    public $total_amount;
+
+    #[Rule('nullable', message: 'Paid amount must be a numeric value')]
+    public $paid_amount;
+
+    #[Rule('nullable', message: 'Note must be a string with a maximum length of 1000')]
+    #[Rule('string', message: 'Note must be a string')]
+    #[Rule('max:1000', message: 'Note must not exceed 1000 characters')]
     public $note;
 
     #[Rule('required|integer|max:255')]
@@ -97,7 +112,10 @@ class Create extends Component
         $this->item_discount = [];
         $this->payment_method = 'cash';
         $this->paid_amount = $this->total_amount;
-        $this->customer_id = settings('default_client_id');
+
+        $this->default_client = Customer::find(settings('default_client_id'));
+        $this->default_warehouse = Warehouse::find(settings('default_warehouse_id'));
+
         $this->date = date('Y-m-d');
     }
 

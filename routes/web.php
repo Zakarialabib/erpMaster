@@ -45,17 +45,8 @@ Route::get('/docs', function () {
     return view('docs.index'); // loads /public/docs/index.html
 });
 
-// Route::get('/docs', function () {
-//     if ($file != 'index') {
-//         $file = $file.'/index';
-//     }
-
-//     return File::get(public_path().'/docs/'.$file.'.html');
-// });
-
 // change lang
 Route::get('/lang/{lang}', [FrontController::class, 'changeLanguage'])->name('changelanguage');
-// Route::get('/lang/{lang}', [DashboardController::class, 'changeLanguage'])->name('changelanguage');
 
 // Route::group(['middleware' => 'firewall.all'], function () {
 Route::get('/', FrontIndex::class)->name('front.index');
@@ -83,10 +74,12 @@ Route::middleware('auth')->group(function () {
 Route::post('/uploads', [UploadController::class, 'upload'])->name('upload');
 // });
 
-Route::fallback(function (Request $request) {
-    return app()->make(ErrorController::class)->notFound($request);
-});
+// Route::fallback(function (Request $request) {
+//     return app()->make(ErrorController::class)->notFound($request);
+// });
 
 Livewire::setUpdateRoute(function ($handle) {
     return Route::post('/custom/livewire/update', $handle);
 });
+
+

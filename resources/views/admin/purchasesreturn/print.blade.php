@@ -57,14 +57,14 @@
                                     @php
                                         $type = $purchase_return->status->getBadgeType();
                                     @endphp
-                                    <x-badge :type="$type">{{ $purchase_return->status->getName() }}</x-badge>
+                                    <x-badge :type="$type">{{ $purchase_return->status->label() }}</x-badge>
                                 </div>
                                 <div>
                                     {{ __('Payment Status') }}:
                                     @php
                                         $type = $purchase_return->payment_status->getBadgeType();
                                     @endphp
-                                    <x-badge :type="$type">{{ $purchase_return->payment_status->getName() }}</x-badge>
+                                    <x-badge :type="$type">{{ $purchase_return->payment_status->label() }}</x-badge>
                                 </div>
                             </div>
                         </div>

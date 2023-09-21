@@ -8,6 +8,7 @@ use App\Livewire\Utils\Datatable;
 use App\Models\Blog;
 use Illuminate\Support\Facades\Gate;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
+use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\Attributes\Layout;
 
@@ -16,20 +17,13 @@ class Index extends Component
 {
     use Datatable;
     use LivewireAlert;
-
-    public $listeners = [
-        'delete',
-    ];
-
     public $blog;
 
     public $deleteModal = false;
 
-    public function mount(): void
-    {
-        $this->orderable = (new Blog())->orderable;
-    }
+    public $model = Blog::class;
 
+    #[On('delete')]
     public function delete(): void
     {
         abort_if(Gate::denies('blog_delete'), 403);

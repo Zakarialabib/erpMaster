@@ -86,25 +86,25 @@
             <x-table.th>
                 <input type="checkbox" wire:model.live="selectPage" />
             </x-table.th>
-            <x-table.th sortable wire:click="sortBy('reference')" :direction="$sorts['reference'] ?? null">
+            <x-table.th sortable wire:click="sortingBy('reference')" field="reference" :direction="$sorts['reference'] ?? null">
                 {{ __('Reference') }}
             </x-table.th>
-            <x-table.th sortable wire:click="sortBy('date')" :direction="$sorts['date'] ?? null">
+            <x-table.th sortable wire:click="sortingBy('date')" field="date" :direction="$sorts['date'] ?? null">
                 {{ __('Date') }}
             </x-table.th>
-            <x-table.th sortable wire:click="sortBy('customer_id')" :direction="$sorts['customer_id'] ?? null">
+            <x-table.th sortable wire:click="sortingBy('customer_id')" field="customer_id" :direction="$sorts['customer_id'] ?? null">
                 {{ __('Customer') }}
             </x-table.th>
-            <x-table.th sortable wire:click="sortBy('payment_status')" :direction="$sorts['payment_status'] ?? null">
+            <x-table.th sortable wire:click="sortingBy('payment_status')" field="payment_status" :direction="$sorts['payment_status'] ?? null">
                 {{ __('Payment status') }}
             </x-table.th>
-            <x-table.th sortable wire:click="sortBy('due_amount')" :direction="$sorts['due_amount'] ?? null">
+            <x-table.th sortable wire:click="sortingBy('due_amount')" field="due_amount" :direction="$sorts['due_amount'] ?? null">
                 {{ __('Due Amount') }}
             </x-table.th>
-            <x-table.th sortable wire:click="sortBy('total')" :direction="$sorts['total'] ?? null">
+            <x-table.th sortable wire:click="sortingBy('total')" field="total" :direction="$sorts['total'] ?? null">
                 {{ __('Total') }}
             </x-table.th>
-            <x-table.th sortable wire:click="sortBy('status')" :direction="$sorts['status'] ?? null">
+            <x-table.th sortable wire:click="sortingBy('status')" field="status" :direction="$sorts['status'] ?? null">
                 {{ __('Status') }}
             </x-table.th>
             <x-table.th>
@@ -139,7 +139,7 @@
                         @php
                             $type = $sale->payment_status->getBadgeType();
                         @endphp
-                        <x-badge :type="$type">{{ $sale->payment_status->getName() }}</x-badge>
+                        <x-badge :type="$type">{{ $sale->payment_status->label() }}</x-badge>
                     </x-table.td>
                     <x-table.td>
                         {{ format_currency($sale->due_amount) }}
@@ -153,7 +153,7 @@
                             $badgeType = $sale->status->getBadgeType();
                         @endphp
 
-                        <x-badge :type="$badgeType">{{ $sale->status->getName() }}</x-badge>
+                        <x-badge :type="$badgeType">{{ $sale->status->label() }}</x-badge>
                     </x-table.td>
                     <x-table.td>
                         <div class="flex justify-start space-x-2">
@@ -287,26 +287,6 @@
             crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     @endPushOnce
     @push('scripts')
-        <script>
-            document.addEventListener('livewire:init', function() {
-                window.livewire.on('deleteModal', saleId => {
-                    Swal.fire({
-                        title: 'Are you sure?',
-                        text: "You won't be able to revert this!",
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonColor: '#3085d6',
-                        cancelButtonColor: '#d33',
-                        confirmButtonText: 'Yes, delete it!'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            window.livewire.emit('delete', saleId)
-                        }
-                    })
-                })
-    
-            })
-        </script>
         <script>
             function printContent() {
                 const content = document.getElementById("printable-content");

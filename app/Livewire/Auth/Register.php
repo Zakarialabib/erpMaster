@@ -28,7 +28,7 @@ class Register extends Component
 
     public $city;
 
-     // Set the default city to 'Casablanca'
+    // Set the default city to 'Casablanca'
     public $country; // Set
 
     public function mount(): void
@@ -66,7 +66,7 @@ class Register extends Component
 
         $homePage = match (true) {
             $user->hasRole('admin') => '/admin/dashboard',
-            default => '/',
+            default                 => '/',
         };
 
         return $this->redirect($homePage, navigate: true);

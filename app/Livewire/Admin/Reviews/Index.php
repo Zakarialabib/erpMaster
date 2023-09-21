@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Livewire\Admin\Reviews;
 
+use App\Models\Review;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Livewire\Component;
@@ -15,10 +16,7 @@ class Index extends Component
 {
     use Datatable;
 
-    public function mount(): void
-    {
-        $this->orderable = (new Comment())->orderable;
-    }
+    public $model = Review::class;
 
     public function render(): View|Factory
     {

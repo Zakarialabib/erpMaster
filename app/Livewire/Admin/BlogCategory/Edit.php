@@ -10,31 +10,26 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Gate;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Attributes\On;
+use App\Livewire\Utils\Admin\WithMeta;
+use Livewire\Attributes\Rule;
 
 class Edit extends Component
 {
     use LivewireAlert;
+    use WithMeta;
 
     public $blogcategory;
-
+   
+    #[Rule('required', message: 'Title is required')]
     public $title;
 
+    #[Rule('min:3', message: 'Description must be at least 3 characters')]
     public $description;
-
-    public $meta_title;
-
-    public $meta_description;
 
     public $language_id;
 
     public $editModal = false;
 
-    protected $rules = [
-        'title'            => 'required|string|max:255',
-        'description'      => 'nullable',
-        'meta_title'       => 'nullable|max:100',
-        'meta_description' => 'nullable|max:200',
-    ];
 
     #[On('editModal')]
     public function editModal($id): void

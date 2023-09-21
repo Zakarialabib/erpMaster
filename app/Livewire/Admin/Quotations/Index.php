@@ -28,10 +28,7 @@ class Index extends Component
         'delete',
     ];
 
-    public function mount(): void
-    {
-        $this->orderable = (new Quotation())->orderable;
-    }
+    public $model = Quotation::class;
 
     public function render()
     {

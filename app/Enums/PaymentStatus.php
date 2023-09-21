@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Enums;
 
-use Illuminate\Support\Str;
-
 enum PaymentStatus: int
 {
     case PENDING = 0;
@@ -16,9 +14,14 @@ enum PaymentStatus: int
 
     case DUE = 3;
 
-    public function getName(): string
+    public function label(): string
     {
-        return __(Str::studly($this->name));
+        return match ($this) {
+            static::PENDING => __('Pending'),
+            static::PAID    => __('Paid'),
+            static::PARTIAL => __('Partial'),
+            static::DUE     => __('Due'),
+        };
     }
 
     public function getValue()
@@ -26,11 +29,11 @@ enum PaymentStatus: int
         return $this->value;
     }
 
-    public static function getLabel($value)
+    public static function getLabel($value): ?string
     {
         foreach (self::cases() as $case) {
             if ($case->getValue() === $value) {
-                return $case->getName();
+                return $case->label();
             }
         }
 
@@ -39,15 +42,11 @@ enum PaymentStatus: int
 
     public function getBadgeType(): string
     {
-        switch ($this) {
-            case self::PENDING:
-                return 'warning';
-            case self::PARTIAL:
-                return 'info';
-            case self::PAID:
-                return 'success';
-            default:
-                return 'secondary';
-        }
+        return match ($this) {
+            self::PENDING => 'warning',
+            self::PARTIAL => 'info',
+            self::PAID    => 'success',
+            default       => 'secondary',
+        };
     }
 }

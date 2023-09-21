@@ -11,27 +11,27 @@ class Section extends Model
 {
     use HasAdvancedFilter;
 
-    public const HOME_PAGE = 1;
+    final public const HOME_PAGE = 1;
 
-    public const ABOUT_PAGE = 2;
+    final public const ABOUT_PAGE = 2;
 
-    public const BRAND_PAGE = 3;
+    final public const BRAND_PAGE = 3;
 
-    public const BLOG_PAGE = 4;
+    final public const BLOG_PAGE = 4;
 
-    public const CATALOG_PAGE = 5;
+    final public const CATALOG_PAGE = 5;
 
-    public const BRANDS_PAGE = 6;
+    final public const BRANDS_PAGE = 6;
 
-    public const CONTACT_PAGE = 7;
+    final public const CONTACT_PAGE = 7;
 
-    public const PRODUCT_PAGE = 8;
+    final public const PRODUCT_PAGE = 8;
 
-    public const PRIVACY_PAGE = 9;
+    final public const PRIVACY_PAGE = 9;
 
     public $table = 'sections';
 
-    public const ATTRIBUTES = [
+    final public const ATTRIBUTES = [
         'id',
         'featured_title',
         'label',
@@ -43,6 +43,7 @@ class Section extends Model
     ];
 
     public $orderable = self::ATTRIBUTES;
+
     public $filterable = self::ATTRIBUTES;
 
     protected $fillable = [
@@ -54,15 +55,14 @@ class Section extends Model
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      *
-     * @return void
      */
-    public function scopeActive($query)
+    public function scopeActive($query): void
     {
         $query->where('status', 1);
     }
 
     public function language()
     {
-        return $this->belongsTo('App\Models\Language');
+        return $this->belongsTo(\App\Models\Language::class);
     }
 }

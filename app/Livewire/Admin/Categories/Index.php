@@ -36,10 +36,7 @@ class Index extends Component
     /** @var bool */
     public $deleteModal = false;
 
-    public function mount(): void
-    {
-        $this->orderable = (new Category())->orderable;
-    }
+    public $model = Category::class;
 
     public function render(): mixed
     {

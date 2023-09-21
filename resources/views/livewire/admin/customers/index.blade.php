@@ -39,11 +39,14 @@
             <x-table.th>
                 <input wire:model.live="selectPage" type="checkbox" />
             </x-table.th>
-            <x-table.th sortable multi-column wire:click="sortBy('name')" :direction="$sorts['name'] ?? null">
+            <x-table.th sortable :direction="$sorts['name'] ?? null" field="name" wire:click="sortingBy('name')">
                 {{ __('Name') }}
             </x-table.th>
-            <x-table.th sortable multi-column wire:click="sortBy('phone')" :direction="$sorts['phone'] ?? null">
+            <x-table.th sortable :direction="$sorts['phone'] ?? null" field="phone" wire:click="sortingBy('phone')">
                 {{ __('Phone') }}
+            </x-table.th>
+            <x-table.th sortable :direction="$sorts['status'] ?? null" field="status" wire:click="sortingBy('status')">
+                {{ __('Status') }}
             </x-table.th>
             <x-table.th>
                 {{ __('Actions') }}
@@ -229,26 +232,5 @@
     <livewire:admin.customers.create lazy />
 
 
-    @push('scripts')
-        <script>
-            document.addEventListener('livewire:init', function() {
-                window.livewire.on('deleteModal', customerId => {
-                    Swal.fire({
-                        title: 'Are you sure?',
-                        text: "You won't be able to revert this!",
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonColor: '#3085d6',
-                        cancelButtonColor: '#d33',
-                        confirmButtonText: 'Yes, delete it!'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            window.livewire.emit('delete', customerId)
-                        }
-                    })
-                })
-            })
-        </script>
-    @endpush
 
 </div>

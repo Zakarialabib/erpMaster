@@ -56,20 +56,20 @@
                     @if ($product->warehouse && $product->warehouse->is_ecommerce)
                         @if ($product->is_discount && $product->discount_date >= now())
                             <span
-                                class="line-through text-gray-600">{{ Helpers::format_currency($product->old_price) }}
+                                class="line-through text-gray-600">{{ format_currency($product->old_price) }}
                             </span>
-                            <span itemprop="price">{{ Helpers::format_currency($product->price) }}</span>
+                            <span itemprop="price">{{ format_currency($product->price) }}</span>
                         @else
-                            <span itemprop="price">{{ Helpers::format_currency($product->price) }}</span>
+                            <span itemprop="price">{{ format_currency($product->price) }}</span>
                         @endif
                     @else
                         @if ($product->is_discount && $product->discount_date >= now())
                             <span
-                                class="line-through text-gray-600">{{ Helpers::format_currency($product->old_price) }}
+                                class="line-through text-gray-600">{{ format_currency($product->old_price) }}
                             </span>
-                            <span itemprop="price">{{ Helpers::format_currency($product->price) }}</span>
+                            <span itemprop="price">{{ format_currency($product->price) }}</span>
                         @else
-                            <span itemprop="price">{{ Helpers::format_currency($product->price) }}</span>
+                            <span itemprop="price">{{ format_currency($product->price) }}</span>
                         @endif
                     @endif
                 </p>

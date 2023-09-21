@@ -12,38 +12,32 @@ use Livewire\Component;
 use Livewire\WithFileUploads;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Computed;
+use App\Livewire\Utils\Admin\WithMeta;
+use Livewire\Attributes\Rule;
 
 class Create extends Component
 {
     use LivewireAlert;
     use WithFileUploads;
+    use WithMeta;
 
     public $createModal = false;
 
     public Blog $blog;
 
+    #[Rule('required', message: 'Title is required')]
     public $title;
 
+    #[Rule('required', message: 'Category is required')]
     public $category_id;
+
+    #[Rule('required', message: 'Description is required')]
+    #[Rule('min:3', message: 'Description must be at least 3 characters')]
+    public $description;
 
     public $slug;
 
-    public $meta_title;
-
-    public $meta_description;
-
     public $image;
-
-    public $description;
-
-    protected $rules = [
-        'title'            => 'required|min:3|max:255',
-        'category_id'      => 'required|integer',
-        'slug'             => 'required|string',
-        'description'      => 'required|min:3',
-        'meta_title'       => 'nullable|max:100',
-        'meta_description' => 'nullable|max:200',
-    ];
 
     public function render()
     {
@@ -75,7 +69,7 @@ class Create extends Component
         $this->validate();
 
         if ($this->image) {
-            $imageName = Str::slug($this->title).'.'.$this->image->extension();
+            $imageName = Str::slug($this->title) . '.' . $this->image->extension();
             $this->image->storeAs('blogs', $imageName);
             $this->blog->image = $imageName;
         }

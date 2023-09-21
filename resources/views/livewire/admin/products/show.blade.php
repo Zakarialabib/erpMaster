@@ -125,7 +125,7 @@
                                             <div class="flex items-center">
                                                 <span class="font-semibold">{{ __('Type') }}:</span>
                                                 <span class="ml-2">
-                                                    {{ $movement->type->getName() }}
+                                                    {{ $movement->type->label() }}
                                                 </span>
                                             </div>
                                             <div class="flex items-center">

@@ -12,6 +12,7 @@ use Livewire\Attributes\Computed;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Livewire\Attributes\On;
+use Livewire\Attributes\Rule;
 
 class Create extends Component
 {
@@ -21,22 +22,36 @@ class Create extends Component
     public Section $section;
 
     public $image;
-
-    public $page_id;
-
+   
+    #[Rule('required', message: 'Please provide a title')]
+    #[Rule('min:3', message: 'This title is too short')]
+    #[Rule('max:255', message: 'This title is too long')]
     public $title;
 
-    public $featured_title;
-
+    #[Rule('nullable')]
+    #[Rule('max:255', message: 'This subtitle is too long')]
     public $subtitle;
+
+    #[Rule('nullable')]
+    #[Rule('max:255', message: 'This featured title is too long')]
+    public $featured_title;
 
     public $description;
 
-    public $label;
-
+    #[Rule('nullable|string|max:255 ')]
     public $link;
 
+    #[Rule('nullable|string|max:255 ')]
+    public $label;
+
+    #[Rule('nullable')]
     public $bg_color;
+
+    #[Rule('required|unique:sections,type')]
+    public $type;
+
+    #[Rule('nullable|integer')]
+    public $page_id;
 
     public $text_color;
 
@@ -44,19 +59,7 @@ class Create extends Component
 
     public $createModal = false;
 
-    protected $rules = [
-        'page_id'        => 'required',
-        'title'          => 'nullable',
-        'featured_title' => 'nullable',
-        'subtitle'       => 'nullable',
-        'label'          => 'nullable',
-        'link'           => 'nullable',
-        'bg_color'       => 'nullable',
-        'text_color'     => 'nullable',
-        'embeded_video'  => 'nullable',
-        'description'    => 'nullable',
-    ];
-
+ 
     #[On('createModal')]
     public function createModal(): void
     {

@@ -8,6 +8,7 @@ use App\Support\HasAdvancedFilter;
 use Illuminate\Database\Eloquent\Model;
 use App\Enums\OrderStatus;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -16,16 +17,20 @@ class Order extends Model
     use HasAdvancedFilter;
     use SoftDeletes;
 
-    public const ATTRIBUTES = [
+    final public const ATTRIBUTES = [
         'id', 'date', 'reference',
         'total_amount', 'paid_amount', 'due_amount',
     ];
 
     public $orderable = self::ATTRIBUTES;
+
     public $filterable = self::ATTRIBUTES;
 
     protected $fillable = [
-        'id', 'date', 'reference', 'shipping_id', 'packaging_id', 'tax_percentage', 'tax_amount', 'discount_percentage', 'discount_amount', 'shipping_amount', 'total_amount', 'paid_amount', 'due_amount', 'payment_date', 'status', 'payment_status', 'payment_method', 'shipping_status', 'document', 'note',
+        'id', 'date', 'reference', 'shipping_id', 'packaging_id',
+         'tax_percentage', 'tax_amount', 'discount_percentage', 'discount_amount', 
+         'shipping_amount', 'total_amount', 'paid_amount', 'due_amount', 'payment_date', '
+         status', 'payment_status', 'payment_method', 'shipping_status', 'document', 'note',
     ];
 
     protected $casts = [
@@ -36,11 +41,7 @@ class Order extends Model
     {
         $lastOrder = self::latest()->first();
 
-        if ($lastOrder) {
-            $number = (int) substr($lastOrder->reference, -6) + 1;
-        } else {
-            $number = 1;
-        }
+        $number = $lastOrder ? (int) substr((string) $lastOrder->reference, -6) + 1 : 1;
 
         return date('Ymd').'-'.sprintf('%06d', $number);
     }
@@ -70,9 +71,9 @@ class Order extends Model
         return $this->belongsTo(Packaging::class);
     }
 
-    public function products()
+    public function products(): BelongsToMany
     {
-        return $this->belongsToMany(Product::class, 'order_products')
+        return $this->belongsToMany(Product::class)
             ->withPivot('qty', 'price', 'tax', 'total');
     }
 }

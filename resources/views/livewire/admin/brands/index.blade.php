@@ -38,11 +38,14 @@
             <x-table.th>
                 <input wire:model.live="selectPage" type="checkbox" />
             </x-table.th>
-            <x-table.th sortable wire:click="sortBy('name')" :direction="$sorts['name'] ?? null">
+            <x-table.th sortable :direction="$sorts['name'] ?? null" field="name" wire:click="sortingBy('name')">
                 {{ __('Name') }}
             </x-table.th>
             <x-table.th>
                 {{ __('Description') }}
+            </x-table.th>
+            <x-table.th sortable :direction="$sorts['status'] ?? null" field="status" wire:click="sortingBy('status')">
+                {{ __('Status') }}
             </x-table.th>
             <x-table.th>
                 {{ __('Actions') }}
@@ -134,28 +137,4 @@
         </x-slot>
     </x-modal>
     <!-- End Import modal -->
-
-    @push('scripts')
-        <script>
-            document.addEventListener('livewire:init', function() {
-                window.livewire.on('deleteModal', brandId => {
-                    Swal.fire({
-                        title: 'Are you sure?',
-                        text: "You won't be able to revert this!",
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonColor: '#3085d6',
-                        cancelButtonColor: '#d33',
-                        confirmButtonText: 'Yes, delete it!'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            window.livewire.emit('delete', brandId)
-                        }
-                    })
-                })
-            })
-        </script>
-    @endpush
-
-
 </div>

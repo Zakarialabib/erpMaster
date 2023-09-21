@@ -25,14 +25,11 @@ class Index extends Component
 
     public $shipping;
 
+    public $model = Shipping::class;
+
     public function confirmed(): void
     {
         $this->dispatch('delete');
-    }
-
-    public function mount(): void
-    {
-        $this->orderable = (new Shipping())->orderable;
     }
 
     public function render(): View|Factory

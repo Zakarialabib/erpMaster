@@ -6,13 +6,15 @@ namespace App\Models;
 
 use App\Support\HasAdvancedFilter;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class BlogCategory extends Model
 {
     use HasAdvancedFilter;
 
     /** @var array<int, string> */
-    public const ATTRIBUTES = [
+    final public const ATTRIBUTES = [
         'id',
         'title',
         'featured',
@@ -21,6 +23,7 @@ class BlogCategory extends Model
     ];
 
     public $orderable = self::ATTRIBUTES;
+
     public $filterable = self::ATTRIBUTES;
 
     /**
@@ -38,7 +41,7 @@ class BlogCategory extends Model
         'language_id',
     ];
 
-    /** @return hasMany<Blog> */
+    /** @return HasMany<Blog> */
     public function blogs()
     {
         return $this->hasMany(Blog::class);
@@ -50,11 +53,10 @@ class BlogCategory extends Model
         return $this->belongsTo(Language::class, 'language_id')->withDefault();
     }
 
-    public function setSlugAttribute($value)
+    public function setSlugAttribute($value): void
     {
-        $this->attributes['slug'] = str_replace(' ', '-', $value);
+        $this->attributes['slug'] = str_replace(' ', '-', (string) $value);
     }
-
 
     public function scopeActive($query)
     {

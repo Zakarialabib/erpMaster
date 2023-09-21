@@ -25,13 +25,14 @@ class User extends Authenticatable
     use HasFactory;
     use HasUuid;
 
-    public const ATTRIBUTES = [
+    final public const ATTRIBUTES = [
         'id', 'name', 'email', 'password', 'avatar',
         'phone', 'role_id', 'status', 'is_all_warehouses',
-        'created_at', 'updated_at',
+        'created_at', 'updated_at','provider_id','provider_name',
     ];
 
     public $orderable = self::ATTRIBUTES;
+
     public $filterable = self::ATTRIBUTES;
 
     /**
@@ -64,11 +65,7 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    /**
-     * @param \Illuminate\Database\Eloquent\Builder $builder
-     *
-     * @return mixed
-     */
+    /** @return mixed */
     public function scopeIsActive(Builder $builder)
     {
         return $builder->whereIsActive(true);

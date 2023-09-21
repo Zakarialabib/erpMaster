@@ -14,7 +14,7 @@ use Maatwebsite\Excel\Concerns\ToModel;
 
 class ImportUpdates implements ToModel
 {
-    public function model(array $row)
+    public function model(array $row): null
     {
         $product = Product::where('name', $row[0])->first();
 
@@ -27,7 +27,7 @@ class ImportUpdates implements ToModel
                 'slug'          => Str::slug($row[0], '-').'-'.Str::random(5),
                 'code'          => Str::random(10),
                 'category_id'   => Category::where('name', $row[6])->first()->id ?? Helpers::createCategory(['name' => $row[6]])->id ?? null,
-                'subcategories' => ! empty($row[7]) ? Subcategory::whereIn('name', explode(',', $row[7]))->pluck('id')->toArray() : [],
+                'subcategories' => empty($row[7]) ? [] : Subcategory::whereIn('name', explode(',', (string) $row[7]))->pluck('id')->toArray(),
                 'brand_id'      => Brand::where('name', $row[8])->first()->id ?? Helpers::createBrand(['name' => $row[8]]),
                 'image'         => Helpers::uploadImage($row[1], $row[0]) ?? 'default.jpg',
                 // 'gallery' => getGalleryFromUrl($row[7]) ?? null,
@@ -40,8 +40,8 @@ class ImportUpdates implements ToModel
         }
 
         // $product->code = $row['code'];
-        $product->price = $row[4];
-        $product->old_price = $row[5] ?? null;
+        // $product->price = $row[4];
+        // $product->old_price = $row[5] ?? null;
         $product->save();
 
         return null;

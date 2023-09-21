@@ -65,7 +65,7 @@ class ProductShow extends Component
             $warehouse->product->name,
             $this->quantity,
             $warehouse->price
-        )->associate(\App\Models\Product::class);
+        )->associate(Product::class);
 
         // $cartItem->save();
 

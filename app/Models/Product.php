@@ -4,14 +4,15 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\Status;
 use App\Scopes\ProductScope;
 use App\Support\HasAdvancedFilter;
 use App\Traits\HasUuid;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
@@ -27,7 +28,7 @@ class Product extends Model
     use SoftDeletes;
 
     /** @var array<int, string> */
-    public const ATTRIBUTES = [
+    final public const ATTRIBUTES = [
         'id',
         'category_id',
         'name',
@@ -36,6 +37,7 @@ class Product extends Model
     ];
 
     public $orderable = self::ATTRIBUTES;
+
     public $filterable = self::ATTRIBUTES;
 
     /**
@@ -60,9 +62,15 @@ class Product extends Model
         parent::__construct($attributes);
     }
 
+    protected $casts = [
+        'options'       => 'array',
+        'subcategories' => 'array',
+        'status'        => Status::class,
+    ];
+
     public function scopeActive($query): void
     {
-        $query->where('status', true);
+        $query->where('status', Status::ACTIVE);
     }
 
     /** @return BelongsTo<Category> */
@@ -84,9 +92,9 @@ class Product extends Model
     }
 
     /** @return BelongsToMany<Warehouse> */
-    public function warehouses()
+    public function warehouses(): BelongsToMany
     {
-        return $this->belongsToMany(Warehouse::class)->using(ProductWarehouse::class)
+        return $this->belongsToMany(Warehouse::class)
             ->withPivot('qty', 'price', 'cost', 'old_price', 'stock_alert', 'is_discount', 'discount_date');
     }
 
@@ -94,32 +102,6 @@ class Product extends Model
     public function priceHistory(): HasMany
     {
         return $this->hasMany(PriceHistory::class);
-    }
-
-    /**
-     * Interact with product cost
-     *
-     * @return \Illuminate\Database\Eloquent\Casts\Attribute
-     */
-    protected function productCost(): Attribute
-    {
-        return Attribute::make(
-            get: fn ($value) => $value / 100,
-            set: fn ($value) => $value * 100,
-        );
-    }
-
-    /**
-     * Interact with product price
-     *
-     * @return \Illuminate\Database\Eloquent\Casts\Attribute
-     */
-    protected function productPrice(): Attribute
-    {
-        return Attribute::make(
-            get: fn ($value) => $value / 100,
-            set: fn ($value) => $value * 100,
-        );
     }
 
     public function getTotalQuantityAttribute(): int|float|null

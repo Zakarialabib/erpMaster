@@ -10,6 +10,7 @@ use App\Models\Customer;
 use App\Models\Sale;
 use Illuminate\Support\Facades\Http;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
+use Livewire\Attributes\Rule;
 
 class Messaging extends Component
 {
@@ -17,8 +18,10 @@ class Messaging extends Component
 
     public $botToken;
 
+    #[Rule('required|numeric')]
     public $chatId;
 
+    #[Rule('required|min:1|max:1000')]
     public $message;
 
     public $type;
@@ -34,11 +37,6 @@ class Messaging extends Component
     public $openProductModal;
 
     public $openClientModal;
-
-    protected $rules = [
-        'chatId'  => 'required|numeric',
-        'message' => 'required',
-    ];
 
     public function mount(): void
     {

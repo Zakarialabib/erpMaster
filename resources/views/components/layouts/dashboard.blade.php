@@ -54,7 +54,7 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
                 <!-- Navigation Bar-->
                 <x-navbar />
 
-                <main class="flex-1 px-6">
+                <main class="flex-1 px-6 pb-10">
 
                     @yield('breadcrumb')
 

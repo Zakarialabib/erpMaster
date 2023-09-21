@@ -56,11 +56,13 @@ class Create extends Component
     #[Rule('required|numeric')]
     public $paid_amount;
 
-    #[Rule('required|string|max:50')]
+    #[Rule('required')]
     public $status;
 
     #[Rule('required|string|max:50')]
     public $payment_method;
+
+    public $payment_status;
 
     #[Rule('nullable|string|max:1000')]
     public $note;
@@ -83,6 +85,8 @@ class Create extends Component
 
     public function mount(): void
     {
+        Cart::instance('purchase')->destroy();
+
         $this->tax_percentage = 0;
         $this->discount_percentage = 0;
         $this->shipping_amount = 0;
@@ -94,6 +98,8 @@ class Create extends Component
 
     public function render()
     {
+        // abort_if(Gate::denies('purchase create'), 403);
+
         $cart_items = Cart::instance($this->cart_instance)->content();
 
         return view('livewire.admin.purchase.create', [
@@ -117,7 +123,7 @@ class Create extends Component
 
     public function store(): void
     {
-        if (!$this->warehouse_id) {
+        if ( ! $this->warehouse_id) {
             $this->alert('error', __('Please select a warehouse'));
 
             return;
@@ -180,7 +186,7 @@ class Create extends Component
                     ->where('warehouse_id', $this->warehouse_id)
                     ->first();
 
-                if (!$product_warehouse) {
+                if ( ! $product_warehouse) {
                     $product_warehouse = new ProductWarehouse([
                         'product_id'   => $cart_item->id,
                         'warehouse_id' => $this->warehouse_id,
@@ -251,9 +257,16 @@ class Create extends Component
         $this->dispatch('warehouseSelected', $warehouse_id);
     }
 
-    public function updatedStatus($value): void
+    public function updatedStatus($status): void
     {
-        if ($value === PurchaseStatus::COMPLETED) {
+        if ($status === PurchaseStatus::COMPLETED) {
+            $this->paid_amount = $this->total_amount;
+        }
+    }
+
+    public function updatedPaymentMethod($payment_status): void
+    {
+        if ($payment_status === 'cash') {
             $this->paid_amount = $this->total_amount;
         }
     }

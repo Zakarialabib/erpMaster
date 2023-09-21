@@ -9,5 +9,6 @@ use Illuminate\Database\Eloquent\Model;
 class Packaging extends Model
 {
     public $timestamps = false;
+
     protected $fillable = ['title', 'subtitle', 'cost'];
 }

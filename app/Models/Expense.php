@@ -14,7 +14,7 @@ class Expense extends Model
 {
     use HasAdvancedFilter;
 
-    public const ATTRIBUTES = [
+    final public const ATTRIBUTES = [
         'id',
         'category_id',
         'date',
@@ -25,6 +25,7 @@ class Expense extends Model
     ];
 
     public array $orderable = self::ATTRIBUTES;
+
     public array $filterable = self::ATTRIBUTES;
 
     /**
@@ -78,16 +79,12 @@ class Expense extends Model
         );
     }
 
-    /**
-     * Interact with the expenses amount
-     *
-     * @return \Illuminate\Database\Eloquent\Casts\Attribute
-     */
+    /** Interact with the expenses amount */
     protected function amount(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => $value / 100,
-            set: fn ($value) => $value * 100,
+            get: static fn ($value): int|float => $value / 100,
+            set: static fn ($value): int|float => $value * 100,
         );
     }
 }

@@ -4,18 +4,19 @@ declare(strict_types=1);
 
 namespace App\Livewire\Admin\Products;
 
+use App\Livewire\Utils\Admin\WithModels;
 use App\Models\ProductWarehouse;
-use App\Models\Warehouse;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
 use Milon\Barcode\Facades\DNS1DFacade;
-use PDF;
+use Mccarlosen\LaravelMpdf\Facades\LaravelMpdf as PDF;
 use Livewire\Attributes\Layout;
 
 #[Layout('components.layouts.dashboard')]
 class Barcode extends Component
 {
     use LivewireAlert;
+    use WithModels;
 
     public $warehouse_id;
 
@@ -119,11 +120,6 @@ class Barcode extends Component
             unset($this->products[$index]);
             $this->products = array_values($this->products); // Reset array keys
         }
-    }
-
-    public function getWarehousesProperty()
-    {
-        return Warehouse::pluck('name', 'id')->toArray();
     }
 
     public function render()

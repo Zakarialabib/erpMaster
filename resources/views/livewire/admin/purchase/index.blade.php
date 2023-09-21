@@ -68,16 +68,16 @@
             <x-table.th>
                 <input type="checkbox" wire:model.live="selectPage" />
             </x-table.th>
-            <x-table.th sortable wire:click="sortBy('reference')" :direction="$sorts['reference'] ?? null">
+            <x-table.th sortable wire:click="sortingBy('reference')" field="reference" :direction="$sorts['reference'] ?? null">
                 {{ __('Reference') }}
             </x-table.th>
-            <x-table.th sortable wire:click="sortBy('date')" :direction="$sorts['date'] ?? null">
+            <x-table.th sortable wire:click="sortingBy('date')" field="date" :direction="$sorts['date'] ?? null">
                 {{ __('Date') }}
             </x-table.th>
-            <x-table.th sortable wire:click="sortBy('supplier_id')" :direction="$sorts['supplier_id'] ?? null">
+            <x-table.th sortable wire:click="sortingBy('supplier_id')" field="supplier_id" :direction="$sorts['supplier_id'] ?? null">
                 {{ __('Supplier') }}
             </x-table.th>
-            <x-table.th sortable wire:click="sortBy('payment_status')" :direction="$sorts['payment_status'] ?? null">
+            <x-table.th sortable wire:click="sortingBy('payment_status')" field="payment_status" :direction="$sorts['payment_status'] ?? null">
                 {{ __('Payment status') }}
             </x-table.th>
             <x-table.th>
@@ -113,7 +113,7 @@
                             $badgeType = $purchase->status->getBadgeType();
                         @endphp
 
-                        <x-badge :type="$badgeType">{{ $purchase->payment_status->getName() }}</x-badge>
+                        <x-badge :type="$badgeType">{{ $purchase->payment_status->label() }}</x-badge>
 
                     </x-table.td>
                     <x-table.td>
@@ -209,29 +209,5 @@
     @if (empty($showPayments))
         <livewire:admin.purchase.payment.index :purchase="$purchase" lazy />
     @endif
-
-
-    @push('scripts')
-        <script>
-            document.addEventListener('livewire:init', function() {
-                window.livewire.on('deleteModal', purchaseId => {
-                    Swal.fire({
-                        title: 'Are you sure?',
-                        text: "You won't be able to revert this!",
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonColor: '#3085d6',
-                        cancelButtonColor: '#d33',
-                        confirmButtonText: 'Yes, delete it!'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            window.livewire.emit('delete', purchaseId)
-                        }
-                    })
-                })
-            })
-        </script>
-    @endpush
-
 
 </div>

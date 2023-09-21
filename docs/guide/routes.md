@@ -27,7 +27,6 @@
 - Route::get('admin/permission', App\Livewire\Admin\Permission::class);
 - Route::get('admin/pos', App\Livewire\Admin\Pos::class);
 - Route::get('admin/printer', App\Livewire\Admin\Printer::class);
-- Route::get('admin/product', App\Livewire\Admin\Product::class);
 - Route::get('admin/products', App\Livewire\Admin\Products::class);
 - Route::get('admin/purchase', App\Livewire\Admin\Purchase::class);
 - Route::get('admin/purchasereturn', App\Livewire\Admin\PurchaseReturn::class);
@@ -38,7 +37,6 @@
 - Route::get('admin/salereturn', App\Livewire\Admin\SaleReturn::class);
 - Route::get('admin/sales', App\Livewire\Admin\Sales::class);
 - Route::get('admin/section', App\Livewire\Admin\Section::class);
-- Route::get('admin/service', App\Livewire\Admin\Service::class);
 - Route::get('admin/settings', App\Livewire\Admin\Settings::class);
 - Route::get('admin/shipping', App\Livewire\Admin\Shipping::class);
 - Route::get('admin/slider', App\Livewire\Admin\Slider::class);

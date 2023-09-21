@@ -16,7 +16,7 @@ class SaleReturn extends Model
 {
     use HasAdvancedFilter;
 
-    public const ATTRIBUTES = [
+    final public const ATTRIBUTES = [
         'id',
         'date',
         'reference',
@@ -36,6 +36,7 @@ class SaleReturn extends Model
     ];
 
     public $orderable = self::ATTRIBUTES;
+
     public $filterable = self::ATTRIBUTES;
 
     /**
@@ -93,100 +94,65 @@ class SaleReturn extends Model
     {
         parent::boot();
 
-        static::creating(function ($saleReturn) {
+        static::creating(static function ($saleReturn): void {
             $prefix = settings('saleReturn_prefix');
-
             $latestSaleReturn = self::latest()->first();
-
-            if ($latestSaleReturn) {
-                $number = intval(substr($latestSaleReturn->reference, -3)) + 1;
-            } else {
-                $number = 1;
-            }
-
-            $saleReturn->reference = $prefix.str_pad(strval($number), 3, '0', STR_PAD_LEFT);
+            $number = $latestSaleReturn ? (int) substr((string) $latestSaleReturn->reference, -3) + 1 : 1;
+            $saleReturn->reference = $prefix.str_pad((string) $number, 3, '0', STR_PAD_LEFT);
         });
     }
 
-    /**
-     * @param mixed $query
-     *
-     * @return mixed
-     */
-    public function scopeCompleted($query)
+    /** @return mixed */
+    public function scopeCompleted(mixed $query)
     {
         return $query->whereStatus(2);
     }
 
-    /**
-     * get shipping amount
-     *
-     * @return \Illuminate\Database\Eloquent\Casts\Attribute
-     */
+    /** get shipping amount */
     protected function shippingAmount(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => $value / 100,
+            get: static fn ($value): int|float => $value / 100,
         );
     }
 
-    /**
-     * get paid amount
-     *
-     * @return \Illuminate\Database\Eloquent\Casts\Attribute
-     */
+    /** get paid amount */
     protected function paidAmount(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => $value / 100,
+            get: static fn ($value): int|float => $value / 100,
         );
     }
 
-    /**
-     * get total amount
-     *
-     * @return \Illuminate\Database\Eloquent\Casts\Attribute
-     */
+    /** get total amount */
     protected function totalAmount(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => $value / 100,
+            get: static fn ($value): int|float => $value / 100,
         );
     }
 
-    /**
-     * get due amount
-     *
-     * @return \Illuminate\Database\Eloquent\Casts\Attribute
-     */
+    /** get due amount */
     protected function dueAmount(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => $value / 100,
+            get: static fn ($value): int|float => $value / 100,
         );
     }
 
-    /**
-     * get tax amount
-     *
-     * @return \Illuminate\Database\Eloquent\Casts\Attribute
-     */
+    /** get tax amount */
     protected function taxAmount(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => $value / 100,
+            get: static fn ($value): int|float => $value / 100,
         );
     }
 
-    /**
-     * get discount amount
-     *
-     * @return \Illuminate\Database\Eloquent\Casts\Attribute
-     */
+    /** get discount amount */
     protected function discountAmount(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => $value / 100,
+            get: static fn ($value): int|float => $value / 100,
         );
     }
 }

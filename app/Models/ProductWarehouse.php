@@ -8,12 +8,14 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class ProductWarehouse extends Pivot
 {
     use SoftDeletes;
 
     protected $table = 'product_warehouse';
+
     /**
      * The attributes that are mass assignable.
      *
@@ -43,5 +45,21 @@ class ProductWarehouse extends Pivot
     public function productMovements(): HasMany
     {
         return $this->hasMany(Movement::class);
+    }
+
+    protected function cost(): Attribute
+    {
+        return Attribute::make(
+            get: static fn ($value): int|float => $value / 100,
+            set: static fn ($value): int|float => $value * 100,
+        );
+    }
+
+    protected function price(): Attribute
+    {
+        return Attribute::make(
+            get: static fn ($value): int|float => $value / 100,
+            set: static fn ($value): int|float => $value * 100,
+        );
     }
 }

@@ -31,10 +31,7 @@ class Index extends Component
     /** @var bool */
     public $showModal = false;
 
-    public function mount(): void
-    {
-        $this->orderable = (new Warehouse())->orderable;
-    }
+    public $model = Warehouse::class;
 
     public function render()
     {
@@ -61,21 +58,61 @@ class Index extends Component
         $this->showModal = true;
     }
 
-    public function delete(Warehouse $warehouse): void
+    public function deleteModal($warehouse): void
     {
-        abort_if(Gate::denies('warehouse_delete'), 403);
+        $confirmationMessage = __('Are you sure you want to delete this warehouse? if something happens you can be recover it.');
 
-        $warehouse->delete();
+        $this->confirm($confirmationMessage, [
+            'toast'             => false,
+            'position'          => 'center',
+            'showConfirmButton' => true,
+            'cancelButtonText'  => __('Cancel'),
+            'onConfirmed'       => 'delete',
+        ]);
 
-        $this->alert('warning', __('Warehouse successfully deleted.'));
+        $this->warehouse = $warehouse;
     }
 
+    public function deleteSelectedModal(): void
+    {
+        $confirmationMessage = __('Are you sure you want to delete the selected warehouses? items can be recovered.');
+
+        $this->confirm($confirmationMessage, [
+            'toast'             => false,
+            'position'          => 'center',
+            'showConfirmButton' => true,
+            'cancelButtonText'  => __('Cancel'),
+            'onConfirmed'       => 'deleteSelected',
+        ]);
+    }
+
+    #[On('deleteSelected')]
     public function deleteSelected(): void
     {
         abort_if(Gate::denies('warehouse_delete'), 403);
 
         Warehouse::whereIn('id', $this->selected)->delete();
 
-        $this->alert('warning', __('Warehouses successfully deleted.'));
+        $deletedCount = count($this->selected);
+
+        if ($deletedCount > 0) {
+            $this->alert(
+                'success',
+                __(':count selected products and related warehouses deleted successfully! These items can be recovered.', ['count' => $deletedCount])
+            );
+        }
+
+        $this->resetSelected();
+    }
+
+    #[On('delete')]
+    public function delete(): void
+    {
+        abort_if(Gate::denies('warehouse_delete'), 403);
+
+        $warehouse = Warehouse::findOrFail($this->warehouse);
+        $warehouse->delete();
+
+        $this->alert('success', __('Warehouse deleted successfully!'));
     }
 }

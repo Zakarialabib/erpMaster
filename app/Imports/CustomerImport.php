@@ -11,18 +11,7 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
 class CustomerImport implements ToModel, WithHeadingRow, SkipsEmptyRows
 {
-    /**  */
-    public function __construct()
-    {
-    }
-
-    /**
-     * @param  array $row
-     *
-     * @return \App\Models\Customer
-     * @return \Illuminate\Database\Eloquent\Model|null
-     */
-    public function model(array $row)
+    public function model(array $row): Customer
     {
         return new Customer([
             'name'  => $row['name'],

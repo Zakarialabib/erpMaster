@@ -14,7 +14,7 @@ class Currency extends Model
     use HasFactory;
 
     /** @var array<int, string> */
-    public const ATTRIBUTES = [
+    final public const ATTRIBUTES = [
         'id',
         'name',
         'code',
@@ -25,6 +25,7 @@ class Currency extends Model
     ];
 
     public $orderable = self::ATTRIBUTES;
+
     public $filterable = self::ATTRIBUTES;
 
     /**

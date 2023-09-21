@@ -11,15 +11,15 @@ class OrderForms extends Model
 {
     use HasAdvancedFilter;
 
-    public const HOME_FORM = 1;
+    final public const HOME_FORM = 1;
 
-    public const PRODUCT_FORM = 2;
+    final public const PRODUCT_FORM = 2;
 
-    public const STATUS_PENDING = 1;
+    final public const STATUS_PENDING = 1;
 
-    public const STATUS_APPROVED = 2;
+    final public const STATUS_APPROVED = 2;
 
-    public const STATUS_REJECTED = 3;
+    final public const STATUS_REJECTED = 3;
 
     public $table = 'orderforms';
 

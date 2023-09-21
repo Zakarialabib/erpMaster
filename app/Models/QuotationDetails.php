@@ -22,63 +22,43 @@ class QuotationDetails extends Model
         return $this->belongsTo(Quotation::class, 'quotation_id', 'id');
     }
 
-    /**
-     * get price attribute
-     *
-     * @return \Illuminate\Database\Eloquent\Casts\Attribute
-     */
+    /** get price attribute */
     protected function price(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => $value / 100,
+            get: static fn ($value): int|float => $value / 100,
         );
     }
 
-    /**
-     * Interact with unit price
-     *
-     * @return \Illuminate\Database\Eloquent\Casts\Attribute
-     */
+    /** Interact with unit price */
     protected function unitPrice(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => $value / 100,
+            get: static fn ($value): int|float => $value / 100,
         );
     }
 
-    /**
-     * get subtotal attribute
-     *
-     * @return \Illuminate\Database\Eloquent\Casts\Attribute
-     */
+    /** get subtotal attribute */
     protected function subTotal(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => $value / 100,
+            get: static fn ($value): int|float => $value / 100,
         );
     }
 
-    /**
-     * Interact with shipping amount
-     *
-     * @return \Illuminate\Database\Eloquent\Casts\Attribute
-     */
+    /** Interact with shipping amount */
     protected function productDiscountAmount(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => $value / 100,
+            get: static fn ($value): int|float => $value / 100,
         );
     }
 
-    /**
-     * Interact with shipping amount
-     *
-     * @return \Illuminate\Database\Eloquent\Casts\Attribute
-     */
+    /** Interact with shipping amount */
     protected function productTaxAmountAttribute(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => $value / 100,
+            get: static fn ($value): int|float => $value / 100,
         );
     }
 }

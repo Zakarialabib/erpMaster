@@ -4,7 +4,7 @@
         <x-button primary type="button" wire:click="dispatchTo('admin.currency.create', 'createModal')">
             {{ __('Create Currency') }}
         </x-button>
-    </x-theme.breadcrumb> 
+    </x-theme.breadcrumb>
     <div class="flex flex-wrap justify-center">
         <div class="lg:w-1/2 md:w-1/2 sm:w-full flex flex-wrap my-2">
             <select wire:model.live="perPage"
@@ -39,16 +39,16 @@
             <x-table.th>
                 <input type="checkbox" wire:model.live="selectPage" />
             </x-table.th>
-            <x-table.th sortable wire:click="sortBy('name')" :direction="$sorts['name'] ?? null">
+            <x-table.th sortable :direction="$sorts['name'] ?? null" field="name" wire:click="sortingBy('name')">
                 {{ __('Name') }}
             </x-table.th>
-            <x-table.th sortable wire:click="sortBy('code')" :direction="$sorts['code'] ?? null">
+            <x-table.th sortable :direction="$sorts['code'] ?? null" field="code" wire:click="sortingBy('code')">
                 {{ __('Code') }}
             </x-table.th>
-            <x-table.th sortable wire:click="sortBy('symbol')" :direction="$sorts['symbol'] ?? null">
+            <x-table.th sortable :direction="$sorts['symbol'] ?? null" field="symbol" wire:click="sortingBy('symbol')">
                 {{ __('Symbol') }}
             </x-table.th>
-            <x-table.th sortable wire:click="sortBy('rate')" :direction="$sorts['rate'] ?? null">
+            <x-table.th sortable :direction="$sorts['rate'] ?? null" field="rate" wire:click="sortingBy('rate')">
                 {{ __('Rate') }}
             </x-table.th>
             <x-table.th>
@@ -117,63 +117,37 @@
             {{ $currencies->links() }}
         </div>
     </div>
-    
+
     <x-modal wire:model="showModal">
         <x-slot name="title">
-            {{ __('Show Currency') }} {{ $currency?->name}}
+            {{ __('Show Currency') }} {{ $currency?->name }}
         </x-slot>
 
         <x-slot name="content">
             <div class="flex flex-col">
                 <div class="flex flex-col">
-                    <x-label for="currency.name" :value="__('Name')" />
-                    <x-input id="name" class="block mt-1 w-full" required type="text" disabled
-                        wire:model="currency.name" />
+                    <x-label for="name" :value="__('Name')" />
+                    {{ $currency?->name }}
                 </div>
                 <div class="flex flex-col">
-                    <x-label for="currency.code" :value="__('Code')" />
-                    <x-input id="code" class="block mt-1 w-full" type="text" disabled
-                        wire:model="currency.code" />
+                    <x-label for="code" :value="__('Code')" />
+                    {{ $currency?->code }}
                 </div>
                 <div class="flex flex-col">
-                    <x-label for="currency.symbol" :value="__('Symbol')" />
-                    <x-input id="symbol" class="block mt-1 w-full" type="text" disabled
-                        wire:model="currency.symbol" />
+                    <x-label for="symbol" :value="__('Symbol')" />
+                    {{ $currency?->symbol }}
                 </div>
                 <div class="flex flex-col">
-                    <x-label for="currency.rate" :value="__('Rate')" />
-                    <x-input id="rate" class="block mt-1 w-full" type="text" disabled
-                        wire:model="currency.rate" />
+                    <x-label for="rate" :value="__('Rate')" />
+                    {{ $currency?->rate }}
+
                 </div>
             </div>
         </x-slot>
     </x-modal>
 
-    
+
     <livewire:admin.currency.edit :currency="$currency" />
 
     <livewire:admin.currency.create lazy />
 </div>
-
-
-@push('scripts')
-    <script>
-        document.addEventListener('livewire:init', function() {
-            window.livewire.on('deleteModal', currencyId => {
-                Swal.fire({
-                    title: 'Are you sure?',
-                    text: "You won't be able to revert this!",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, delete it!'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        window.livewire.emit('delete', currencyId)
-                    }
-                })
-            })
-        })
-    </script>
-@endpush

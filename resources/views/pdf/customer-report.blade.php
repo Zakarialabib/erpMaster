@@ -96,7 +96,7 @@
                                 @php
                                     $type = $sale->payment_status->getBadgeType();
                                 @endphp
-                                <x-badge :type="$type">{{ $sale->payment_status->getName() }}</x-badge>
+                                <x-badge :type="$type">{{ $sale->payment_status->label() }}</x-badge>
                             </td>
                         </tr>
                     @endforeach

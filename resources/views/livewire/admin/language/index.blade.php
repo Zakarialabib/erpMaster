@@ -2,8 +2,12 @@
     <x-table>
         <x-slot name="thead">
             <x-table.th>#</x-table.th>
-            <x-table.th>{{ __('Language') }}</x-table.th>
-            <x-table.th>{{ __('Status') }}</x-table.th>
+            <x-table.th sortable :direction="$sorts['name'] ?? null" field="name" wire:click="sortingBy('name')">
+                {{ __('Language name') }}
+            </x-table.th>
+            <x-table.th sortable :direction="$sorts['status'] ?? null" field="status" wire:click="sortingBy('status')">
+                {{ __('Status') }}
+            </x-table.th>
             <x-table.th>{{ __('Default') }}</x-table.th>
             <x-table.th>{{ __('Actions') }}</x-table.th>
         </x-slot>
@@ -40,8 +44,8 @@
                             {{ __('Sync') }}
                         </x-button>
 
-                        <x-button success  href="{{ route('admin.translation',  $language['id'] )}}">
-                            {{__('Translate')}}
+                        <x-button success href="{{ route('admin.translation', $language['id']) }}">
+                            {{ __('Translate') }}
                         </x-button>
 
                         <x-button success type="button" wire:click="$dispatch('editLanguage', {{ $language['id'] }}) ">

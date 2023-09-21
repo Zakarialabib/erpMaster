@@ -47,7 +47,7 @@
                     <livewire:product-cart :cartInstance="'quotation'" :data="$quotation" lazy />
 
                     <div class="flex flex-wrap -mx-2 mb-3">
-                        <div class="w-full md:w-1/3 px-3 mb-4 md:mb-0">
+                        <div class="w-full md:w-1/3 px-2 mb-2">
                             <x-label for="status" :value="__('Status')" required />
                             <select wire:model="status"
                                 class="block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border-gray-300 rounded-md mt-1"
@@ -62,7 +62,7 @@
                             </select>
                         </div>
 
-                        <div class="w-full md:w-1/3 px-3 mb-4 md:mb-0">
+                        <div class="w-full md:w-1/3 px-2 mb-2">
                             <x-label for="total_amount" :value="__('Total amount')" />
                             <x-input type="number" wire:model="total_amount" name="total_amount" disabled />
                         </div>

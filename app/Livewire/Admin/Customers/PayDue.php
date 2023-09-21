@@ -19,7 +19,7 @@ class PayDue extends Component
     public $amount;
 
     public $selectedSales;
-    
+
     public $due_amount;
 
     public $paid_amount;

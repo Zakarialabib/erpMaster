@@ -11,12 +11,13 @@ use App\Support\HasAdvancedFilter;
 class Shipment extends Model
 {
     use HasAdvancedFilter;
-    public const ATTRIBUTES = [
+    final public const ATTRIBUTES = [
         'user_id', 'date', 'Ref', 'sale_id', 'delivered_to', 'status',
 
     ];
 
     public $orderable = self::ATTRIBUTES;
+
     public $filterable = self::ATTRIBUTES;
 
     /**

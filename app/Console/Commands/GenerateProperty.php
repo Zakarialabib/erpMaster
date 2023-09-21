@@ -11,9 +11,10 @@ use Symfony\Component\Console\Helper\ProgressBar;
 class GenerateProperty extends Command
 {
     protected $signature = 'generate:properties';
+
     protected $description = 'Generate Markdown file with table properties';
 
-    public function handle()
+    public function handle(): void
     {
         $migrations = $this->getMigrationFiles();
         $output = $this->output;
@@ -30,12 +31,12 @@ class GenerateProperty extends Command
             $properties = $this->formatProperties($columns);
             $propertyTypes = $this->getPropertyTypes($columns);
 
-            $content .= "## Table: `$tableName`\n\n";
+            $content .= "## Table: `{$tableName}`\n\n";
             $content .= "| Property | Type |\n";
             $content .= "| --- | --- |\n";
 
             foreach ($columns as $name => $type) {
-                $content .= "| `$name` | `$type` |\n";
+                $content .= "| `{$name}` | `{$type}` |\n";
             }
 
             $content .= "\n";
@@ -51,16 +52,15 @@ class GenerateProperty extends Command
     {
         $migrationPath = database_path('migrations');
 
-        return File::glob("$migrationPath/*.php");
+        return File::glob($migrationPath.'/*.php');
     }
 
     protected function getTableName(string $migrationFile): string
     {
         $migrationContent = File::get($migrationFile);
         preg_match('/Schema::create\s*\(\s*[\'"](\w+)[\'"]/', $migrationContent, $matches);
-        $tableName = $matches[1] ?? '';
 
-        return $tableName;
+        return $matches[1] ?? '';
     }
 
     protected function getTableColumns(string $migrationFile): array
@@ -73,8 +73,8 @@ class GenerateProperty extends Command
 
     protected function formatProperties(array $columns): string
     {
-        $properties = array_map(function ($type, $name) {
-            return "'$name'";
+        $properties = array_map(static function ($type, $name): string {
+            return sprintf('\'%s\'', $name);
         }, $columns, array_keys($columns));
 
         return implode(', ', $properties);
@@ -82,8 +82,8 @@ class GenerateProperty extends Command
 
     protected function getPropertyTypes(array $columns): string
     {
-        $propertyTypes = array_map(function ($type, $name) {
-            return "protected $type \$$name;";
+        $propertyTypes = array_map(static function ($type, $name): string {
+            return sprintf('protected %s $%s;', $type, $name);
         }, $columns, array_keys($columns));
 
         return implode("\n", $propertyTypes);

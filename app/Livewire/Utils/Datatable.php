@@ -17,6 +17,8 @@ trait Datatable
 
     public array $orderable;
 
+    public array $filterable;
+
     #[Url(keep: true)]
     public string $search = '';
 
@@ -30,27 +32,29 @@ trait Datatable
 
     public string $sortDirection = '';
 
+    protected $queryString = [
+        'search',
+        'sortBy',
+        'sortDirection',
+    ];
+
     public function mountDatatable(): void
     {
         $this->sortBy = 'id';
         $this->sortDirection = 'desc';
         $this->paginationOptions = [25, 50, 100];
+        $this->orderable = (new $this->model())->orderable;
+        $this->filterable = (new $this->model())->filterable;
     }
 
-    public function sortBy(string $field): void
+    public function sortingBy($field, $direction): void
     {
+        if ($field !== $this->sortBy) {
+            $this->sortDirection = 'asc';
+        }
+
         $this->sortBy = $field;
-
-        $this->sortDirection = $this->sortBy === $field
-            ? $this->reverseSort()
-            : 'asc';
-    }
-
-    public function reverseSort(): string
-    {
-        return $this->sortDirection === 'asc'
-            ? 'desc'
-            : 'asc';
+        $this->sortDirection = $direction;
     }
 
     #[Computed]
@@ -59,20 +63,15 @@ trait Datatable
         return count($this->selected);
     }
 
-    public function resetSelected(): void
-    {
-        $this->selected = [];
-    }
-
-    protected $queryString = [
-        'search',
-        'sortBy',
-        'sortDirection',
-    ];
-
     #[On('refreshIndex')]
     public function refreshIndex(): void
     {
         $this->resetPage();
+    }
+
+    public function resetSelected(): void
+    {
+        $this->selected = [];
+        $this->selectPage = false;
     }
 }

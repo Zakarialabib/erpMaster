@@ -20,7 +20,7 @@ class Sale extends Model
     use SaleScope;
     use HasUuid;
 
-    public const ATTRIBUTES = [
+    final public const ATTRIBUTES = [
         'id',
         'date',
         'reference',
@@ -45,7 +45,9 @@ class Sale extends Model
     ];
 
     public $orderable = self::ATTRIBUTES;
+
     public $filterable = self::ATTRIBUTES;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -85,19 +87,20 @@ class Sale extends Model
     {
         parent::boot();
 
-        static::creating(function ($sale) {
+        static::creating(static function ($sale): void {
             $prefix = settings('sale_prefix');
-
             $latestSale = self::latest()->first();
-
-            if ($latestSale) {
-                $number = intval(substr($latestSale->reference, -3)) + 1;
-            } else {
-                $number = 1;
-            }
-
-            $sale->reference = $prefix.str_pad(strval($number), 3, '0', STR_PAD_LEFT);
+            $number = $latestSale ? (int) substr((string) $latestSale->reference, -3) + 1 : 1;
+            $sale->reference = $prefix.str_pad((string) $number, 3, '0', STR_PAD_LEFT);
         });
+    }
+
+    public function warehouse(): BelongsTo
+    {
+        return $this->belongsTo(
+            related: Warehouse::class,
+            foreignKey: 'warehouse_id'
+        );
     }
 
     public function saleDetails(): HasMany
@@ -126,90 +129,61 @@ class Sale extends Model
         );
     }
 
-    /**
-     * @param mixed $query
-     *
-     * @return mixed
-     */
     public function scopeCompleted($query)
     {
-        return $query->whereStatus(2);
+        return $query->whereStatus(SaleStatus::COMPLETED);
     }
 
-    public function scopeThisMonth($query)
+    public function scopeReturned($query)
     {
-        return $query->whereMonth('date', now()->month);
+        return $query->whereStatus(SaleStatus::RETURNED);
     }
 
-    /**
-     * get shipping amount
-     *
-     * @return \Illuminate\Database\Eloquent\Casts\Attribute
-     */
+    /** get shipping amount */
     protected function shippingAmount(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => $value / 100,
+            get: static fn ($value): int|float => $value / 100,
         );
     }
 
-    /**
-     * get paid amount
-     *
-     * @return \Illuminate\Database\Eloquent\Casts\Attribute
-     */
+    /** get paid amount */
     protected function paidAmount(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => $value / 100,
+            get: static fn ($value): int|float => $value / 100,
         );
     }
 
-    /**
-     * get total amount
-     *
-     * @return \Illuminate\Database\Eloquent\Casts\Attribute
-     */
+    /** get total amount */
     protected function totalAmount(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => $value / 100,
+            get: static fn ($value): int|float => $value / 100,
         );
     }
 
-    /**
-     * get due amount
-     *
-     * @return \Illuminate\Database\Eloquent\Casts\Attribute
-     */
+    /** get due amount */
     protected function dueAmount(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => $value / 100,
+            get: static fn ($value): int|float => $value / 100,
         );
     }
 
-    /**
-     * get tax amount
-     *
-     * @return \Illuminate\Database\Eloquent\Casts\Attribute
-     */
+    /** get tax amount */
     protected function taxAmount(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => $value / 100,
+            get: static fn ($value): int|float => $value / 100,
         );
     }
 
-    /**
-     * get discount amount
-     *
-     * @return \Illuminate\Database\Eloquent\Casts\Attribute
-     */
+    /** get discount amount */
     protected function discountAmount(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => $value / 100,
+            get: static fn ($value): int|float => $value / 100,
         );
     }
 }

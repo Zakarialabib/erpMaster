@@ -7,7 +7,6 @@ namespace App\Livewire;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use App\Models\ProductWarehouse;
-use App\Models\Product;
 use Livewire\Component;
 
 class ProductCart extends Component
@@ -32,7 +31,7 @@ class ProductCart extends Component
 
     public $quantity = [];
 
-    public $price;
+    public $price = [];
 
     public $check_quantity = [];
 
@@ -78,26 +77,26 @@ class ProductCart extends Component
                     : round(100 * $cart_item->options->product_discount / $cart_item->price);
             }
         } else {
-
             $this->updatedGlobalTax();
             $this->updatedGlobalDiscount();
             $this->updatedTotalShipping();
         }
     }
 
-
     public function productSelected(array $product): void
     {
         if ($product === []) {
             $this->alert('error', __('Something went wrong!'));
+
             return;
         }
 
         $cart = Cart::instance($this->cart_instance);
-        $exists = $cart->search(static fn($cartItem): bool => $cartItem->id === $product['id']);
+        $exists = $cart->search(static fn ($cartItem): bool => $cartItem->id === $product['id']);
 
         if ($exists->isNotEmpty()) {
             $this->alert('error', __('Product already added to cart!'));
+
             return;
         }
 
@@ -141,14 +140,11 @@ class ProductCart extends Component
         return ['price' => $price, 'unit_price' => $unit_price, 'product_tax' => $product_tax, 'sub_total' => $sub_total];
     }
 
-
-
     private function updateQuantityAndCheckQuantity($productId, $quantity): void
     {
         $this->check_quantity[$productId] = $quantity;
         $this->quantity[$productId] = 1;
     }
-
 
     private function createCartItem(array $product, $productWarehouse): array
     {
@@ -192,7 +188,6 @@ class ProductCart extends Component
         ]);
     }
 
-
     public function updatedGlobalTax(): void
     {
         Cart::instance($this->cart_instance)->setGlobalTax((int) $this->global_tax);
@@ -224,6 +219,7 @@ class ProductCart extends Component
     {
         if (($this->cart_instance === 'sale' || $this->cart_instance === 'purchase_return') && $this->check_quantity[$product_id] < $this->quantity[$product_id]) {
             $this->alert('error', 'Quantity is greater than in stock!');
+
             return;
         }
 
@@ -255,7 +251,6 @@ class ProductCart extends Component
         $this->item_discount[$name] = 0;
     }
 
-
     public function productDiscount($row_id, $product_id): void
     {
         $cart_item = Cart::instance($this->cart_instance)->get($row_id);
@@ -285,7 +280,6 @@ class ProductCart extends Component
         $this->discountModal = false;
     }
 
-
     public function updateCartOptions($row_id, $product_id, $cart_item, $discount_amount): void
     {
         Cart::instance($this->cart_instance)->update($row_id, [
@@ -301,7 +295,6 @@ class ProductCart extends Component
             ],
         ]);
     }
-
 
     public function updatedWarehouseId($value): void
     {

@@ -16,7 +16,7 @@ trait WithModels
     {
         return Customer::pluck('name', 'id')->toArray();
     }
- 
+
     #[Computed(cache: true)]
     public function suppliers()
     {

@@ -12,7 +12,6 @@ use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Storage;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Attributes\On;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class Import extends Component
 {
@@ -32,7 +31,7 @@ class Import extends Component
         $this->importModal = true;
     }
 
-    public function downloadSample(): BinaryFileResponse
+    public function downloadSample()
     {
         return Storage::disk('exports')->download('categories_import_sample.xls');
     }

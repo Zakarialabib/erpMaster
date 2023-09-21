@@ -14,7 +14,7 @@ class SaleReturnPayment extends Model
 {
     use HasAdvancedFilter;
 
-    public const ATTRIBUTES = [
+    final public const ATTRIBUTES = [
         'id',
         'sale_return_id',
         'amount',
@@ -25,47 +25,36 @@ class SaleReturnPayment extends Model
     ];
 
     public $orderable = self::ATTRIBUTES;
+
     public $filterable = self::ATTRIBUTES;
+
     protected $guarded = [];
 
-    /** @return \Illuminate\Database\Eloquent\Relations\BelongsTo */
     public function saleReturn(): BelongsTo
     {
         return $this->belongsTo(SaleReturn::class, 'sale_return_id', 'id');
     }
 
-    /**
-     * Get ajustement date.
-     *
-     * @return \Illuminate\Database\Eloquent\Casts\Attribute
-     */
+    /** Get ajustement date. */
     public function date(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => Carbon::parse($value)->format('d M, Y'),
+            get: static fn ($value) => Carbon::parse($value)->format('d M, Y'),
         );
     }
 
-    /**
-     * @param mixed $query
-     *
-     * @return mixed
-     */
-    public function scopeBySaleReturn($query)
+    /** @return mixed */
+    public function scopeBySaleReturn(mixed $query)
     {
         return $query->whereSaleReturnId(request()->route('sale_return_id'));
     }
 
-    /**
-     * Interact with the expenses amount
-     *
-     * @return \Illuminate\Database\Eloquent\Casts\Attribute
-     */
+    /** Interact with the expenses amount */
     protected function amount(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => $value / 100,
-            set: fn ($value) => $value * 100,
+            get: static fn ($value): int|float => $value / 100,
+            set: static fn ($value): int|float => $value * 100,
         );
     }
 }

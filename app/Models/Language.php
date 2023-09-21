@@ -9,10 +9,11 @@ use App\Enums\Status;
 
 class Language extends Model
 {
-    public const IS_DEFAULT = 1;
-    public const IS_NOT_DEFAULT = 0;
+    final public const IS_DEFAULT = 1;
 
-    public const ATTRIBUTES = [
+    final public const IS_NOT_DEFAULT = 0;
+
+    final public const ATTRIBUTES = [
         'id',
         'name',
         'code',
@@ -21,7 +22,9 @@ class Language extends Model
     ];
 
     public $orderable = self::ATTRIBUTES;
+
     public $filterable = self::ATTRIBUTES;
+
     /**
      * The attributes that are mass assignable.
      *

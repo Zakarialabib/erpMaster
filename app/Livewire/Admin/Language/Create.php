@@ -39,7 +39,7 @@ class Create extends Component
 
         $this->language->save();
 
-        File::copy(App::langPath() . ('/en.json'), App::langPath() . ('/' . $this->code . '.json'));
+        File::copy(App::langPath().('/en.json'), App::langPath().('/'.$this->code.'.json'));
 
         $this->alert('success', __('Language created successfully!'));
 

@@ -17,7 +17,7 @@ class Integration extends Model
     use HasUuid;
     use HasFactory;
 
-    public const ATTRIBUTES = [
+    final public const ATTRIBUTES = [
         'id',
         'type',
         'store_url',
@@ -55,7 +55,6 @@ class Integration extends Model
         'status' => Status::class,
         'type'   => IntegrationType::class,
     ];
-
 
     public function scopeActive($query)
     {

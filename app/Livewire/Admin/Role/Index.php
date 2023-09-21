@@ -14,10 +14,7 @@ class Index extends Component
 {
     use Datatable;
 
-    public function mount(): void
-    {
-        $this->orderable = (new Role())->orderable;
-    }
+    public $model = Role::class;
 
     public function render()
     {

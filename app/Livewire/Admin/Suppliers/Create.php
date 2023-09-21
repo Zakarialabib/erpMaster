@@ -68,7 +68,7 @@ class Create extends Component
 
         $this->dispatch('refreshIndex')->to(Index::class);
 
-        $this->reset('name', 'email', 'phone', 'address', 'city', 'country', 'tax_number');
+        $this->reset(['name', 'email', 'phone', 'address', 'city', 'country', 'tax_number']);
 
         $this->createModal = false;
     }

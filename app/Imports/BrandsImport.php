@@ -11,18 +11,7 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
 class BrandsImport implements ToModel, WithHeadingRow, SkipsEmptyRows
 {
-    /**  */
-    public function __construct()
-    {
-    }
-
-    /**
-     * @param array $row
-     *
-     * @return \App\Models\Brand
-     * @return \Illuminate\Database\Eloquent\Model|null
-     */
-    public function model(array $row)
+    public function model(array $row): Brand
     {
         return new Brand([
             'name'        => $row['name'],

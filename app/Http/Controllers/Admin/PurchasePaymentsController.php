@@ -51,6 +51,7 @@ class PurchasePaymentsController extends Controller
             ]);
             $purchase = Purchase::findOrFail($request->purchase_id);
             $due_amount = $purchase->due_amount - $request->amount;
+
             if ($due_amount === $purchase->total_amount) {
                 $payment_status = PaymentStatus::DUE;
             } elseif ($due_amount > 0) {
@@ -94,6 +95,7 @@ class PurchasePaymentsController extends Controller
         DB::transaction(static function () use ($request, $purchasePayment): void {
             $purchase = $purchasePayment->purchase;
             $due_amount = $purchase->due_amount + $purchasePayment->amount - $request->amount;
+
             if ($due_amount === $purchase->total_amount) {
                 $payment_status = PaymentStatus::DUE;
             } elseif ($due_amount > 0) {

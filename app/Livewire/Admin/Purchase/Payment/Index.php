@@ -19,7 +19,8 @@ class Index extends Component
 
     public $purchase;
 
-   
+    public $model = PurchasePayment::class;
+
     public $showPayments;
 
     public $listsForFields = [];
@@ -29,7 +30,6 @@ class Index extends Component
     public function mount($purchase): void
     {
         $this->purchase = $purchase;
-        $this->orderable = (new PurchasePayment())->orderable;
     }
 
     public function render()

@@ -43,14 +43,13 @@ class Index extends Component
 
     public $copyOldPriceToPrice;
 
+    public $percentageMethod;
+
     public $percentage;
 
     public $product;
 
-    public function mount(): void
-    {
-        $this->orderable = (new Product())->orderable;
-    }
+    public $model = Product::class;
 
     public function deleteModal($product): void
     {
@@ -107,6 +106,7 @@ class Index extends Component
 
         $product = Product::findOrFail($this->product);
         $productWarehouse = ProductWarehouse::where('product_id', $product->id)->first();
+
         if ($productWarehouse) {
             $productWarehouse->delete();
         }
@@ -121,18 +121,18 @@ class Index extends Component
 
         $query = Product::query()
             ->with([
+                'warehouses' => static function ($query): void {
+                    $query->withPivot('qty', 'price', 'cost');
+                },
                 'category',
                 'brand',
                 'movements',
-                'warehouse',
-            ])
-            ->select('products.*')
+            ])->select('products.*')
             ->advancedFilter([
                 's'               => $this->search ?: null,
                 'order_column'    => $this->sortBy,
                 'order_direction' => $this->sortDirection,
             ]);
-
 
         $products = $query->paginate($this->perPage);
 
@@ -148,7 +148,7 @@ class Index extends Component
 
         // Pass in product details
         $productName = $this->productWarehouse->product->name;
-        $productPrice = $this->productWarehouse->product->price;
+        $productPrice = $this->productWarehouse->price;
 
         $this->product->notify(new ProductTelegram($telegramChannel, $productName, $productPrice));
     }
@@ -186,28 +186,6 @@ class Index extends Component
         $products = Product::whereIn('id', $this->selected)->get();
 
         return (new ProductExport($products))->download('products.xls', \Maatwebsite\Excel\Excel::XLS);
-    }
-
-    public function clone(Product $product): void
-    {
-        $product_details = Product::find($product->id);
-        // dd($product_details);
-        Product::create([
-            'code'             => $product_details->code,
-            'slug'             => $product_details->slug,
-            'name'             => $product_details->name,
-            'price'            => $product_details->price,
-            'description'      => $product_details->description,
-            'meta_title'       => $product_details->meta_title,
-            'meta_description' => $product_details->meta_description,
-            'category_id'      => $product_details->category_id,
-            'subcategories'    => $product_details->subcategories,
-            'image'            => $product_details->image,
-            'brand_id'         => $product_details->brand_id,
-            'status'           => 0,
-        ]);
-
-        $this->alert('success', __('Product Cloned successfully!'));
     }
 
     public function promoAllProducts(): void

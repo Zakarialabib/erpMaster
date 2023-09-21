@@ -12,54 +12,27 @@ class ProductTelegram extends Notification
 {
     use Queueable;
 
-    public $telegramChannel;
-    public $productName;
-    public $productPrice;
-
-    /**
-     * @param mixed $telegramChannel
-     * @param mixed $productName
-     * @param mixed $productPrice
-     *
-     * @return void
-     */
-    public function __construct($telegramChannel, $productName, $productPrice)
+    /** @return void */
+    public function __construct(public mixed $telegramChannel, public mixed $productName, public mixed $productPrice)
     {
-        $this->telegramChannel = $telegramChannel;
-        $this->productName = $productName;
-        $this->productPrice = $productPrice;
     }
 
-    /**
-     * @param mixed $notifiable
-     *
-     * @return array<string>
-     */
-    public function via($notifiable)
+    /** @return array<string> */
+    public function via(mixed $notifiable): array
     {
         return ['telegram'];
     }
 
-    /**
-     * @param mixed $notifiable
-     *
-     * @return \NotificationChannels\Telegram\TelegramMessage
-     */
-    public function toTelegram($notifiable)
+    /** @return \NotificationChannels\Telegram\TelegramMessage */
+    public function toTelegram(mixed $notifiable)
     {
         return TelegramMessage::create()
             ->to($this->telegramChannel)
-            ->content("Check out our new product: {$this->productName} for {$this->productPrice}");
+            ->content(sprintf('Check out our new product: %s for %s', $this->productName, $this->productPrice));
     }
 
-    /**
-     * Get the array representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     *
-     * @return array
-     */
-    public function toArray($notifiable)
+    /** Get the array representation of the notification. */
+    public function toArray(mixed $notifiable): array
     {
         return [
             'product_name'  => $this->productName,

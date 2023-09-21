@@ -42,7 +42,7 @@ class QueueMonitor extends Model
     public function status(): Attribute
     {
         return Attribute::make(
-            get: function () {
+            get: function (): string {
                 if ($this->isFinished()) {
                     return $this->failed ? 'failed' : 'succeeded';
                 }
@@ -60,7 +60,7 @@ class QueueMonitor extends Model
 
     public static function getJobId(JobContract $job): string|int
     {
-        if ($jobId = $job->getJobId()) {
+        if (($jobId = $job->getJobId()) !== '' && ($jobId = $job->getJobId()) !== '0') {
             return $jobId;
         }
 

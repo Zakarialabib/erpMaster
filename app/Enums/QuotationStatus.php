@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Enums;
 
-use Illuminate\Support\Str;
-
 enum QuotationStatus: int
 {
     case PENDING = 0;
@@ -18,9 +16,15 @@ enum QuotationStatus: int
 
     case REJECTED = 4;
 
-    public function getName(): string
+    public function label(): string
     {
-        return __(Str::studly($this->name));
+        return match ($this) {
+            static::PENDING  => __('Pending'),
+            static::SENT     => __('Sent'),
+            static::ACCEPTED => __('Accepted'),
+            static::EXPIRED  => __('Expired'),
+            static::REJECTED => __('Rejected'),
+        };
     }
 
     public function getValue()
@@ -28,11 +32,11 @@ enum QuotationStatus: int
         return $this->value;
     }
 
-    public static function getLabel($value)
+    public static function getLabel($value): ?string
     {
         foreach (self::cases() as $case) {
             if ($case->getValue() === $value) {
-                return $case->getName();
+                return $case->label();
             }
         }
 
@@ -41,19 +45,13 @@ enum QuotationStatus: int
 
     public function getBadgeType(): string
     {
-        switch ($this) {
-            case self::PENDING:
-                return 'warning';
-            case self::SENT:
-                return 'info';
-            case self::ACCEPTED:
-                return 'success';
-            case self::EXPIRED:
-                return 'danger';
-            case self::REJECTED:
-                return 'alert';
-            default:
-                return 'secondary';
-        }
+        return match ($this) {
+            self::PENDING  => 'warning',
+            self::SENT     => 'info',
+            self::ACCEPTED => 'success',
+            self::EXPIRED  => 'danger',
+            self::REJECTED => 'alert',
+            default        => 'secondary',
+        };
     }
 }

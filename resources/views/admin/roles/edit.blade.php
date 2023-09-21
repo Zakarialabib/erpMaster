@@ -54,7 +54,7 @@
 
                             <div class="row">
                                 <!-- Dashboard Permissions -->
-                                <div class="w-full md:w-1/3 px-3 mb-4 md:mb-0">
+                                <div class="w-full md:w-1/3 px-2 mb-2">
                                     <div class="card h-100 border-0 shadow">
                                         <div class="card-header">
                                             {{__('Dashboard')}}
@@ -107,7 +107,7 @@
                                 </div>
 
                                 <!-- User Management Permission -->
-                                <div class="w-full md:w-1/3 px-3 mb-4 md:mb-0">
+                                <div class="w-full md:w-1/3 px-2 mb-2">
                                     <div class="card h-100 border-0 shadow">
                                         <div class="card-header">
                                             User Mangement
@@ -136,7 +136,7 @@
                                 </div>
 
                                 <!-- Products Permission -->
-                                <div class="w-full md:w-1/3 px-3 mb-4 md:mb-0">
+                                <div class="w-full md:w-1/3 px-2 mb-2">
                                     <div class="card h-100 border-0 shadow">
                                         <div class="card-header">
                                             Products
@@ -205,7 +205,7 @@
                                 </div>
 
                                 <!-- Adjustments Permission -->
-                                <div class="w-full md:w-1/3 px-3 mb-4 md:mb-0">
+                                <div class="w-full md:w-1/3 px-2 mb-2">
                                     <div class="card h-100 border-0 shadow">
                                         <div class="card-header">
                                             Adjustments
@@ -258,7 +258,7 @@
                                 </div>
 
                                 <!-- Quotations Permission -->
-                                <div class="w-full md:w-1/3 px-3 mb-4 md:mb-0">
+                                <div class="w-full md:w-1/3 px-2 mb-2">
                                     <div class="card h-100 border-0 shadow">
                                         <div class="card-header">
                                             Quotaions
@@ -327,7 +327,7 @@
                                 </div>
 
                                 <!-- Expenses Permission -->
-                                <div class="w-full md:w-1/3 px-3 mb-4 md:mb-0">
+                                <div class="w-full md:w-1/3 px-2 mb-2">
                                     <div class="card h-100 border-0 shadow">
                                         <div class="card-header">
                                             Expenses
@@ -380,7 +380,7 @@
                                 </div>
 
                                 <!-- Customers Permission -->
-                                <div class="w-full md:w-1/3 px-3 mb-4 md:mb-0">
+                                <div class="w-full md:w-1/3 px-2 mb-2">
                                     <div class="card h-100 border-0 shadow">
                                         <div class="card-header">
                                             Customers
@@ -433,7 +433,7 @@
                                 </div>
 
                                 <!-- Suppliers Permission -->
-                                <div class="w-full md:w-1/3 px-3 mb-4 md:mb-0">
+                                <div class="w-full md:w-1/3 px-2 mb-2">
                                     <div class="card h-100 border-0 shadow">
                                         <div class="card-header">
                                             Suppliers
@@ -486,7 +486,7 @@
                                 </div>
 
                                 <!-- Sales Permission -->
-                                <div class="w-full md:w-1/3 px-3 mb-4 md:mb-0">
+                                <div class="w-full md:w-1/3 px-2 mb-2">
                                     <div class="card h-100 border-0 shadow">
                                         <div class="card-header">
                                             Sales
@@ -548,7 +548,7 @@
                                 </div>
 
                                 <!-- Sale Returns Permission -->
-                                <div class="w-full md:w-1/3 px-3 mb-4 md:mb-0">
+                                <div class="w-full md:w-1/3 px-2 mb-2">
                                     <div class="card h-100 border-0 shadow">
                                         <div class="card-header">
                                             Sale Returns
@@ -609,7 +609,7 @@
                                 </div>
 
                                 <!-- Purchases Permission -->
-                                <div class="w-full md:w-1/3 px-3 mb-4 md:mb-0">
+                                <div class="w-full md:w-1/3 px-2 mb-2">
                                     <div class="card h-100 border-0 shadow">
                                         <div class="card-header">
                                             Purchases
@@ -670,7 +670,7 @@
                                 </div>
 
                                 <!-- Purchases Returns Permission -->
-                                <div class="w-full md:w-1/3 px-3 mb-4 md:mb-0">
+                                <div class="w-full md:w-1/3 px-2 mb-2">
                                     <div class="card h-100 border-0 shadow">
                                         <div class="card-header">
                                             Purchase Returns
@@ -731,7 +731,7 @@
                                 </div>
 
                                 <!-- Currencies Permission -->
-                                <div class="w-full md:w-1/3 px-3 mb-4 md:mb-0">
+                                <div class="w-full md:w-1/3 px-2 mb-2">
                                     <div class="card h-100 border-0 shadow">
                                         <div class="card-header">
                                             Currencies
@@ -776,7 +776,7 @@
                                 </div>
 
                                 <!-- Reports -->
-                                <div class="w-full md:w-1/3 px-3 mb-4 md:mb-0">
+                                <div class="w-full md:w-1/3 px-2 mb-2">
                                     <div class="card h-100 border-0 shadow">
                                         <div class="card-header">
                                             {{__('Reports')}}
@@ -797,7 +797,7 @@
                                 </div>
 
                                 <!-- Settings -->
-                                <div class="w-full md:w-1/3 px-3 mb-4 md:mb-0">
+                                <div class="w-full md:w-1/3 px-2 mb-2">
                                     <div class="card h-100 border-0 shadow">
                                         <div class="card-header">
                                             Settings

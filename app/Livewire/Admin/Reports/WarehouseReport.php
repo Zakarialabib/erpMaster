@@ -12,6 +12,7 @@ use App\Models\Warehouse;
 use App\Models\QuotationDetails;
 use App\Models\Sale;
 use App\Models\SaleDetails;
+use Livewire\Attributes\Rule;
 use Livewire\Component;
 
 class WarehouseReport extends Component
@@ -19,10 +20,6 @@ class WarehouseReport extends Component
     public $warehouses;
 
     public $warehouse_id;
-
-    public $start_date;
-
-    public $end_date;
 
     public $purchases;
 
@@ -36,10 +33,15 @@ class WarehouseReport extends Component
 
     public $productQuotation;
 
-    protected $rules = [
-        'start_date' => 'required|date|before:end_date',
-        'end_date'   => 'required|date|after:start_date',
-    ];
+    #[Rule('required', message: 'The start date field is required.')]
+    #[Rule('date', message: 'The start date field must be a valid date.')]
+    #[Rule('before:end_date', message: 'The start date field must be before the end date field.')]
+    public $start_date;
+
+    #[Rule('required', message: 'The end date field is required.')]
+    #[Rule('date', message: 'The end date field must be a valid date.')]
+    #[Rule('after:start_date', message: 'The end date field must be after the start date field.')]
+    public $end_date;
 
     public function mount(): void
     {
@@ -90,11 +92,11 @@ class WarehouseReport extends Component
 
     public function warehouseReport(): void
     {
-        $this->productPurchase = $this->purchases->map(static fn($purchase) => PurchaseDetail::where('purchase_id', $purchase->id)->get());
+        $this->productPurchase = $this->purchases->map(static fn ($purchase) => PurchaseDetail::where('purchase_id', $purchase->id)->get());
 
-        $this->productSale = $this->sales->map(static fn($sale) => SaleDetails::where('sale_id', $sale->id)->get());
+        $this->productSale = $this->sales->map(static fn ($sale) => SaleDetails::where('sale_id', $sale->id)->get());
 
-        $this->productQuotation = $this->quotations->map(static fn($quotation) => QuotationDetails::where('quotation_id', $quotation->id)->get());
+        $this->productQuotation = $this->quotations->map(static fn ($quotation) => QuotationDetails::where('quotation_id', $quotation->id)->get());
     }
 
     public function render()

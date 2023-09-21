@@ -25,14 +25,11 @@ class Index extends Component
 
     public $deleteModal = false;
 
+    public $model = BlogCategory::class;
+
     public function confirmed(): void
     {
         $this->dispatch('delete');
-    }
-
-    public function mount(): void
-    {
-        $this->orderable = (new BlogCategory())->orderable;
     }
 
     public function deleteModal($blogcategory): void

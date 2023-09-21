@@ -22,6 +22,8 @@ class Index extends Component
 
     public $salereturn;
 
+    public $model = SaleReturn::class;
+
     /** @var array<string> */
     public $listeners = [
         'showModal',
@@ -64,11 +66,6 @@ class Index extends Component
         'payment_method'      => 'required|integer|min:0|max:100',
         'note'                => 'string|nullable|max:1000',
     ];
-
-    public function mount(): void
-    {
-        $this->orderable = (new SaleReturn())->orderable;
-    }
 
     public function render()
     {
@@ -121,7 +118,7 @@ class Index extends Component
 
         $this->salereturn = $salereturn;
         $this->date = date('Y-m-d');
-        $this->amount = $salereturn->due_amount;
+        $this->amount = $this->salereturn->due_amount;
         $this->payment_method = 'Cash';
         // $this->note = '';
         $this->salereturn_id = $salereturn->id;

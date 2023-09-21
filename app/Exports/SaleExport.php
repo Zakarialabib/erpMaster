@@ -27,11 +27,7 @@ class SaleExport implements FromQuery, WithMapping, WithHeadings
         return Sale::query();
     }
 
-    /**
-     * @param  Sale  $row
-     *
-     * @return array
-     */
+    /** @param  Sale  $row */
     public function map($row): array
     {
         return [

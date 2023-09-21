@@ -4,7 +4,7 @@
         <x-button primary type="button" wire:click="dispatchTo('admin.blog-category.create', 'createModal')">
             {{ __('Create Blog Category') }}
         </x-button>
-    </x-theme.breadcrumb> 
+    </x-theme.breadcrumb>
     <x-card>
         <div class="flex flex-wrap justify-center">
             <div class="lg:w-1/2 md:w-1/2 sm:w-full flex flex-col my-md-0 my-2">
@@ -42,12 +42,14 @@
         <x-table>
             <x-slot name="thead">
                 <x-table.th>#</x-table.th>
-                <x-table.th sortable wire:click="sortBy('name')" :direction="$sorts['name'] ?? null">
+                <x-table.th sortable :direction="$sorts['name'] ?? null" field="name" wire:click="sortingBy('name')">
                     {{ __('Name') }}
-                    @include('components.table.sort', ['field' => 'name'])
                 </x-table.th>
-                <x-table.th>
+                <x-table.th sortable :direction="$sorts['featured'] ?? null" field="featured" wire:click="sortingBy('featured')">
                     {{ __('Featured') }}
+                </x-table.th>
+                <x-table.th sortable :direction="$sorts['status'] ?? null" field="status" wire:click="sortingBy('status')">
+                    {{ __('Status') }}
                 </x-table.th>
                 <x-table.th>
                     {{ __('Actions') }}

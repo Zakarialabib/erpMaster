@@ -72,6 +72,7 @@ class SaleController extends Controller
     {
         DB::transaction(static function () use ($request, $sale): void {
             $due_amount = $request->total_amount - $request->paid_amount;
+
             if ($due_amount === $request->total_amount) {
                 $payment_status = PaymentStatus::PENDING;
             } elseif ($due_amount > 0) {
@@ -108,6 +109,7 @@ class SaleController extends Controller
                 'tax_amount'          => Cart::instance('sale')->tax() * 100,
                 'discount_amount'     => Cart::instance('sale')->discount() * 100,
             ]);
+
             foreach (Cart::instance('sale')->content() as $cart_item) {
                 SaleDetails::create([
                     'sale_id'                 => $sale->id,

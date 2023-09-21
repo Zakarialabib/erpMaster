@@ -44,7 +44,7 @@ class Edit extends Component
 
         $this->language->save();
 
-        File::copy(App::langPath() . ('/en.json'), App::langPath() . ('/' . $this->code . '.json'));
+        File::copy(App::langPath().('/en.json'), App::langPath().('/'.$this->code.'.json'));
 
         $this->alert('success', __('Data created successfully!'));
 

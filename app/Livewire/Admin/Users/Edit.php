@@ -43,9 +43,6 @@ class Edit extends Component
     #[Rule('nullable|string')]
     public $address;
 
-    #[Rule('nullable')]
-    public $tax_number;
-
     #[On('editModal')]
     public function editModal($id): void
     {
@@ -71,8 +68,6 @@ class Edit extends Component
 
         $this->address = $this->user->address;
 
-        $this->tax_number = $this->user->tax_number;
-
         $this->selectedWarehouses = $this->user->warehouses()->pluck('id')->toArray();
 
         $this->editModal = true;
@@ -83,14 +78,13 @@ class Edit extends Component
         $this->validate();
 
         $this->user->update([
-            'name'       => $this->user->name,
-            'email'      => $this->user->email,
-            'password'   => bcrypt($this->user->password),
-            'phone'      => $this->user->phone,
-            'city'       => $this->user->city,
-            'country'    => $this->user->country,
-            'address'    => $this->user->address,
-            'tax_number' => $this->user->tax_number,
+            'name'     => $this->user->name,
+            'email'    => $this->user->email,
+            'password' => bcrypt($this->user->password),
+            'phone'    => $this->user->phone,
+            'city'     => $this->user->city,
+            'country'  => $this->user->country,
+            'address'  => $this->user->address,
         ]);
 
         $this->user->warehouses()->sync($this->selectedWarehouses);

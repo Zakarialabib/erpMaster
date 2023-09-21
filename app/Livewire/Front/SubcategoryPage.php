@@ -79,7 +79,7 @@ class SubcategoryPage extends Component
     {
         $query = \App\Helpers::getEcommerceProducts()
             ->where('subcategories', 'like', '%"'.$this->subcategory->id.'"%')
-            ->when($this->brand_id, fn($query) => $query->where('brand_id', $this->brand_id));
+            ->when($this->brand_id, fn ($query) => $query->where('brand_id', $this->brand_id));
 
         if ($this->sorting === 'name') {
             $query->orderBy('name', 'asc');

@@ -34,7 +34,7 @@ class PaymentForm extends Component
     public $due_amount;
 
     public $total_amount;
-    
+
     public $paid_amount;
 
     public $note;

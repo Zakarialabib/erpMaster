@@ -23,10 +23,7 @@ class Index extends Component
 
     public $page;
 
-    public function mount(): void
-    {
-        $this->orderable = (new Page())->orderable;
-    }
+    public $model = Page::class;
 
     public function render()
     {

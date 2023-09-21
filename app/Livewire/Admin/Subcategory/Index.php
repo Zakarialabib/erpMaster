@@ -31,14 +31,11 @@ class Index extends Component
 
     public $image;
 
+    public $model = Subcategory::class;
+
     public function confirmed(): void
     {
         $this->dispatch('delete');
-    }
-
-    public function mount(): void
-    {
-        $this->orderable = (new Subcategory())->orderable;
     }
 
     public function render(): View|Factory

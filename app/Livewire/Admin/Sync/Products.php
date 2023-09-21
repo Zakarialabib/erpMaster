@@ -6,6 +6,7 @@ namespace App\Livewire\Admin\Sync;
 
 use App\Enums\IntegrationType;
 use App\Jobs\SyncCustomProducts;
+use App\Jobs\SyncYouCanProducts;
 use App\Models\Product;
 use App\Models\Integration;
 use Illuminate\Support\Facades\Http;
@@ -64,7 +65,7 @@ class Products extends Component
 
             if ($response->getStatusCode() === Response::HTTP_OK) {
                 $data = $response->json()['data'];
-                SyncYoucanProducts::dispatch($data);
+                SyncYouCanProducts::dispatch($data);
                 $this->alert('success', 'Sync from youcan to inventory completed');
                 $this->syncModal = false;
             }

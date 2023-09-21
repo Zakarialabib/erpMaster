@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Enums;
 
-use Illuminate\Support\Str;
-
 enum UnitType: string
 {
     case KG = 'kg';
@@ -14,11 +12,16 @@ enum UnitType: string
 
     case METRE = 'm';
 
-    case Gram = 'gr';
+    case GRAM = 'gr';
 
-    public function getName(): string
+    public function label(): string
     {
-        return __(Str::studly($this->name));
+        return match ($this) {
+            static::KG    => __('Kilo'),
+            static::PIECE => __('piece'),
+            static::METRE => __('Metre'),
+            static::GRAM  => __('Gram'),
+        };
     }
 
     public function getValue()
@@ -26,11 +29,11 @@ enum UnitType: string
         return $this->value;
     }
 
-    public static function getLabel($value)
+    public static function getLabel($value): ?string
     {
         foreach (self::cases() as $case) {
             if ($case->getValue() === $value) {
-                return $case->getName();
+                return $case->label();
             }
         }
 

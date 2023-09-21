@@ -5,18 +5,20 @@ declare(strict_types=1);
 namespace App\Livewire\Admin\Menu;
 
 use App\Models\Menu;
+use App\Models\Page;
 use Livewire\Component;
+use Livewire\WithPagination;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Attributes\Layout;
-use Livewire\WithPagination;
 
 #[Layout('components.layouts.dashboard')]
 class Index extends Component
 {
     use WithPagination;
     use LivewireAlert;
-
     public int $perPage = 100;
+
+    public $links = [];
 
     public $menu;
 
@@ -30,57 +32,95 @@ class Index extends Component
 
     public $type;
 
+    public $selectedMenu;
+
+    public $placement = 'header';
+
     public $parent_id;
 
-    public $new_window;
+    public $new_window = false;
 
     protected $rules = [
         'menus.*.name'       => 'required',
         'menus.*.type'       => 'required',
+        'menus.*.placement'  => 'nullable',
         'menus.*.label'      => 'required',
         'menus.*.url'        => 'required',
         'menus.*.parent_id'  => 'nullable|exists:menus,id',
-        'menus.*.new_window' => 'boolean',
+        'menus.*.new_window' => 'nullable',
     ];
 
     public function mount(): void
     {
-        $this->menus = Menu::orderBy('sort_order')->get()->toArray();
+        $this->menus = Menu::when($this->placement, function ($query): void {
+            $query->where('placement', $this->placement);
+        })->orderBy('sort_order')
+            ->get()->toArray();
+
+        $this->links = Page::select('slug')->get()->toArray();
+
         $this->resetErrorBag();
         $this->resetValidation();
     }
 
+    public function filterByPlacement($value): void
+    {
+        $this->placement = $value;
+        $this->mount();
+    }
+
+    public function clone(): void
+    {
+        // $this->validate([
+        //     'selectedMenu' => 'required|exists:menus,id',
+        // ]);
+
+        $menu = Menu::find($this->selectedMenu);
+
+        Menu::create([
+            'name'       => $menu->name,
+            'type'       => $menu->type,
+            'placement'  => $this->placement,
+            'label'      => $menu->label,
+            'url'        => $menu->url,
+            'parent_id'  => $menu->parent_id,
+            'new_window' => $menu->new_window,
+        ]);
+
+        $this->alert('success', __('Menu cloned successfully.'));
+    }
+
     public function render()
     {
-        $menus = $this->getMenus();
+        $menus = Menu::when($this->placement, function ($query): void {
+            $query->where('placement', $this->placement);
+        })->paginate($this->perPage);
 
         return view('livewire.admin.menu.index', ['menus' => $menus]);
     }
 
-    protected function getMenus()
+    public function update($id): void
     {
-        return Menu::query()->paginate($this->perPage);
-    }
+        $this->menu = Menu::find($id);
 
-    public function update(): void
-    {
         $this->validate();
 
-        if ($this->menu) {
-            $this->menu->name = $this->menu['name'];
-            $this->menu->label = $this->menu['label'];
-            $this->menu->url = $this->menu['url'];
-            $this->menu->type = $this->menu['type'];
-            $this->menu->parent_id = $this->menu['parent_id'] ?? false;
-            $this->menu->new_window = $this->menu['new_window'] ?? false;
-            // Update any additional fields you have in your menu model
+        foreach ($this->menus as $menu) {
+            $this->menu = Menu::find($menu['id']);
+            $this->menu->name = $menu['name'];
+            $this->menu->label = $menu['label'];
+            $this->menu->type = $menu['type'];
+            $this->menu->placement = $menu['placement'];
+            $this->menu->url = $menu['url'];
+            $this->menu->parent_id = $menu['parent_id'] ?? null;
+            $this->menu->new_window = $menu['new_window'] ?? false;
 
             $this->menu->save();
-
-            $this->alert('success', __('Menu updated successfully.'));
         }
 
-        $this->reset(['name', 'label', 'url', 'type', 'parent_id', 'new_window']);
+        $this->alert('success', __('Menu updated successfully.'));
+
+        $this->reset(['name', 'label', 'url', 'type', 'placement', 'parent_id', 'new_window']);
     }
 
     public function store(): void
@@ -88,22 +128,26 @@ class Index extends Component
         $this->validate([
             'name'       => 'required',
             'type'       => 'required',
+            'placement'  => 'required',
             'label'      => 'required',
             'url'        => 'required',
             'parent_id'  => 'nullable|exists:menus,id',
-            'new_window' => 'boolean',
+            'new_window' => 'nullable',
         ]);
 
         $menu = new Menu();
         $menu->name = $this->name;
         $menu->label = $this->label;
         $menu->type = $this->type;
+        $menu->placement = $this->placement;
         $menu->url = $this->url;
         $menu->parent_id = $this->parent_id ?? null;
         $menu->new_window = $this->new_window ?? false;
         // Add any additional fields you have in your menu model
 
         $menu->save();
+
+        $this->reset(['name', 'label', 'url', 'type', 'placement', 'parent_id', 'new_window']);
 
         $this->alert('success', __('Menu created successfully.'));
 
@@ -178,7 +222,7 @@ class Index extends Component
 
     public function delete(Menu $menu): void
     {
-        // abort_if(Gate::denies('menu_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        // abort_if(Gate::denies('menu_delete'), 403);
 
         $menu->delete();
         $this->mount();

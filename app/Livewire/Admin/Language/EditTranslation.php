@@ -24,7 +24,7 @@ class EditTranslation extends Component
         $this->language = Language::where('id', $language)->firstOrFail();
         // dd($this->all());
         $this->translations = $this->getTranslations();
-        $this->translations = collect($this->translations)->map(static fn($item, $key): array => [
+        $this->translations = collect($this->translations)->map(static fn ($item, $key): array => [
             'key'   => $key,
             'value' => $item,
         ])->toArray();

@@ -14,11 +14,12 @@ class Slider extends Model
     use HasAdvancedFilter;
     use HasFactory;
 
-    public const ATTRIBUTES = [
+    final public const ATTRIBUTES = [
         'id', 'title', 'status',
     ];
 
     public $orderable = self::ATTRIBUTES;
+
     public $filterable = self::ATTRIBUTES;
 
     protected $fillable = [
@@ -34,9 +35,8 @@ class Slider extends Model
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      *
-     * @return void
      */
-    public function scopeActive($query)
+    public function scopeActive($query): void
     {
         $query->where('status', true);
     }

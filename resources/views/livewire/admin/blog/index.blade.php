@@ -47,10 +47,10 @@
                 <x-table.th>
                     {{ __('Image') }}
                 </x-table.th>
-                <x-table.th>
+                <x-table.th sortable :direction="$sorts['title'] ?? null" field="title" wire:click="sortingBy('title')">
                     {{ __('Title') }}
                 </x-table.th>
-                <x-table.th>
+                <x-table.th sortable :direction="$sorts['status'] ?? null" field="status" wire:click="sortingBy('status')">
                     {{ __('Status') }}
                 </x-table.th>
                 <x-table.th>

@@ -13,12 +13,13 @@ class CashRegister extends Model
     use HasAdvancedFilter;
 
     /** @var array<int, string> */
-    public const ATTRIBUTES = [
+    final public const ATTRIBUTES = [
         'id', 'cash_in_hand', 'user_id', 'warehouse_id', 'status',
 
     ];
 
     public $orderable = self::ATTRIBUTES;
+
     public $filterable = self::ATTRIBUTES;
 
     /** @var array<int, string> */

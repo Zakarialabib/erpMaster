@@ -29,12 +29,12 @@ class Create extends Component
     public array $listsForFields = [];
 
     protected $rules = [
-        'featuredbanner.title'         => ['required', 'string', 'max:255'],
-        'featuredbanner.description'   => ['nullable', 'string'],
-        'featuredbanner.link'          => ['nullable', 'string'],
-        'featuredbanner.product_id'    => ['nullable', 'integer'],
-        'featuredbanner.language_id'   => ['nullable', 'integer'],
-        'featuredbanner.embeded_video' => ['nullable'],
+        'title'         => ['required', 'string', 'max:255'],
+        'description'   => ['nullable', 'string'],
+        'link'          => ['nullable', 'string'],
+        'product_id'    => ['nullable', 'integer'],
+        'language_id'   => ['nullable', 'integer'],
+        'embeded_video' => ['nullable'],
     ];
 
     public function mount(): void
@@ -63,12 +63,12 @@ class Create extends Component
         $this->validate();
 
         if ($this->image) {
-            $imageName = Str::slug($this->featuredbanner->title).'-'.Str::random(3).'.'.$this->image->extension();
+            $imageName = Str::slug($this->featuredbanner->title) . '-' . Str::random(3) . '.' . $this->image->extension();
             $this->image->storeAs('featuredbanners', $imageName);
             $this->featuredbanner->image = $imageName;
         }
 
-        $this->featuredbanner->save();
+        FeaturedBanner::create($this->all());
 
         $this->alert('success', __('FeaturedBanner created successfully.'));
 

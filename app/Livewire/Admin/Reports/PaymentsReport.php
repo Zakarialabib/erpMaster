@@ -8,6 +8,7 @@ use App\Models\PurchasePayment;
 use App\Models\PurchaseReturnPayment;
 use App\Models\SalePayment;
 use App\Models\SaleReturnPayment;
+use Livewire\Attributes\Rule;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -15,17 +16,20 @@ class PaymentsReport extends Component
 {
     use WithPagination;
 
+    #[Rule('required', message: 'The start date field is required.')]
+    #[Rule('date', message: 'The start date field must be a valid date.')]
+    #[Rule('before:end_date', message: 'The start date field must be before the end date field.')]
     public $start_date;
 
+    #[Rule('required', message: 'The end date field is required.')]
+    #[Rule('date', message: 'The end date field must be a valid date.')]
+    #[Rule('after:start_date', message: 'The end date field must be after the start date field.')]
     public $end_date;
-
     public $payments;
 
     public $payment_method;
 
     protected $rules = [
-        'start_date' => 'required|date|before:end_date',
-        'end_date'   => 'required|date|after:start_date',
         'payments'   => 'required|string',
     ];
 
@@ -45,9 +49,9 @@ class PaymentsReport extends Component
 
         return view('livewire.admin.reports.payments-report', [
             'information' => $this->query ? $this->query->orderBy('date', 'desc')
-                ->when($this->start_date, fn($query) => $query->whereDate('date', '>=', $this->start_date))
-                ->when($this->end_date, fn($query) => $query->whereDate('date', '<=', $this->end_date))
-                ->when($this->payment_method, fn($query) => $query->where('payment_method', $this->payment_method))
+                ->when($this->start_date, fn ($query) => $query->whereDate('date', '>=', $this->start_date))
+                ->when($this->end_date, fn ($query) => $query->whereDate('date', '<=', $this->end_date))
+                ->when($this->payment_method, fn ($query) => $query->where('payment_method', $this->payment_method))
                 ->paginate(10) : collect(),
         ]);
     }

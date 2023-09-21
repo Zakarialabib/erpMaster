@@ -8,6 +8,7 @@ use App\Models\CustomerGroup;
 use Illuminate\Support\Facades\Gate;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Attributes\On;
+use Livewire\Attributes\Rule;
 use Livewire\Component;
 
 class Create extends Component
@@ -18,16 +19,13 @@ class Create extends Component
 
     public CustomerGroup $customergroup;
 
-    /** @var array */
-    protected $rules = [
-        'customergroup.name'       => 'required|min:3|max:255',
-        'customergroup.percentage' => 'required',
-    ];
+    #[Rule('required', message: 'The name field cannot be empty.')]
+    #[Rule('min:3', message: 'The name must be at least 3 characters.')]
+    #[Rule('max:255', message: 'The name may not be greater than 255 characters.')]
+    public $name;
 
-    protected $messages = [
-        'customergroup.name.required'       => 'The name field cannot be empty.',
-        'customergroup.percentage.required' => 'The percentage field cannot be empty.',
-    ];
+    #[Rule('required', message: 'The percentage field cannot be empty.')]
+    public $percentage;
 
     public function render()
     {
@@ -48,10 +46,13 @@ class Create extends Component
 
     public function create(): void
     {
-        $validatedData = $this->validate();
+        $this->validate();
 
-        $this->customergroup->save($validatedData);
-
+        CustomerGroup::create([
+            'name' => $this->name,
+            'percentage' => $this->percentage,
+        ]);
+        
         $this->alert('success', __('Customer group created successfully.'));
 
         $this->dispatch('refreshIndex')->to(Index::class);

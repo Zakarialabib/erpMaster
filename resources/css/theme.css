@@ -223,7 +223,8 @@ textarea.form-control.is-invalid {
 
 #daily-chart,
 #monthly-chart,
+#payment-chart,
 #chart {
-  width: 90% !important;
-  min-width: 90% !important;
+  width: 95% !important;
+  min-width: 95% !important;
 }

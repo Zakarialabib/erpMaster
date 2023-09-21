@@ -20,19 +20,19 @@
             <x-table.th>
                 <input type="checkbox" wire:model.live="selectPage" />
             </x-table.th>
-            <x-table.th sortable wire:click="sortBy('reference')" :direction="$sorts['reference'] ?? null">
+            <x-table.th sortable wire:click="sortingBy('reference')" field="reference" :direction="$sorts['reference'] ?? null">
                 {{ __('Reference') }}
             </x-table.th>
-            <x-table.th sortable wire:click="sortBy('date')" :direction="$sorts['date'] ?? null">
+            <x-table.th sortable wire:click="sortingBy('date')" field="date" :direction="$sorts['date'] ?? null">
                 {{ __('Date') }}
             </x-table.th>
-            <x-table.th sortable wire:click="sortBy('supplier_id')" :direction="$sorts['supplier_id'] ?? null">
+            <x-table.th sortable wire:click="sortingBy('supplier_id')" field="supplier_id" :direction="$sorts['supplier_id'] ?? null">
                 {{ __('Supplier') }}
             </x-table.th>
-            <x-table.th sortable wire:click="sortBy('status')" :direction="$sorts['status'] ?? null">
+            <x-table.th sortable wire:click="sortingBy('status')" field="status" :direction="$sorts['status'] ?? null">
                 {{ __('Status') }}
             </x-table.th>
-            <x-table.th sortable wire:click="sortBy('email')" :direction="$sorts['email'] ?? null">
+            <x-table.th sortable wire:click="sortingBy('email')" field="email" :direction="$sorts['email'] ?? null">
                 {{ __('Total') }}
             </x-table.th>
             <x-table.th>
@@ -61,7 +61,7 @@
                         @php
                             $type = $purchase_return->status->getBadgeType();
                         @endphp
-                        <x-badge :type="$type">{{ $purchase_return->status->getName() }}</x-badge>
+                        <x-badge :type="$type">{{ $purchase_return->status->label() }}</x-badge>
                     </x-table.td>
                     <x-table.td>
                         {{ format_currency($salereturn->total_amount) }}
@@ -379,25 +379,3 @@
     @endif
 
 </div>
-
-@push('scripts')
-    <script>
-        document.addEventListener('livewire:init', function() {
-            window.livewire.on('deleteModal', purchaseId => {
-                Swal.fire({
-                    title: 'Are you sure?',
-                    text: "You won't be able to revert this!",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, delete it!'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        window.livewire.emit('delete', purchaseId)
-                    }
-                })
-            })
-        })
-    </script>
-@endpush

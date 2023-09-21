@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Jobs;
 
-use App\Helpers;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -19,13 +18,8 @@ class UnderMaintenanceJob implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
-    private $secret;
-    private $refresh;
-
-    public function __construct($secret = null, $refresh = false)
+    public function __construct(private $secret = null, private $refresh = false)
     {
-        $this->secret = $secret;
-        $this->refresh = $refresh;
     }
 
     public function handle(): void

@@ -15,7 +15,7 @@ class Page extends Model
     use HasAdvancedFilter;
     use HasFactory;
 
-    public const ATTRIBUTES = [
+    final public const ATTRIBUTES = [
         'id', 'title', 'slug',
         'type',
     ];

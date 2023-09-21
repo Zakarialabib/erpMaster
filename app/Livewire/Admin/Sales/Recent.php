@@ -29,10 +29,7 @@ class Recent extends Component
 
     public $recentSales;
 
-    public function mount(): void
-    {
-        $this->orderable = (new Sale())->orderable;
-    }
+    public $model = Sale::class;
 
     public function render()
     {

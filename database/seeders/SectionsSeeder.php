@@ -28,7 +28,7 @@ class SectionsSeeder extends Seeder
                 'description'    => 'ERPMASTER',
                 'status'         => '1',
                 'bg_color'       => '#ffffff',
-                'page'           => 'home',
+                'page_id'        => null,
                 'position'       => '1',
                 'language_id'    => '1',
             ],

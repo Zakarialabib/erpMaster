@@ -22,16 +22,13 @@ class Index extends Component
 
     public $showModal = false;
 
+    public $model = ExpenseCategory::class;
+
     /** @var array<string> */
     public $listeners = [
         'showModal',
         'delete',
     ];
-
-    public function mount(): void
-    {
-        $this->orderable = (new ExpenseCategory())->orderable;
-    }
 
     public function render()
     {

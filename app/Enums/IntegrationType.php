@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Enums;
 
-use Illuminate\Support\Str;
-
 enum IntegrationType: int
 {
     case CUSTOM = 0;
@@ -16,9 +14,14 @@ enum IntegrationType: int
 
     case SHOPIFY = 3;
 
-    public function getName(): string
+    public function label(): string
     {
-        return __(Str::studly($this->name));
+        return match ($this) {
+            static::CUSTOM      => __('CUSTOM'),
+            static::YOUCAN      => __('YOUCAN'),
+            static::WOOCOMMERCE => __('WOOCOMMERCE'),
+            static::SHOPIFY     => __('SHOPIFY'),
+        };
     }
 
     public function getValue()
@@ -28,7 +31,7 @@ enum IntegrationType: int
 
     public function getTypeName(): string
     {
-        return match ($this->type) {
+        return match ($this->name) {
             IntegrationType::CUSTOM      => 'Custom',
             IntegrationType::YOUCAN      => 'Youcan',
             IntegrationType::WOOCOMMERCE => 'WooCommerce',
@@ -37,11 +40,11 @@ enum IntegrationType: int
         };
     }
 
-    public static function getLabel($value)
+    public static function getLabel($value): ?string
     {
         foreach (self::cases() as $case) {
             if ($case->getValue() === $value) {
-                return $case->getName();
+                return $case->label();
             }
         }
 

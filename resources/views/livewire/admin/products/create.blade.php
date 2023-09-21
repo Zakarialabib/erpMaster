@@ -11,9 +11,8 @@
                 <div class="flex flex-wrap mb-3">
                     <div class="md:w-1/2 sm:w-full px-3">
                         <x-label for="code" :value="__('Code')" required />
-                        <x-input id="code" class="block mt-1 w-full" type="text" name="code"
-                            wire:model="code" placeholder="{{ __('Enter Product Code') }}" required
-                            autofocus />
+                        <x-input id="code" class="block mt-1 w-full" type="text" name="code" wire:model="code"
+                            placeholder="{{ __('Enter Product Code') }}" required autofocus />
                         <x-input-error :messages="$errors->get('code')" for="code" class="mt-2" />
                     </div>
                     <div class="md:w-1/2 sm:w-full px-2">
@@ -95,8 +94,7 @@
                     <div class="flex flex-wrap mb-3">
                         <div class="lg:w-1/3 sm:w-1/2 px-2">
                             <x-label for="brand" :value="__('Brand')" />
-                            <x-select-list :options="$this->brands" id="brand_id" name="brand_id"
-                                wire:model="brand_id" />
+                            <x-select-list :options="$this->brands" id="brand_id" name="brand_id" wire:model="brand_id" />
                             <x-input-error :messages="$errors->get('brand_id')" for="brand_id" class="mt-2" />
                         </div>
                         <div class="lg:w-1/3 sm:w-1/2 px-2">
@@ -126,8 +124,14 @@
                         <div class="lg:w-1/3 sm:w-1/2 px-2">
                             <x-label for="unit" :value="__('Unit')"
                                 tooltip="{{ __('This text will be placed after Product Quantity') }}" />
-                            <x-input id="unit" class="block mt-1 w-full" type="text" name="unit"
-                                wire:model="unit" placeholder="{{ __('Enter Unit') }}" />
+                            <select name="unit" id="unit" wire:model="unit">
+                                <option value=""></option>
+                                @foreach (\App\Enums\UnitType::cases() as $unit)
+                                    <option value="{{ $unit->value }}">
+                                        {{ __($unit->name) }}
+                                    </option>
+                                @endforeach
+                            </select>
                             <x-input-error :messages="$errors->get('unit')" for="unit" class="mt-2" />
                         </div>
                         <div class="lg:w-1/3 sm:w-1/2 px-2">
@@ -155,15 +159,29 @@
                             <x-input.checkbox id="featured" type="checkbox" name="featured"
                                 wire:model="featured" />
                             <x-label for="best" :value="__('Best proudct')" />
-                            <x-input.checkbox id="best" type="checkbox" name="best"
-                                wire:model="best" />
+                            <x-input.checkbox id="best" type="checkbox" name="best" wire:model="best" />
                             <x-label for="hot" :value="__('Hot proudct')" />
-                            <x-input.checkbox id="hot" type="checkbox" name="hot"
-                                wire:model="hot" />
+                            <x-input.checkbox id="hot" type="checkbox" name="hot" wire:model="hot" />
                             <x-input-error :messages="$errors->get('featured')" for="featured" class="mt-2" />
                         </div>
                     </div>
+
                 </x-accordion>
+
+                <div class="w-full px-3 mb-6 lg:mb-0">
+                    <div class="mb-4">
+                        <x-label for="meta_title" :value="__('Meta Title')" />
+                        <input wire:model.live="meta_title" id="meta_title" type="text"
+                            class="w-full px-3 py-2 border rounded-md">
+                    </div>
+                    <small> {{ __('Character Count') }} : {{ strlen($meta_title) }} / 60</small>
+                </div>
+
+                <div class="w-full px-3 mb-6 lg:mb-0">
+                    <x-label for="meta_description" :value="__('Meta Description')" />
+                    <textarea wire:model.live="meta_description" id="meta_description" class="w-full px-3 py-2 border rounded-md"></textarea>
+                    <small> {{ __('Character Count') }} : {{ strlen($meta_description) }} / 170</small>
+                </div>
 
                 <div class="w-full px-3 mb-6 lg:mb-0">
                     <x-label for="description" :value="__('Description')" />

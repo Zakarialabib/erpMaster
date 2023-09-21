@@ -41,7 +41,7 @@
                                 $badgeType = $purchase?->status->getBadgeType();
                             @endphp
 
-                            <x-badge :type="$badgeType">{{ $purchase?->status->getName() }}</x-badge>
+                            <x-badge :type="$badgeType">{{ $purchase?->status->label() }}</x-badge>
 
                         </div>
                         <div>
@@ -49,7 +49,7 @@
                             @php
                                 $type = $purchase?->payment_status->getBadgeType();
                             @endphp
-                            <x-badge :type="$type">{{ $purchase?->payment_status->getName() }}</x-badge>
+                            <x-badge :type="$type">{{ $purchase?->payment_status->label() }}</x-badge>
                         </div>
                     </div>
                 </div>

@@ -9,18 +9,7 @@ use Maatwebsite\Excel\Concerns\ToModel;
 
 class PurchaseImport implements Tomodel
 {
-    /**  */
-    public function __construct()
-    {
-    }
-
-    /**
-     * @param  array $row
-     *
-     * @return \App\Models\Purchase
-     * @return \Illuminate\Database\Eloquent\Model|null
-     */
-    public function model(array $row)
+    public function model(array $row): Purchase
     {
         return new Purchase([
             'product_id'  => $row[0],

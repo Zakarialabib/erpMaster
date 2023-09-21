@@ -4,17 +4,18 @@ declare(strict_types=1);
 
 namespace App\Enums;
 
-use Illuminate\Support\Str;
-
-enum UnitType: int
+enum TaxType: int
 {
     case INCLUSIVE = 0;
-    
+
     case EXCLUSIVE = 1;
 
-    public function getName(): string
+    public function label(): string
     {
-        return __(Str::studly($this->name));
+        return match ($this) {
+            static::INCLUSIVE => __('Inclusive'),
+            static::EXCLUSIVE => __('Exclusive'),
+        };
     }
 
     public function getValue()
@@ -22,11 +23,11 @@ enum UnitType: int
         return $this->value;
     }
 
-    public static function getLabel($value)
+    public static function getLabel($value): ?string
     {
         foreach (self::cases() as $case) {
             if ($case->getValue() === $value) {
-                return $case->getName();
+                return $case->label();
             }
         }
 

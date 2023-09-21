@@ -17,11 +17,13 @@ use Livewire\Attributes\On;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
 use Livewire\WithFileUploads;
+use App\Livewire\Utils\Admin\WithMeta;
 
 class Edit extends Component
 {
     use WithFileUploads;
     use LivewireAlert;
+    use WithMeta;
 
     public $product;
 
@@ -59,10 +61,6 @@ class Edit extends Component
 
     #[Rule('array')]
     public array $options = [];
-
-    public string $meta_title;
-
-    public string $meta_description;
 
     public $image;
 
@@ -117,7 +115,7 @@ class Edit extends Component
 
         $this->productWarehouses = $this->product->warehouses()->pivot('price', 'qty', 'cost')->get();
 
-        $this->productWarehouse = $this->productWarehouses->mapWithKeys(static fn($warehouse): array => [$warehouse->id => [
+        $this->productWarehouse = $this->productWarehouses->mapWithKeys(static fn ($warehouse): array => [$warehouse->id => [
             'price' => $warehouse->pivot->price,
             'qty'   => $warehouse->pivot->qty,
             'cost'  => $warehouse->pivot->cost,

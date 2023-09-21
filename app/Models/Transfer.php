@@ -16,7 +16,7 @@ class Transfer extends Model
     use HasAdvancedFilter;
     use HasUuid;
 
-    public const ATTRIBUTES = [
+    final public const ATTRIBUTES = [
         'id',
         'reference',
         'from_warehouse_id',
@@ -31,6 +31,7 @@ class Transfer extends Model
     ];
 
     public $orderable = self::ATTRIBUTES;
+
     public $filterable = self::ATTRIBUTES;
 
     protected $fillable = [

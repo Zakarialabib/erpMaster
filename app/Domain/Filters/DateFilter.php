@@ -18,7 +18,7 @@ class DateFilter implements FilterDateInterface, FilterSumInterface
      * @param  mixed  $endDate
      * @return Builder
      */
-    public function filterDate($query, $startDate, $endDate)
+    public function filterDate($query, $startDate, $endDate): \Illuminate\Database\Query\Builder
     {
         return $query->whereBetween('created_at', [$startDate, $endDate]);
     }

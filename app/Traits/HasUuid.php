@@ -10,26 +10,26 @@ use Illuminate\Database\Eloquent\Model;
 
 trait HasUuid
 {
-    public static function bootHasUuid()
+    public static function bootHasUuid(): void
     {
-        static::creating(function (Model $model): void {
+        static::creating(static function (Model $model): void {
             if (Schema::hasColumn($model->getTable(), 'id')) {
                 $model->id = Str::uuid()->toString();
             }
         });
     }
 
-    public function getIncrementing()
+    public function getIncrementing(): bool
     {
         return false;
     }
 
-    public function getKeyType()
+    public function getKeyType(): string
     {
         return 'string';
     }
 
-    public function getRouteKeyName()
+    public function getRouteKeyName(): string
     {
         return 'id';
     }

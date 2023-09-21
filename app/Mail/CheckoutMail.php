@@ -15,8 +15,10 @@ class CheckoutMail extends Mailable
     use Queueable;
     use SerializesModels;
 
+    /** @var \App\Models\Order */
     public $order;
 
+    /** @var \App\Models\User */
     public $user;
 
     public function __construct(Order $order, User $user)
@@ -28,7 +30,7 @@ class CheckoutMail extends Mailable
     public function build()
     {
         return $this->view('emails.checkout')
-            ->subject('Order Confirmation ', $this->user->first_name)
+            ->subject(__('New Order!').$this->order->name)
             ->with([
                 'order' => $this->order,
                 'user'  => $this->user,

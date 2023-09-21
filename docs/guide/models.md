@@ -474,9 +474,9 @@
 
 | Property | Type |
 | --- | --- |
-| `price` | `integer` |
-| `cost` | `integer` |
-| `old_price` | `integer` |
+| `price` | `float` |
+| `cost` | `float` |
+| `old_price` | `float` |
 | `qty` | `integer` |
 | `stock_alert` | `integer` |
 | `is_ecommerce` | `boolean` |
@@ -487,6 +487,7 @@
 
 | Property | Type |
 | --- | --- |
+| `is_default` | `boolean` |
 | `status` | `boolean` |
 
 ## Table: `languages`
@@ -593,7 +594,7 @@
 
 | Property | Type |
 | --- | --- |
-| `title` | `text` |
+| `title` | `string` |
 | `image` | `string` |
 | `featured_title` | `text` |
 | `subtitle` | `text` |
@@ -602,8 +603,10 @@
 | `description` | `text` |
 | `status` | `boolean` |
 | `bg_color` | `string` |
-| `page` | `string` |
+| `text_color` | `string` |
+| `embeded_video` | `string` |
 | `position` | `string` |
+| `page_id` | `foreignId` |
 | `language_id` | `foreignId` |
 
 ## Table: `packagings`
@@ -659,19 +662,22 @@
 
 | Property | Type |
 | --- | --- |
-| `header` | `string` |
-| `footer` | `string` |
-| `bottomBar` | `string` |
-| `topHeader` | `string` |
-| `bottomFooter` | `string` |
-| `themeColor` | `boolean` |
-| `popularProducts` | `boolean` |
-| `flashDeal` | `boolean` |
-| `bestSellers` | `boolean` |
-| `topBrands` | `boolean` |
+| `is_sliders` | `tinyInteger` |
+| `is_contact` | `tinyInteger` |
+| `is_offer` | `tinyInteger` |
+| `is_title` | `tinyInteger` |
+| `is_description` | `tinyInteger` |
+| `is_package` | `tinyInteger` |
+| `section_order` | `integer` |
+| `is_visible` | `boolean` |
+| `bg_color` | `string` |
+| `text_color` | `string` |
+| `darkMode` | `tinyInteger` |
+| `font_size` | `integer` |
+| `custom_properties` | `json` |
 | `status` | `string` |
-| `featured_banner_id` | `foreignId` |
 | `page_id` | `foreignId` |
+| `featured_banner_id` | `foreignId` |
 | `language_id` | `foreignId` |
 
 ## Table: `shippings`

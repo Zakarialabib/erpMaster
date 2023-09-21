@@ -25,16 +25,16 @@
             <x-table.th >
                 <x-input type="checkbox" class="rounded-tl rounded-bl" wire:model.live="selectPage" />
             </x-table.th>
-            <x-table.th sortable multi-column wire:click="sortBy('name')" :direction="$sorts['name'] ?? null">
+            <x-table.th sortable wire:click="sortingBy('name')" field="name" :direction="$sorts['name'] ?? null">
                 {{ __('Name') }}
             </x-table.th>
-            <x-table.th sortable multi-column wire:click="sortBy('connection_type')" :direction="$sorts['connection_type'] ?? null">
+            <x-table.th sortable wire:click="sortingBy('connection_type')" field="connection_type" :direction="$sorts['connection_type'] ?? null">
                 {{ __('Connection type') }}
             </x-table.th>
-            <x-table.th sortable multi-column wire:click="sortBy('capability_profile')" :direction="$sorts['capability_profile'] ?? null">
+            <x-table.th sortable wire:click="sortingBy('capability_profile')" field="capability_profile" :direction="$sorts['capability_profile'] ?? null">
                 {{ __('Capability profile') }}
             </x-table.th>
-            <x-table.th sortable multi-column wire:click="sortBy('char_per_line')" :direction="$sorts['char_per_line'] ?? null">
+            <x-table.th sortable wire:click="sortingBy('char_per_line')" field="char_per_line" :direction="$sorts['char_per_line'] ?? null">
                 {{ __('Char per line') }}
             </x-table.th>
             <x-table.th>
@@ -207,25 +207,3 @@
     <livewire:admin.printer.create />
 </div>
 
-
-@push('scripts')
-    <script>
-        document.addEventListener('livewire:init', function() {
-            window.livewire.on('deleteModal', printerId => {
-                Swal.fire({
-                    title: 'Are you sure?',
-                    text: "You won't be able to revert this!",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, delete it!'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        window.livewire.emit('delete', printerId)
-                    }
-                })
-            })
-        })
-    </script>
-@endpush

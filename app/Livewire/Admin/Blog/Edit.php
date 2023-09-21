@@ -12,38 +12,32 @@ use Livewire\Component;
 use Livewire\WithFileUploads;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Computed;
+use App\Livewire\Utils\Admin\WithMeta;
+use Livewire\Attributes\Rule;
 
 class Edit extends Component
 {
     use LivewireAlert;
     use WithFileUploads;
+    use WithMeta;
 
     public $editModal = false;
 
     public $blog;
 
+    #[Rule('required', message: 'Title is required')]
     public $title;
 
+    #[Rule('required', message: 'Category is required')]
     public $category_id;
+
+    #[Rule('required', message: 'Description is required')]
+    #[Rule('min:3', message: 'Description must be at least 3 characters')]
+    public $description;
 
     public $slug;
 
-    public $meta_title;
-
-    public $meta_description;
-
     public $image;
-
-    public $description;
-
-    protected $rules = [
-        'title'            => 'required|min:3|max:255',
-        'category_id'      => 'required|integer',
-        'slug'             => 'required|string',
-        'description'      => 'required|min:3',
-        'meta_title'       => 'nullable|max:100',
-        'meta_description' => 'nullable|max:200',
-    ];
 
     #[Computed]
     public function blogCategories()

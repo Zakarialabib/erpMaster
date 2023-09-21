@@ -77,7 +77,7 @@ class EditorJs extends Component
     {
         /** @var TemporaryUploadedFile $tmpFile */
         $tmpFile = collect($this->uploads)
-            ->filter(static fn(TemporaryUploadedFile $item): bool => $item->getFilename() === $uploadedFileName)
+            ->filter(static fn (TemporaryUploadedFile $item): bool => $item->getFilename() === $uploadedFileName)
             ->first();
 
         // When no file name is passed, we use the hashName of the tmp file

@@ -37,10 +37,7 @@ class Index extends Component
         'printer.path'               => 'required|string|max:255',
     ];
 
-    public function mount(): void
-    {
-        $this->orderable = (new Printer())->orderable;
-    }
+    public $model = Printer::class;
 
     public function render()
     {

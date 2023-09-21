@@ -13,7 +13,7 @@ class EmailTemplate extends Model
     use HasAdvancedFilter;
 
     /** @var array<int, string> */
-    public const ATTRIBUTES = [
+    final public const ATTRIBUTES = [
         'id',
         'name',
         'message',
@@ -27,6 +27,7 @@ class EmailTemplate extends Model
     ];
 
     public $orderable = self::ATTRIBUTES;
+
     public $filterable = self::ATTRIBUTES;
 
     /**
@@ -50,7 +51,6 @@ class EmailTemplate extends Model
      * Scope a query to only include default email templates.
      *
      * @param   $query
-     * @return Builder
      */
     public function scopeDefault(Builder $query): Builder
     {

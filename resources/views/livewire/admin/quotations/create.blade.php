@@ -44,7 +44,7 @@
                 <livewire:product-cart :cartInstance="'quotation'" />
 
                 <div class="flex flex-wrap -mx-2 mb-3">
-                    <div class="w-full md:w-1/3 px-3 mb-4 md:mb-0">
+                    <div class="w-full md:w-1/3 px-2 mb-2">
                         <div class="mb-4">
                             <x-label for="status" :value="__('Status')" required />
                             <select wire:model="status"

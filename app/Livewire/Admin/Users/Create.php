@@ -40,9 +40,6 @@ class Create extends Component
     #[Rule('nullable')]
     public $address;
 
-    #[Rule('nullable')]
-    public $tax_number;
-
     public $selectedWarehouses = [];
 
     public $warehouse_id;

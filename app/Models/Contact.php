@@ -16,7 +16,7 @@ class Contact extends Model
 
     /** @var array<int, string> */
 
-    public const ATTRIBUTES = [
+    final public const ATTRIBUTES = [
         'id',
         'name',
         'email',

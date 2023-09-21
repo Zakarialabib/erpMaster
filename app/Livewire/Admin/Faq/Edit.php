@@ -10,6 +10,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Gate;
 use App\Models\Faq;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
+use Livewire\Attributes\Rule;
 use Livewire\WithFileUploads;
 
 class Edit extends Component
@@ -23,10 +24,11 @@ class Edit extends Component
 
     public $image;
 
-    protected $rules = [
-        'faq.name'        => ['required', 'max:255'],
-        'faq.description' => ['required'],
-    ];
+    #[Rule('required|min:3|max:255', message: 'The name field cannot be empty.')]
+    public $name;
+
+    #[Rule('required', message: 'The percentage field cannot be empty.')]
+    public $description;
 
     #[On('editModal')]
     public function editModal($faq): void
@@ -38,6 +40,10 @@ class Edit extends Component
         $this->resetValidation();
 
         $this->faq = Faq::findOrFail($faq);
+        
+        $this->name = $this->faq->name;
+
+        $this->description = $this->faq->description;
         $this->editModal = true;
     }
 
@@ -47,7 +53,9 @@ class Edit extends Component
 
         $this->validate();
 
-        $this->faq->save();
+        $this->faq->update(
+            $this->all(),
+        );
 
         $this->alert('success', __('Faq updated successfully.'));
 

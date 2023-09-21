@@ -27,6 +27,8 @@ class Index extends Component
     /** @var Sale|null */
     public $sale;
 
+    public $model = Sale::class;
+
     /** @var array<string> */
     public $listeners = [
         'importModal',   'delete',
@@ -38,23 +40,8 @@ class Index extends Component
 
     public $importModal = false;
 
-    /** @var array */
-    protected $rules = [
-        'customer_id'         => 'required|numeric',
-        'reference'           => 'required|string|max:255',
-        'tax_percentage'      => 'required|string|min:0|max:100',
-        'discount_percentage' => 'required|string|min:0|max:100',
-        'shipping_amount'     => 'required|numeric',
-        'total_amount'        => 'required|numeric',
-        'paid_amount'         => 'required|numeric',
-        'status'              => 'required|integer|min:0|max:100',
-        'payment_method'      => 'required|integer|min:0|max:100',
-        'note'                => 'string|nullable|max:1000',
-    ];
-
     public function mount(): void
     {
-        $this->orderable = (new Sale())->orderable;
         $this->startDate = now()->startOfYear()->format('Y-m-d');
         $this->endDate = now()->endOfDay()->format('Y-m-d');
     }

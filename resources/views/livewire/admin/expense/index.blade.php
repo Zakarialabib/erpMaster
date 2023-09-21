@@ -68,16 +68,16 @@
         <x-table.th>
             <input type="checkbox" wire:model.live="selectPage" />
         </x-table.th>
-        <x-table.th sortable wire:click="sortBy('reference')" :direction="$sorts['reference'] ?? null">
+        <x-table.th sortable :direction="$sorts['reference'] ?? null" field="reference" wire:click="sortingBy('reference')">
             {{ __('Reference') }}
         </x-table.th>
-        <x-table.th sortable wire:click="sortBy('category_id')" :direction="$sorts['category_id'] ?? null">
+        <x-table.th sortable :direction="$sorts['category_id'] ?? null" field="category_id" wire:click="sortingBy('category_id')">
             {{ __('Expense Category') }}
         </x-table.th>
-        <x-table.th sortable wire:click="sortBy('date')" :direction="$sorts['date'] ?? null">
+        <x-table.th sortable :direction="$sorts['date'] ?? null" field="date" wire:click="sortingBy('date')">
             {{ __('Date') }}
         </x-table.th>
-        <x-table.th sortable wire:click="sortBy('amount')" :direction="$sorts['amount'] ?? null">
+        <x-table.th sortable :direction="$sorts['amount'] ?? null" field="amount" wire:click="sortingBy('amount')">
             {{ __('Amount') }}
         </x-table.th>
         <x-table.th>
@@ -191,27 +191,5 @@
         </div>
     </x-slot>
 </x-modal>
-
-@push('scripts')
-    <script>
-        document.addEventListener('livewire:init', function() {
-            window.livewire.on('deleteModal', expenseId => {
-                Swal.fire({
-                    title: 'Are you sure?',
-                    text: "You won't be able to revert this!",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, delete it!'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        window.livewire.emit('delete', expenseId)
-                    }
-                })
-            })
-        })
-    </script>
-@endpush
 
 </div>

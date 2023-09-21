@@ -22,15 +22,12 @@ class Index extends Component
     /** @var mixed */
     public $adjustment;
 
+    public $model = Adjustment::class;
+
     /** @var array<string> */
     public $listeners = [
         'delete',
     ];
-
-    public function mount(): void
-    {
-        $this->orderable = (new Adjustment())->orderable;
-    }
 
     public function render()
     {

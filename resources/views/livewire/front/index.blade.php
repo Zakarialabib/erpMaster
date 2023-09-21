@@ -65,8 +65,8 @@
                 </div>
             </div>
         </div>
-        <div class="w-full py-5 mx-auto bg-white">
-            <div x-data="{ activeTabs: 'featuredProducts' }" class="px-4">
+        <div class="w-full mx-auto px-6">
+            <div x-data="{ activeTabs: 'featuredProducts' }" class="px-4 py-5 bg-white">
                 <div class="grid gap-4 xl:grid-cols-3 lg:grid-cols-3 md:grid-cols-3 sm:grid-cols-2 mb-10 ">
                     <div class="py-5 px-8 sm:py-2 sm:px-5 text-left font-bold text-gray-500 uppercase border-b-2 border-beige-100 hover:border-beige-500 focus:outline-none focus:border-beige-500 cursor-pointer"
                         @click="activeTabs = 'featuredProducts'"

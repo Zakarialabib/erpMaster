@@ -19,10 +19,7 @@ class Index extends Component
 
     public $email;
 
-    public function mount(): void
-    {
-        $this->orderable = (new EmailTemplate())->orderable;
-    }
+    public $model = EmailTemplate::class;
 
     public function render(): View|Factory
     {

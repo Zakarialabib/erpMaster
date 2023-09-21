@@ -18,10 +18,7 @@ class Index extends Component
 
     public array $listsForFields = [];
 
-    public function mount(): void
-    {
-        $this->orderable = (new OrderForms())->orderable;
-    }
+    public $model = OrderForms::class;
 
     public function render(): View|Factory
     {

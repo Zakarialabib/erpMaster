@@ -19,7 +19,6 @@ class CategoriesExport implements FromQuery, WithMapping, WithHeadings, WithDraw
     /** @var mixed */
     protected $models;
 
-    /** @return string */
     public function title(): string
     {
         return __('Categories');
@@ -34,11 +33,7 @@ class CategoriesExport implements FromQuery, WithMapping, WithHeadings, WithDraw
         return Category::query();
     }
 
-    /**
-     * @param mixed $row
-     *
-     * @return array
-     */
+    /** @param mixed $row */
     public function map($row): array
     {
         return [
@@ -57,7 +52,6 @@ class CategoriesExport implements FromQuery, WithMapping, WithHeadings, WithDraw
         ];
     }
 
-    /** @return array */
     public function drawings(): array
     {
         $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();

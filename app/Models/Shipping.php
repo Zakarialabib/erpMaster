@@ -13,11 +13,12 @@ class Shipping extends Model
     use HasAdvancedFilter;
     use SoftDeletes;
 
-    public const ATTRIBUTES = [
+    final public const ATTRIBUTES = [
         'id', 'is_pickup', 'title', 'subtitle', 'cost', 'status',
     ];
 
     public $orderable = self::ATTRIBUTES;
+
     public $filterable = self::ATTRIBUTES;
 
     protected $fillable = [

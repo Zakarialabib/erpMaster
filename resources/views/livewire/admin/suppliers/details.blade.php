@@ -90,22 +90,22 @@
                     <x-table.th>
                         <input type="checkbox" wire:model.live="selectPage" />
                     </x-table.th>
-                    <x-table.th sortable multi-column wire:click="sortBy('date')" :direction="$sorts['date'] ?? null">
+                    <x-table.th sortable wire:click="sortingBy('date')" field="date" :direction="$sorts['date'] ?? null">
                         {{ __('Date') }}
                     </x-table.th>
-                    <x-table.th sortable multi-column wire:click="sortBy('supplier_id')" :direction="$sorts['supplier_id'] ?? null">
+                    <x-table.th sortable wire:click="sortingBy('supplier_id')" field="supplier_id" :direction="$sorts['supplier_id'] ?? null">
                         {{ __('Customer') }}
                     </x-table.th>
-                    <x-table.th sortable multi-column wire:click="sortBy('payment_status')" :direction="$sorts['payment_status'] ?? null">
+                    <x-table.th sortable wire:click="sortingBy('payment_status')" field="payment_status" :direction="$sorts['payment_status'] ?? null">
                         {{ __('Payment status') }}
                     </x-table.th>
-                    <x-table.th sortable multi-column wire:click="sortBy('due_amount')" :direction="$sorts['due_amount'] ?? null">
+                    <x-table.th sortable wire:click="sortingBy('due_amount')" field="due_amount" :direction="$sorts['due_amount'] ?? null">
                         {{ __('Due Amount') }}
                     </x-table.th>
-                    <x-table.th sortable multi-column wire:click="sortBy('total')" :direction="$sorts['total'] ?? null">
+                    <x-table.th sortable wire:click="sortingBy('total')" field="total" :direction="$sorts['total'] ?? null">
                         {{ __('Total') }}
                     </x-table.th>
-                    <x-table.th sortable multi-column wire:click="sortBy('status')" :direction="$sorts['status'] ?? null">
+                    <x-table.th sortable wire:click="sortingBy('status')" field="status" :direction="$sorts['status'] ?? null">
                         {{ __('Status') }}
                     </x-table.th>
                     <x-table.th>
@@ -129,7 +129,7 @@
                                 @php
                                     $type = $purchase->payment_status->getBadgeType();
                                 @endphp
-                                <x-badge :type="$type">{{ $purchase->payment_status->getName() }}</x-badge>
+                                <x-badge :type="$type">{{ $purchase->payment_status->label() }}</x-badge>
                             </x-table.td>
                             <x-table.td>
                                 {{ format_currency($purchase->due_amount) }}
@@ -144,7 +144,7 @@
                                     $badgeType = $purchase->status->getBadgeType();
                                 @endphp
 
-                                <x-badge :type="$badgeType">{{ $purchase->status->getName() }}</x-badge>
+                                <x-badge :type="$badgeType">{{ $purchase->status->label() }}</x-badge>
                             </x-table.td>
                             <x-table.td>
                                 <div class="flex justify-start space-x-2">

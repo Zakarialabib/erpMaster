@@ -7,7 +7,6 @@ namespace App\Livewire\Admin\Sales\Payment;
 use App\Livewire\Utils\Datatable;
 use App\Models\SalePayment;
 use App\Models\Sale;
-
 use Illuminate\Support\Facades\Gate;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
@@ -19,7 +18,8 @@ class Index extends Component
 
     public $sale;
 
-    /** @var array<string> */
+    public $model = SalePayment::class;
+
     public $listeners = [
         'showPayments',
     ];
@@ -31,8 +31,6 @@ class Index extends Component
     public function mount($sale): void
     {
         $this->sale = $sale;
-
-        $this->orderable = (new SalePayment())->orderable;
     }
 
     public function render()

@@ -52,7 +52,6 @@ class PaymentForm extends Component
     #[Rule('nullable|string|max:1000')]
     public $note;
 
-
     protected $rules = [
         'date'   => '',
         'amount' => '',

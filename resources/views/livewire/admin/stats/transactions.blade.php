@@ -89,22 +89,6 @@
                     </path>
                 </x-counter-card>
             </div>
-            <div class="sm:w-1/4 w-1/2 px-2 pb-2">
-                <x-counter-card color="cyan" counter="{{ $salesTotal }}" :title="__('Sales Total')"
-                    href="{{ route('admin.sales.index') }}">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z">
-                    </path>
-                </x-counter-card>
-            </div>
-            <div class="sm:w-1/4 w-1/2 px-2 pb-2">
-                <x-counter-card color="lightGray" counter="{{ $stockValue }}" :title="__('Stock Value')"
-                    href="#">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z">
-                    </path>
-                </x-counter-card>
-            </div>
         @endcan
     </div>
     <div class="flex flex-wrap">
@@ -125,6 +109,12 @@
                 <h3>{{ __('Daily Sales and Purchases') }}</h3>
             </div>
             <div id="daily-chart"></div>
+        </div>
+        <div class="w-full pb-2 mb-2 bg-white relative">
+            <div class="w-full px-4 justify-between items-center">
+                <h3>{{ __('Payment Chart') }}</h3>
+            </div>
+            <div id="payment-chart"></div>
         </div>
     </div>
     <div class="w-full px-2 pb-2 mt-2">
@@ -155,7 +145,7 @@
                                 @php
                                     $type = $sale->status->getBadgeType();
                                 @endphp
-                                <x-badge :type="$type">{{ $sale->status->getName() }}</x-badge>
+                                <x-badge :type="$type">{{ $sale->status->label() }}</x-badge>
                             </td>
                         </tr>
                     @endforeach
@@ -195,7 +185,7 @@
                                     $badgeType = $purchase->status->getBadgeType();
                                 @endphp
 
-                                <x-badge :type="$badgeType">{{ $purchase->status->getName() }}</x-badge>
+                                <x-badge :type="$badgeType">{{ $purchase->status->label() }}</x-badge>
                             </td>
                         </tr>
                     @endforeach
@@ -245,15 +235,55 @@
                             <th>{{ __('Code') }}</th>
                             <th>{{ __('Total Quantity') }}</th>
                             <th>{{ __('Total Sales') }}</th>
+                            <th>{{ __('Warehouse') }}</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($topProducts as $product)
+                        @foreach ($this->topProducts as $product)
                             <tr class="antialiased" wire:key="{{ $product->id }}">
                                 <td class="py-1 px-2">{{ $product->name }}</td>
                                 <td class="py-1 px-2">{{ $product->code }}</td>
                                 <td class="py-1 px-2">{{ $product->qtyItem }}</td>
                                 <td class="py-1 px-2">{{ format_currency($product->totalSalesAmount) }}</td>
+                                <td class="py-1 px-2">
+                                    <x-badge danger
+                                        class="text-sm">{{ Helpers::warehouseName($product->warehouse_id) }}</x-badge>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+        <div class="sm:w-1/2 w-full px-2">
+            <div class="bg-white rounded-lg border border-gray-200 pb-2">
+                <div class="py-3 px-5 w-full inline-flex items-center justify-between text-gray-700">
+                    <span class="text-md font-semibold">{{ __('Top Customers by Warehouse') }}</span>
+                </div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                #
+                            </th>
+                            <th>{{ __('Warehouse') }}</th>
+                            <th>{{ __('Top Customer') }}</th>
+                            <th>{{ __('Total Sales') }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($this->topCustomers as $index => $customer)
+                            <tr class="antialiased" wire:key="{{ $index }}">
+                                <td>{{ $index }}</td>
+                                <td class="py-1 px-2">
+                                    <x-badge danger
+                                        class="text-sm">{{ Helpers::warehouseName($customer->warehouse_id) }}</x-badge>
+                                </td>
+
+                                <td class="py-1 px-2">{{ $customer->name }}</td>
+
+                                <td class="py-1 px-2">{{ format_currency($customer->totalSalesAmount) }}</td>
                             </tr>
                         @endforeach
                     </tbody>
@@ -263,7 +293,7 @@
         <div class="sm:w-1/2 w-full px-2">
             <div class="bg-white rounded-lg border border-gray-200 pb-2">
                 <div class="py-3 px-5 w-full inline-flex items-center justify-between text-gray-700">
-                    <span class="text-md font-semibold">{{ __('Recenet 10 Orders') }}</span>
+                    <span class="text-md font-semibold">{{ __('Recenet Ecommerce Orders') }}</span>
                 </div>
                 <table class="table">
                     <thead>
@@ -281,7 +311,7 @@
                                         {{ $order->reference }}
                                     </a>
                                 </td>
-                                <td class="px-4 py-2">{{ Helpers::format_currency($order->total_amount) }}</td>
+                                <td class="px-4 py-2">{{ format_currency($order->total_amount) }}</td>
                                 <td class="px-4 py-2">{{ format_date($order->created_at) }}</td>
                             </tr>
                         @endforeach
@@ -301,10 +331,15 @@
                 var dailyChart = new ApexCharts(document.querySelector("#daily-chart"), @json($this->dailyChartOptions));
                 dailyChart.render();
 
-
+                // Render the monthly cash flow chart
                 var monthlyChart = new ApexCharts(document.querySelector("#monthly-chart"),
                     @json($this->monthlyChartOptions));
+
                 monthlyChart.render();
+
+                var paymentChart = new ApexCharts(document.querySelector("#payment-chart"),
+                    @json($this->paymentChart));
+                paymentChart.render();
 
                 function chart(data, selector) {
                     let tes = data;

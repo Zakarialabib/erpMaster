@@ -80,7 +80,7 @@ class Edit extends Component
 
         $this->alert('success', __('Category updated successfully.'));
 
-        $this->reset('name', 'description', 'code', 'slug', 'image');
+        $this->reset(['name', 'description', 'code', 'slug', 'image']);
 
         $this->editModal = false;
     }

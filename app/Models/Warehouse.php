@@ -13,7 +13,7 @@ class Warehouse extends Model
 {
     use HasAdvancedFilter;
 
-    public const ATTRIBUTES = [
+    final public const ATTRIBUTES = [
         'id',
         'name',
         'city',
@@ -25,6 +25,7 @@ class Warehouse extends Model
     ];
 
     public $orderable = self::ATTRIBUTES;
+
     public $filterable = self::ATTRIBUTES;
 
     /**
@@ -38,8 +39,8 @@ class Warehouse extends Model
 
     public function users()
     {
-        return $this->belongsToMany(User::class, 'user_warehouses', 'warehouse_id', 'user_id');
-    }    
+        return $this->belongsToMany(User::class, 'user_warehouse', 'warehouse_id', 'user_id');
+    }
 
     /** @return BelongsToMany<Product> */
     public function products(): BelongsToMany
@@ -53,13 +54,13 @@ class Warehouse extends Model
         return $this->hasMany(ProductWarehouse::class, 'warehouse_id');
     }
 
-    public function getTotalQuantityAttribute(): int
+    public function getTotalQuantityAttribute()
     {
         return $this->productWarehouse()->sum('qty');
     }
-    
+
     public function getStockValueAttribute(): float
     {
         return $this->productWarehouse()->sum(DB::raw('qty * cost'));
-    }    
+    }
 }

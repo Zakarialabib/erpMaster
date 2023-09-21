@@ -13,6 +13,7 @@ use Livewire\Component;
 use Livewire\WithFileUploads;
 use App\Traits\LazySpinner;
 use Livewire\Attributes\Rule;
+use App\Livewire\Utils\Admin\WithMeta;
 
 Should:
 #[Layout('components.layouts.dashboard')]
@@ -21,6 +22,7 @@ class Create extends Component
     use WithFileUploads;
     use LazySpinner;
     use LivewireAlert;
+    use WithMeta;
 
     public Page $page;
 
@@ -31,12 +33,6 @@ class Create extends Component
     public $slug;
 
     public $description;
-
-    #[Rule('nullable')]
-    public $meta_title;
-
-    #[Rule('nullable')]
-    public $meta_description;
 
     public $image = '';
 

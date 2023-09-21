@@ -10,32 +10,26 @@ use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Livewire\Attributes\On;
+use App\Livewire\Utils\Admin\WithMeta;
+use Livewire\Attributes\Rule;
 
 class Create extends Component
 {
     use LivewireAlert;
     use WithFileUploads;
+    use WithMeta;
 
     public $createModal = false;
 
     public BlogCategory $blogcategory;
 
+    #[Rule('required', message: 'Title is required')]
     public $title;
 
+    #[Rule('min:3', message: 'Description must be at least 3 characters')]
     public $description;
 
-    public $meta_title;
-
-    public $meta_description;
-
     public $language_id;
-
-    protected $rules = [
-        'title'            => 'required|string|max:255',
-        'description'      => 'nullable',
-        'meta_title'       => 'nullable|max:100',
-        'meta_description' => 'nullable|max:200',
-    ];
 
     public function render()
     {

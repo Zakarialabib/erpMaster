@@ -12,7 +12,7 @@ class FeaturedBanner extends Model
 {
     use HasAdvancedFilter;
 
-    public const ATTRIBUTES = [
+    final public const ATTRIBUTES = [
         'id',
         'title',
         'status',
@@ -23,6 +23,7 @@ class FeaturedBanner extends Model
     ];
 
     public array $orderable = self::ATTRIBUTES;
+
     public array $filterable = self::ATTRIBUTES;
 
     protected $fillable = [

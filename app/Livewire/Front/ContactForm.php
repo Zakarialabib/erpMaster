@@ -10,6 +10,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Mail;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
+use Livewire\Attributes\Rule;
 
 class ContactForm extends Component
 {
@@ -17,20 +18,17 @@ class ContactForm extends Component
 
     public Contact $contact;
 
+    #[Rule('required')]
     public $name;
 
+    #[Rule('required|email')]
     public $email;
 
+    #[Rule('required|numeric')]
     public $phone_number;
 
+    #[Rule('required')]
     public $message;
-
-    protected $rules = [
-        'contact.name'         => 'required',
-        'contact.email'        => 'required|email',
-        'contact.phone_number' => 'required',
-        'contact.message'      => 'required',
-    ];
 
     public function render()
     {
@@ -41,27 +39,14 @@ class ContactForm extends Component
     {
         $this->validate();
 
-        $this->contact->save();
+        Contact::create($this->all());
 
         $this->alert('success', __('Your Message is sent succesfully.'));
 
-        $this->resetInputFields();
+        $this->reset(['name', 'email', 'phone_number', 'message']);
 
         $user = User::find(1);
         $user_email = $user->email;
         Mail::to($user_email)->send(new MailContactForm($this->contact));
-    }
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    private function resetInputFields(): void
-    {
-        $this->name = '';
-        $this->email = '';
-        $this->phone_number = '';
-        $this->message = '';
     }
 }

@@ -192,7 +192,6 @@ return [
         'DNS2D' => Milon\Barcode\Facades\DNS2DFacade::class,
         'Cart' => Gloudemans\Shoppingcart\Facades\Cart::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
-        'PDF' => Mccarlosen\LaravelMpdf\Facades\LaravelMpdf::class,
         'Helpers' => App\Helpers::class,
         'Image' => Intervention\Image\Facades\Image::class,
     ])->toArray(),

@@ -42,6 +42,7 @@ class PurchasesReturnController extends Controller
     {
         DB::transaction(static function () use ($request): void {
             $due_amount = $request->total_amount - $request->paid_amount;
+
             if ($due_amount === $request->total_amount) {
                 $payment_status = PaymentStatus::DUE;
             } elseif ($due_amount > 0) {
@@ -67,6 +68,7 @@ class PurchasesReturnController extends Controller
                 'tax_amount'          => Cart::instance('purchase_return')->tax() * 100,
                 'discount_amount'     => Cart::instance('purchase_return')->discount() * 100,
             ]);
+
             foreach (Cart::instance('purchase_return')->content() as $cart_item) {
                 PurchaseReturnDetail::create([
                     'purchase_return_id'      => $purchase_return->id,
@@ -91,6 +93,7 @@ class PurchasesReturnController extends Controller
             }
 
             Cart::instance('purchase_return')->destroy();
+
             if ($purchase_return->paid_amount > 0) {
                 PurchaseReturnPayment::create([
                     'date'               => $request->date,
@@ -153,6 +156,7 @@ class PurchasesReturnController extends Controller
     {
         DB::transaction(static function () use ($request, $purchase_return): void {
             $due_amount = $request->total_amount - $request->paid_amount;
+
             if ($due_amount === $request->total_amount) {
                 $payment_status = PaymentStatus::DUE;
             } elseif ($due_amount > 0) {
@@ -189,6 +193,7 @@ class PurchasesReturnController extends Controller
                 'tax_amount'          => Cart::instance('purchase_return')->tax() * 100,
                 'discount_amount'     => Cart::instance('purchase_return')->discount() * 100,
             ]);
+
             foreach (Cart::instance('purchase_return')->content() as $cart_item) {
                 PurchaseReturnDetail::create([
                     'purchase_return_id'      => $purchase_return->id,

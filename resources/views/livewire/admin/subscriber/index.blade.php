@@ -19,21 +19,20 @@
         </div>
     </div>
 
-    
+
 
     <x-table>
         <x-slot name="thead">
             <x-table.th>#</x-table.th>
-            <x-table.th sortable wire:click="sortBy('name')" :direction="$sorts['name'] ?? null">
+            <x-table.th sortable wire:click="sortingBy('name')" field="name" :direction="$sorts['name'] ?? null">
                 {{ __('Name') }}
-                @include('components.table.sort', ['field' => 'name'])
+
             </x-table.th>
             <x-table.th>
                 {{ __('Attribute') }}
             </x-table.th>
-            <x-table.th sortable wire:click="sortBy('status')" :direction="$sorts['status'] ?? null">
+            <x-table.th sortable wire:click="sortingBy('status')" field="status" :direction="$sorts['status'] ?? null">
                 {{ __('Status') }}
-                @include('components.table.sort', ['field' => 'status'])
             </x-table.th>
             <x-table.th>
                 {{ __('Actions') }}
@@ -55,7 +54,7 @@
                                 class="attribute text-white" data-toggle="modal" data-target="#attribute"> <i
                                     class="fas fa-edit"></i>{{ __('Create') }}</a>
                             @if ($category->attributes()->count() > 0)
-                                <a href="{{ route('admin-attr-manage', $category->id).'?type=category' }}"
+                                <a href="{{ route('admin-attr-manage', $category->id) . '?type=category' }}"
                                     class="edit">
                                     <i class="fas fa-edit"></i>
                                     {{ __('Manage') }}
@@ -65,7 +64,8 @@
                     </x-table.td>
 
                     <x-table.td>
-                        <livewire:utils.toggle-button :model="$category" field="status" key="{{ $category->id }}" lazy />
+                        <livewire:utils.toggle-button :model="$category" field="status" key="{{ $category->id }}"
+                            lazy />
                     </x-table.td>
                     <x-table.td>
                         <x-dropdown
@@ -77,8 +77,9 @@
                                 </button>
                             </x-slot>
                             <x-slot name="content">
-                                <x-dropdown-link data-href="{{ route('admin-cat-edit', $category->id) }}" class="edit"
-                                    data-toggle="modal" data-target="#modal1"> <i class="fas fa-edit"></i>
+                                <x-dropdown-link data-href="{{ route('admin-cat-edit', $category->id) }}"
+                                    class="edit" data-toggle="modal" data-target="#modal1"> <i
+                                        class="fas fa-edit"></i>
                                     {{ __('Edit') }}
                                 </x-dropdown-link>
                                 <x-dropdown-link href="javascript:;"

@@ -26,7 +26,7 @@ class WarehouseSeeder extends Seeder
             $ware = Warehouse::create($warehouse);
 
             if (User::first()) {
-                $ware->assignedUsers()->sync(User::first());
+                $ware->users()->attach(User::first()->id);
             }
         });
     }

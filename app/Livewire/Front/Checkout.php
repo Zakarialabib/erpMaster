@@ -46,6 +46,8 @@ class Checkout extends Component
 
     public $email;
 
+    public $user;
+
     public $address;
 
     public $city;
@@ -100,7 +102,7 @@ class Checkout extends Component
         $shipping = Shipping::find($this->shipping_id);
 
         if ( ! auth()->check()) {
-            $user = User::create([
+            $this->user = User::create([
                 'first_name' => $this->first_name,
                 'last_name'  => $this->last_name,
                 'city'       => $this->city,
@@ -111,9 +113,9 @@ class Checkout extends Component
                 'password'   => bcrypt($this->password),
             ]);
 
-            Mail::to($user->email)->send(new CustomerRegistrationMail($user));
+            Mail::to($this->user->email)->send(new CustomerRegistrationMail($this->user));
 
-            Auth::login($user);
+            Auth::login($this->user);
         }
 
         $order = Order::create([
@@ -138,7 +140,7 @@ class Checkout extends Component
             'payment_status'   => PaymentStatus::PENDING,
         ]);
 
-        Mail::to($order->user->email)->send(new CheckoutMail($order, $user));
+        Mail::to($order->user->email)->send(new CheckoutMail($order, $this->user));
 
         foreach (Cart::instance('shopping') as $item) {
             $orderProduct = new OrderProduct([

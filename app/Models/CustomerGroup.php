@@ -14,12 +14,13 @@ class CustomerGroup extends Model
     use HasAdvancedFilter;
     use HasFactory;
 
-    public const ATTRIBUTES = [
+    final public const ATTRIBUTES = [
         'id', 'name', 'percentage', 'status',
 
     ];
 
     public $orderable = self::ATTRIBUTES;
+
     public $filterable = self::ATTRIBUTES;
 
     /**

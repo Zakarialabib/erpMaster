@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Enums;
 
-use Illuminate\Support\Str;
-
 enum SaleStatus: int
 {
     case PENDING = 0;
@@ -20,29 +18,29 @@ enum SaleStatus: int
 
     case CANCELED = 5;
 
-    public function getName(): string
+    public function label(): string
     {
-        return __(Str::studly($this->name));
+        return match ($this) {
+            static::PENDING   => __('Pending'),
+            static::ORDERED   => __('Order'),
+            static::COMPLETED => __('Completed'),
+            static::SHIPPED   => __('Shipped'),
+            static::RETURNED  => __('Returned'),
+            static::CANCELED  => __('Canceled'),
+        };
     }
 
     public function getBadgeType(): string
     {
-        switch ($this) {
-            case self::PENDING:
-                return 'warning';
-            case self::ORDERED:
-                return 'primary';
-            case self::COMPLETED:
-                return 'success';
-            case self::SHIPPED:
-                return 'info';
-            case self::RETURNED:
-                return 'danger';
-            case self::CANCELED:
-                return 'secondary';
-            default:
-                return 'secondary';
-        }
+        return match ($this) {
+            self::PENDING   => 'warning',
+            self::ORDERED   => 'primary',
+            self::COMPLETED => 'success',
+            self::SHIPPED   => 'info',
+            self::RETURNED  => 'danger',
+            self::CANCELED  => 'secondary',
+            default         => 'secondary',
+        };
     }
 
     public function getValue()
@@ -50,11 +48,11 @@ enum SaleStatus: int
         return $this->value;
     }
 
-    public static function getLabel($value)
+    public static function getLabel($value): ?string
     {
         foreach (self::cases() as $case) {
             if ($case->getValue() === $value) {
-                return $case->getName();
+                return $case->label();
             }
         }
 

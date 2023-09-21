@@ -52,7 +52,7 @@
     <div class="w-full px-2 mb-4 bg-white">
         <div class="flex flex-wrap w-full">
             <div
-                class="w-full grid gap-3 xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 px-2 mt-5 overflow-y-auto">
+                class="w-full grid gap-3 xs:grid-cols-3 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-5 px-2 mt-5 overflow-y-auto">
                 @forelse($products as $product)
                     <div wire:click.prevent="selectProduct({{ $product }})"
                         class="select-none cursor-pointer transition-shadow overflow-hidden rounded-2xl bg-white shadow hover:shadow-lg w-full py-8 relative border border-green-400"

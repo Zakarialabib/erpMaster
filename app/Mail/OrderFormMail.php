@@ -14,6 +14,7 @@ class OrderFormMail extends Mailable
     use Queueable;
     use SerializesModels;
 
+    /** @var \App\Models\OrderForms */
     public $order;
 
     public function __construct(OrderForms $order)
@@ -24,7 +25,7 @@ class OrderFormMail extends Mailable
     public function build()
     {
         return $this->view('emails.order-form')
-            ->subject('New Order Form!', $this->order->name)
+            ->subject(__('New Order Form!').$this->order->name)
             ->with([
                 'order' => $this->order,
             ]);

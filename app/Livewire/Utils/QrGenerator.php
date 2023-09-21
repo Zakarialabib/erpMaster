@@ -128,7 +128,7 @@ class QrGenerator extends Component
         ];
 
         // Return the response with the QR code image for download
-        return response()->streamDownload(static function () use ($qrCode) : void {
+        return response()->streamDownload(static function () use ($qrCode): void {
             echo $qrCode;
         }, 'qr_code.svg', $headers);
     }

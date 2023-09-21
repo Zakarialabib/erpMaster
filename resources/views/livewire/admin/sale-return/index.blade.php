@@ -25,22 +25,22 @@
             <x-table.th>
                 <input type="checkbox" wire:model.live="selectPage" />
             </x-table.th>
-            <x-table.th sortable wire:click="sortBy('date')" :direction="$sorts['date'] ?? null">
+            <x-table.th sortable wire:click="sortingBy('date')" field="date" :direction="$sorts['date'] ?? null">
                 {{ __('Date') }}
             </x-table.th>
-            <x-table.th sortable wire:click="sortBy('customer_id')" :direction="$sorts['customer_id'] ?? null">
+            <x-table.th sortable wire:click="sortingBy('customer_id')" field="customer_id" :direction="$sorts['customer_id'] ?? null">
                 {{ __('Customer') }}
             </x-table.th>
-            <x-table.th sortable wire:click="sortBy('payment_status')" :direction="$sorts['payment_status'] ?? null">
+            <x-table.th sortable wire:click="sortingBy('payment_status')" field="payment_status" :direction="$sorts['payment_status'] ?? null">
                 {{ __('Payment status') }}
             </x-table.th>
-            <x-table.th sortable wire:click="sortBy('due_amount')" :direction="$sorts['due_amount'] ?? null">
+            <x-table.th sortable wire:click="sortingBy('due_amount')" field="due_amount" :direction="$sorts['due_amount'] ?? null">
                 {{ __('Due Amount') }}
             </x-table.th>
-            <x-table.th sortable wire:click="sortBy('total')" :direction="$sorts['total'] ?? null">
+            <x-table.th sortable wire:click="sortingBy('total')" field="total" :direction="$sorts['total'] ?? null">
                 {{ __('Total') }}
             </x-table.th>
-            <x-table.th sortable wire:click="sortBy('status')" :direction="$sorts['status'] ?? null">
+            <x-table.th sortable wire:click="sortingBy('status')" field="status" :direction="$sorts['status'] ?? null">
                 {{ __('Status') }}
             </x-table.th>
             <x-table.th>
@@ -68,7 +68,7 @@
                             $badgeType = $salereturn->payment_status->getBadgeType();
                         @endphp
                         
-                        <x-badge :type="$badgeType">{{ $salereturn->payment_status->getName() }}</x-badge>
+                        <x-badge :type="$badgeType">{{ $salereturn->payment_status->label() }}</x-badge>
                     </x-table.td>
                     <x-table.td>
                         {{ format_currency($salereturn->due_amount) }}
@@ -82,7 +82,7 @@
                         @php
                             $type = $salereturn->status->getBadgeType();
                         @endphp
-                        <x-badge :type="$type">{{ $salereturn->status->getName() }}</x-badge>
+                        <x-badge :type="$type">{{ $salereturn->status->label() }}</x-badge>
 
                     </x-table.td>
                     <x-table.td>
@@ -216,7 +216,7 @@
                                                     $badgeType = $salereturn?->status->getBadgeType();
                                                 @endphp
                                                 <x-badge
-                                                    :type="$badgeType">{{ $salereturn?->status->getName() }}</x-badge>
+                                                    :type="$badgeType">{{ $salereturn?->status->label() }}</x-badge>
 
                                             </strong>
                                         </div>
@@ -403,27 +403,4 @@
         </div>
     @endif
 
-
 </div>
-
-@push('scripts')
-    <script>
-        document.addEventListener('livewire:init', function() {
-            window.livewire.on('deleteModal', saleId => {
-                Swal.fire({
-                    title: 'Are you sure?',
-                    text: "You won't be able to revert this!",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, delete it!'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        window.livewire.emit('delete', saleId)
-                    }
-                })
-            })
-        })
-    </script>
-@endpush

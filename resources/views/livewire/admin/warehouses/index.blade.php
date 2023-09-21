@@ -16,7 +16,7 @@
                 @endforeach
             </select>
             @if ($selected)
-                <x-button danger type="button" wire:click="deleteSelected" class="ml-3">
+                <x-button danger type="button" wire:click="deleteSelectedModal" class="ml-3">
                     <i class="fas fa-trash"></i>
                 </x-button>
             @endif
@@ -71,11 +71,12 @@
                     </x-table.td>
                     <x-table.td>
                         <div class="flex justify-start space-x-2">
-                            <x-button info type="button" wire:click="$dispatch('editModal',{ id : {{ $warehouse->id }} })"
+                            <x-button info type="button"
+                                wire:click="$dispatch('editModal',{ id : {{ $warehouse->id }} })"
                                 wire:loading.attr="disabled">
                                 <i class="fas fa-edit"></i>
                             </x-button>
-                            <x-button danger type="button" wire:click="$dispatch('deleteModal',{ id : {{ $warehouse->id }} })"
+                            <x-button danger type="button" wire:click="deleteModal({{ $warehouse->id }})"
                                 wire:loading.attr="disabled">
                                 <i class="fas fa-trash"></i>
                             </x-button>
@@ -98,32 +99,8 @@
         {{ $warehouses->links() }}
     </div>
 
-
-  
     <livewire:admin.warehouses.edit :warehouse="$warehouse" lazy />
 
     <livewire:admin.warehouses.create lazy />
 
 </div>
-
-@push('scripts')
-    <script>
-        document.addEventListener('livewire:init', function() {
-            window.livewire.on('deleteModal', warehouseId => {
-                Swal.fire({
-                    title: 'Are you sure?',
-                    text: "You won't be able to revert this!",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, delete it!'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        window.livewire.emit('delete', warehouseId)
-                    }
-                })
-            })
-        })
-    </script>
-@endpush

@@ -88,6 +88,10 @@ class SettingsSeeder extends Seeder
             'value' => 'Site is under maintenance',
         ],
         [
+            'key'   => 'site_maintenance_status',
+            'value' => false,
+        ],
+        [
             'key'   => 'telegram_channel',
             'value' => '',
         ],
@@ -178,6 +182,18 @@ class SettingsSeeder extends Seeder
         [
             'key'   => 'show_shipping',
             'value' => '1',
+        ],
+        [
+            'key'   => 'backup_status',
+            'value' => false,
+        ],
+        [
+            'key'   => 'backup_schedule',
+            'value' => 2,
+        ],
+        [
+            'key'   => 'backup_content',
+            'value' => '',
         ],
     ];
 

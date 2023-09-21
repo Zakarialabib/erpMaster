@@ -12,16 +12,12 @@ use App\Models\Quotation;
 use App\Models\Sale;
 use App\Models\SaleReturn;
 use App\Models\Supplier;
-use PDF;
+use Mccarlosen\LaravelMpdf\Facades\LaravelMpdf as PDF;
 use Symfony\Component\HttpFoundation\Response;
 
 class ExportController extends Controller
 {
-    /**
-     * Return a response with the PDF to show in the browser
-     *
-     *
-     */
+    /** Return a response with the PDF to show in the browser */
     public function salePos(mixed $id): Response
     {
         $sale = Sale::where('id', $id)->firstOrFail();
