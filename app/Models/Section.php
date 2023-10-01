@@ -4,42 +4,20 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\PageType;
 use App\Support\HasAdvancedFilter;
 use Illuminate\Database\Eloquent\Model;
+use App\Enums\Status;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Section extends Model
 {
     use HasAdvancedFilter;
 
-    final public const HOME_PAGE = 1;
-
-    final public const ABOUT_PAGE = 2;
-
-    final public const BRAND_PAGE = 3;
-
-    final public const BLOG_PAGE = 4;
-
-    final public const CATALOG_PAGE = 5;
-
-    final public const BRANDS_PAGE = 6;
-
-    final public const CONTACT_PAGE = 7;
-
-    final public const PRODUCT_PAGE = 8;
-
-    final public const PRIVACY_PAGE = 9;
-
-    public $table = 'sections';
-
     final public const ATTRIBUTES = [
         'id',
-        'featured_title',
-        'label',
-        'status',
-        'subtitle',
         'title',
-        'position',
-        'page',
+        'status',
     ];
 
     public $orderable = self::ATTRIBUTES;
@@ -47,22 +25,35 @@ class Section extends Model
     public $filterable = self::ATTRIBUTES;
 
     protected $fillable = [
-        'title', 'image', 'featured_title', 'subtitle', 'label', 'link', 'description', 'status', 'bg_color', 'page', 'position', 'language_id',
+        'page_id',
+        'title',
+        'featured_title',
+        'subtitle',
+        'text',
+        'bg_color',
+        'text_color',
+        'type',
+        'position',
+        'label',
+        'link',
+        'image',
+        'description',
+        'embeded_video',
+        'status',
     ];
 
-    /**
-     * Scope a query to only include active products.
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     *
-     */
+    protected $casts = [
+        'type'   => PageType::class,
+        'satuts' => Status::class,
+    ];
+
     public function scopeActive($query): void
     {
-        $query->where('status', 1);
+        $query->where('status', true);
     }
 
-    public function language()
+    public function page(): BelongsTo
     {
-        return $this->belongsTo(\App\Models\Language::class);
+        return $this->belongsTo(Page::class, 'page_id');
     }
 }

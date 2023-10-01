@@ -41,6 +41,7 @@ class Expense extends Model
         'reference',
         'description',
         'amount',
+        'cash_register_id'
     ];
 
     public function __construct(array $attributes = [])

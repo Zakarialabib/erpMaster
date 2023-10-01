@@ -29,10 +29,12 @@ class ProductFactory extends Factory
             'name'              => $this->faker->name,
             'code'              => Str::random(5),
             'category_id'       => 1,
+            'brand_id'          => null,
             'slug'              => Str::slug($this->faker->name),
             'unit'              => 'pcs',
             'description'       => $this->faker->sentence,
-            'image'             => 'https://www.apple.com/v/iphone/home/ah/images/overview/compare/compare_iphone_12__f2x.png',
+            'image'             => uploadImage('images/products', '640', '480'),
+            'gallery'           => null,
             'barcode_symbology' => 'C39',
             'order_tax'         => 0,
             'tax_type'          => 0,
@@ -41,6 +43,11 @@ class ProductFactory extends Factory
             'meta_description'  => '',
             'best'              => true,
             'hot'               => true,
+            'status'            => true,
+            'embeded_video'     => null,
+            'subcategories'     => null,
+            'options'           => null,
+            'usage'             => null,
         ];
     }
 
@@ -53,14 +60,14 @@ class ProductFactory extends Factory
                 ProductWarehouse::create([
                     'product_id'    => $product->id,
                     'warehouse_id'  => $warehouse->id,
-                    'qty'           => '100',
-                    'cost'          => '5000',
-                    'price'         => '10000',
-                    'old_price'     => '0',
+                    'qty'           => 20,
+                    'cost'          => 250,
+                    'price'         => 1000,
+                    'old_price'     => 500,
                     'is_ecommerce'  => true,
-                    'stock_alert'   => '10',
+                    'stock_alert'   => 10,
                     'is_discount'   => true,
-                    'discount_date' => '2021-10-10',
+                    'discount_date' => now(),
                 ]);
             }
         });

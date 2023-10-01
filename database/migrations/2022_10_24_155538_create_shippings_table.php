@@ -19,7 +19,7 @@ return new class () extends Migration {
             $table->boolean('is_pickup')->default(false);
             $table->string('title');
             $table->string('subtitle')->nullable();
-            $table->decimal('cost', 10, 2)->default(false);
+            $table->double('cost')->default(0);
             $table->boolean('status')->default(true);
             $table->softDeletes();
             $table->timestamps();

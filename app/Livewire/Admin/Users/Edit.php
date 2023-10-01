@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace App\Livewire\Admin\Users;
 
+use App\Models\Role;
+use App\Models\Warehouse;
 use App\Models\User;
+use Livewire\Attributes\Computed;
 use Livewire\Component;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Gate;
@@ -25,7 +28,7 @@ class Edit extends Component
     #[Rule('required|string|max:255')]
     public $name;
 
-    #[Rule('required|email|unique:users,email')]
+    #[Rule('required|email')]
     public $email;
 
     #[Rule('required|string|min:8')]
@@ -33,6 +36,7 @@ class Edit extends Component
 
     #[Rule('required|numeric')]
     public $phone;
+    public $roles;
 
     #[Rule('nullable|string')]
     public $city;
@@ -68,8 +72,7 @@ class Edit extends Component
 
         $this->address = $this->user->address;
 
-        $this->selectedWarehouses = $this->user->warehouses()->pluck('id')->toArray();
-
+        $this->selectedWarehouses = $this->user->warehouses()->pluck('warehouses.id')->toArray() ?? [];
         $this->editModal = true;
     }
 
@@ -92,6 +95,22 @@ class Edit extends Component
         $this->alert('success', __('User Updated Successfully'));
 
         $this->editModal = false;
+    }
+
+    #[Computed]
+    public function roles()
+    {
+        return Role::pluck('name', 'id')->toArray();
+    }
+    
+    #[Computed]
+    public function warehouses()
+    {
+        if (auth()->check()) {
+            $user = auth()->user();
+            return Warehouse::whereIn('id', $user->warehouses->pluck('id'))->select('name', 'id')->get();
+        }
+        return Warehouse::pluck('name', 'id')->toArray();
     }
 
     public function render(): View

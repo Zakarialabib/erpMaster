@@ -8,6 +8,7 @@ use App\Models\OrderForms;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
+use Livewire\Attributes\Rule;
 use Livewire\Component;
 use App\Mail\OrderFormMail;
 use Illuminate\Support\Facades\Mail;
@@ -16,10 +17,14 @@ class OrderForm extends Component
 {
     use LivewireAlert;
 
+    #[Rule('required', message : 'This field is required')]
     public $name;
 
+    #[Rule('required', message : 'This field is required')]
+    #[Rule('numeric', message : 'This field must be number')]
     public $phone;
 
+    #[Rule('required', message : 'This field is required')]
     public $address;
 
     public $type;
@@ -44,11 +49,7 @@ class OrderForm extends Component
 
     public function save(): void
     {
-        $this->validate([
-            'name'    => 'required',
-            'phone'   => 'required',
-            'address' => 'required',
-        ]);
+        $this->validate();
 
         $order = OrderForms::create([
             'name'    => $this->name,

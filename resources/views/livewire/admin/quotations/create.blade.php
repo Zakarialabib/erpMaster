@@ -25,10 +25,16 @@
                     </div>
                     <div class="w-full md:w-1/2 px-3 mb-4 md:mb-0">
                         <x-label for="warehouse" :value="__('Warehouse')" required />
-                        <x-select-list
+                        <select
                             class="block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border-gray-300 rounded-md mt-1"
-                            required id="warehouse_id" name="warehouse_id" wire:model.live="warehouse_id"
-                            :options="$this->warehouses" />
+                            required id="warehouse_id" name="warehouse_id" wire:model.live="warehouse_id">
+                            <option value="">{{ __('Select Warehouse') }}</option>
+                            @foreach ($this->warehouses as $warehouse)
+                                <option value="{{ $warehouse->id }}">
+                                    {{ $warehouse->name }}
+                                </option>
+                            @endforeach
+                        </select>
                         <x-input-error :messages="$errors->get('warehouse_id')" class="mt-2" />
                     </div>
 
@@ -51,9 +57,9 @@
                                 class="block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border-gray-300 rounded-md mt-1"
                                 name="status" id="status" required>
                                 <option value="">{{ __('Select Status') }}</option>
-                                @foreach (\App\Enums\QuotationStatus::cases() as $status)
-                                    <option value="{{ $status->value }}">
-                                        {{ __($status->name) }}
+                                @foreach (\App\Enums\QuotationStatus::values() as $key => $value)
+                                    <option value="{{ $key }}">
+                                        {{ $value }}
                                     </option>
                                 @endforeach
                             </select>

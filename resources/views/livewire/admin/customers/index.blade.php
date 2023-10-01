@@ -1,10 +1,12 @@
 <div>
     @section('title', __('Customer'))
+
     <x-theme.breadcrumb :title="__('Customer List')" :parent="route('admin.customers.index')" :parentName="__('Customer List')">
         <x-button primary type="button" wire:click="dispatchTo('admin.customer.create', 'createModal')">
             {{ __('Create Customer') }}
         </x-button>
-    </x-theme.breadcrumb> 
+    </x-theme.breadcrumb>
+
     <div class="flex flex-wrap justify-center">
         <div class="md:w-1/2 sm:w-full flex flex-wrap my-2 space-x-2">
             <select wire:model.live="perPage"
@@ -26,6 +28,19 @@
                 </x-button>
             @endif
 
+            @if ($this->selectedCount)
+                <p class="text-sm leading-5">
+                    <span class="font-medium">
+                        {{ $this->selectedCount }}
+                    </span>
+                    {{ __('Entries selected') }}
+                </p>
+                <p wire:click="resetSelected" wire:loading.attr="disabled"
+                    class="text-sm leading-5 font-medium text-red-500 cursor-pointer ">
+                    {{ __('Clear Selected') }}
+                </p>
+            @endif
+
         </div>
         <div class="md:w-1/2 sm:w-full my-2">
             <div class="my-2">
@@ -45,8 +60,8 @@
             <x-table.th sortable :direction="$sorts['phone'] ?? null" field="phone" wire:click="sortingBy('phone')">
                 {{ __('Phone') }}
             </x-table.th>
-            <x-table.th sortable :direction="$sorts['status'] ?? null" field="status" wire:click="sortingBy('status')">
-                {{ __('Status') }}
+            <x-table.th>
+                {{ __('Address') }}
             </x-table.th>
             <x-table.th>
                 {{ __('Actions') }}
@@ -59,13 +74,16 @@
                         <input type="checkbox" value="{{ $customer->id }}" wire:model.live="selected" />
                     </x-table.td>
                     <x-table.td>
-                        <button type="button" wire:click="showModal({{ $customer->id }})"
+                        <button type="button" wire:click="$dispatch('showModal', { id : '{{ $customer->id }}' })"
                             class="text-indigo-500 hover:text-indigo-600">
                             {{ $customer->name }}
                         </button>
                     </x-table.td>
                     <x-table.td>
                         {{ $customer->phone }}
+                    </x-table.td>
+                    <x-table.td>
+                        {{ $customer->address }}
                     </x-table.td>
                     <x-table.td>
                         <div class="flex justify-start space-x-2">
@@ -76,7 +94,8 @@
                                     </x-button>
                                 </x-slot>
                                 <x-slot name="content">
-                                    <x-dropdown-link wire:click="showModal({{ $customer->id }})"
+                                    <x-dropdown-link
+                                        wire:click="$dispatch('showModal', { id : '{{ $customer->id }}' })"
                                         wire:loading.attr="disabled">
                                         <i class="fas fa-eye"></i>
                                         {{ __('View') }}
@@ -86,7 +105,7 @@
                                         {{ __('Details') }}
                                     </x-dropdown-link>
 
-                                    <x-dropdown-link wire:click="$dispatch('editModal', {{ $customer->id }})"
+                                    <x-dropdown-link wire:click="$dispatch('editModal', { id : '{{ $customer->id }}'})"
                                         wire:loading.attr="disabled">
                                         <i class="fas fa-edit"></i>
                                         {{ __('Edit') }}
@@ -117,64 +136,16 @@
 
     <div class="p-4">
         <div class="pt-3">
-            @if ($this->selectedCount)
-                <p class="text-sm leading-5">
-                    <span class="font-medium">
-                        {{ $this->selectedCount }}
-                    </span>
-                    {{ __('Entries selected') }}
-                </p>
-                <p wire:click="resetSelected" wire:loading.attr="disabled"
-                    class="text-sm leading-5 font-medium text-red-500 cursor-pointer ">
-                    {{ __('Clear Selected') }}
-                </p>
-            @endif
+
             {{ $customers->links() }}
         </div>
     </div>
 
-    <x-modal wire:model="showModal">
-        <x-slot name="title">
-            {{ __('Show Customer') }}
-        </x-slot>
+    <livewire:admin.customers.show :customer="$customer" lazy />
 
-        <x-slot name="content">
-            <div class="flex flex-wrap">
-                <div class="w-full sm:w-1/2 px-3 mb-6">
-                    <x-label for="name" :value="__('Name')" />
-                    <p>{{ $customer?->name }}</p>
-                </div>
+    <livewire:admin.customers.edit :customer="$customer" lazy />
 
-                <div class="w-full sm:w-1/2 px-3 mb-6">
-                    <x-label for="phone" :value="__('Phone')" />
-                    <p>{{ $customer?->phone }}</p>
-                </div>
-
-                <div class="w-full sm:w-1/2 px-3 mb-6">
-                    <x-label for="email" :value="__('Email')" />
-                    <p>{{ $customer?->email }}</p>
-                </div>
-
-                <div class="w-full sm:w-1/2 px-3 mb-6">
-                    <x-label for="address" :value="__('Address')" />
-                    <p>{{ $customer?->address }}</p>
-                </div>
-
-                <div class="w-full sm:w-1/2 px-3 mb-6">
-                    <x-label for="city" :value="__('City')" />
-                    <p>{{ $customer?->city }}</p>
-
-                </div>
-                <div class="w-full sm:w-1/2 px-3 mb-6">
-                    <x-label for="tax_number" :value="__('Tax Number')" />
-                    <p>{{ $customer?->tax_number }}</p>
-                </div>
-            </div>
-        </x-slot>
-    </x-modal>
-
-
-    <livewire:admin.customers.edit :customer="$customer" />
+    <livewire:admin.customers.create lazy />
 
     <x-modal wire:model="import">
         <x-slot name="title">
@@ -227,10 +198,5 @@
             </form>
         </x-slot>
     </x-modal>
-
-
-    <livewire:admin.customers.create lazy />
-
-
 
 </div>

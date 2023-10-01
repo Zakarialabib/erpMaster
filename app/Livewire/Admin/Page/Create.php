@@ -26,7 +26,9 @@ class Create extends Component
 
     public Page $page;
 
-    #[Rule('required|min:3|max:255')]
+    #[Rule('required', message: 'The title is required')]
+    #[Rule('min:3', message: 'The title must be at least 3 characters')]
+    #[Rule('max:255', message: 'The title must not exceed 255 characters')]
     public $title;
 
     #[Rule('required|min:3|max:255')]
@@ -36,15 +38,25 @@ class Create extends Component
 
     public $image = '';
 
-    public bool $is_sliders = false;
-
-    public bool $is_contact = false;
-
-    public bool $is_offer = false;
-
-    public bool $is_title = true;
-
-    public bool $is_description = true;
+    #[Rule('array')]
+    public $settings = [
+        'is_title'        => true,
+        'is_description'  => false,
+        'is_sliders'      => false,
+        'is_gallery'      => false,
+        'is_contact'      => false,
+        'is_map'          => false,
+        'is_video'        => false,
+        'is_testimonials' => false,
+        'is_team'         => false,
+        'is_faq'          => false,
+        'is_services'     => false,
+        'is_partners'     => false,
+        'is_blogs'        => false,
+        'is_categories'   => false,
+        'is_products'     => false,
+        'is_about'        => false,
+    ];
 
     public $status;
 
@@ -62,14 +74,16 @@ class Create extends Component
             $this->image = null;
         } elseif (is_object($this->image) && method_exists($this->image, 'extension')) {
             $imageName = Str::slug($this->title).$this->image->extension();
-            $this->image->store('pages', $imageName);
+            $this->image->storeAs('pages', $imageName, 'local_files');
             $this->image = $imageName;
         }
 
         $this->slug = Str::slug($this->title);
-        $this->description = json_encode($this->description, JSON_THROW_ON_ERROR);
+        $this->description = json_encode($this->description);
 
         $this->meta_title = Str::limit($this->title, 55);
+
+        $this->settings = json_encode($this->settings);
 
         Page::create($this->all());
 

@@ -8,21 +8,20 @@ use Livewire\Component;
 use App\Models\Language;
 use Illuminate\Support\Facades\Artisan;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
+use Livewire\Attributes\Computed;
+use Livewire\Attributes\Layout;
 
+#[Layout('components.layouts.dashboard')]
 class Index extends Component
 {
     use LivewireAlert;
 
-    public $languages = [];
-
     public $language;
 
-    protected $listeners = [
-    ];
-
-    public function mount(): void
+    #[Computed]
+    public function languages()
     {
-        $this->languages = Language::all()->toArray();
+        return Language::all();
     }
 
     public function render()

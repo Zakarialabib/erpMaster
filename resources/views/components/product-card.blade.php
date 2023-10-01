@@ -4,88 +4,79 @@
     <div itemprop="sku" content="{{ $product->code }}"></div>
     <div itemprop="description" content="{{ $product->description }}"></div>
 
-    <div class="mb-5 bg-white rounded-xl shadow-2xl sm:w-full relative">
-        <div class="relative text-left">
-            <a href="{{ route('front.product', $product->slug) }}"
-                class="flex mx-auto mb-4 h-[180px] lg:h-[250px] rounded-t-lg"
-                style="background-image: url('{{ $product->image }}');
+    <div
+        class="relative border border-gray-80 rounded-lg hover-up-all p-4 hover:border-third-brand hover:shadow-drop-shadown-1">
+        <a href="{{ route('front.product', $product->slug) }}"
+            class="flex mx-auto mb-4 h-[180px] lg:h-[250px] rounded-t-lg"
+            style="background-image: url('{{ asset('images/products/' . $product->image) }}');
                 background-position: center;background-size: cover;">
-                <meta itemprop="image" content="{{ $product->image }}" />
-            </a>
+            <meta itemprop="image" content="{{ asset('images/products/' . $product->image) }}" />
+        </a>
 
-            @if ($product->discount_price && $product->discount != 0)
-                <div class="absolute top-0 right-0 mb-3 p-2 bg-red-500 rounded-bl-lg">
-                    <span class="text-white font-bold text-sm">
-                        - {{ $product->discount }}%
-                    </span>
+        @if ($product->warehouses->first()->pivot->discount_price && $product->warehouses->first()->pivot->discount != 0)
+            <div class="absolute top-0 right-0 mb-3 p-2 bg-red-500 rounded-bl-lg">
+                <span class="text-white font-bold text-sm">
+                    - {{ $product->warehouses->first()->pivot->discount }}%
+                </span>
+            </div>
+        @endif
+        @if ($product->category)
+            <div
+                class="absolute top-3.5 md:top-5 3xl:top-7 ltr:left-3.5 rtl:right-3.5 ltr:md:left-5 rtl:md:right-5 ltr:3xl:left-7 rtl:3xl:right-7 flex flex-col gap-y-1 items-start">
+                <span
+                    class="bg-indigo-600 text-white text-10px md:text-xs leading-5 rounded-md inline-block px-1.5 sm:px-1.5 xl:px-2 py-0.5 sm:py-1">
+                    <p><span class="hidden sm:inline">{{ $product->category->name }}</span></p>
+                </span>
+            </div>
+        @endif
+        <div class="w-full flex-none text-sm flex items-center justify-center text-gray-600 py-2">
+            @if ($product->status === \App\Enums\Status::ACTIVE)
+                <div class="text-xs font-medium">
+                    <span class="text-green-500">● {{ __('In Stock') }}</span>
+                </div>
+            @else
+                <div class="text-xs font-medium">
+                    <span class="text-red-500">●
+                        {{ __('Out of Stock') }}</span>
                 </div>
             @endif
+
         </div>
-        <div class="px-2 pb-4 text-left">
-            @if ($product->category)
-                <div
-                    class="absolute top-3.5 md:top-5 3xl:top-7 ltr:left-3.5 rtl:right-3.5 ltr:md:left-5 rtl:md:right-5 ltr:3xl:left-7 rtl:3xl:right-7 flex flex-col gap-y-1 items-start">
-                    <span
-                        class="bg-indigo-600 text-white text-10px md:text-xs leading-5 rounded-md inline-block px-1.5 sm:px-1.5 xl:px-2 py-0.5 sm:py-1">
-                        <p><span class="hidden sm:inline">{{ $product->category->name }}</span></p>
-                    </span>
-                </div>
-            @endif
-            <div class="w-full flex-none text-sm flex items-center justify-center text-gray-600 py-2">
-                @if ($product->status === \App\Enums\Status::ACTIVE)
-                    <div class="text-xs font-medium">
-                        <span class="text-green-500">● {{ __('In Stock') }}</span>
-                    </div>
-                @else
-                    <div class="text-xs font-medium">
-                        <span class="text-red-500">●
-                            {{ __('Out of Stock') }}</span>
-                    </div>
-                @endif
 
-            </div>
+        <a href="{{ route('front.product', $product->slug) }}">
+            <h4 class="font-bold text-first-brand text-header-5 tracking-[-0.02em] block text-center mb-4 text-md md:text-sm text-green-900 hover:text-green-600 uppercase"
+                itemprop="name">
+                {{ Str::limit($product->name, 40) }}</h4>
+        </a>
 
-            <a href="{{ route('front.product', $product->slug) }}">
-                <h4 class="block text-center mb-2 text-md md:text-sm font-bold font-heading text-green-900 hover:text-green-600 uppercase"
-                    itemprop="name">
-                    {{ Str::limit($product->name, 40) }}</h4>
-            </a>
-
-            <div itemprop="offers" itemscope itemtype="https://schema.org/Offer">
-                <p class="text-center text-black hover:text-green-800 font-bold text-md mt-2">
-                    @if ($product->warehouse && $product->warehouse->is_ecommerce)
-                        @if ($product->is_discount && $product->discount_date >= now())
-                            <span
-                                class="line-through text-gray-600">{{ format_currency($product->old_price) }}
-                            </span>
-                            <span itemprop="price">{{ format_currency($product->price) }}</span>
-                        @else
-                            <span itemprop="price">{{ format_currency($product->price) }}</span>
-                        @endif
+        <div itemprop="offers" itemscope itemtype="https://schema.org/Offer">
+            {{-- @dd($product) --}}
+            <p class="text-center text-black hover:text-green-800 font-bold text-md mt-2">
+                @if ($product->warehouses->first()->pivot->is_ecommerce)
+                    @if ($product->warehouses->first()->pivot->is_discount && $product->discount_date >= now())
+                        <span
+                            class="line-through text-gray-600">{{ format_currency($product->warehouses->first()->pivot->old_price) }}
+                        </span>
+                        <span
+                            itemprop="price">{{ format_currency($product->warehouses->first()->pivot->price) }}</span>
                     @else
-                        @if ($product->is_discount && $product->discount_date >= now())
-                            <span
-                                class="line-through text-gray-600">{{ format_currency($product->old_price) }}
-                            </span>
-                            <span itemprop="price">{{ format_currency($product->price) }}</span>
-                        @else
-                            <span itemprop="price">{{ format_currency($product->price) }}</span>
-                        @endif
+                        <span
+                            itemprop="price">{{ format_currency($product->warehouses->first()->pivot->price) }}</span>
                     @endif
-                </p>
+                @endif
+            </p>
 
-                <meta itemprop="priceValidUntil" content="{{ now()->addWeek()->toIso8601String() }}">
-                <meta itemprop="priceCurrency" content="MAD">
-                <meta itemprop="availability"
-                    content="{{ $product->status ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock' }}">
-            </div>
+            <meta itemprop="priceValidUntil" content="{{ now()->addWeek()->toIso8601String() }}">
+            <meta itemprop="priceCurrency" content="MAD">
+            <meta itemprop="availability"
+                content="{{ $product->status ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock' }}">
+        </div>
 
-            <div class="flex justify-center">
-                <a class="my-2 block bg-green-500 hover:bg-green-800 text-center text-white font-bold text-xs py-2 px-4 rounded-md uppercase cursor-pointer tracking-wider hover:shadow-lg transition ease-in duration-300"
-                    href="{{ route('front.product', $product->slug) }}">
-                    {{ __('Read more') }}
-                </a>
-            </div>
+        <div class="flex justify-center">
+            <a class="my-2 block bg-green-500 hover:bg-green-800 text-center text-white font-bold text-xs py-2 px-4 rounded-md uppercase cursor-pointer tracking-wider hover:shadow-lg transition ease-in duration-300"
+                href="{{ route('front.product', $product->slug) }}">
+                {{ __('Read more') }}
+            </a>
         </div>
     </div>
 </div>

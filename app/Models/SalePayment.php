@@ -42,6 +42,7 @@ class SalePayment extends Model
         'sale_id',
         'payment_method',
         'user_id',
+        'cash_register_id',
     ];
 
     public function sale(): BelongsTo
@@ -80,7 +81,6 @@ class SalePayment extends Model
     {
         return Attribute::make(
             get: static fn ($value): int|float => $value / 100,
-            set: static fn ($value): int|float => $value * 100,
         );
     }
 }

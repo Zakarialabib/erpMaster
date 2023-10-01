@@ -200,7 +200,7 @@
                             wire:loading.class.delay="opacity-50" wire:key="menu-{{ $index }}"
                             data-id="{{ $menu['id'] }}" x-data="{ isMenuOpen: false }">
                             <div class="flex justify-between ">
-                                <div class="flex gap-4">
+                                <div class="flex gap-4 items-center">
                                     <div class="drag-handle cursor-move">
                                         <i class="fa fa-bars" aria-hidden="true"></i>
                                     </div>

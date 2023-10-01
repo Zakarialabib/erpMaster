@@ -4,7 +4,7 @@
         <x-button primary type="button" wire:click="dispatchTo('admin.brands.create', 'createModal')">
             {{ __('Create Brand') }}
         </x-button>
-    </x-theme.breadcrumb>    
+    </x-theme.breadcrumb>
     <div class="flex flex-wrap justify-center">
         <div class="lg:w-1/2 md:w-1/2 sm:w-full flex flex-wrap gap-6 w-full">
             <select wire:model.live="perPage"
@@ -19,11 +19,15 @@
                 </x-button>
             @endif
             @if ($this->selectedCount)
-                <p class="text-sm  my-auto">
+                <p class="text-sm leading-5">
                     <span class="font-medium">
                         {{ $this->selectedCount }}
                     </span>
                     {{ __('Entries selected') }}
+                </p>
+                <p wire:click="resetSelected" wire:loading.attr="disabled"
+                    class="text-sm leading-5 font-medium text-red-500 cursor-pointer ">
+                    {{ __('Clear Selected') }}
                 </p>
             @endif
         </div>
@@ -64,18 +68,21 @@
                     <x-table.td class="whitespace-nowrap break-words">
                         {{ Str::limit($brand->description, 50, '...') }}
                     </x-table.td>
-
+                    <x-table.td>
+                        <livewire:utils.toggle-button :model="$brand" field="status" key="{{ $brand->id }}"
+                            lazy />
+                    </x-table.td>
                     <x-table.td>
                         <div class="flex justify-start space-x-2">
                             @can('brand_update')
-                                <x-button primary wire:click="$dispatch('editModal',{ id : {{ $brand->id }}} )" type="button"
-                                    wire:loading.attr="disabled">
+                                <x-button primary wire:click="$dispatch('editModal',{ id : {{ $brand->id }}} )"
+                                    type="button" wire:loading.attr="disabled">
                                     <i class="fas fa-edit"></i>
                                 </x-button>
                             @endcan
                             @can('brand_delete')
-                                <x-button danger wire:click="$dispatch('deleteModal',{ id : {{ $brand->id }}} )" type="button"
-                                    wire:loading.attr="disabled">
+                                <x-button danger wire:click="$dispatch('deleteModal',{ id : {{ $brand->id }}} )"
+                                    type="button" wire:loading.attr="disabled">
                                     <i class="fas fa-trash"></i>
                                 </x-button>
                             @endcan
@@ -92,14 +99,12 @@
         </x-table.tbody>
     </x-table>
 
-    <div class="p-4">
-        <div class="pt-3">
-            {{ $brands->links() }}
-        </div>
+    <div class="pt-3">
+        {{ $brands->links() }}
     </div>
 
     <!-- Edit Modal -->
-    <livewire:admin.brands.edit  :brand="$brand" lazy />
+    <livewire:admin.brands.edit :brand="$brand" lazy />
     <!-- End Edit modal -->
 
     <!-- Create modal -->

@@ -1,34 +1,35 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>{{__('Order Confirmation for ')}} {{ $user->name }}</title>
-</head>
-<body>
-    <h1>{{__('Order Confirmation for ')}} {{ $user->name }}</h1>
-    <p>{{__('Thank you for order!')}}</p>
-    <p>{{__('Here are the details of your order')}}:</p>
-    <ul>
-        <li>{{__('Order Number')}}: {{ $order->id }}</li>
-        <li>{{__('Order Date')}}: {{ $order->created_at }}</li>
-        <li>{{__('Shipping Method')}}: {{ $order->delivery_method }}</li>
-        <li>{{__('Payment Method')}}: {{ $order->payment_method }}</li>
-        <li>{{__('Shipping Address')}}: {{ $order->shipping_address }}</li>
-        <li>{{__('Billing Address')}}: {{ $order->billing_address }}</li>
-        <li>{{__('Items Ordered')}}:</li>
-        <ul>
-            @foreach ($order->order_products as $order_product)
-                <li>{{ $order_product->product->name }} x {{ $order_product->qty }}</li>
-            @endforeach
-        </ul>
-        <li>{{__('Subtotal')}}: {{ $order->subtotal }}</li>
-        <li>{{__('Tax')}}: {{ $order->tax }}</li>
-        <li>{{__('Shipping')}}: {{ $order->shipping }}</li>
-        <li>{{__('Total')}}: {{ $order->total }}</li>
-    </ul>
-    <p>{{__('Your order has been shipped and you will receive an email with tracking information shortly.')}}</p>
-    <p>{{__('Thank you for shopping with us!')}}</p>
-</body>
-</html>
+<x-mail::message>
+    
+#{{__('Hello ')}} {{ $customer->name }} {{__('Thank you for ordering from ')}} {{ settings('site_title') }}. 
+    
+## {{__('Order Confirmation for ')}} 
+
+{{__('Your order has been received and is now being processed.')}}
+
+{{__('Here are the details of your order')}}:
+
+<x-mail::table>
+| {{__('Order Number')}} | {{__('Order Date')}} | {{__('Shipping Method')}} | {{__('Shipping Address')}} | {{__('Subtotal')}} | {{__('Tax')}} | {{__('Shipping')}} | {{__('Total')}} |
+| :------------- | :------------- | :------------- | :------------- | :------------- | :------------- | :------------- | :------------- |
+| {{ $order->reference }} | {{ $order->created_at }} | {{ $order->shipping->name }} | {{ $order->shipping_address }} | {{ $order->subtotal }} | {{ $order->tax }} | {{ $order->shipping->name }} | {{ $order->total }} |
+</x-mail::table>
+
+{{__('Your order details')}}:
+
+<x-mail::table>
+| {{__('Product Name')}} | {{__('Quantity')}} | {{__('Price')}} |
+| :------------- | :------------- | :------------- |
+@foreach ($order->orderdetails as $order_product)
+| {{ $order_product->product->name }} | {{ $order_product->quantity }} | {{ $order_product->price }} |
+@endforeach
+</x-mail::table>
+
+{{__('Your order has been shipped and you will receive an email with tracking information shortly.')}}
+
+{{__('Thank you for shopping with us!')}}
+
+<x-mail::button :url="route('front.myaccount')" color="success">
+{{ __('Login to your account') }}
+</x-mail::button>
+
+</x-mail::message>

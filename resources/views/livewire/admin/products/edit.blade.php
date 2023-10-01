@@ -97,10 +97,12 @@
 
                 <x-accordion title="{{ 'More Details' }}">
                     <div class="flex flex-wrap -mx-2 mb-3">
-                        <div class="lg:w-1/3 sm:w-1/2 px-2"> <x-label for="brand_id" :value="__('Brand')" />
+                        <div class="lg:w-1/3 sm:w-1/2 px-2"> 
+                            <x-label for="brand_id" :value="__('Brand')" />
                             <x-select-list :options="$this->brands" id="brand_edit" name="brand_edit" wire:model="brand_id" />
                             <x-input-error :messages="$errors->get('brand_id')" for="brand_id" class="mt-2" />
                         </div>
+
                         <div class="lg:w-1/3 sm:w-1/2 px-2">
                             <x-label for="order_tax" :value="__('Tax')" />
                             <x-input id="order_tax" class="block mt-1 w-full" type="text" name="order_tax"
@@ -123,11 +125,14 @@
                             <x-input-error :messages="$errors->get('embeded_video')" for="embeded_video" class="mt-2" />
                         </div>
 
-                        <div class="lg:w-1/3 sm:w-1/2 px-2">
-                            <x-label for="condition" :value="__('Condition')" />
-                            <x-input id="condition" class="block mt-1 w-full" type="text" name="condition"
-                                wire:model="condition" required />
+                        <div class="w-full">
+                            <x-label for="usage" :value="__('Usage')" />
+                            <textarea rows="3" class="form-textarea block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
+                                name="usage" wire:model="usage" >
+                            </textarea>
+                            <x-input-error :messages="$errors->get('usage')" for="usage" class="mt-2" />
                         </div>
+
                         <div class="lg:w-1/3 sm:w-1/2 px-2">
                             <x-label for="meta_title" :value="__('Meta title')" />
                             <x-input id="meta_title" class="block mt-1 w-full" type="text" name="meta_title"
@@ -151,15 +156,18 @@
                                 <option value="EAN8">EAN-8</option>
                             </select>
                         </div>
+
                         <div class="md:w-1/2 sm:w-full px-4 gap-2">
                             <x-label for="featured" :value="__('Favorite proudct')" />
                             <x-input.checkbox id="featured" type="checkbox" name="featured"
                                 wire:model="featured" />
+                          
                             <x-label for="best" :value="__('Best proudct')" />
                             <x-input.checkbox id="best" type="checkbox" name="best" wire:model="best" />
+                          
                             <x-label for="hot" :value="__('Hot proudct')" />
                             <x-input.checkbox id="hot" type="checkbox" name="hot" wire:model="hot" />
-                            <x-input-error :messages="$errors->get('featured')" for="featured" class="mt-2" />
+
                         </div>
                     </div>
                 </x-accordion>
@@ -173,6 +181,12 @@
                     <x-label for="image" :value="__('Product Image')" />
                     <x-fileupload wire:model="image" :file="$image" accept="image/jpg,image/jpeg,image/png" />
                     <x-input-error :messages="$errors->get('image')" for="image" class="mt-2" />
+                </div>
+
+                <div class="w-full px-4 my-4">
+                    <x-label for="gallery" :value="__('Product Gallery')" />
+                    <x-fileupload wire:model="gallery" :file="$gallery" accept="image/jpg,image/jpeg,image/png" multiple />
+                    <x-input-error :messages="$errors->get('gallery')" for="gallery" class="mt-2" />
                 </div>
 
                 <div class="w-full px-4">

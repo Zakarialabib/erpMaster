@@ -1,13 +1,18 @@
 <div>
-    <div class="flex flex-row">
-        <div class="lg:w-1/2 sm:w-full px-3">
+    @section('title', __('User account'))
+    
+    <x-theme.breadcrumb :title="__('User account')" :parent="route('admin.users.index')" :parentName="__('Users')" 
+    children :childrenName="__('User account')" /> 
+
+    <div class="flex flex-row items-center">
+        <div class="lg:w-1/2 sm:w-full px-2">
             <form wire:submit="update">
                 <div class="flex flex-wrap">
                     <div class="w-1/2 sm:w-full px-2">
                         <x-label for="name" :value="__('Name')" required />
                         <input
                             class="block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border-gray-300 rounded-md mt-1"
-                            type="text" name="name" wire:model.live="name" required>
+                            type="text" name="name" wire:model="name" required>
                     </div>
                     <div class="w-1/2 sm:w-full px-2">
                         <x-label for="email" :value="__('Email')" required />
@@ -50,7 +55,7 @@
             </form>
         </div>
 
-        <div class="lg:w-1/2 sm:w-full px-3">
+        <div class="lg:w-1/2 sm:w-full px-2">
             <form wire:submit="updatePassword">
                 <div class="mb-4">
                     <label for="current_password">{{ __('Current Password') }} <span

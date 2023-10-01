@@ -2,16 +2,21 @@
     <div>
         @section('title', 'Register')
 
-        <div class="h-auto grid lg:grid-cols-2 xs:grid-cols-1 w-full pt-5">
+        <div class="h-auto grid lg:grid-cols-2 xs:grid-cols-1 w-full">
             <div class="w-full py-10 my-auto">
                 <div class="flex flex-col items-center">
 
                     <div class="w-full px-10">
-                        <h1 class="mb-8 md:text-3xl lg:text-4xl font-medium text-center">
+                        <h1
+                            class="text-first-brand font-extrabold text-[25px] leading-[35px] sm:text-[30px] sm:leading-[40px] md:text-[36px] md:leading-[46px] lg:text-header-2 mx-auto capitalize relative">
                             {{ __('Register') }}
                         </h1>
-
-                        <div class="x-full h-screen">
+                        <p class="text-base font-medium text-gray-500 mb-6">
+                            {{ __('Create an account today') }}.
+                        </p>
+    
+                        
+                        <div class="x-full">
                             <!-- Session Status -->
                             <x-auth-session-status class="mb-4" :status="session('status')" />
 
@@ -19,10 +24,10 @@
 
                             <form wire:submit="register">
 
-                                <div class="flex flex-wrap mx-2">
+                                <div class="flex flex-wrap">
                                     <!-- Name -->
                                     <div class="lg:w-1/2 sm:w-full px-2">
-                                        <x-input-label for="name" :value="__('Name')" required />
+                                        <x-label for="name" :value="__('Name')" required />
 
                                         <x-text-input id="name" wire:model="name" class="block mt-1 w-full"
                                             type="text" autocomplete="name" name="name" :value="old('name')" required
@@ -33,7 +38,7 @@
 
                                     <!-- Email Address -->
                                     <div class="lg:w-1/2 sm:w-full px-2">
-                                        <x-input-label for="email" :value="__('Email')" required />
+                                        <x-label for="email" :value="__('Email')" required />
 
                                         <x-text-input id="email" wire:model="email" class="block mt-1 w-full"
                                             type="email" autocomplete="email" name="email" :value="old('email')"
@@ -44,7 +49,7 @@
 
                                     <!-- Phone -->
                                     <div class="lg:w-1/2 sm:w-full px-2">
-                                        <x-input-label for="phone" :value="__('Phone')" required />
+                                        <x-label for="phone" :value="__('Phone')" required />
 
                                         <x-text-input id="phone" wire:model="phone" class="block mt-1 w-full"
                                             type="number" autocomplete="mobile" name="phone" :value="old('phone')"
@@ -71,7 +76,7 @@
 
                                     <!-- Password -->
                                     <div class="lg:w-1/2 sm:w-full px-2 relative" x-data="{ show: true }">
-                                        <x-input-label for="password" :value="__('Password')" />
+                                        <x-label for="password" :value="__('Password')" />
                                         <div class="relative">
                                             <input placeholder="" :type="show ? 'password' : 'text'" name="password"
                                                 required wire:model="password"
@@ -102,7 +107,7 @@
 
                                     <!-- Confirm Password -->
                                     <div class="lg:w-1/2 sm:w-full px-2">
-                                        <x-input-label for="password_confirmation" :value="__('Confirm Password')" required />
+                                        <x-label for="password_confirmation" :value="__('Confirm Password')" required />
 
                                         <x-text-input id="password_confirmation" wire:model="passwordConfirmation"
                                             class="block mt-1 w-full" type="password" name="password_confirmation"
@@ -114,7 +119,7 @@
 
                                 <div class="flex px-4 items-center justify-between mt-4">
                                     <a class="underline text-sm text-gray-600 hover:text-gray-900"
-                                        href="{{ route('auth.login') }}">
+                                        href="/login" wire:navigate>
                                         {{ __('Already registered?') }}
                                     </a>
 

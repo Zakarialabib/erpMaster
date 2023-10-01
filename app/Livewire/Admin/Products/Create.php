@@ -32,7 +32,7 @@ class Create extends Component
 
     public $code;
 
-    public $gallery = [];
+    public array $gallery = [];
 
     public Product $product;
 
@@ -53,7 +53,7 @@ class Create extends Component
 
     public bool $featured;
 
-    public string $condition;
+    public string $usage;
 
     public $embeded_video;
 
@@ -86,6 +86,12 @@ class Create extends Component
         return view('livewire.admin.products.create');
     }
 
+    #[On('editorjs-save')]
+    public function saveEditorState($editorJsonData): void
+    {
+        $this->description = $editorJsonData;
+    }
+
     #[On('createModal')]
     public function createModal(): void
     {
@@ -110,6 +116,19 @@ class Create extends Component
             $this->image->store('products', $imageName);
             $this->image = $imageName;
         }
+
+        if ($this->gallery) {
+            $gallery = [];
+
+            foreach ($this->gallery as $value) {
+                $imageName = Str::slug($this->name).'-'.Str::random(5).'.'.$value->extension();
+                $gallery[] = $imageName;
+            }
+
+            $this->gallery = json_encode($gallery);
+        }
+
+        $this->description = json_encode($this->description);
 
         Product::create($this->all());
 
@@ -149,6 +168,10 @@ class Create extends Component
     #[Computed]
     public function warehouses()
     {
-        return Warehouse::select(['name', 'id'])->get();
+        if (auth()->check()) {
+            $user = auth()->user();
+            return Warehouse::whereIn('id', $user->warehouses->pluck('id'))->select('name', 'id')->get();
+        }
+        return Warehouse::select('name', 'id')->get();
     }
 }

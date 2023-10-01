@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Livewire\Admin\Customers;
 
 use App\Models\Customer;
-use App\Models\Wallet;
 use Illuminate\Support\Facades\Gate;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Attributes\Rule;
@@ -54,26 +53,15 @@ class Create extends Component
 
     public function create(): void
     {
-        try {
-            $validatedData = $this->validate();
+        $this->validate();
 
-            $this->customer->save($validatedData);
+        Customer::create($this->all());
 
-            if ($this->customer) {
-                Wallet::create([
-                    'customer_id' => $this->customer->id,
-                    'balance'     => 0,
-                ]);
-            }
+        $this->alert('success', __('Customer created successfully'));
 
-            $this->alert('success', __('Customer created successfully'));
+        $this->dispatch('refreshIndex')->to(Index::class);
 
-            $this->dispatch('refreshIndex')->to(Index::class);
-
-            $this->createModal = false;
-        } catch (Throwable $throwable) {
-            $this->alert('success', __('Error.').$throwable->getMessage());
-        }
+        $this->createModal = false;
     }
 
     public function render()

@@ -31,12 +31,12 @@ class Details extends Component
 
     public function mount($id): void
     {
-        // dd($customer);
         $this->customer = Customer::where('id', $id)->first();
         $this->customer_id = $this->customer->id;
     }
 
-    public function getSalesProperty()
+    #[Computed]
+    public function sales()
     {
         $query = Sale::where('customer_id', $this->customer_id)
             ->with('customer')
@@ -49,7 +49,8 @@ class Details extends Component
         return $query->paginate($this->perPage);
     }
 
-    public function getCustomerPaymentsProperty()
+    #[Computed]
+    public function customerPayments()
     {
         $query = Sale::where('customer_id', $this->customer_id)
             ->with('salepayments.sale')
@@ -63,43 +64,43 @@ class Details extends Component
     }
 
     #[Computed]
-    public function TotalSales(): int|float
+    public function totalSales(): int|float
     {
         return $this->customerSum('total_amount');
     }
 
     #[Computed]
-    public function TotalSaleReturns(): int|float
+    public function totalSaleReturns(): int|float
     {
         return SaleReturn::whereBelongsTo($this->customer)
-            ->completed()->sum('total_amount');
+            ->completed()->sum('total_amount') / 100;
     }
 
     #[Computed]
-    public function TotalPayments(): int|float
+    public function totalPayments(): int|float
     {
-        return $this->customerSum('paid_amount');
+        return $this->customerSum('paid_amount') / 100;
     }
 
     // total due amount
     #[Computed]
-    public function TotalDue(): int|float
+    public function totalDue(): int|float
     {
-        return $this->customerSum('due_amount');
+        return $this->customerSum('due_amount') / 100;
     }
 
     #[Computed]
-    public function Profit(): int|float
+    public function profit(): int|float
     {
         // Step 1: Calculate total sales revenue for completed sales
         $salesTotal = Sale::where('customer_id', $this->customer_id)
             ->completed()
-            ->sum('total_amount');
+            ->sum('total_amount') / 100;
 
         // Step 2: Calculate total sales returns
         $saleReturnsTotal = SaleReturn::where('customer_id', $this->customer_id)
             ->completed()
-            ->sum('total_amount');
+            ->sum('total_amount') / 100;
 
         // Step 3: Calculate the total product cost from the pivot table
         $productCosts = 0;

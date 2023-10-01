@@ -5,9 +5,7 @@
         <div class="swiper-wrapper">
             <!-- Slides -->
             <div class="swiper-slide">
-                <img src="{{ $product->image }}" 
-                alt="{{ $product->name }}"  loading="lazy"
-                class="w-full h-full object-cover">
+               
             </div>
 
             @if($product->embeded_video)

@@ -53,7 +53,7 @@ class Settings extends Component
         'layout_config.item_config.description'     => '',
         'layout_config.item_config.link'            => '',
         'layout_config.item_config.icon'            => '',
-        'layout_config.item_config.parallax'            => '',
+        'layout_config.item_config.parallax'        => '',
         'layout_config.item_style.status'           => '',
         'layout_config.item_style.width'            => '',
         'layout_config.item_style.height'           => '',
@@ -92,7 +92,7 @@ class Settings extends Component
                 'layout_config' => json_decode($this->sectionSetting->layout_config, true),
                 // 'type'          => $this->pageSetting->type,
             ]);
-    
+
             // $this->layout_config = json_decode($this->sectionSetting->layout_config, true);
         }
     }
@@ -122,7 +122,7 @@ class Settings extends Component
                     'description' => '',
                     'link'        => '',
                     'icon'        => '',
-                    'parallax'        => '',
+                    'parallax'    => '',
                 ],
                 'item_style' => $selectedTemplateStyles,
             ];
@@ -170,8 +170,6 @@ class Settings extends Component
         $this->sectionSetting->layout_config = json_encode($newSection);
 
         $this->sectionSetting->save();
-
-        // dd($this->all());
 
         $this->mount();
 

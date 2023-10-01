@@ -48,7 +48,7 @@ class Product extends Model
     protected $fillable = [
         'id', 'name', 'code', 'barcode_symbology', 'quantity', 'slug',
         'image', 'gallery', 'unit', 'order_tax', 'description', 'status',
-        'tax_type', 'featured', 'condition', 'embeded_video', 'subcategories',
+        'tax_type', 'featured', 'usage', 'embeded_video', 'subcategories',
         'options', 'meta_title', 'meta_description', 'best', 'hot',
     ];
 
@@ -95,7 +95,16 @@ class Product extends Model
     public function warehouses(): BelongsToMany
     {
         return $this->belongsToMany(Warehouse::class)
-            ->withPivot('qty', 'price', 'cost', 'old_price', 'stock_alert', 'is_discount', 'discount_date');
+            ->withPivot('qty', 'price', 'cost', 'old_price', 'stock_alert', 'is_discount', 'discount_date', 'is_ecommerce');
+    }
+
+    public static function ecommerceProducts()
+    {
+        return static::whereHas('warehouses', function ($query) {
+            $query->where('is_ecommerce', 1);
+        })->with(['warehouses' => function ($query) {
+            $query->select('product_id', 'qty', 'price', 'old_price', 'is_discount', 'discount_date');
+        }]);
     }
 
     /** @return HasMany<PriceHistory> */
@@ -111,11 +120,11 @@ class Product extends Model
 
     public function getAveragePriceAttribute(): int|float|null
     {
-        return $this->warehouses->avg('pivot.price');
+        return $this->warehouses->avg('pivot.price') / 100;
     }
 
     public function getAverageCostAttribute(): int|float|null
     {
-        return $this->warehouses->avg('pivot.cost');
+        return $this->warehouses->avg('pivot.cost') / 100;
     }
 }

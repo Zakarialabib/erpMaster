@@ -9,6 +9,8 @@ use App\Enums\PaymentStatus;
 use App\Enums\SaleStatus;
 use App\Jobs\PaymentNotification;
 use App\Livewire\Utils\Admin\WithModels;
+use App\Models\CashRegister;
+use App\Livewire\Admin\CashRegister\Create as CashRegisterCreate;
 use App\Models\Category;
 use App\Models\Customer;
 use App\Models\Movement;
@@ -54,10 +56,6 @@ class Create extends Component
 
     public $price;
 
-    public $default_client;
-
-    public $default_warehouse;
-
     #[Rule('required', message: 'Please provide a customer ID')]
     public $customer_id;
 
@@ -95,6 +93,8 @@ class Create extends Component
     public $status;
 
     public $payment_method = 'cash';
+    public $cash_register_id;
+    public $user_id;
 
     public function mount(): void
     {
@@ -111,12 +111,30 @@ class Create extends Component
         $this->discount_type = [];
         $this->item_discount = [];
         $this->payment_method = 'cash';
-        $this->paid_amount = $this->total_amount;
-
-        $this->default_client = Customer::find(settings('default_client_id'));
-        $this->default_warehouse = Warehouse::find(settings('default_warehouse_id'));
-
         $this->date = date('Y-m-d');
+        $this->user_id = Auth::user()->id;
+
+        if (settings('default_client_id') !== null) {
+            $this->customer_id = settings('default_client_id');
+        }
+
+        if (settings('default_warehouse_id') !== null) {
+            $this->warehouse_id = settings('default_warehouse_id');
+        }
+
+        if ($this->user_id && $this->warehouse_id) {
+            $cashRegister = CashRegister::where('user_id', $this->user_id)
+                ->where('warehouse_id', $this->warehouse_id)
+                ->where('status', true)
+                ->first();
+
+            if ($cashRegister) {
+                $this->cash_register_id = $cashRegister->id;
+            } else {
+                $this->dispatch('createModal')->to(CashRegisterCreate::class);
+                return;
+            }
+        }
     }
 
     public function hydrate(): void
@@ -139,21 +157,34 @@ class Create extends Component
 
     public function proceed(): void
     {
-        if ($this->customer_id !== null) {
-            $this->store();
-        } else {
-            $this->alert('error', __('Please select a customer!'));
+        if ($this->user_id && $this->warehouse_id) {
+            $cashRegister = CashRegister::where('user_id', $this->user_id)
+                ->where('warehouse_id', $this->warehouse_id)
+                ->where('status', true)
+                ->first();
+
+            if ($cashRegister) {
+                $this->cash_register_id = $cashRegister->id;
+
+                $this->store();
+            } else {
+                $this->dispatch('createModal')->to(CashRegisterCreate::class);
+
+                $this->alert('error', __('Please create a cash register for this warehouse!'));
+            }
         }
     }
 
     public function store(): void
     {
-        if ( ! $this->warehouse_id) {
+        if (!$this->warehouse_id) {
             $this->alert('error', __('Please select a warehouse'));
 
             return;
         }
-
+        if (!$this->customer_id) {
+            $this->alert('error', __('Please select a customer!'));
+        }
         DB::transaction(function () {
             $this->validate();
 
@@ -175,7 +206,8 @@ class Create extends Component
                 'date'                => $this->date,
                 'customer_id'         => $this->customer_id,
                 'warehouse_id'        => $this->warehouse_id,
-                'user_id'             => Auth::user()->id,
+                'user_id'             => $this->user_id,
+                'cash_register_id'    => $this->cash_register_id,
                 'tax_percentage'      => $this->tax_percentage,
                 'discount_percentage' => $this->discount_percentage,
                 'shipping_amount'     => $this->shipping_amount * 100,
@@ -239,6 +271,7 @@ class Create extends Component
                     'amount'         => $this->paid_amount * 100,
                     'sale_id'        => $sale->id,
                     'payment_method' => $this->payment_method,
+                    'cash_register_id'    => $this->cash_register_id,
                     'user_id'        => Auth::user()->id,
                 ]);
             }

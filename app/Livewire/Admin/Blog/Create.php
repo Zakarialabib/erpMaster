@@ -69,7 +69,7 @@ class Create extends Component
         $this->validate();
 
         if ($this->image) {
-            $imageName = Str::slug($this->title) . '.' . $this->image->extension();
+            $imageName = Str::slug($this->title).'.'.$this->image->extension();
             $this->image->storeAs('blogs', $imageName);
             $this->blog->image = $imageName;
         }

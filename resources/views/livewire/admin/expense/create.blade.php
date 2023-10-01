@@ -12,8 +12,7 @@
                 <div class="flex flex-wrap -mx-2 mb-3">
                     <div class="md:w-1/2 sm:w-full px-3">
                         <x-label for="reference" :value="__('Reference')" required />
-                        <x-input wire:model="reference" id="reference" class="block mt-1 w-full" type="text"
-                            required />
+                        <x-input wire:model="reference" id="reference" class="block mt-1 w-full" type="text" required />
                         <x-input-error :messages="$errors->get('reference')" class="mt-2" />
                     </div>
                     <div class="md:w-1/2 sm:w-full px-3">
@@ -30,7 +29,7 @@
                             <option value="">
                                 {{ __('Select Expense Category') }}
                             </option>
-                            @foreach ($this->expensecategories as $expensecategory)
+                            @foreach ($this->expenseCategories as $expensecategory)
                                 <option value="{{ $expensecategory->id }}">
                                     {{ $expensecategory->name }}
                                 </option>
@@ -40,8 +39,7 @@
                     </div>
                     <div class="md:w-1/2 sm:w-full px-3">
                         <x-label for="amount" :value="__('Amount')" required />
-                        <x-input wire:model="amount" id="amount" class="block mt-1 w-full"
-                            type="text" required />
+                        <x-input wire:model="amount" id="amount" class="block mt-1 w-full" type="text" required />
                         <x-input-error :messages="$errors->get('amount')" class="mt-2" />
                     </div>
                     <div class="md:w-1/2 sm:w-full px-3">

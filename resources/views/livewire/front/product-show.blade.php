@@ -1,21 +1,21 @@
 <div>
-@section('title', $product->name)
+    @section('title', $product->name)
 
-@section('meta')
-    <meta itemprop="url" content="{{ URL::current() }}" />
-    <meta property="og:title" content="{{ $product->meta_title }}">
-    <meta property="og:description" content="{!! $product->meta_description !!}">
-    <meta property="og:url" content="{{ URL::current() }}">
-    <meta property="og:image" content="{{ asset('images/products/' . $product->image) }}">
-    <meta property="og:image:secure_url" content="{{ asset('images/products/' . $product->image) }}">
-    <meta property="og:image:width" content="1000">
-    <meta property="og:image:height" content="1000">
-    <meta property="product:brand" content="{{ $product->brand?->name }}">
-    <meta property="product:availability" content="in stock">
-    <meta property="product:condition" content="new">
-    <meta property="product:price:amount" content="{{ $product->price }}">
-    <meta property="product:price:currency" content="MAD">
-@endsection
+    @section('meta')
+        <meta itemprop="url" content="{{ URL::current() }}" />
+        <meta property="og:title" content="{{ $product->meta_title }}">
+        <meta property="og:description" content="{!! $product->meta_description !!}">
+        <meta property="og:url" content="{{ URL::current() }}">
+        <meta property="og:image" content="{{ asset('images/products/' . $product->image) }}">
+        <meta property="og:image:secure_url" content="{{ asset('images/products/' . $product->image) }}">
+        <meta property="og:image:width" content="1000">
+        <meta property="og:image:height" content="1000">
+        <meta property="product:brand" content="{{ $product->brand?->name }}">
+        <meta property="product:availability" content="in stock">
+        <meta property="product:condition" content="new">
+        <meta property="product:price:amount" content="{{ $product->price }}">
+        <meta property="product:price:currency" content="MAD">
+    @endsection
 
     <div class="my-5">
         <div itemtype="https://schema.org/Product" itemscope>
@@ -24,29 +24,50 @@
             <meta itemprop="description" content="{{ $product->description }}" />
 
             <div class="mx-auto px-4">
-                <div class="flex flex-wrap -mx-4 mb-14">
+                <div class="flex flex-wrap -mx-4 mb-4">
                     <div class="w-full md:w-1/2 px-4 mb-8 md:mb-0">
-                        <x-product-carousel :product="$product" /> 
+                        <img src="{{ asset('images/products/' . $product->image) }}" alt="{{ $product->name }}"
+                            loading="lazy" class="w-full h-full object-cover">
+
+                        @if ($product?->gallery)
+                            <section class="flex items-center z-10 relative gap-[30px] lg:gap-[50px">
+                                <div
+                                    class="flex-1 w-[80%] grid md:grid-cols-2 sm:sm-grid-cols-1 items-center py-10 transition-all duration-500 relative">
+                                    @foreach (json_decode($product->gallery) as $image)
+                                        <div
+                                            class="rounded-2xl p-0 flex items-center bg-white z-10 relative flex-col lg:gap-[50px] lg:flex-row">
+                                            <a class="block self-stretch flex-1 aspect-[580/421]" href="#">
+                                                <img class="h-full w-full object-cover rounded-2xl lg:rounded-tr-none lg:rounded-br-2xl"
+                                                    src="{{ asset('images/activities/' . $image) }}"
+                                                    alt="{{ $image }}">
+                                            </a>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </section>
+                        @endif
                     </div>
 
                     <div class="w-full md:w-1/2 px-4">
                         <div itemprop="offers" itemscope itemtype="http://schema.org/Offer">
-                            <div class="mb-5 pb-5 border-b">
+                            <div class="pb-5 border-b">
                                 <span class="text-sm text-gray-500">
                                     <a href="">
                                         {{ $product->category?->name }}
-                                     </a> / 
+                                    </a> /
                                     @isset($product->brand)
-                                        <a href="{{ route('front.brandPage', $product->brand?->slug) }}">{{ $product->brand?->name }}</a> / 
+                                        <a
+                                            href="{{ route('front.brandPage', $product->brand?->slug) }}">{{ $product->brand?->name }}</a>
+                                        /
                                     @endisset
                                     <a href="{{ URL::Current() }}">
-                                    {{ $product->name }}
+                                        {{ $product->name }}
                                     </a>
                                     <div itemprop="brand" itemtype="https://schema.org/Brand" itemscope>
                                         <meta itemprop="brand" content="{{ $product->brand?->name }}" />
                                     </div>
                                 </span>
-                                <h2 class="mt-2 mb-6 max-w-xl lg:text-5xl sm:text-xl font-bold font-heading">
+                                <h2 class="my-2 max-w-xl lg:text-5xl sm:text-xl font-bold font-heading">
                                     {{ $product->name }}
                                 </h2>
 
@@ -80,18 +101,26 @@
                             </div>
                             <div itemprop="offers" itemtype="https://schema.org/AggregateOffer" itemscope>
                                 <p class="inline-block mb-4 text-2xl font-bold font-heading">
-                                    <span>
-                                        {{ $product->price }}DH
-                                    </span>
-                                    @if ($product->old_price && $product->discount != 0)
-                                        <span class="bg-red-500 text-white rounded-xl px-4 py-2 text-sm ml-4">
-                                            -{{ $product->discount }}%
-                                        </span>
-                                    @endif
+                                    @if ($product->warehouses->first()->pivot->is_ecommerce)
+                                        @if ($product->warehouses->first()->pivot->is_discount && $product->discount_date >= now())
+                                            <span
+                                                class="line-through text-gray-600">{{ format_currency($product->warehouses->first()->pivot->old_price) }}
+                                            </span>
+                                            <span
+                                                itemprop="price">{{ format_currency($product->warehouses->first()->pivot->price) }}</span>
+                                        @else
+                                            <span
+                                                itemprop="price">{{ format_currency($product->warehouses->first()->pivot->price) }}</span>
+                                        @endif
 
-                                    <meta itemprop="lowPrice" content="{{ $product->odl_price }}">
-                                    <meta itemprop="highPrice" content="{{ $product->price }}">
-                                    <meta itemprop="price" content="{{ $product->price }}">
+
+                                        <meta itemprop="lowPrice"
+                                            content="{{ $product->warehouses->first()->pivot->old_price }}">
+                                        <meta itemprop="highPrice"
+                                            content="{{ $product->warehouses->first()->pivot->price }}">
+                                        <meta itemprop="price"
+                                            content="{{ $product->warehouses->first()->pivot->price }}">
+                                    @endif
                                     <meta itemprop="priceCurrency" content="MAD">
                                     <link itemprop="availability" href="http://schema.org/InStock">
                                     <link itemprop="itemCondition" href="http://schema.org/NewCondition">
@@ -99,10 +128,10 @@
 
                                 </p>
 
-                                @if ($product->old_price && $product->discount != 0)
+                                @if ($product->warehouses->first()->pivot->old_price && $product->warehouses->first()->pivot->discount != 0)
                                     <p class="mb-8 text-blue-300">
                                         <span class="font-normal text-base text-gray-400 line-through">
-                                            {{ $product->old_price }}DH
+                                            {{ format_currency($product->warehouses->first()->pivot->old_price) }}
                                         </span>
                                     </p>
                                 @endif
@@ -122,7 +151,7 @@
                                             </svg>
                                         </button>
                                         <input
-                                            class="w-10 m-0 px-2 py-2 text-center md:text-right border-0 focus:ring-transparent focus:outline-none rounded-md"
+                                            class="w-10 m-0 px-2 py-2 text-center border-0 focus:ring-transparent focus:outline-none rounded-md"
                                             value="{{ $quantity }}" wire:model="quantity">
                                         <button wire:click="increaseQuantity('{{ $product->id }}')"
                                             class="py-2 hover:text-gray-700">
@@ -136,11 +165,13 @@
                                     </div>
                                 </div>
                                 <div>
-                                    @if ($product->status == 1)
-                                        <a class="block text-center text-white font-bold font-heading py-2 px-4 rounded-md uppercase bg-green-400 hover:bg-green-200 transition cursor-pointer"
-                                            wire:click="AddToCart({{ $product->id }}, '{{ $product->name }}', {{ $product->price }})">
+                                    @if ($product->status == true)
+                                        <button type="button"
+                                            class="block text-center text-white font-bold font-heading py-2 px-4 rounded-md uppercase bg-green-400 hover:bg-green-600 transition cursor-pointer"
+                                            wire:click="AddToCart('{{ $product->id }}','{{ $product->warehouses->first()->pivot->price }}')"
+                                            wire:loading.attr="disabled">
                                             {{ __('Add to cart') }}
-                                        </a>
+                                        </button>
                                     @else
                                         <div class="text-sm font-bold">
                                             <span class="text-red-500">● {{ __('Out of Stock') }}</span>
@@ -150,21 +181,6 @@
                             </div>
 
                             <livewire:front.order-form :product="$product" lazy />
-
-                            <ul class="my-4 ">
-                                <li class="text-gray-500 py-1">
-                                    <i class="text-blue-600 fa fa-check" aria-hidden="true"></i>
-                                    {{ __('Fast delivery') }}
-                                </li>
-                                <li class="text-gray-500 py-1">
-                                    <i class="text-blue-600 fa fa-check" aria-hidden="true"></i>
-                                    {{ __('Watch specialist over 40 years of experience') }}
-                                </li>
-                                <li class="text-gray-500 py-1">
-                                    <i class="text-blue-600 fa fa-check" aria-hidden="true"></i>
-                                    <strong>{{ __('Official dealer') }}</strong>
-                                </li>
-                            </ul>
 
                             <div class="flex items-center">
                                 <span
@@ -186,114 +202,113 @@
                     </div>
                 </div>
 
-                <div x-data="{ activeTab: 'description' }" class="mx-auto px-4 border bg-white shadow-xl">
-                    <div class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 mb-10">
-                        <div
+                <div x-data="{ activeTab: 'description' }" class="mx-auto px-4 border flex items-center bg-white shadow-xl">
+                    <div class="md:w-1/4 flex flex-col">
+                        <button @click="activeTab = 'description'"
+                            :class="activeTab === 'description' ? 'text-green-400' : ''"
                             class="inline-block py-6 px-10 text-left font-bold font-heading text-gray-500 uppercase border-b-2 border-gray-100 hover:border-gray-500 focus:outline-none focus:border-gray-500">
-                            <button @click="activeTab = 'description'"
-                                :class="activeTab === 'description' ? 'text-green-400' : ''">
-                                {{ __('Description') }}
+                            {{ __('Description') }}
+                        </button>
+
+                        @if ($product->embeded_video)
+                            <button @click="activeTab = 'video'" :class="activeTab === 'video' ? 'text-green-400' : ''"
+                                class="inline-block py-6 px-10 text-left font-bold font-heading text-gray-500 uppercase border-b-2 border-gray-100 hover:border-gray-500 focus:outline-none focus:border-gray-500">
+                                {{ __('Video') }}
                             </button>
+                        @endif
+
+                        <button @click="activeTab = 'reviews'" :class="activeTab === 'reviews' ? 'text-green-400' : ''"
+                            class="inline-block py-6 px-10 text-left font-bold font-heading text-gray-500 uppercase border-b-2 border-gray-100 hover:border-gray-500 focus:outline-none focus:border-gray-500">
+                            {{ __('Reviews') }}
+                        </button>
+                        <button @click="activeTab = 'how-to-use'"
+                            :class="activeTab === 'how-to-use' ? 'text-green-400' : ''"
+                            class="inline-block py-6 px-10 text-left font-bold font-heading text-gray-500 uppercase border-b-2 border-gray-100 hover:border-gray-500 focus:outline-none focus:border-gray-500">
+                            {{ __('How to Use') }}
+                        </button>
+                    </div>
+                    <div class="md:w-3/4 px-2">
+                        <div x-show="activeTab === 'description'" class="px-5 mb-10">
+                            <div role="description">
+                                <livewire:utils.editor-js editor-id="myEditor" :value="$product?->description" :read-only="true" />
+                            </div>
                         </div>
-                        <div
-                            class="inline-block py-6 px-10 text-left font-bold font-heading text-gray-500 uppercase border-b-2 border-gray-100 hover:border-gray-500 focus:outline-none focus:border-gray-500">
-                            <button @click="activeTab = 'reviews'"
-                                :class="activeTab === 'reviews' ? 'text-green-400' : ''">
-                                {{ __('Reviews') }}
-                            </button>
+                        @if ($product->embeded_video)
+                            <div x-show="activeTab === 'video'" class="px-5 mb-10">
+                                <div role="video">
+                                    <p class="mb-8 max-w-2xl text-gray-500 font-body">
+                                        {!! $product->embeded_video !!}
+                                    </p>
+                                </div>
+                            </div>
+                        @endif
+
+
+                        <div x-show="activeTab === 'reviews'" class="px-5 mb-10">
+                            <div role="reviews">
+                                {{--  --}}
+                            </div>
                         </div>
-                        <div
-                            class="inline-block py-6 px-10 text-left font-bold font-heading text-gray-500 uppercase border-b-2 border-gray-100 hover:border-gray-500 focus:outline-none focus:border-gray-500">
-                            <button @click="activeTab = 'shipping'"
-                                :class="activeTab === 'shipping' ? 'text-green-400' : ''">
-                                {{ __('Shipping & Returns') }}
-                            </button>
-                        </div>
-                        <div
-                            class="inline-block py-6 px-10 text-left font-bold font-heading text-gray-500 uppercase border-b-2 border-gray-100 hover:border-gray-500 focus:outline-none focus:border-gray-500">
-                            <button @click="activeTab = 'brands'"
-                                :class="activeTab === 'brands' ? 'text-green-400' : ''">
-                                {{ __('Product Brand') }}
-                            </button>
+
+                        <div x-show="activeTab === 'how-to-use'" class="px-5 mb-10">
+                            <div role="how-to-use">
+                                <p class="mb-8 max-w-2xl text-gray-500 font-body">
+                                    {{ $product->usage }}
+                                </p>
+                            </div>
                         </div>
                     </div>
-                    <div x-show="activeTab === 'description'" class="px-5 mb-10">
-                        <div role="description" aria-labelledby="tab-0" id="tab-panel-0" tabindex="0">
-                            <p class="mb-8 max-w-2xl text-gray-500 font-body">
-                                {!! $product->description !!}
+                </div>
+
+                <div class="w-full px-10 mt-4 bg-green-100 border-white border-2 bg-gray-80 py-6 mx-auto shadow-md">
+                    <div class="grid grid-cols-1 gap-[30px] sm:grid-cols-2 lg:grid-cols-3">
+                        <div class="flex flex-col gap-y-2">
+                            <div class="flex items-center justify-center bg-gray-60 rounded-md w-[51px] h-[51px]">
+                                <div class="w-8 h-8 overflow-hidden"> <img class="w-full h-full object-cover"
+                                        src="{{ asset('images/delivery.svg') }}" alt="Delivery">
+                                </div>
+                            </div><span class="text-header-6 font-bold text-first-brand">Fast Delivery</span>
+                            <p class="text-mini-desc font-medium text-gray-500">We come together wherever we are –
+                                across time
+                                zones, regions, offices and screens. You will receive support from your teammates
+                                anytime and
+                                anywhere.</p>
+                        </div>
+                        <div class="flex flex-col gap-y-2">
+                            <div class="flex items-center justify-center bg-gray-60 rounded-md w-[51px] h-[51px]">
+                                <div class="w-8 h-8 overflow-hidden"> <img class="w-full h-full object-cover"
+                                        src="{{ asset('images/secure.svg') }}" alt="Secure">
+                                </div>
+                            </div><span class="text-header-6 font-bold text-first-brand">Secure payment</span>
+                            <p class="text-mini-desc font-medium text-gray-500">Our teams reflect the rich
+                                diversity of
+                                our
+                                world, with equitable access to opportunity for everyone. No matter where you come
+                                from
                             </p>
                         </div>
-                    </div>
-                    <div x-show="activeTab === 'reviews'" class="px-5 mb-10">
-                        <div role="reviews" aria-labelledby="tab-1" id="tab-panel-1" tabindex="0">
-                            {{-- show review or  make review --}}
-                            {{-- @if (auth()->check())
-                                @if ($product->reviews->where('user_id', auth()->user()->id)->count() > 0)
-                                    <div class="mb-8">
-                                        <h4 class="mb-4 text-2xl font-bold font-heading text-orange-500">
-                                            {{ __('Your Review') }}</h4>
-                                        <div class="flex items-center">
-                                            <input type="hidden" name="rating" id="rating" value="0">
-                                            <input type="hidden" name="product_id" id="product_id"
-                                                value="{{ $product->id }}">
-                                            <input type="hidden" name="user_id" id="user_id"
-                                                value="{{ auth()->user()->id }}">
-                                            <input type="hidden" name="review_id" id="review_id"
-                                                value="{{ $product->reviews->where('user_id', auth()->user()->id)->first()->id }}">
-                                            <textarea name="review" id="review" cols="30" rows="10"
-                                                class="w-full p-4 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-orange-500">{{ $product->reviews->where('user_id', auth()->user()->id)->first()->review }}</textarea>
-                                        </div>
-                                        <div class="flex items-center my-4">
-                                            <button
-                                                class="px-8 py-2 text-white bg-orange-500 rounded-lg focus:outline-none">{{ __('Send Review') }}</button>
-                                        </div>
-                                    </div>
-                                @else
-                                    <div class="mb-8">
-                                        <h4 class="mb-4 text-2xl font-bold font-heading text-orange-500">
-                                            {{ __('Make Review') }}</h4>
-                                        <div class="flex items-center">
-                                            <input type="hidden" name="rating" id="rating" value="0">
-                                            <input type="hidden" name="product_id" id="product_id"
-                                                value="{{ $product->id }}">
-                                            <input type="hidden" name="user_id" id="user_id"
-                                                value="{{ auth()->user()->id }}">
-                                            <textarea name="review" id="review" cols="30" rows="10"
-                                                class="w-full p-4 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-orange-500"></textarea>
-                                        </div>
-                                        <div class="flex items-center my-4">
-                                            <button
-                                                class="px-8 py-2 text-white bg-orange-500 rounded-lg focus:outline-none">
-                                                {{ __('Send Review') }}
-                                            </button>
-                                        </div>
-                                    </div>
-                                 @endif
-                            @endif --}}
-                        </div>
-                    </div>
-                    <div x-show="activeTab === 'shipping'" class="px-5 mb-10">
-                        <div role="shipping" aria-labelledby="tab-2" id="tab-panel-2" tabindex="0">
-                            <p class="mb-8 max-w-2xl text-gray-500 font-body">
-                                {{-- {!! $product->shipping !!} --}}
-                            </p>
-                        </div>
-                    </div>
-                    <div x-show="activeTab === 'brands'" class="px-5 mb-10">
-                        <div class="mb-8 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 -mx-2 px-2">
-                            @foreach ($brand_products as $product)
-                                <x-product-card :product="$product" />
-                            @endforeach
+
+                        <div class="flex flex-col gap-y-2">
+                            <div class="flex items-center justify-center bg-gray-60 rounded-md w-[51px] h-[51px]">
+                                <div class="w-8 h-8 overflow-hidden"> <img class="w-full h-full object-cover"
+                                        src="{{ asset('images/return.svg') }}" alt="Return">
+                                </div>
+                            </div><span class="text-header-6 font-bold text-first-brand">Return &amp; Refund</span>
+                            <p class="text-mini-desc font-medium text-gray-500">Knowing that there is real value to
+                                be
+                                gained
+                                from helping people to simplify whatever it is that they do and bring.</p>
                         </div>
                     </div>
                 </div>
             </div>
-            
-            <div class="mx-auto px-4 mt-5">
-                <h4 class="mb-2 text-xl font-bold font-heading">
+
+            <div class="text-center mx-auto px-4 mt-5">
+                <h4
+                    class="text-first-brand font-extrabold text-md sm:text-lg md:text-xl lg:text-header-2 mx-auto capitalize relative">
                     {{ __('Related Products') }}
                 </h4>
-                <div class="mb-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4 -mx-2 px-2">
+                <div class="bg-white my-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4 py-2 px-2">
                     @foreach ($relatedProducts as $product)
                         <x-product-card :product="$product" />
                     @endforeach
@@ -301,4 +316,7 @@
             </div>
         </div>
     </div>
+
+    @livewire('front.cart-count')
+
 </div>

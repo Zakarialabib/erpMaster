@@ -131,7 +131,7 @@
             </x-table.tbody>
         </x-table>
 
-        <div class="card-body">
+        <div>
             <div class="pt-3">
                 {{ $paymentgateways->links() }}
             </div>

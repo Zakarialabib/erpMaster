@@ -10,7 +10,6 @@ use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Rule;
-use Throwable;
 
 class Create extends Component
 {
@@ -38,7 +37,6 @@ class Create extends Component
     public $exchange_rate;
 
     /** @var array */
-
     public function render()
     {
         abort_if(Gate::denies('currency create'), 403);

@@ -43,131 +43,120 @@
         <div class="w-3/4 bg-white rounded-lg py-4 px-4">
             <div class="flex flex-col mb-4">
                 <input type="text" class="w-full px-2 py-1 border border-gray-300 rounded-md" wire:model="title"
-                    placeholder="{{ __('Page title') }}">
+                    required placeholder="{{ __('Enter Page title') }}">
                 <x-input-error :messages="$errors->get('title')" for="" class="mt-2" />
             </div>
 
-            <div class="flex w-full mt-1 border rounded-md shadow-sm">
-                <livewire:utils.editor-js editor-id="myEditor" :value="$description" :read-only="false"
-                    placeholder="Fill in the content here..." lazy />
+            <div class="flex max-w-full mt-1 border rounded-md shadow-sm">
+                <livewire:utils.editor-js editor-id="myEditor" :value="$description" :read-only="false" style="width:100%"
+                    placeholder="{{ __('Fill in the content here...') }}" lazy />
             </div>
         </div>
-        <div class="w-1/4 py-4 px-4">
-            <div class="mt-4 flex items-center">
-                <label for="is_title" class="mr-3 block">Toggle this property to enable Title:</label>
+
+        <div class="w-1/4 pb-4 px-4">
+            <div>
+                <label class="block text-sm font-medium text-gray-700">{{ __('Type') }}</label>
+                <select wire:model="type" class="block w-full px-2 py-1 border border-gray-300 rounded-md">
+                    <option value="" disabled>{{ __('Select a Type') }}</option>
+                    @foreach (App\Enums\PageType::values() as $key => $value)
+                        <option value="{{ $key }}">{{ $value }}</option>
+                    @endforeach
+                </select>
+                <x-input-error :messages="$errors->get('type')" for="" class="mt-2" />
+            </div>
+
+            <div class="mt-4 flex items-center justify-between">
+                <x-label for="is_title" :value="__('Enable Title')" />
                 <div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
-                    <input type="checkbox" name="is_title" id="is_title" wire:model="is_title"
+                    <input type="checkbox" name="is_title" id="is_title" wire:model="settings.is_title"
                         class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer" />
                     <label for="is_title"
                         class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"></label>
                 </div>
             </div>
-            <div class="mt-4 flex items-center">
-                <label for="is_description" class="mr-3 block">Toggle this property to enable Description:</label>
+            <div class="mt-4 flex items-center justify-between">
+                <x-label for="is_description" :value="__('Enable Description')" />
                 <div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
-                    <input type="checkbox" name="is_description" id="is_description" wire:model="is_description"
+                    <input type="checkbox" name="is_description" id="is_description"
+                        wire:model="settings.is_description"
                         class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer" />
                     <label for="is_description"
                         class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"></label>
                 </div>
             </div>
-            <div class="mt-4 flex items-center">
-                <label for="is_sliders" class="mr-3 block">Toggle this property to enable slider:</label>
+            <div class="mt-4 flex items-center justify-between">
+                <x-label for="is_sliders" :value="__('Enable slider')" />
                 <div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
-                    <input type="checkbox" name="is_sliders" id="is_sliders" wire:model="is_sliders"
+                    <input type="checkbox" name="is_sliders" id="is_sliders" wire:model="settings.is_sliders"
                         class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer" />
                     <label for="is_sliders"
                         class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"></label>
                 </div>
             </div>
+            <div class="mt-4 flex items-center justify-between">
+                <x-label for="is_gallery" :value="__('Enable slider')" />
+                <div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
+                    <input type="checkbox" name="is_gallery" id="is_gallery" wire:model="settings.is_gallery"
+                        class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer" />
+                    <label for="is_gallery"
+                        class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"></label>
+                </div>
+            </div>
 
-            <div class="mt-4 flex items-center">
-                <label for="is_contact" class="mr-3 block">Toggle this property to enable contact form:</label>
+            <div class="mt-4 flex items-center justify-between">
+                <x-label for="is_contact" :value="__('Enable contact form')" />
 
                 <div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
-                    <input type="checkbox" name="is_contact" id="is_contact" wire:model="is_contact"
+                    <input type="checkbox" name="is_contact" id="is_contact" wire:model="settings.is_contact"
                         class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer" />
                     <label for="is_contact"
                         class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"></label>
                 </div>
             </div>
-
-            <div class="mt-4 flex items-center">
-                <label for="is_offer" class="mr-3 block">Toggle this property to enable offer:</label>
+          
+            <div class="mt-4 flex items-center justify-between">
+                <x-label for="is_offer" :value="__('Enable offer')" />
                 <div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
-                    <input type="checkbox" name="is_offer" id="is_offer" wire:model="is_offer"
+                    <input type="checkbox" name="is_offer" id="is_offer" wire:model="settings.is_offer"
                         class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer" />
                     <label for="is_offer"
                         class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"></label>
                 </div>
             </div>
 
-            <div class="mt-4 flex items-center">
-                <label for="is_partners" class="mr-3 block">Toggle this property to enable partners:</label>
+            <div class="mt-4 flex items-center justify-between">
+                <x-label for="is_partners" :value="__('Enable partners')" />
                 <div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
-                    <input type="checkbox" name="is_partners" id="is_partners" wire:model="is_partners"
+                    <input type="checkbox" name="is_partners" id="is_partners" wire:model="settings.is_partners"
                         class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer" />
                     <label for="is_partners"
                         class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"></label>
                 </div>
             </div>
-            <div class="mt-4 flex items-center">
-                <label for="is_outdoor_activity" class="mr-3 block">Toggle this property to enable outdoor
-                    activities:</label>
+            <div class="mt-4 flex items-center justify-between">
+                <x-label for="is_about" :value="__('Enable About')" />
                 <div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
-                    <input type="checkbox" name="is_outdoor_activity" id="is_outdoor_activity"
-                        wire:model="is_outdoor_activity"
+                    <input type="checkbox" name="is_about" id="is_about" wire:model="settings.is_about"
                         class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer" />
-                    <label for="is_outdoor_activity"
+                    <label for="is_about"
                         class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"></label>
                 </div>
             </div>
-            <div class="mt-4 flex items-center">
-                <label for="is_workshop_activity" class="mr-3 block">Toggle this property to enable workshop:</label>
-                <div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
-                    <input type="checkbox" name="is_workshop_activity" id="is_workshop_activity"
-                        wire:model="is_workshop_activity"
-                        class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer" />
-                    <label for="is_workshop_activity"
-                        class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"></label>
-                </div>
-            </div>
-            <div class="mt-4 flex items-center">
-                <label for="is_package" class="mr-3 block">Toggle this property to enable package:</label>
-                <div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
-                    <input type="checkbox" name="is_package" id="is_package" wire:model="is_package"
-                        class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer" />
-                    <label for="is_package"
-                        class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"></label>
-                </div>
-            </div>
-
             <div class="mt-4">
                 <x-label for="image" :value="__('Image')" />
                 <x-media-upload title="{{ __('Image') }}" name="image" wire:model="image" :file="$image"
-                    single types="PNG / JPEG / WEBP" fileTypes="image/*" />
+                    path="images/pages/" single types="PNG / JPEG / WEBP" fileTypes="image/*" />
             </div>
-            <div class="mt-4">
-                <label class="block text-sm font-medium text-gray-700">Type</label>
-                <select wire:model="type" class="block w-full px-2 py-1 border border-gray-300 rounded-md">
-                    <option value="" disabled>{{ __('Select a Type') }}</option>
-                    @foreach (App\Enums\PageType::options() as $option)
-                        <option value="{{ $option->getValue() }}">
-                            {{ $option->getName() }}
-                        </option>
-                    @endforeach
-                </select>
-                <x-input-error :messages="$errors->get('type')" for="" class="mt-2" />
-            </div>
+
             <div class="mt-4">
                 <label class="flex items-center">
                     <input type="checkbox" class="form-checkbox" wire:model="status">
-                    <span class="ml-2">Publish</span>
+                    <span class="ml-2">{{ __('Publish') }}</span>
                 </label>
             </div>
             <div class="mt-4">
                 <button wire:click="store"
-                    class="px-4 py-2 text-sm font-medium text-white bg-blue-500 rounded-md hover:bg-blue-600">Save</button>
+                    class="px-4 py-2 text-sm font-medium text-white bg-blue-500 rounded-md hover:bg-blue-600">{{ __('Save') }}</button>
             </div>
         </div>
     </div>

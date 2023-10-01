@@ -1,4 +1,4 @@
-<div class="relative mt-8" x-data="{ showScan: false }">
+<div class="relative mt-2" x-data="{ showScan: false }">
     <div class="mb-3 px-2">
         <div class="mb-2 w-full relative text-gray-600 focus-within:text-gray-400">
             <span class="absolute inset-y-0 left-0 flex items-center pl-2">
@@ -48,7 +48,7 @@
         </div>
     </div>
 
-    
+
     <div class="w-full px-2 mb-4 bg-white">
         <div class="flex flex-wrap w-full">
             <div
@@ -56,7 +56,7 @@
                 @forelse($products as $product)
                     <div wire:click.prevent="selectProduct({{ $product }})"
                         class="select-none cursor-pointer transition-shadow overflow-hidden rounded-2xl bg-white shadow hover:shadow-lg w-full py-8 relative border border-green-400"
-                        style="{{ asset('images/products/').$product->image ? 'background-image: url(' . asset('images/products/').$product->image . '); background-size: cover; background-position: center;multiply-blend-mode: darken;' : '' }}">
+                        style="{{ asset('images/products/') . $product->image ? 'background-image: url(' . asset('images/products/') . $product->image . '); background-size: cover; background-position: center;multiply-blend-mode: darken;' : '' }}">
                         <div
                             class="inline-block p-1 text-center font-semibold text-xs align-baseline leading-none text-white bg-blue-400 mb-3 absolute top-0 right-0">
                             @php
@@ -134,40 +134,40 @@
         </div>
     </div>
 
-</div>
+    @push('scripts')
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/quagga/0.12.1/quagga.min.js"
+            integrity="sha512-bCsBoYoW6zE0aja5xcIyoCDPfT27+cGr7AOCqelttLVRGay6EKGQbR6wm6SUcUGOMGXJpj+jrIpMS6i80+kZPw=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-@push('scripts')
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/quagga/0.12.1/quagga.min.js"
-        integrity="sha512-bCsBoYoW6zE0aja5xcIyoCDPfT27+cGr7AOCqelttLVRGay6EKGQbR6wm6SUcUGOMGXJpj+jrIpMS6i80+kZPw=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script>
+            function initQuaggaJS() {
+                Quagga.init({
+                    inputStream: {
+                        name: "Live",
+                        type: "LiveStream",
+                        target: document.querySelector('#scanner-container')
+                    },
+                    decoder: {
+                        readers: ["code_128_reader"]
+                    }
+                }, function(err) {
+                    if (err) {
+                        console.log(err);
+                        return
+                    }
+                    console.log("Initialization finished. Ready to start");
+                    Quagga.start();
+                });
+                document.querySelector("#scanner-container").classList.remove("hidden");
+            }
 
-    <script>
-        function initQuaggaJS() {
-            Quagga.init({
-                inputStream: {
-                    name: "Live",
-                    type: "LiveStream",
-                    target: document.querySelector('#scanner-container')
-                },
-                decoder: {
-                    readers: ["code_128_reader"]
-                }
-            }, function(err) {
-                if (err) {
-                    console.log(err);
-                    return
-                }
-                console.log("Initialization finished. Ready to start");
-                Quagga.start();
+            Quagga.onDetected(function(result) {
+                document.querySelector("#productSearch").value = result.codeResult.code;
+                document.querySelector("#scanner-container").classList.add("hidden");
+                Quagga.stop();
+                showScan = false;
             });
-            document.querySelector("#scanner-container").classList.remove("hidden");
-        }
+        </script>
+    @endpush
 
-        Quagga.onDetected(function(result) {
-            document.querySelector("#productSearch").value = result.codeResult.code;
-            document.querySelector("#scanner-container").classList.add("hidden");
-            Quagga.stop();
-            showScan = false;
-        });
-    </script>
-@endpush
+</div>

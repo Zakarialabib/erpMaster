@@ -1,4 +1,4 @@
-@component('mail::message')
+<x-mail::message>
 # {{ __('Dear Admin') }}
 
 ## {{ __('New Contact Form Submission details') }} 
@@ -11,4 +11,10 @@
 <p>
 {{ $contact->message }}
 </p>
-@endcomponent
+
+
+<x-mail::button :url="route('front.myaccount')" color="success">
+{{ __('Login to your account') }}
+</x-mail::button>
+
+</x-mail::message>

@@ -47,12 +47,6 @@ class BlogCategory extends Model
         return $this->hasMany(Blog::class);
     }
 
-    /** @return BelongsTo<Language> */
-    public function language()
-    {
-        return $this->belongsTo(Language::class, 'language_id')->withDefault();
-    }
-
     public function setSlugAttribute($value): void
     {
         $this->attributes['slug'] = str_replace(' ', '-', (string) $value);

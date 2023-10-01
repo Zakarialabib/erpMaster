@@ -14,6 +14,7 @@ use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Storage;
 use App\Livewire\Utils\Datatable;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\On;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 #[Layout('components.layouts.dashboard')]
@@ -31,7 +32,7 @@ class Index extends Component
 
     /** @var array<string> */
     public $listeners = [
-        'importModal',   'delete',
+        'importModal',
     ];
 
     public $startDate;
@@ -39,6 +40,8 @@ class Index extends Component
     public $endDate;
 
     public $importModal = false;
+
+    // public $deleteModal = false;
 
     public function mount(): void
     {
@@ -84,26 +87,6 @@ class Index extends Component
         return view('livewire.admin.sales.index', ['sales' => $sales]);
     }
 
-    public function deleteSelected(): void
-    {
-        abort_if(Gate::denies('sale delete'), 403);
-
-        Sale::whereIn('id', $this->selected)->delete();
-
-        $this->resetSelected();
-    }
-
-    public function delete(Sale $sale): void
-    {
-        abort_if(Gate::denies('sale delete'), 403);
-
-        $sale->delete();
-
-        $this->dispatch('refreshIndex');
-
-        $this->alert('success', __('Sale deleted successfully.'));
-    }
-
     public function importModal(): void
     {
         abort_if(Gate::denies('sale create'), 403);
@@ -136,6 +119,41 @@ class Index extends Component
         $this->importModal = false;
     }
 
+
+    public function deleteSelected(): void
+    {
+        abort_if(Gate::denies('sale delete'), 403);
+
+        Sale::whereIn('id', $this->selected)->delete();
+
+        $this->resetSelected();
+    }
+
+    #[On('delete')]
+    public function delete(): void
+    {
+        abort_if(Gate::denies('sale delete'), 403);
+
+        Sale::findOrFail($this->sale)->delete();
+
+        $this->dispatch('refreshIndex');
+
+        $this->alert('success', __('Sale deleted successfully.'));
+    }
+
+    public function deleteModal($id): void
+    {
+        $this->confirm(__('Are you sure you want to delete this?'), [
+            'toast'             => false,
+            'position'          => 'center',
+            'showConfirmButton' => true,
+            'cancelButtonText'  => __('Cancel'),
+            'onConfirmed'       => 'delete',
+        ]);
+        $this->sale = $id;
+    }
+
+
     public function sendWhatsapp($sale)
     {
         $this->sale = Sale::find($sale);
@@ -152,7 +170,7 @@ class Index extends Component
         }
 
         // Add the country code to the beginning of the phone number.
-        $phone = '+212'.$phone;
+        $phone = '+212' . $phone;
 
         $greeting = __('Hello');
 

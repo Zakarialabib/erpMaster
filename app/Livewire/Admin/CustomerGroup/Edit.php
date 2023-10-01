@@ -28,9 +28,8 @@ class Edit extends Component
 
     #[Rule('required', message: 'The percentage field cannot be empty.')]
     public $percentage;
+
     /** @var array */
-
-
     public function render()
     {
         // abort_if(Gate::denies('customer group edit'), 403);
@@ -49,7 +48,7 @@ class Edit extends Component
         $this->name = $this->customergroup->name;
 
         $this->percentage = $this->customergroup->percentage;
-        
+
         $this->editModal = true;
     }
 

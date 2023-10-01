@@ -16,19 +16,51 @@ class Index extends Component
 {
     use Datatable;
 
-    public $status;
-
-    public array $listsForFields = [];
-
     public $model = Order::class;
+
+    public $order;
+
+    public $showFilters = false;
+
+    public $startDate;
+
+    public $endDate;
+
+    public function mount(): void
+    {
+        $this->startDate = now()->startOfYear()->format('Y-m-d');
+        $this->endDate = now()->endOfDay()->format('Y-m-d');
+    }
+
+    public function filterByType($type): void
+    {
+        switch ($type) {
+            case 'day':
+                $this->startDate = now()->startOfDay()->format('Y-m-d');
+                $this->endDate = now()->endOfDay()->format('Y-m-d');
+
+                break;
+            case 'month':
+                $this->startDate = now()->startOfMonth()->format('Y-m-d');
+                $this->endDate = now()->endOfMonth()->format('Y-m-d');
+
+                break;
+            case 'year':
+                $this->startDate = now()->startOfYear()->format('Y-m-d');
+                $this->endDate = now()->endOfYear()->format('Y-m-d');
+
+                break;
+        }
+    }
 
     public function render(): View|Factory
     {
-        $query = Order::advancedFilter([
-            's'               => $this->search ?: null,
-            'order_column'    => $this->sortBy,
-            'order_direction' => $this->sortDirection,
-        ]);
+        $query = Order::whereBetween('date', [$this->startDate, $this->endDate])
+            ->advancedFilter([
+                's'               => $this->search ?: null,
+                'order_column'    => $this->sortBy,
+                'order_direction' => $this->sortDirection,
+            ]);
 
         $orders = $query->paginate($this->perPage);
 

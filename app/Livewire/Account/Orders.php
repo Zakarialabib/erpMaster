@@ -15,11 +15,9 @@ class Orders extends Component
 {
     public $orders;
 
-    public function mount(): void
+    public function mount($customer): void
     {
-        $user = User::find(Auth::user()->id);
-
-        $this->orders = Order::where('customer_id', auth()->user()->id)->get();
+        $this->orders = Order::where('customer_id', $customer->id)->get();
     }
 
     public function render()

@@ -9,8 +9,11 @@ use App\Rules\MatchCurrentPassword;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
+use Livewire\Attributes\Layout;
+use Livewire\Attributes\Rule;
 use Livewire\Component;
 
+#[Layout('components.layouts.dashboard')]
 class Profile extends Component
 {
     use LivewireAlert;
@@ -18,25 +21,23 @@ class Profile extends Component
     /** @var mixed */
     public $user;
 
+    #[Rule('required|string|max:255')]
+
     public $name;
-
+    #[Rule('required|email|unique:users,email')]
     public $email;
+    #[Rule('required|numeric')]
+    public $phone;
 
-    public $image;
-
+    #[Rule('required|string|min:8')]
     public $password;
-
-    /** @var array */
-    protected $rules = [
-        'name'     => 'required|string|max:255',
-        'email'    => 'required|email|unique:users,email',
-        'password' => 'required|string|min:8',
-        'phone'    => 'required|numeric',
-    ];
 
     public function mount(): void
     {
         $this->user = User::find(Auth::user()->id);
+        $this->name = $this->user->name;
+        $this->email = $this->user->email;
+        $this->phone = $this->user->phone;
     }
 
     public function render()
@@ -48,17 +49,7 @@ class Profile extends Component
     {
         $this->validate();
 
-        auth()->user()->update([
-            'name'  => $this->name,
-            'email' => $this->email,
-        ]);
-
-        if ($this->image !== null) {
-            $this->image->store('users', 'public');
-            auth()->user()->update([
-                'image' => $this->image->hashName(),
-            ]);
-        }
+        auth()->user()->update($this->all());
 
         $this->alert('success', __('Profile updated successfully!'));
     }

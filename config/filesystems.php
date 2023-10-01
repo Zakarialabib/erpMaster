@@ -35,6 +35,21 @@ return [
             'root' => storage_path('app'),
             'throw' => false,
         ],
+        
+        'local_files' => [
+            'driver' => 'local',
+            'root' => public_path('images'),
+            'url' => env('APP_URL').'/images',
+            'visibility' => 'public',
+        ],
+
+        'exports'   => [
+            'driver' => 'local',
+            'root'   => public_path('exports'),
+            'url'    => env('APP_URL').'/exports',
+            'visibility' => 'public',
+            'throw' => false,
+        ],
 
         'public' => [
             'driver' => 'local',
@@ -60,7 +75,7 @@ return [
             'driver'     => 'google',
             'clientId'   => env('GOOGLE_DRIVE_CLIENT_ID'),
             'clientSecret' => env('GOOGLE_DRIVE_CLIENT_SECRET'),
-            // 'setAccessToken' => env('GOOGLE_DRIVE_ACCESS_TOKEN'),
+            'setAccessToken' => env('GOOGLE_DRIVE_ACCESS_TOKEN'),
             'refreshToken' => env('GOOGLE_DRIVE_REFRESH_TOKEN'),
             'folderId' => env('GOOGLE_DRIVE_FOLDER_ID'),
             'teamDriveId' => env('GOOGLE_DRIVE_TEAM_DRIVE_ID'),

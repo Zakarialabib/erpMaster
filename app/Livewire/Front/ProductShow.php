@@ -38,12 +38,6 @@ class ProductShow extends Component
 
     public $product_qty;
 
-    public $brand_products;
-
-    public $decreaseQuantity;
-
-    public $increaseQuantity;
-
     // public $warehouseData;
 
     public function decreaseQuantity(): void
@@ -56,15 +50,17 @@ class ProductShow extends Component
         ++$this->quantity;
     }
 
-    public function AddToCart($product_id): void
+    public function AddToCart($id, $price): void
     {
-        $warehouse = ProductWarehouse::where('product_id', $product_id)->first();
+
+        $product = Product::where('id', $id)->first();
+        // Cart::instance('shopping')->add($id, $this->quantity)->associate(Product::class);
 
         Cart::instance('shopping')->add(
-            $product_id,
-            $warehouse->product->name,
+            $product->id,
+            $product->name,
             $this->quantity,
-            $warehouse->price
+            $price,
         )->associate(Product::class);
 
         // $cartItem->save();
@@ -89,10 +85,10 @@ class ProductShow extends Component
 
     public function mount($slug): void
     {
-        $this->product = Product::whereSlug($slug)->firstOrFail();
+        $this->product = Product::ecommerceProducts()->whereSlug($slug)->firstOrFail();
         // $this->warehouseData = $this->product->warehouses();
-        $this->brand_products = Product::active()->where('brand_id', $this->product->brand_id)->take(3)->get();
-        $this->relatedProducts = Product::active()
+        $this->relatedProducts = Product::ecommerceProducts()
+            ->active()
             ->inRandomOrder()
             ->limit(4)
             ->get();

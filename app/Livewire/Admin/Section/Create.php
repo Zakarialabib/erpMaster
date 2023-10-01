@@ -22,7 +22,7 @@ class Create extends Component
     public Section $section;
 
     public $image;
-   
+
     #[Rule('required', message: 'Please provide a title')]
     #[Rule('min:3', message: 'This title is too short')]
     #[Rule('max:255', message: 'This title is too long')]
@@ -59,7 +59,6 @@ class Create extends Component
 
     public $createModal = false;
 
- 
     #[On('createModal')]
     public function createModal(): void
     {

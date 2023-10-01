@@ -8,10 +8,13 @@ use App\Models\Customer;
 use App\Models\Quotation;
 use App\Models\Sale;
 use App\Models\SaleReturn;
+use Livewire\Attributes\Computed;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Livewire\Attributes\Layout;
 
+#[Layout('components.layouts.dashboard')]
 class CustomersReport extends Component
 {
     use WithPagination;
@@ -32,14 +35,7 @@ class CustomersReport extends Component
 
     public $payment_status;
 
-    public $sales;
-
-    public $saleReturns;
-
     public $purchase_status;
-
-    public $quotations;
-
 
     public function mount(): void
     {
@@ -51,7 +47,8 @@ class CustomersReport extends Component
         $this->payment_status = '';
     }
 
-    public function getSalesProperty()
+    #[Computed]
+    public function sales()
     {
         return Sale::whereDate('date', '>=', $this->start_date)
             ->whereDate('date', '<=', $this->end_date)
@@ -60,7 +57,8 @@ class CustomersReport extends Component
             ->orderBy('date', 'desc')->paginate(10);
     }
 
-    public function getSaleReturnsProperty()
+    #[Computed]
+    public function saleReturns()
     {
         return SaleReturn::whereDate('date', '>=', $this->start_date)
             ->whereDate('date', '<=', $this->end_date)
@@ -69,7 +67,8 @@ class CustomersReport extends Component
             ->orderBy('date', 'desc')->paginate(10);
     }
 
-    public function getQuotationProperty()
+    #[Computed]
+    public function quotations()
     {
         return Quotation::whereDate('date', '>=', $this->start_date)
             ->whereDate('date', '<=', $this->end_date)
@@ -80,9 +79,7 @@ class CustomersReport extends Component
 
     public function render()
     {
-        return view('livewire.admin.reports.customers-report', [
-
-        ]);
+        return view('livewire.admin.reports.customers-report');
     }
 
     public function generateReport(): void

@@ -42,7 +42,7 @@
             <x-table.th sortable wire:click="sortingBy('customer_id')" field="customer_id" :direction="$sorts['customer_id'] ?? null">
                 {{ __('Customer') }}
             </x-table.th>
-            <x-table.th sortable wire:click="sortingBy('total')" field="total" :direction="$sorts['total'] ?? null">
+            <x-table.th sortable wire:click="sortingBy('total_amount')" field="total_amount" :direction="$sorts['total_amount'] ?? null">
                 {{ __('Total') }}
             </x-table.th>
             <x-table.th sortable wire:click="sortingBy('status')" field="status" :direction="$sorts['status'] ?? null">
@@ -53,6 +53,7 @@
 
         <x-table.tbody>
             @forelse ($quotations as $quotation)
+            {{-- @dd($quotation); --}}
                 <x-table.tr wire:loading.class.delay="opacity-50">
                     <x-table.td class="pr-0">
                         <input type="checkbox" value="{{ $quotation->id }}" wire:model.live="selected" />

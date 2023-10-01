@@ -20,12 +20,12 @@ enum PageType: string
         return match ($this) {
             static::HOME    => __('Home'),
             static::ABOUT   => __('About'),
-            static::BLOG    => __('Blog'),
-            static::CONTACT => __('Contact'),
-            static::SERVICE => __('Service'),
-            static::PRODUCT => __('Product'),
-            static::FAQ     => __('Faq'),
-            static::TEAM    => __('Team'),
+            static::BLOG    => __('blog'),
+            static::CONTACT => __('contact'),
+            static::PRODUCT => __('product'),
+            static::SERVICE => __('service'),
+            static::FAQ     => __('faq'),
+            static::TEAM    => __('team'),
         };
     }
 
@@ -49,4 +49,15 @@ enum PageType: string
 
         return null;
     }
+
+    public static function values(): array
+    {
+        return array_column(self::cases(), 'name', 'value');
+    }
+
+    // loop through the values:
+
+    // @foreach(App\Enums\PageType::values() as $key=>$value)
+    //     <option value="{{ $key }}">{{ $value }}</option>
+    // @endforeach
 }

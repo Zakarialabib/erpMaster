@@ -31,12 +31,9 @@ class Index extends Component
     public $file;
 
     public $listeners = [
-        'showModal',
         'exportAll', 'downloadAll',
         'delete',
     ];
-
-    public $showModal = false;
 
     public $import;
 
@@ -73,15 +70,6 @@ class Index extends Component
         $customer->delete();
 
         $this->alert('warning', __('Customer deleted successfully'));
-    }
-
-    public function showModal($id): void
-    {
-        abort_if(Gate::denies('customer access'), 403);
-
-        $this->customer = Customer::find($id);
-
-        $this->showModal = true;
     }
 
     public function downloadSelected(): BinaryFileResponse|Response

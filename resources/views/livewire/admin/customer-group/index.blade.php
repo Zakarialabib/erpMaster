@@ -19,6 +19,10 @@
                     </span>
                     {{ __('Entries selected') }}
                 </p>
+                <p wire:click="resetSelected" wire:loading.attr="disabled"
+                    class="text-sm leading-5 font-medium text-red-500 cursor-pointer ">
+                    {{ __('Clear Selected') }}
+                </p>
             @endif
         </div>
         <div class="lg:w-1/2 md:w-1/2 sm:w-full my-2">
@@ -58,8 +62,7 @@
                     </x-table.td>
                     <x-table.td>
                         <div class="flex justify-start space-x-2">
-                            <x-button info type="button" 
-                                wire:click="showModal({{ $customergroup->id }})"
+                            <x-button info type="button" wire:click="showModal({{ $customergroup->id }})"
                                 wire:loading.attr="disabled">
                                 <i class="fas fa-eye"></i>
                             </x-button>
@@ -88,24 +91,15 @@
         </x-table.tbody>
     </x-table>
 
-    <div class="p-4">
-        <div class="pt-3">
-            @if ($this->selectedCount)
-                <p class="text-sm leading-5">
-                    <span class="font-medium">
-                        {{ $this->selectedCount }}
-                    </span>
-                    {{ __('Entries selected') }}
-                </p>
-            @endif
-            {{ $customergroups->links() }}
-        </div>
+    <div class="pt-3">
+
+        {{ $customergroups->links() }}
     </div>
 
     @livewire('admin.customer-group.edit', ['customergroup' => $customergroup])
 
     <livewire:admin.customer-group.create />
-    
+
     <x-modal wire:model="showModal">
         <x-slot name="title">
             {{ __('Show Customer Group') }}
@@ -124,5 +118,5 @@
             </div>
         </x-slot>
     </x-modal>
-    
+
 </div>

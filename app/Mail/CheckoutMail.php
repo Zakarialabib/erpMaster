@@ -7,8 +7,10 @@ namespace App\Mail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Mail\Mailables\Envelope;
+use Illuminate\Mail\Mailables\Content;
 use App\Models\Order;
-use App\Models\User;
+use App\Models\Customer;
 
 class CheckoutMail extends Mailable
 {
@@ -18,22 +20,30 @@ class CheckoutMail extends Mailable
     /** @var \App\Models\Order */
     public $order;
 
-    /** @var \App\Models\User */
-    public $user;
+    /** @var \App\Models\Customer */
+    public $customer;
 
-    public function __construct(Order $order, User $user)
+    public function __construct(Order $order, Customer $customer)
     {
         $this->order = $order;
-        $this->user = $user;
+        $this->customer = $customer;
     }
 
-    public function build()
+    public function content(): Content
     {
-        return $this->view('emails.checkout')
-            ->subject(__('New Order!').$this->order->name)
-            ->with([
-                'order' => $this->order,
-                'user'  => $this->user,
-            ]);
+        return new Content(
+            markdown: 'emails.checkout',
+            with: [
+                'order'    => $this->order,
+                'customer' => $this->customer,
+            ]
+        );
+    }
+
+    public function envelope(): Envelope
+    {
+        return new Envelope(
+            subject: __('Hello ').$this->customer->name.__(', your order has been placed'),
+        );
     }
 }

@@ -27,9 +27,8 @@ return new class () extends Migration {
             $table->string('password')->nullable();
 
             $table->foreignIdFor(CustomerGroup::class)->nullable()->constrained()->cascadeOnDelete();
-            $table->foreignUuid('wallet_id')->nullable()->constrained('wallets')->cascadeOnDelete();
             $table->boolean('status')->default(1);
-
+            $table->rememberToken();
             $table->softDeletes();
             $table->timestamps();
         });

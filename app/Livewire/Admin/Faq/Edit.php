@@ -40,7 +40,7 @@ class Edit extends Component
         $this->resetValidation();
 
         $this->faq = Faq::findOrFail($faq);
-        
+
         $this->name = $this->faq->name;
 
         $this->description = $this->faq->description;

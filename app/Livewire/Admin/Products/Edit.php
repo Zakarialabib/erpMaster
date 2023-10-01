@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Livewire\Admin\Products;
 
-use App\Helpers;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
@@ -48,7 +47,7 @@ class Edit extends Component
 
     public bool $featured;
 
-    public string $condition;
+    public string $usage;
 
     public $embeded_video;
 
@@ -63,6 +62,7 @@ class Edit extends Component
     public array $options = [];
 
     public $image;
+    public array $gallery = [];
 
     public bool $best;
 
@@ -79,6 +79,12 @@ class Edit extends Component
         'options.*.type'                 => ['string', 'max:255'],
         'options.*.value'                => ['string', 'max:255'],
     ];
+
+    #[On('editorjs-save')]
+    public function saveEditorState($editorJsonData): void
+    {
+        $this->description = $editorJsonData;
+    }
 
     public function addOption(): void
     {
@@ -111,6 +117,8 @@ class Edit extends Component
 
         $this->fetchSubcategories();
 
+        $this->description = $this->product->description;
+
         $this->options = $this->product->options ?? [['type' => '', 'value' => '']];
 
         $this->productWarehouses = $this->product->warehouses()->pivot('price', 'qty', 'cost')->get();
@@ -133,20 +141,20 @@ class Edit extends Component
         }
 
         if ($this->image) {
-            $imageName = Str::slug($this->product->name).'-'.Str::random(5).'.'.$this->image->extension();
+            $imageName = Str::slug($this->name).'-'.Str::random(5).'.'.$this->image->extension();
             $this->image->store('products', $imageName);
-            $this->product->image = $imageName;
+            $this->image = $imageName;
         }
 
         if ($this->gallery) {
             $gallery = [];
 
             foreach ($this->gallery as $value) {
-                $imageName = Helpers::handleUpload($value, $this->width, $this->height, $this->product->name);
+                $imageName = Str::slug($this->name).'-'.Str::random(5).'.'.$value->extension();
                 $gallery[] = $imageName;
             }
 
-            $this->product->gallery = json_encode($gallery, JSON_THROW_ON_ERROR);
+            $this->gallery = json_encode($gallery, JSON_THROW_ON_ERROR);
         }
 
         $this->product->update($this->all());

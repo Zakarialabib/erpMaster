@@ -9,7 +9,9 @@ use App\Models\Sale;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Livewire\Attributes\Layout;
 
+#[Layout('components.layouts.dashboard')]
 class SalesReport extends Component
 {
     use WithPagination;
@@ -31,7 +33,6 @@ class SalesReport extends Component
     public $sale_status;
 
     public $payment_status;
-
 
     public function mount(): void
     {

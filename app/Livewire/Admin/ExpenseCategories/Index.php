@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Gate;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\On;
 
 #[Layout('components.layouts.dashboard')]
 class Index extends Component
@@ -20,15 +21,8 @@ class Index extends Component
     /** @var mixed */
     public $expenseCategory;
 
-    public $showModal = false;
-
     public $model = ExpenseCategory::class;
 
-    /** @var array<string> */
-    public $listeners = [
-        'showModal',
-        'delete',
-    ];
 
     public function render()
     {
@@ -45,14 +39,6 @@ class Index extends Component
         return view('livewire.admin.expense-categories.index', ['expenseCategories' => $expenseCategories]);
     }
 
-    public function showModal($id): void
-    {
-        abort_if(Gate::denies('expense_categories_show'), 403);
-
-        $this->expenseCategory = ExpenseCategory::where('id', $id)->get();
-
-        $this->showModal = true;
-    }
 
     public function deleteSelected(): void
     {
@@ -63,6 +49,7 @@ class Index extends Component
         $this->resetSelected();
     }
 
+    #[On('delete')]
     public function delete(ExpenseCategory $expenseCategory): void
     {
         abort_if(Gate::denies('expense_categories_delete'), 403);

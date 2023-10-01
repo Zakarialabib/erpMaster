@@ -166,6 +166,25 @@ class Index extends Component
         $this->alert('success', __('Menu order updated successfully.'));
     }
 
+    //     public function updateMenuOrder($parentId = null): void
+    // {
+    //     $menuItems = $parentId
+    //         ? Menu::where('parent_id', $parentId)->orderBy('sort_order')->get()
+    //         : Menu::whereNull('parent_id')->orderBy('sort_order')->get();
+
+    //     foreach ($menuItems as $index => $menuItem) {
+    //         $menuItem->sort_order = $index + 1;
+    //         $menuItem->save();
+    //     }
+
+    //     // If you want to update children as well, you can call this method recursively
+    //     if ($parentId === null) {
+    //         foreach ($menuItems as $menuItem) {
+    //             $this->updateMenuOrder($menuItem->id);
+    //         }
+    //     }
+    // }
+
     public function predefinedMenu(): void
     {
         $this->menus = [

@@ -38,14 +38,8 @@ class Supplier extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'id', 'name', 'email', 'phone', 'address', 'city', 'country', 'tax_number', 'wallet_id',
+        'id', 'name', 'email', 'phone', 'address', 'city', 'country', 'tax_number',
     ];
-
-    /** @return HasOne<Wallet> */
-    public function wallet(): HasOne
-    {
-        return $this->hasOne(Wallet::class);
-    }
 
     /** @return HasOne<Purchase> */
     public function purchases(): HasOne

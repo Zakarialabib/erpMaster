@@ -26,23 +26,17 @@ class Edit extends Component
 
     public $image;
 
-    #[Rule('required|min:3|max:255')]
+    #[Rule('required', message: 'The title is required')]
+    #[Rule('min:3', message: 'The title must be at least 3 characters')]
+    #[Rule('max:255', message: 'The title must not exceed 255 characters')]
     public $title;
 
-    #[Rule('required|min:3|max:255')]
     public $slug;
 
     public $description;
 
-    public $is_sliders;
-
-    public $is_contact;
-
-    public $is_offer;
-
-    public $is_title;
-
-    public $is_description;
+    #[Rule('array')]
+    public $settings;
 
     public $type;
 
@@ -64,11 +58,14 @@ class Edit extends Component
         $this->description = $this->page->description;
         $this->meta_title = $this->page->meta_title;
         $this->meta_description = $this->page->meta_description;
-        $this->is_sliders = $this->page->is_sliders;
-        $this->is_contact = $this->page->is_contact;
-        $this->is_offer = $this->page->is_offer;
-        $this->is_title = $this->page->is_title;
-        $this->is_description = $this->page->is_description;
+
+        // is string or is array
+        if (is_string($this->page->settings)) {
+            $this->settings = json_decode($this->page->settings, true, 512, JSON_THROW_ON_ERROR);
+        } else {
+            $this->settings = $this->page->settings;
+        }
+
         $this->status = $this->page->status;
     }
 
@@ -85,6 +82,8 @@ class Edit extends Component
             $this->image->storeAs('pages', $imageName, 'local_files');
             $this->page->image = $imageName;
         }
+
+        $this->page->settings = json_encode($this->settings, JSON_THROW_ON_ERROR);
 
         $this->page->update(
             $this->all()

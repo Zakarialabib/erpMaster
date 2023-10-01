@@ -11,6 +11,7 @@ use App\Models\SalePayment;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
+use Livewire\Attributes\On;
 use Livewire\Component;
 use Throwable;
 use Livewire\Attributes\Rule;
@@ -19,11 +20,7 @@ class PaymentForm extends Component
 {
     use LivewireAlert;
 
-    public $listeners = [
-        'paymentModal',
-    ];
-
-    public $paymentModal;
+    public $paymentModal = false;
 
     public $sale;
 
@@ -62,6 +59,7 @@ class PaymentForm extends Component
 
     //  Payment modal
 
+    #[On('paymentModal')]
     public function paymentModal($id): void
     {
         // abort_if(Gate::denies('sale access'), 403);

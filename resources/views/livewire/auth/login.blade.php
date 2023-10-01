@@ -1,30 +1,35 @@
 <div>
     @section('title', 'Login')
 
-    <div class="h-auto grid lg:grid-cols-2 xs:grid-cols-1 w-full pt-5">
+    <div class="h-auto grid lg:grid-cols-2 xs:grid-cols-1 w-full">
         <div class="w-full py-10 my-auto">
             <div class="flex flex-col items-center">
                 <div class="w-full px-10">
-                    <h1 class="mb-8 md:text-3xl lg:text-4xl font-medium text-center">
+                    <h1
+                        class="text-first-brand font-extrabold text-[25px] leading-[35px] sm:text-[30px] sm:leading-[40px] md:text-[36px] md:leading-[46px] lg:text-header-2 mx-auto capitalize relative">
                         {{ __('Login to your account') }}
                     </h1>
-                    <div class="w-full flex flex-wrap gap-6 justify-center mb-6">
+                    <p class="text-base font-medium text-gray-500 mb-6">
+                        {{ __('Fill your email address and password to sign in') }}.
+                    </p>
+
+                    <div class="w-full flex flex-wrap gap-6 justify-start mb-6">
                         <a class="bg-white active:bg-gray-100 text-gray-800 px-4 py-2 rounded outline-none focus:outline-none mr-2 mb-1 uppercase shadow hover:shadow-md inline-flex items-center font-bold text-xs"
                             href="{{ route('login.facebook') }}">
                             <span class="mr-1">
-                                <img alt="..." class="w-5 mr-1" src="{{ asset('images/login/facebook.svg') }}">
+                                <i class="fab fa-facebook"></i>
                             </span>
                             <p>{{ __('Login with Facebook') }}</p>
                         </a>
                         <a class="bg-white active:bg-gray-100 text-gray-800 px-4 py-2 rounded outline-none focus:outline-none mr-2 mb-1 uppercase shadow hover:shadow-md inline-flex items-center font-bold text-xs"
                             href="{{ route('login.google') }}">
                             <span class="mr-1">
-                                <img alt="..." class="w-5 mr-1" src="{{ asset('images/login/google.svg') }}">
+                                <i class="fab fa-google"></i>
                             </span>
                             <p>{{ __('Login with Google') }}</p>
                         </a>
                     </div>
-                    <div class="w-full h-screen">
+                    <div class="w-full">
                         <!-- Session Status -->
                         <x-auth-session-status class="mb-4" :status="session('status')" />
                         <!-- Validation Errors -->
@@ -34,7 +39,7 @@
 
                             <!-- Email Address -->
                             <div>
-                                <x-input-label for="email" :value="__('Email')" />
+                                <x-label for="email" :value="__('Email')" />
 
                                 <x-text-input id="email" class="block mt-1 w-full" autocomplete="email"
                                     wire:model="email" type="email" name="email" :value="old('email')" required
@@ -45,7 +50,7 @@
 
                             <!-- Password -->
                             <div class="mt-4 relative" x-data="{ show: true }">
-                                <x-input-label for="password" :value="__('Password')" />
+                                <x-label for="password" :value="__('Password')" />
 
                                 <div class="relative">
                                     <input placeholder="" :type="show ? 'password' : 'text'" name="password" required
@@ -75,7 +80,7 @@
                             </div>
                             <!-- Remember Me -->
 
-                            <div class="flex items-center justify-between mt-4">
+                            <div class="flex items-center justify-between my-4">
 
                                 @if (Route::has('password.request'))
                                     <a class="underline text-sm text-gray-600 hover:text-gray-900"
@@ -83,13 +88,7 @@
                                         {{ __('Forgot your password?') }}
                                     </a>
                                 @endif
-                                <a class="underline text-sm text-gray-600 hover:text-gray-900"
-                                    href="{{ route('auth.register') }}">
-                                    {{ __('Register') }}
-                                </a>
-                            </div>
 
-                            <div class="flex items-center justify-between mt-4">
                                 <label for="remember_me" class="inline-flex items-center">
                                     <input id="remember_me" type="checkbox" wire:model="remember_me"
                                         class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
@@ -97,9 +96,17 @@
                                     <span class="ml-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
                                 </label>
 
-                                <x-button type="submit" class="ml-3" primary>
+                            </div>
+
+                            <div class="flex flex-col gap-4">
+                                <button type="submit"
+                                    class="block w-full py-4 bg-green-500 hover:bg-green-700 text-center text-white font-bold font-heading uppercase rounded-md transition duration-200">
                                     {{ __('Log in') }}
-                                </x-button>
+                                </button>
+                                <a class="underline text-sm text-gray-600 text-center hover:text-gray-900 font-medium"
+                                    href="/register" wire:navigate>
+                                    {{ __('Don\'t have an account?') }} {{ __('Register now') }}
+                                </a>
                             </div>
                         </form>
                     </div>

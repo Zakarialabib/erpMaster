@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Models\CashRegister;
 use App\Models\Customer;
 use App\Models\User;
 use App\Models\Warehouse;
@@ -24,19 +25,21 @@ return new class () extends Migration {
             $table->foreignIdFor(Customer::class)->nullOnDelete();
             $table->foreignIdFor(User::class)->cascadeOnDelete();
             $table->foreignIdFor(Warehouse::class)->nullable()->cascadeOnDelete();
+            $table->foreignIdFor(CashRegister::class)->nullable()->cascadeOnDelete();
+
             $table->integer('tax_percentage')->default(0);
             $table->integer('tax_amount')->default(0);
             $table->integer('discount_percentage')->default(0);
             $table->integer('discount_amount')->default(0);
             $table->integer('shipping_amount')->default(0);
-            $table->integer('total_amount');
-            $table->integer('paid_amount');
-            $table->integer('due_amount');
+            $table->double('total_amount');
+            $table->double('paid_amount');
+            $table->double('due_amount');
             $table->date('payment_date')->nullable();
             $table->string('status');
-            $table->string('payment_status');
+            $table->integer('payment_status')->default(0);
             $table->string('payment_method');
-            $table->string('shipping_status')->nullable();
+            $table->integer('shipping_status')->default(0);
             $table->string('document')->nullable();
             $table->text('note')->nullable();
             $table->softDeletes();

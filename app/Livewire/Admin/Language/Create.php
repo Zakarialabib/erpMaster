@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Livewire\Admin\Language;
 
+use App\Models\Language;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Rule;
@@ -37,7 +38,10 @@ class Create extends Component
     {
         $this->validate();
 
-        $this->language->save();
+        Language::create([
+            'name' => $this->name,
+            'code' => $this->code,
+        ]);
 
         File::copy(App::langPath().('/en.json'), App::langPath().('/'.$this->code.'.json'));
 

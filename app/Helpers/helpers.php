@@ -96,3 +96,19 @@ if ( ! function_exists('array_merge_numeric_values')) {
         return $merged;
     }
 }
+
+function uploadImage(string $path, string $width, string $height): string
+{
+    // Generate a random image filename
+    $filename = Str::random(12).'.jpg'; // You can adjust the filename format if needed
+
+    // Generate the full path to save the image
+    $imagePath = public_path($path.'/'.$filename);
+
+    $imageUrl = 'https://picsum.photos/'.$width.'/'.$height.'/';
+
+    // Save the image to the local filesystem
+    file_put_contents($imagePath, file_get_contents($imageUrl));
+
+    return $filename;
+}

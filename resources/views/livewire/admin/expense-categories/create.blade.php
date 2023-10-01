@@ -8,7 +8,7 @@
             <form wire:submit="create">
                 <div class="w-full px-3 mb-4">
                     <x-label for="name" :value="__('Name')" />
-                    <x-input id="name" type="text" class="block mt-1 w-full" wire:model.live="name" />
+                    <x-input id="name" type="text" class="block mt-1 w-full" wire:model="name" />
                     <x-input-error :messages="$errors->first('name')" />
                 </div>
                 <div class="w-full px-3 mb-4">

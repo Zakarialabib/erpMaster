@@ -14,8 +14,7 @@
                     </div>
                     <div class="xl:w-1/3 lg:w-1/2 sm:w-full px-3">
                         <x-label for="date" :value="__('Date')" />
-                        <x-input-date wire:model="date" id="date" name="date"
-                            required />
+                        <x-input-date wire:model="date" id="date" name="date" required />
                         <x-input-error :messages="$errors->get('date')" class="mt-2" />
                     </div>
 
@@ -24,7 +23,7 @@
                         <select required
                             class="block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border-gray-300 rounded-md mt-1"
                             id="category_expense" name="category_expense" wire:model.live="category_id">
-                            @foreach ($this->expensecategories as $expensecategory)
+                            @foreach ($this->expenseCategories as $expensecategory)
                                 <option value="{{ $expensecategory->id }}">
                                     {{ $expensecategory->name }}
                                 </option>

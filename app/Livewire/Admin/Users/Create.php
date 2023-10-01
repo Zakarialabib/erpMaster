@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Livewire\Admin\Users;
 
 use App\Models\User;
+use App\Models\Role;
 use App\Models\Warehouse;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Attributes\Computed;
@@ -76,6 +77,18 @@ class Create extends Component
     #[Computed]
     public function warehouses()
     {
+        if (auth()->check()) {
+            $user = auth()->user();
+            return Warehouse::whereIn('id', $user->warehouses->pluck('id'))->select('name', 'id')->get();
+        }
         return Warehouse::pluck('name', 'id')->toArray();
     }
+
+
+    #[Computed]
+    public function roles()
+    {
+        return Role::pluck('name', 'id')->toArray();
+    }
+    
 }

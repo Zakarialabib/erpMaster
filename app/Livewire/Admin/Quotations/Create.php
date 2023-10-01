@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Livewire\Admin\Quotations;
 
 use App\Livewire\Utils\Admin\WithModels;
+use App\Models\Customer;
+use App\Models\Warehouse;
 use Livewire\Component;
 use App\Models\Quotation;
 use App\Models\QuotationDetails;
@@ -69,7 +71,13 @@ class Create extends Component
         $this->tax_percentage = 0;
         $this->shipping_amount = 0;
 
-        $this->customer_id = settings('default_client_id');
+        if(settings('default_client_id') !== null){
+            $this->customer_id = settings('default_client_id');
+        }
+        if(settings('default_warehouse_id') !== null){
+            $this->warehouse_id = settings('default_warehouse_id');
+        }
+
         $this->date = date('Y-m-d');
     }
 
@@ -121,6 +129,16 @@ class Create extends Component
         $this->alert('success', __('Quotation created successfully!'));
 
         return redirect()->route('admin.quotations.index');
+    }
+
+    public function hydrate(): void
+    {
+        $this->total_amount = $this->calculateTotal();
+    }
+
+    public function calculateTotal(): float|int|array
+    {
+        return Cart::instance($this->cart_instance)->total() + $this->shipping_amount;
     }
 
     public function render()

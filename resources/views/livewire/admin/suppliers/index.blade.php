@@ -69,7 +69,7 @@
                         <input type="checkbox" wire:model.live="selected" value="{{ $supplier->id }}" />
                     </x-table.td>
                     <x-table.td>
-                        <button type="button" wire:click="showModal({{ $supplier->id }})">
+                        <button type="button" wire:click="$dispatch('showModal', { id : '{{ $supplier->id }}' })">
                             {{ $supplier->name }}
                         </button>
                     </x-table.td>
@@ -88,7 +88,7 @@
                                     </x-button>
                                 </x-slot>
                                 <x-slot name="content">
-                                    <x-dropdown-link wire:click="showModal({{ $supplier->id }})"
+                                    <x-dropdown-link wire:click="$dispatch('showModal', { id : '{{ $supplier->id }}' })"
                                         wire:loading.attr="disabled">
                                         <i class="fas fa-eye"></i>
                                         {{ __('View') }}
@@ -98,12 +98,12 @@
                                         {{ __('Details') }}
                                     </x-dropdown-link>
 
-                                    <x-dropdown-link wire:click="$dispatch('editModal', { id : {{ $supplier->id }} })"
+                                    <x-dropdown-link wire:click="$dispatch('editModal', { id : '{{ $supplier->id }}' })"
                                         wire:loading.attr="disabled">
                                         <i class="fas fa-edit"></i>
                                         {{ __('Edit') }}
                                     </x-dropdown-link>
-                                    <x-dropdown-link wire:click="$dispatch('deleteModal', { id :{{ $supplier->id }} })"
+                                    <x-dropdown-link wire:click="$dispatch('deleteModal', { id :'{{ $supplier->id }}' })"
                                         wire:loading.attr="disabled">
                                         <i class="fas fa-trash"></i>
                                         {{ __('Delete') }}
@@ -131,41 +131,7 @@
     </div>
 
 
-    <x-modal wire:model="showModal">
-        <x-slot name="title">
-            {{ __('Show Supplier') }} {{ $supplier?->name }}
-        </x-slot>
-
-        <x-slot name="content">
-            <div class="flex flex-wrap -mx-2 mb-3">
-                <div class="md:w-1/2 sm:w-full px-3 mb-4 lg:mb-0">
-                    <x-label for="name" :value="__('Name')" />
-                    <p>{{ $supplier?->name }}</p>
-                </div>
-
-                <div class="md:w-1/2 sm:w-full px-3 mb-4 lg:mb-0">
-                    <x-label for="phone" :value="__('Phone')" />
-                    <p>{{ $supplier?->phone }}</p>
-                </div>
-
-                <div class="md:w-1/2 sm:w-full px-3 mb-4 lg:mb-0">
-                    <x-label for="address" :value="__('Address')" />
-                    <p>{{ $supplier?->address }}</p>
-                </div>
-
-                <div class="md:w-1/2 sm:w-full px-3 mb-4 lg:mb-0">
-                    <x-label for="city" :value="__('City')" />
-                    <p>{{ $supplier?->city }}</p>
-                </div>
-
-                <div class="md:w-1/2 sm:w-full px-3 mb-4 lg:mb-0">
-                    <x-label for="tax_number" :value="__('Tax Number')" />
-                    <p>{{ $supplier?->tax_number }}</p>
-                </div>
-            </div>
-        </x-slot>
-    </x-modal>
-
+    <livewire:admin.suppliers.show :supplier="$supplier" lazy />
 
     <livewire:admin.suppliers.edit :supplier="$supplier" lazy />
 
@@ -186,10 +152,10 @@
             <form wire:submit="import">
                 <div class="mb-4">
                     <div class="w-full px-3 mt-4">
-                        <x-label for="import" :value="__('Import')" />
-                        <x-input id="import" class="block mt-1 w-full" type="file" name="import"
-                            wire:model="import_file" />
-                        <x-input-error :messages="$errors->get('import')" for="import" class="mt-2" />
+                        <x-label for="file" :value="__('Import')" />
+                        <x-input id="file" class="block mt-1 w-full" type="file" name="file"
+                            wire:model="file" />
+                        <x-input-error :messages="$errors->get('file')" for="file" class="mt-2" />
                     </div>
 
                     <div class="w-full px-3">

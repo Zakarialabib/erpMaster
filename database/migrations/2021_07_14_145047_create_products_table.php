@@ -28,8 +28,8 @@ return new class () extends Migration {
             $table->string('barcode_symbology')->nullable();
             $table->integer('quantity')->default(0);
             $table->string('slug')->unique();
-            $table->text('image')->nullable();
-            $table->text('gallery')->nullable();
+            $table->string('image')->nullable();
+            $table->string('gallery')->nullable();
             $table->string('unit')->nullable();
             $table->integer('order_tax')->default(0);
             $table->text('description')->nullable();
@@ -38,7 +38,7 @@ return new class () extends Migration {
             $table->text('embeded_video')->nullable();
             $table->json('subcategories')->nullable();
             $table->json('options')->nullable();
-            $table->string('condition')->nullable();
+            $table->text('usage')->nullable();
             $table->string('meta_title')->nullable();
             $table->string('meta_description')->nullable();
             $table->boolean('featured')->default(false);

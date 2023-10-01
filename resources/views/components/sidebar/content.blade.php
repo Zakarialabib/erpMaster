@@ -2,7 +2,7 @@
 
     <x-sidebar.link title="{{ __('Dashboard') }}" href="{{ route('admin.dashboard') }}" :isActive="request()->routeIs('admin.dashboard')">
         <x-slot name="icon">
-            <span class="inline-block mx-4">
+            <span class="inline-block ltr:mx-3 rtl:mr-3">
                 <x-icons.dashboard class="w-5 h-5" aria-hidden="true" />
             </span>
         </x-slot>
@@ -21,7 +21,7 @@
         ])">
 
             <x-slot name="icon">
-                <span class="inline-block mx-4">
+                <span class="inline-block ltr:mx-3 rtl:mr-3">
                     <i class="fas fa-boxes w-5 h-5"></i>
                 </span>
             </x-slot>
@@ -67,7 +67,7 @@
         'admin.contacts.*',
     ])">
         <x-slot name="icon">
-            <span class="inline-block mx-4">
+            <span class="inline-block ltr:mx-3 rtl:mr-3">
                 <i class="fas fa-file-alt w-5 h-5"></i>
             </span>
         </x-slot>
@@ -87,26 +87,32 @@
             :active="request()->routeIs('admin.featuredBanners')" />
     </x-sidebar.dropdown>
 
-    <x-sidebar.dropdown title="{{ __('Orders') }}" :active="request()->routeIs(['admin.orders.index', 'admin.orderforms', 'admin.contacts.index'])">
+    <x-sidebar.dropdown title="{{ __('Transactions') }}" :active="request()->routeIs(['admin.orders.index', 'admin.orderforms', 'admin.contacts.index'])">
         <x-slot name="icon">
-            <span class="inline-block mx-4">
+            <span class="inline-block ltr:mx-3 rtl:mr-3">
                 <i class="fas fa-shopping-cart w-5 h-5"></i>
             </span>
         </x-slot>
         @can('order_access')
-            <x-sidebar.sublink title="{{ __('All Orders') }}" href="{{ route('admin.orders.index') }}" :active="request()->routeIs('admin.orders.index')" />
+            <x-sidebar.sublink title="{{ __('Orders list') }}" href="{{ route('admin.orders.index') }}"
+                :active="request()->routeIs('admin.orders.index')" />
             <x-sidebar.sublink title="{{ __('Order Forms') }}" href="{{ route('admin.orderforms') }}"
                 :active="request()->routeIs('admin.orderforms')" />
-            <x-sidebar.sublink title="{{ __('COntacts') }}" href="{{ route('admin.contacts.index') }}"
+            <x-sidebar.sublink title="{{ __('Contact Forms') }}" href="{{ route('admin.contacts.index') }}"
                 :active="request()->routeIs('admin.contacts.index')" />
         @endcan
+        <x-sidebar.sublink title="{{ __('Cash Register') }}" href="{{ route('admin.cash-register.index') }}" 
+                :active="request()->routeIs('admin.cash-register.index')" />
+        <x-sidebar.sublink title="{{ __('Delivery') }}" href="{{ route('admin.deliveries.index') }}" 
+                :active="request()->routeIs('admin.deliveries.index')" />
+            
     </x-sidebar.dropdown>
 
     @can('quotation_access')
         <x-sidebar.dropdown title="{{ __('Quotations') }}" :active="request()->routeIs('admin.quotations.index')">
 
             <x-slot name="icon">
-                <span class="inline-block mx-4">
+                <span class="inline-block ltr:mx-3 rtl:mr-3">
                     <i class="fas fa-file-invoice-dollar w-5 h-5"></i>
                 </span>
             </x-slot>
@@ -118,7 +124,7 @@
     @can('purchase_access')
         <x-sidebar.dropdown title="{{ __('Purchases') }}" :active="request()->routeIs('admin.purchases.index') || request()->routeIs('purchase-returns.index')">
             <x-slot name="icon">
-                <span class="inline-block mx-4">
+                <span class="inline-block ltr:mx-3 rtl:mr-3">
                     <i class="fas fa-shopping-cart w-5 h-5"></i>
                 </span>
             </x-slot>
@@ -133,7 +139,7 @@
     @can('sale_access')
         <x-sidebar.dropdown title="{{ __('Sales') }}" :active="request()->routeIs(['admin.sales.index', 'admin.sale-returns.index'])">
             <x-slot name="icon">
-                <span class="inline-block mx-4">
+                <span class="inline-block ltr:mx-3 rtl:mr-3">
                     <i class="fas fa-shopping-bag w-5 h-5"></i>
                 </span>
             </x-slot>
@@ -151,7 +157,7 @@
     @can('expense_access')
         <x-sidebar.dropdown title="{{ __('Expenses') }}" :active="request()->routeIs(['admin.expenses.index', 'admin.expense-categories.index'])">
             <x-slot name="icon">
-                <span class="inline-block mx-4">
+                <span class="inline-block ltr:mx-3 rtl:mr-3">
                     <i class="fas fa-money-bill-alt w-5 h-5"></i>
                 </span>
             </x-slot>
@@ -175,23 +181,27 @@
             'admin.profit-loss-report.index',
         ])">
             <x-slot name="icon">
-                <span class="inline-block mx-4">
+                <span class="inline-block ltr:mx-3 rtl:mr-3">
                     <i class="fas fa-chart-line w-5 h-5"></i>
                 </span>
             </x-slot>
 
+            <x-sidebar.sublink title="{{ __('Customer Report') }}" href="{{ route('admin.customers-report.index') }}"
+                :active="request()->routeIs('admin.customers-report.index')" />
+            <x-sidebar.sublink title="{{ __('Profit Report') }}" href="{{ route('admin.profit-loss-report.index') }}"
+                :active="request()->routeIs('admin.profit-loss-report.index')" />
+            <x-sidebar.sublink title="{{ __('Profit Report') }}" href="{{ route('admin.profit-loss-report.index') }}"
+                :active="request()->routeIs('admin.profit-loss-report.index')" />
             <x-sidebar.sublink title="{{ __('Purchases Report') }}" href="{{ route('admin.purchases-report.index') }}"
                 :active="request()->routeIs('admin.purchases-report.index')" />
+            <x-sidebar.sublink title="{{ __('Purchases Return Report') }}"
+                href="{{ route('admin.purchases-return-report.index') }}" :active="request()->routeIs('admin.purchases-return-report.index')" />
             <x-sidebar.sublink title="{{ __('Sale Report') }}" href="{{ route('admin.sales-report.index') }}"
                 :active="request()->routeIs('admin.sales-report.index')" />
             <x-sidebar.sublink title="{{ __('Sale Return Report') }}"
                 href="{{ route('admin.sales-return-report.index') }}" :active="request()->routeIs('admin.sales-return-report.index')" />
             <x-sidebar.sublink title="{{ __('Payment Report') }}" href="{{ route('admin.payments-report.index') }}"
                 :active="request()->routeIs('admin.payments-report.index')" />
-            <x-sidebar.sublink title="{{ __('Purchases Return Report') }}"
-                href="{{ route('admin.purchases-return-report.index') }}" :active="request()->routeIs('admin.purchases-return-report.index')" />
-            <x-sidebar.sublink title="{{ __('Profit Report') }}" href="{{ route('admin.profit-loss-report.index') }}"
-                :active="request()->routeIs('admin.profit-loss-report.index')" />
 
         </x-sidebar.dropdown>
     @endcan
@@ -204,7 +214,7 @@
             request()->routeIs('admin.roles.*') ||
             request()->routeIs('admin.permissions.*')">
             <x-slot name="icon">
-                <span class="inline-block mx-4">
+                <span class="inline-block ltr:mx-3 rtl:mr-3">
                     <i class="fas fa-users w-5 h-5"></i>
                 </span>
             </x-slot>
@@ -239,7 +249,7 @@
             'setting.backup',
         ])">
             <x-slot name="icon">
-                <span class="inline-block mx-4">
+                <span class="inline-block ltr:mx-3 rtl:mr-3">
                     <i class="fas fa-cog w-5 h-5"></i>
                 </span>
             </x-slot>
@@ -263,7 +273,6 @@
 
             <x-sidebar.sublink title="{{ __('Shipping') }}" href="{{ route('admin.shipping.index') }}"
                 :active="request()->routeIs('admin.shipping.index')" />
-            {{-- <x-sidebar.sublink title="{{ __('Popup Settings') }}" href="{{ route('admin.setting.popupsettings') }}" :active="request()->routeIs('admin.setting.popupsettings')" /> --}}
             <x-sidebar.sublink title="{{ __('Redirects') }}" href="{{ route('admin.setting.redirects') }}"
                 :active="request()->routeIs('admin.setting.redirects')" />
 
@@ -275,7 +284,7 @@
                         document.getElementById('logoutform').submit();"
         href="#">
         <x-slot name="icon">
-            <span class="inline-block mx-4">
+            <span class="inline-block ltr:mx-3 rtl:mr-3">
                 <i class="fas fa-sign-out-alt w-5 h-5" aria-hidden="true"></i>
             </span>
         </x-slot>

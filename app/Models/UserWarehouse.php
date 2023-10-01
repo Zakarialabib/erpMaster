@@ -6,8 +6,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 
-class UserWarehouse extends Model
+class UserWarehouse extends Pivot
 {
     protected $table = 'user_warehouse';
 
@@ -18,11 +19,6 @@ class UserWarehouse extends Model
      */
     protected $fillable = [
         'user_id', 'warehouse_id',
-    ];
-
-    protected $casts = [
-        'user_id'      => 'integer',
-        'warehouse_id' => 'integer',
     ];
 
     /** @return HasMany<Warehouse> */

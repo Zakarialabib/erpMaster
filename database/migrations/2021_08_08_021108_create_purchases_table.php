@@ -30,9 +30,9 @@ return new class () extends Migration {
             $table->integer('discount_percentage')->default(0);
             $table->integer('discount_amount')->default(0);
             $table->integer('shipping_amount')->default(0);
-            $table->integer('total_amount');
-            $table->integer('paid_amount');
-            $table->integer('due_amount');
+            $table->double('total_amount');
+            $table->double('paid_amount');
+            $table->double('due_amount');
             $table->string('status');
             $table->string('payment_status');
             $table->string('payment_method');

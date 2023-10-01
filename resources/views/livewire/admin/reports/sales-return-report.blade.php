@@ -1,4 +1,8 @@
 <div>
+    @section('title', __('Sales Return Report'))
+
+    <x-theme.breadcrumb :title="__('Sales Return Report')" :parent="route('admin.sales-return-report')" :parentName="__('Sales Return Report')" />
+
     <div class="flex flex-row">
         <div class="w-full">
             <div class="card border-0 shadow-sm">

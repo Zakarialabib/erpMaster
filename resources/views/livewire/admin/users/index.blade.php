@@ -1,5 +1,5 @@
 <div>
-    @section('title', __('Supplier'))
+    @section('title', __('Users List'))
     <x-theme.breadcrumb :title="__('User List')" :parent="route('admin.suppliers.index')" :parentName="__('User List')">
         <x-button primary type="button" wire:click="dispatchTo('admin.users.create', 'createModal')">
             {{ __('Create User') }}
@@ -99,15 +99,15 @@
                     </x-table.td>
                     <x-table.td>
                         <div class="flex justify-start space-x-2">
-                            <x-button secondary wire:click="$dispatch('showModal', { id ;{{ $user->id }} })"
+                            <x-button secondary wire:click="$dispatch('showModal', { id :'{{ $user->id }}' })"
                                 type="button" wire:loading.attr="disabled">
                                 <i class="fas fa-eye"></i>
                             </x-button>
-                            <x-button primary wire:click="$dispatch('editModal', { id ; {{ $user->id }} })"
+                            <x-button primary wire:click="$dispatch('editModal', { id : '{{ $user->id }}' })"
                                 type="button" wire:loading.attr="disabled">
                                 <i class="fas fa-edit"></i>
                             </x-button>
-                            <x-button danger wire:click="$dispatch('deleteModal', { id ; {{ $user->id }} })"
+                            <x-button danger wire:click="$dispatch('deleteModal', { id : '{{ $user->id }}' })"
                                 type="button" wire:loading.attr="disabled">
                                 <i class="fas fa-trash"></i>
                             </x-button>

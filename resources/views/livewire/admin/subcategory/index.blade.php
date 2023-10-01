@@ -20,11 +20,15 @@
                 </x-button>
             @endif
             @if ($this->selectedCount)
-                <p class="text-sm  my-auto">
+                <p class="text-sm leading-5">
                     <span class="font-medium">
                         {{ $this->selectedCount }}
                     </span>
                     {{ __('Entries selected') }}
+                </p>
+                <p wire:click="resetSelected" wire:loading.attr="disabled"
+                    class="text-sm leading-5 font-medium text-red-500 cursor-pointer ">
+                    {{ __('Clear Selected') }}
                 </p>
             @endif
         </div>
@@ -92,10 +96,8 @@
         </x-table.tbody>
     </x-table>
 
-    <div class="card-body">
-        <div class="pt-3">
-            {{ $subcategories->links() }}
-        </div>
+    <div class="pt-3">
+        {{ $subcategories->links() }}
     </div>
 
     <!-- Edit Modal -->

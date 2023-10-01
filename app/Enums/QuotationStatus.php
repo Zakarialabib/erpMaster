@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Enums;
 
-enum QuotationStatus: int
+enum QuotationStatus: string
 {
     case PENDING = 0;
 
@@ -15,6 +15,11 @@ enum QuotationStatus: int
     case EXPIRED = 3;
 
     case REJECTED = 4;
+
+    public static function values(): array
+    {
+        return array_column(self::cases(), 'name', 'value');
+    }
 
     public function label(): string
     {

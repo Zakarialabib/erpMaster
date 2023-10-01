@@ -9,7 +9,9 @@ use App\Models\Supplier;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Livewire\Attributes\Layout;
 
+#[Layout('components.layouts.dashboard')]
 class SuppliersReport extends Component
 {
     use WithPagination;

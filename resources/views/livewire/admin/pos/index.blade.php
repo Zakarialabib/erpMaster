@@ -51,18 +51,13 @@
             <div class="lg:w-1/2 sm:w-full h-full">
                 <div class="w-full px-2" dir="ltr">
                     <x-validation-errors class="mb-4" :errors="$errors" />
-                    <div class="flex gap-4">
+                    <div class="flex gap-4 items-center">
                         <div class="w-full relative inline-flex">
                             <select required id="customer_id" name="customer_id" wire:model.live="customer_id"
                                 class="block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border-gray-300 rounded-md mt-1">
-                                @if (settings('default_client_id') == true)
-                                    <option value="{{ $default_client?->id }}" selected>{{ $default_client?->name }}
-                                    </option>
-                                @else
-                                    <option value="">
-                                        {{ __('Select Warehouse') }}
-                                    </option>
-                                @endif
+                                <option value="">
+                                    {{ __('Select Customer') }}
+                                </option>
                                 @foreach ($this->customers as $index => $customer)
                                     <option value="{{ $index }}">{{ $customer }}</option>
                                 @endforeach
@@ -71,17 +66,14 @@
                         <div class="w-full relative inline-flex">
                             <select required id="warehouse_id" name="warehouse_id" wire:model.live="warehouse_id"
                                 class="block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border-gray-300 rounded-md mt-1">
-                                @if (settings('default_warehouse_id') == true)
-                                    <option value="{{ $default_warehouse?->id }}" selected>
-                                        {{ $default_warehouse?->name }}
-                                    </option>
-                                @else
-                                    <option value="">
-                                        {{ __('Select Warehouse') }}
-                                    </option>
-                                @endif
+                                <option value="">
+                                    {{ __('Select Warehouse') }}
+                                </option>
                                 @foreach ($this->warehouses as $index => $warehouse)
-                                    <option value="{{ $index }}">{{ $warehouse }}</option>
+                                    <option value="{{ $warehouse['id'] }}"
+                                        @if (settings('default_warehouse') == $warehouse['id']) selected @endif>
+                                        {{ $warehouse['name'] }}
+                                    </option>
                                 @endforeach
                             </select>
                         </div>
@@ -97,7 +89,7 @@
                     </x-button>
                     <button
                         class="inline-flex items-center px-4 py-2 border border-transparent rounded-md font-bold text-xs text-white uppercase tracking-widest active:bg-indigo-900 focus:outline-none focus:border-indigo-900 focus:ring ring-green-300 disabled:opacity-25 transition ease-in-out duration-150 bg-green-500 hover:bg-green-700"
-                        type="submit" wire:click="proceed" wire:loading.attr="disabled"
+                        type="button" wire:click.throttle="proceed" wire:loading.attr="disabled"
                         {{ $total_amount == 0 ? 'disabled' : '' }}>
                         {{ __('Proceed') }}
                     </button>
@@ -203,4 +195,7 @@
             </div>
         </div>
     </div>
+    
+    <livewire:admin.cash-register.create lazy />
+
 </div>

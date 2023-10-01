@@ -12,9 +12,12 @@ use App\Models\Warehouse;
 use App\Models\QuotationDetails;
 use App\Models\Sale;
 use App\Models\SaleDetails;
+use Livewire\Attributes\Computed;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
+use Livewire\Attributes\Layout;
 
+#[Layout('components.layouts.dashboard')]
 class WarehouseReport extends Component
 {
     public $warehouses;
@@ -48,10 +51,10 @@ class WarehouseReport extends Component
         $this->warehouses = Warehouse::select(['id', 'name'])->get();
         $this->start_date = today()->subDays(30)->format('Y-m-d');
         $this->end_date = today()->format('Y-m-d');
-        $this->warehouse_id = '';
     }
 
-    public function getPurchasesProperty()
+    #[Computed]
+    public function purchases()
     {
         return Purchase::where('warehouse_id', $this->warehouse_id)
             ->whereDate('created_at', '>=', $this->start_date)
@@ -60,7 +63,8 @@ class WarehouseReport extends Component
             ->get();
     }
 
-    public function getSalesProperty()
+    #[Computed]
+    public function sales()
     {
         return Sale::with('customer')
             ->where('warehouse_id', $this->warehouse_id)
@@ -70,7 +74,8 @@ class WarehouseReport extends Component
             ->get();
     }
 
-    public function getQuotationsProperty()
+    #[Computed]
+    public function quotations()
     {
         return Quotation::with('customer')
             ->where('warehouse_id', $this->warehouse_id)
@@ -80,7 +85,8 @@ class WarehouseReport extends Component
             ->get();
     }
 
-    public function getExpensesProperty()
+    #[Computed]
+    public function expenses()
     {
         return Expense::with('category')
             ->where('warehouse_id', $this->warehouse_id)

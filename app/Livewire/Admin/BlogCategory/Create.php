@@ -24,11 +24,9 @@ class Create extends Component
     public BlogCategory $blogcategory;
 
     #[Rule('required', message: 'Title is required')]
+    #[Rule('min:3', message: 'Title must be at least 3 characters')]
     public $title;
-
-    #[Rule('min:3', message: 'Description must be at least 3 characters')]
     public $description;
-
     public $language_id;
 
     public function render()
@@ -50,13 +48,15 @@ class Create extends Component
 
     public function create(): void
     {
-        $validated = $this->validate();
+        $this->validate();
 
-        $this->language_id = 1;
-        $this->meta_title = $this->title;
-        $this->meta_description = $this->description;
-
-        BlogCategory::create($validated);
+        BlogCategory::create([
+            'title'            => $this->title,
+            'description'      => $this->description,
+            'language_id'      => 1,
+            'meta_title'       => $this->title ?? '',
+            'meta_description' => $this->description ?? '',
+        ]);
 
         $this->alert('success', __('BlogCategory created successfully.'));
 

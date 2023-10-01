@@ -7,16 +7,20 @@ namespace App\Models;
 use App\Support\HasAdvancedFilter;
 use App\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
-class Customer extends Model
+class Customer extends Authenticatable
 {
     use HasRoles;
+    use Notifiable;
     use HasAdvancedFilter;
     use HasUuid;
     use HasFactory;
+
+    protected $guard_name = 'customer';
 
     /** @var array<int, string> */
     final public const ATTRIBUTES = [
@@ -41,14 +45,19 @@ class Customer extends Model
      */
     protected $fillable = [
         'id', 'name', 'phone', 'email', 'city', 'country',
-        'address', 'tax_number', 'password', 'wallet_id', 'status',
+        'address', 'tax_number', 'password','status',
     ];
 
-    /** @return HasOne<Wallet> */
-    public function wallet(): HasOne
-    {
-        return $this->hasOne(Wallet::class);
-    }
+        /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
+
 
     /** @return HasOne<Sale> */
     public function sales(): HasOne

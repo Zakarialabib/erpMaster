@@ -25,6 +25,7 @@ class CashRegister extends Model
     /** @var array<int, string> */
     protected $fillable = [
         'cash_in_hand', 'user_id', 'warehouse_id', 'status',
+        'recieved','sent'
     ];
 
     public function user(): BelongsTo

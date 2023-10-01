@@ -62,19 +62,19 @@
         }
     }
 }">
-    <div class="relative overflow-hidden h-screen lg:min-h-[500px] bg-black">
+    <div class="relative overflow-hidden min-h-[30rem] bg-black">
         <div class="flex transition-all duration-500 relative" :style="{ left: -(active * 100) + '%' }">
             @foreach ($sliders as $index => $slider)
-                <div class="relative h-screen min-w-full flex items-center lg:min-h-[500px]">
+                <div class="relative min-w-full flex items-center md:h-[300px] min-h-[30rem]">
                     <picture>
-                        <source media="(max-width: 800px)" srcset="{{ $slider->image }}">
-                        <source media="(max-width: 1920px)" srcset="{{ $slider->image }}">
-                        <img src="{{ $slider->image }}"
+                        <source media="(max-width: 800px)" srcset="{{ asset('images/sliders/' . $slider->image) }}">
+                        <source media="(max-width: 1920px)" srcset="{{ asset('images/sliders/' . $slider->image) }}">
+                        <img src="{{ asset('images/sliders/' . $slider->image) }}"
                             class="block absolute inset-0 w-full h-full object-cover object-center z-0">
                     </picture>
                     <div class="absolute bottom-0 w-full h-1/2 z-0 bg-gradient-to-t from-black to-transparent"></div>
                     <div
-                        class="flex flex-col max-w-[1400px] items-center mx-auto my-auto text-center relative z-10 px-24 sm:px-18 lg:px-24">
+                        class="flex flex-col max-w-[1400px] items-center mx-auto my-auto text-center relative z-10 px-16 xl:px-24 md:px-18">
                         <div class="my-4 font-bold text-xl text-white leading-[0.95] lg:text-5xl">
                             {{ $slider->title }}
                         </div>

@@ -149,10 +149,12 @@
                             <x-input-error :messages="$errors->get('barcode_symbology')" for="barcode_symbology" class="mt-2" />
                         </div>
                         <div class="w-full lg:w-1/2 px-3 mb-6 lg:mb-0">
-                            <x-label for="video" :value="__('Condition')" />
-                            <x-input id="condition" class="block mt-1 w-full" type="text" name="condition"
-                                wire:model="condition" />
-                            <x-input-error :messages="$errors->get('condition')" for="condition" class="mt-2" />
+                            <x-label for="usage" :value="__('Usage')" />
+                            <textarea rows="3"
+                                class="form-textarea block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5" name="usage"
+                                wire:model="usage">
+                            </textarea>
+                            <x-input-error :messages="$errors->get('usage')" for="usage" class="mt-2" />
                         </div>
                         <div class="md:w-1/2 sm:w-full px-4 gap-2">
                             <x-label for="featured" :value="__('Favorite proudct')" />
@@ -166,27 +168,30 @@
                         </div>
                     </div>
 
+                    <div class="w-full px-3 mb-6 lg:mb-0">
+                        <div class="mb-4">
+                            <x-label for="meta_title" :value="__('Meta Title')" />
+                            <input wire:model.live="meta_title" id="meta_title" type="text"
+                                class="w-full px-3 py-2 border rounded-md">
+                        </div>
+                        <small> {{ __('Character Count') }} : {{ strlen($meta_title) }} / 60</small>
+                    </div>
+
+                    <div class="w-full px-3 mb-6 lg:mb-0">
+                        <x-label for="meta_description" :value="__('Meta Description')" />
+                        <textarea wire:model.live="meta_description" id="meta_description" class="w-full px-3 py-2 border rounded-md"></textarea>
+                        <small> {{ __('Character Count') }} : {{ strlen($meta_description) }} / 170</small>
+                    </div>
+
                 </x-accordion>
 
                 <div class="w-full px-3 mb-6 lg:mb-0">
-                    <div class="mb-4">
-                        <x-label for="meta_title" :value="__('Meta Title')" />
-                        <input wire:model.live="meta_title" id="meta_title" type="text"
-                            class="w-full px-3 py-2 border rounded-md">
-                    </div>
-                    <small> {{ __('Character Count') }} : {{ strlen($meta_title) }} / 60</small>
-                </div>
-
-                <div class="w-full px-3 mb-6 lg:mb-0">
-                    <x-label for="meta_description" :value="__('Meta Description')" />
-                    <textarea wire:model.live="meta_description" id="meta_description" class="w-full px-3 py-2 border rounded-md"></textarea>
-                    <small> {{ __('Character Count') }} : {{ strlen($meta_description) }} / 170</small>
-                </div>
-
-                <div class="w-full px-3 mb-6 lg:mb-0">
                     <x-label for="description" :value="__('Description')" />
-                    <x-trix wire:model="description" name="description" />
+                    <livewire:utils.editor-js editor-id="myEditor" :value="$description" :read-only="false"
+                        style="width:100%" placeholder="{{ __('Fill in the content here...') }}" lazy />
+
                 </div>
+
                 <div class="w-full px-2">
                     <x-label for="image" :value="__('Image')" />
                     <x-fileupload wire:model="image" :file="$image" accept="image/jpg,image/jpeg,image/png" />

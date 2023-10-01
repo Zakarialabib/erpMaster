@@ -4,25 +4,36 @@ declare(strict_types=1);
 
 namespace App\Livewire\Auth;
 
+use App\Providers\RouteServiceProvider;
 use Illuminate\Support\Facades\Auth;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
+use Livewire\Attributes\Layout;
 
+#[Layout('components.layouts.guest')]
 class Verify extends Component
 {
     use LivewireAlert;
 
-    public function resend(): void
+    public function sendVerification(): void
     {
-        if (Auth::user()->hasVerifiedEmail()) {
-            redirect('/');
+        if (auth()->user()->hasVerifiedEmail()) {
+            $this->redirect(
+                session('url.intended', RouteServiceProvider::CLIENT_HOME),
+                navigate: true
+            );
+            return;
         }
+        auth()->user()->sendEmailVerificationNotification();
+        session()->flash('status', 'verification-link-sent');
+    }
 
-        Auth::user()->sendEmailVerificationNotification();
-
-        $this->dispatch('resent');
-
-        $this->alert('resent');
+    public function logout(): void
+    {
+        auth()->guard('customer')->logout();
+        session()->invalidate();
+        session()->regenerateToken();
+        $this->redirect('/', navigate: true);
     }
 
     public function render()

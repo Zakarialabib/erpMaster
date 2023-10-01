@@ -21,7 +21,7 @@ return new class () extends Migration {
 
             $table->foreignIdFor(Purchase::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
-            $table->integer('amount');
+            $table->double('amount');
             $table->date('date');
             $table->string('reference');
             $table->string('payment_method');

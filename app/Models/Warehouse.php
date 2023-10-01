@@ -61,6 +61,6 @@ class Warehouse extends Model
 
     public function getStockValueAttribute(): float
     {
-        return $this->productWarehouse()->sum(DB::raw('qty * cost'));
+        return $this->productWarehouse()->sum(DB::raw('qty * cost')) / 100;
     }
 }

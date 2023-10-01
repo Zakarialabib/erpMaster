@@ -6,63 +6,56 @@ namespace App\Livewire\Front;
 
 use App\Enums\OrderStatus;
 use App\Enums\PaymentStatus;
+use App\Enums\ShippingStatus;
 use App\Mail\CheckoutMail;
 use App\Mail\CustomerRegistrationMail;
+use App\Models\Customer;
 use App\Models\Order;
-use App\Models\OrderProduct;
+use App\Models\OrderDetails;
 use App\Models\Shipping;
-use App\Models\User;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
+use Livewire\Attributes\Computed;
+use Livewire\Attributes\Layout;
+use Livewire\Attributes\Rule;
 use Livewire\Component;
 
+#[Layout('components.layouts.guest')]
 class Checkout extends Component
 {
     use LivewireAlert;
 
     public $listeners = [
-        'checkout'            => 'checkout',
         'checkoutCartUpdated' => '$refresh',
         'confirmed',
     ];
 
-    public $decreaseQuantity;
-
-    public $increaseQuantity;
-
-    public $removeFromCart;
-
     public $payment_method = 'cash';
 
-    public $shipping_cost;
+    public $shipping_amount;
 
-    public $first_name;
+    #[Rule('required')]
+    public $name;
 
-    public $last_name;
-
+    #[Rule('required|email')]
     public $email;
 
-    public $user;
+    public $customer;
 
+    #[Rule('required')]
     public $address;
 
+    #[Rule('required')]
     public $city;
-
-    public $shipping;
-
     public $country = 'Maroc';
 
+    #[Rule('required|numeric')]
     public $phone;
 
     public $password;
-
-    public $total;
-
-    public $order_status;
 
     public $shipping_id;
 
@@ -77,21 +70,11 @@ class Checkout extends Component
         $this->dispatch('checkoutCartUpdated');
     }
 
-    public function getCartItemsProperty()
-    {
-        return Cart::instance('shopping')->content();
-    }
-
-    public function getSubTotalProperty()
-    {
-        return Cart::instance('shopping')->subtotal();
-    }
-
     public function checkout()
     {
         $this->validate([
             'shipping_id' => 'required',
-            'first_name'  => 'required',
+            'name'        => 'required',
             'phone'       => 'required',
         ]);
 
@@ -101,67 +84,82 @@ class Checkout extends Component
 
         $shipping = Shipping::find($this->shipping_id);
 
-        if ( ! auth()->check()) {
-            $this->user = User::create([
-                'first_name' => $this->first_name,
-                'last_name'  => $this->last_name,
-                'city'       => $this->city,
-                'country'    => $this->country,
-                'address'    => $this->address,
-                'phone'      => $this->phone,
-                'email'      => $this->email,
-                'password'   => bcrypt($this->password),
+        $customer = Customer::where('email', $this->email)->first();
+
+        if ($customer) {
+            auth()->guard('customer')->login($customer);
+        } else {
+            $customer = Customer::create([
+                'name'     => $this->name,
+                'city'     => $this->city,
+                'country'  => $this->country,
+                'address'  => $this->address,
+                'phone'    => $this->phone,
+                'email'    => $this->email,
+                'password' => bcrypt($this->password),
             ]);
 
-            Mail::to($this->user->email)->send(new CustomerRegistrationMail($this->user));
+            Mail::to($customer->email)->send(new CustomerRegistrationMail($customer));
 
-            Auth::login($this->user);
+            auth()->guard('customer')->login($customer);
         }
 
         $order = Order::create([
-            'reference'        => Order::generateReference(),
-            'shipping_id'      => $this->shipping_id,
-            'delivery_method'  => $shipping->title,
-            'payment_method'   => $this->payment_method,
-            'shipping_cost'    => $shipping->cost,
-            'first_name'       => $this->first_name,
-            'shipping_name'    => $this->first_name.'-'.$this->last_name,
-            'last_name'        => $this->last_name,
-            'email'            => $this->email,
-            'address'          => $this->address,
-            'shipping_address' => $this->address,
-            'city'             => $this->city,
-            'shipping_city'    => $this->city,
-            'phone'            => $this->phone,
-            'shipping_phone'   => $this->phone,
-            'total'            => $this->cartTotal,
-            'user_id'          => auth()->user()->id,
-            'order_status'     => OrderStatus::PENDING,
-            'payment_status'   => PaymentStatus::PENDING,
+            'reference'       => Order::generateReference(),
+            'date'            => now(),
+            'shipping_id'     => $this->shipping_id,
+            'customer_id'     => $customer->id,
+            'payment_method'  => $this->payment_method,
+            // 'shipping_amount' => $shipping->cost,
+            'shipping_status' => ShippingStatus::PENDING,
+            'total_amount'    => $this->cartTotal * 100,
+            'payment_status'  => PaymentStatus::PENDING,
+            'status'          => OrderStatus::PENDING,
+            'delivery_id' => null,
         ]);
 
-        Mail::to($order->user->email)->send(new CheckoutMail($order, $this->user));
+        Mail::to($order->customer->email)->send(new CheckoutMail($order, $customer));
 
         foreach (Cart::instance('shopping') as $item) {
-            $orderProduct = new OrderProduct([
-                'order_id'   => $order->id,
-                'product_id' => $item->id,
-                'qty'        => $item->qty,
-                'price'      => $item->price,
-                'user_id'    => auth()->user()->id,
-                'total'      => $item->total,
+            $orderDetails = new OrderDetails([
+                'order_id'                => $order->id,
+                'product_id'              => $item->id,
+                'code'                    => $item->options->code,
+                'name'                    => $item->name,
+                'quantity'                => $item->qty,
+                'price'                   => $item->price * 100,
+                'unit_price'              => $item->options->unit_price * 100,
+                'sub_total'               => $item->options->sub_total * 100,
+                'product_discount_amount' => $item->options->product_discount * 100,
+                'product_discount_type'   => $item->options->product_discount_type,
+                'product_tax_amount'      => $item->options->product_tax * 100,
             ]);
 
-            $orderProduct->save();
+            $orderDetails->save();
         }
 
         Cart::instance('shopping')->destroy();
 
         $this->alert('success', __('Order placed successfully!'));
 
-        return redirect()->route('front.thankyou', ['order' => $order->id]);
+        return redirect()->route('front.thankyou', $order->id);
     }
 
+    public function mount()
+    {
+        // if customer is auth we could fill propreties like email phone and such 
+        if (auth()->guard('customer')->check()) {
+            // dd(auth()->guard('customer')->user());
+            $this->customer = auth()->guard('customer')->user();
+            $this->name = $this->customer->name;
+            $this->email = $this->customer->email;
+            $this->phone = $this->customer->phone;
+            $this->address = $this->customer->address;
+            $this->city = $this->customer->city;
+            $this->country = $this->customer->country;
+        }
+
+    }
     public function updateCartTotal(): void
     {
         if ($this->shipping_id) {
@@ -206,14 +204,30 @@ class Checkout extends Component
         );
     }
 
-    public function getShippingsProperty()
+  
+
+    #[Computed]
+    public function shippings()
     {
         return Shipping::select('id', 'title')->get();
     }
 
-    public function getCartTotalProperty()
+    #[Computed]
+    public function cartTotal()
     {
         return Cart::instance('shopping')->total();
+    }
+
+    #[Computed]
+    public function cartItems()
+    {
+        return Cart::instance('shopping')->content();
+    }
+
+    #[Computed]
+    public function subTotal()
+    {
+        return Cart::instance('shopping')->subtotal();
     }
 
     public function render(): View|Factory

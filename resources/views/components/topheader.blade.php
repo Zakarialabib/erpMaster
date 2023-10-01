@@ -3,17 +3,19 @@
         <p class="text-xs text-center font-semibold font-heading hover:text-gray-400 hover:underline">
             <i class="fa fa-phone mr-2"></i> {{ settings('company_phone') }}
         </p>
-        @if (Auth::check())
+        
+        @if (auth()->guard('customer')->check() || auth()->guard('admin')->check())
             <x-dropdown align="right" width="56">
                 <x-slot name="trigger">
-                    <div class="flex items-center text-white px-4">
-                        <i class="fa fa-caret-down ml-2"></i> {{ Auth::user()->name }}
+                    <div class="flex items-center text-white gap-2 px-4">
+                        <i class="fa fa-caret-down ml-2"></i> 
+                        {{  auth()->guard('customer')->user()->name ?? auth()->guard('admin')->user()->name }}
                     </div>
                 </x-slot>
 
                 <x-slot name="content">
                     {{-- if admin show dashboard and settings else show logout --}}
-                    @if (Auth::user()->HasRole('admin'))
+                    @if (Auth::guard('admin')->check())
                         <x-dropdown-link href="{{ route('admin.dashboard') }}">
                             {{ __('Dashboard') }}
                         </x-dropdown-link>
@@ -21,7 +23,7 @@
                         <x-dropdown-link :href="route('admin.settings.index')">
                             {{ __('Settings') }}
                         </x-dropdown-link>
-                    @else
+                    @elseif (auth()->guard('customer'))  
                         <x-dropdown-link href="{{ route('front.myaccount') }}">
                             {{ __('My account') }}
                         </x-dropdown-link>

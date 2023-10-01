@@ -22,9 +22,9 @@ return new class () extends Migration {
             $table->foreignIdFor(Product::class)->constrained()->restrictOnDelete();
             $table->foreignIdFor(Warehouse::class)->constrained()->restrictOnDelete();
 
-            $table->float('price', 10, 2);
-            $table->float('cost', 10, 2);
-            $table->float('old_price', 10, 2)->nullable();
+            $table->double('price');
+            $table->double('cost')->nullable();
+            $table->double('old_price')->nullable();
             $table->integer('qty');
             $table->integer('stock_alert');
             $table->boolean('is_ecommerce')->default(false);

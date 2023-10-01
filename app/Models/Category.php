@@ -31,7 +31,8 @@ class Category extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'code', 'name', 'description', 'slug', 'image', 'status',
+        'code', 'name', 'description',
+        'slug', 'image', 'status',
     ];
 
     protected $casts = [

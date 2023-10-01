@@ -6,10 +6,8 @@
             </h2>
             <div class="flex justify-end">
                 @if ($sale?->due_amount > 0)
-                    <x-button 
-                    x-on:click="$wire.set('showPayments', false)"
-                    wire:click="$dispatch('paymentModal', {{ $sale->id }})"
-                        primary type="button">
+                    <x-button x-on:click="$wire.set('showPayments', false)"
+                        wire:click="$dispatch('paymentModal', {{ $sale->id }})" primary type="button">
                         {{ __('Add Payment') }}
                     </x-button>
                 @endif
@@ -37,12 +35,11 @@
                             </x-table.td>
                             <x-table.td>{{ $salepayment->payment_method }}</x-table.td>
                             <x-table.td>
-                                {{-- @can('access_sale_payments')
-                                    <x-button wire:click="$dispatch('paymentModal', {{ $salepayment->id }} )" type="button"
-                                        primary>
-                                        <i class="fa fa-pen"></i>
+                                @can('access_sale_payments')
+                                    <x-button wire:click="delete(' {{ $salepayment->id }}')" type="button" danger>
+                                        <i class="fa fa-trash"></i>
                                     </x-button>
-                                @endcan --}}
+                                @endcan
                             </x-table.td>
                         </x-table.tr>
                     @empty

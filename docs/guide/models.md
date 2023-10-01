@@ -10,12 +10,17 @@
 | `password` | `string` |
 | `avatar` | `string` |
 | `phone` | `string` |
+| `city` | `string` |
+| `address` | `string` |
+| `country` | `string` |
 | `role_id` | `unsignedInteger` |
 | `status` | `boolean` |
 | `is_all_warehouses` | `boolean` |
 | `wallet_id` | `integer` |
 | `default_client_id` | `integer` |
 | `default_warehouse_id` | `integer` |
+| `provider_name` | `string` |
+| `provider_id` | `string` |
 
 ## Table: `password_reset_tokens`
 
@@ -662,23 +667,12 @@
 
 | Property | Type |
 | --- | --- |
-| `is_sliders` | `tinyInteger` |
-| `is_contact` | `tinyInteger` |
-| `is_offer` | `tinyInteger` |
-| `is_title` | `tinyInteger` |
-| `is_description` | `tinyInteger` |
-| `is_package` | `tinyInteger` |
-| `section_order` | `integer` |
-| `is_visible` | `boolean` |
-| `bg_color` | `string` |
-| `text_color` | `string` |
-| `darkMode` | `tinyInteger` |
-| `font_size` | `integer` |
-| `custom_properties` | `json` |
-| `status` | `string` |
+| `layout_type` | `string` |
+| `page_type` | `string` |
+| `layout_config` | `json` |
 | `page_id` | `foreignId` |
-| `featured_banner_id` | `foreignId` |
-| `language_id` | `foreignId` |
+| `section_id` | `foreignId` |
+| `status` | `string` |
 
 ## Table: `shippings`
 
@@ -698,19 +692,16 @@
 | `date` | `date` |
 | `reference` | `string` |
 | `shipping_id` | `foreignId` |
-| `packaging_id` | `foreignId` |
 | `tax_percentage` | `integer` |
 | `tax_amount` | `integer` |
 | `discount_percentage` | `integer` |
 | `discount_amount` | `integer` |
 | `shipping_amount` | `integer` |
 | `total_amount` | `integer` |
-| `paid_amount` | `integer` |
-| `due_amount` | `integer` |
-| `payment_date` | `date` |
 | `status` | `string` |
 | `payment_status` | `string` |
 | `payment_method` | `string` |
+| `payment_date` | `date` |
 | `shipping_status` | `string` |
 | `document` | `string` |
 | `note` | `text` |
@@ -748,6 +739,7 @@
 | Property | Type |
 | --- | --- |
 | `id` | `uuid` |
+| `provider` | `string` |
 | `type` | `integer` |
 | `store_url` | `string` |
 | `api_key` | `string` |
@@ -906,4 +898,18 @@
 | `subject` | `string` |
 | `type` | `string` |
 | `message` | `mediumText` |
+
+## Table: `order_details`
+
+| Property | Type |
+| --- | --- |
+| `name` | `string` |
+| `code` | `string` |
+| `quantity` | `integer` |
+| `price` | `integer` |
+| `unit_price` | `integer` |
+| `sub_total` | `integer` |
+| `product_discount_amount` | `integer` |
+| `product_discount_type` | `string` |
+| `product_tax_amount` | `integer` |
 

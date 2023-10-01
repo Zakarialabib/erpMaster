@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Livewire\Admin\Sales\Payment;
 
+use App\Enums\PaymentStatus;
+use App\Enums\SaleStatus;
 use App\Livewire\Utils\Datatable;
 use App\Models\SalePayment;
 use App\Models\Sale;
@@ -28,32 +30,50 @@ class Index extends Component
 
     public $sale_id;
 
-    public function mount($sale): void
-    {
-        $this->sale = $sale;
-    }
-
     public function render()
     {
         abort_if(Gate::denies('sale payment access'), 403);
 
-        $query = SalePayment::where('sale_id', $this->sale->id)->advancedFilter([
-            's'               => $this->search ?: null,
-            'order_column'    => $this->sortBy,
-            'order_direction' => $this->sortDirection,
-        ]);
+        $query = SalePayment::when($this->sale_id, function ($query) {
+            $query->where('sale_id', $this->sale_id);
+        })
+            ->advancedFilter([
+                's'               => $this->search ?: null,
+                'order_column'    => $this->sortBy,
+                'order_direction' => $this->sortDirection,
+            ]);
 
         $salepayments = $query->paginate($this->perPage);
 
         return view('livewire.admin.sales.payment.index', ['salepayments' => $salepayments]);
     }
 
-    public function showPayments($sale_id): void
+    public function showPayments($id): void
     {
         abort_if(Gate::denies('sale access'), 403);
 
-        $this->sale = Sale::findOrFail($sale_id);
+        $this->sale = Sale::findOrFail($id);
 
         $this->showPayments = true;
+    }
+
+    public function delete($id): void
+    {
+        abort_if(Gate::denies('sale payment delete'), 403);
+
+        $salepayment = SalePayment::findOrFail($id);
+
+        $salepayment->delete();
+
+        // need to change status of sale , if all payment deleted
+
+        Sale::where('id', $salepayment->sale_id)->update([
+            'status' => SaleStatus::PENDING,
+            'payment_status' => PaymentStatus::PENDING,
+        ]);
+
+        $this->dispatch('refreshIndex');
+
+        $this->alert('success', __('Sale Payment Deleted Successfully!'));
     }
 }

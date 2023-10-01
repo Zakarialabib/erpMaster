@@ -20,6 +20,14 @@
                     <i class="fas fa-trash"></i>
                 </x-button>
             @endif
+            @if ($this->selectedCount)
+                <p class="text-sm leading-5">
+                    <span class="font-medium">
+                        {{ $this->selectedCount }}
+                    </span>
+                    {{ __('Entries selected') }}
+                </p>
+            @endif
         </div>
         <div class="lg:w-1/2 md:w-1/2 sm:w-full my-2">
             <div class="my-2">
@@ -83,18 +91,8 @@
         </x-table.tbody>
     </x-table>
 
-    <div class="p-4">
-        <div class="pt-3">
-            @if ($this->selectedCount)
-                <p class="text-sm leading-5">
-                    <span class="font-medium">
-                        {{ $this->selectedCount }}
-                    </span>
-                    {{ __('Entries selected') }}
-                </p>
-            @endif
-            {{ $adjustments->links() }}
-        </div>
+    <div class="pt-3">
+        {{ $adjustments->links() }}
     </div>
 
     @if ($adjustment)

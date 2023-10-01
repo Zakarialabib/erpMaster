@@ -8,6 +8,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use App\Models\OrderForms;
+use Illuminate\Mail\Mailables\Envelope;
 
 class OrderFormMail extends Mailable
 {
@@ -29,5 +30,12 @@ class OrderFormMail extends Mailable
             ->with([
                 'order' => $this->order,
             ]);
+    }
+
+    public function envelope(): Envelope
+    {
+        return new Envelope(
+            subject: sprintf('Welcome, %s!', $this->order->name),
+        );
     }
 }

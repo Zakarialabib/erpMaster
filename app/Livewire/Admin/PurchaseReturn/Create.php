@@ -5,34 +5,58 @@ declare(strict_types=1);
 namespace App\Livewire\Admin\PurchaseReturn;
 
 use App\Models\PurchaseReturn;
+use App\Models\Warehouse;
 use Illuminate\Support\Facades\Gate;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Gloudemans\Shoppingcart\Facades\Cart;
+use Livewire\Attributes\Rule;
 
 class Create extends Component
 {
     use LivewireAlert;
-    public bool $createModal = false;
 
-    protected $rules = [
-        'supplier_id'         => 'required|numeric',
-        'reference'           => 'required|string|max:255',
-        'tax_percentage'      => 'required|integer|min:0|max:100',
-        'discount_percentage' => 'required|integer|min:0|max:100',
-        'shipping_amount'     => 'required|numeric',
-        'total_amount'        => 'required|numeric',
-        'paid_amount'         => 'required|numeric',
-        'status'              => 'required|integer|max:255',
-        'payment_method'      => 'required|integer|max:255',
-        'note'                => 'nullable|string|max:1000',
-    ];
+    public $warehouse_id;
+    
+    #[Rule('required')]
+    public $supplier_id;   
 
-    #[On('createModal')]
+    #[Rule('required|string|max:255')]
+    public $reference;           
+
+    #[Rule('required|integer|min:0|max:100')]
+    public $tax_percentage;      
+    
+    #[Rule('required|integer|min:0|max:100')]
+    public $discount_percentage; 
+    
+    #[Rule('required|numeric')]
+    public $shipping_amount;     
+    
+    #[Rule('required|numeric')]
+    public $total_amount;        
+    
+    #[Rule('required|numeric')]
+    public $paid_amount;         
+    
+    #[Rule('required|integer|max:255')]
+    public $status;              
+    
+    #[Rule('required|integer|max:255')]
+    public $payment_method;      
+    
+    #[Rule('nullable|string|max:1000')]
+    public $note;                
+
+
     public function mount(): void
     {
         abort_if(Gate::denies('purchase return create'), 403);
+        
+        if(settings('default_warehouse_id') !== null){
+            $this->warehouse_id = settings('default_warehouse_id');
+        }
 
         Cart::instance('purchase_return')->destroy();
     }
@@ -44,8 +68,6 @@ class Create extends Component
         $this->validate();
 
         PurchaseReturn::create($this->all());
-
-        $this->createModal = false;
 
         $this->alert('success', 'PurchaseReturn created successfully.');
     }

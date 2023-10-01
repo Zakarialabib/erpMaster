@@ -8,7 +8,7 @@ use App\Models\User;
 use App\Models\Order;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Notification;
-use App\Notifications\Admin\NewOrderNotification;
+use App\Notifications\NewOrderNotification;
 
 class OrderObserver
 {
@@ -16,7 +16,10 @@ class OrderObserver
     public function created(Order $order): void
     {
         // Notify the admin users
-        $users = User::all();
+        $users = User::whereHas('roles', function ($query) {
+            $query->where('name', 'admin');
+        })->get();
+        
         Notification::send($users, new NewOrderNotification($order));
     }
 

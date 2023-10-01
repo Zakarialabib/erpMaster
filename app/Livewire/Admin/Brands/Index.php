@@ -120,7 +120,7 @@ class Index extends Component
 
     public function downloadSample()
     {
-        return Storage::disk('exports')->download('brands_import_sample.xls.csv');
+        return Storage::disk('exports')->download('brands_import_sample.xls');
     }
 
     public function import(): void

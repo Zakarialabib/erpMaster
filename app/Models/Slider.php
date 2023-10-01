@@ -23,7 +23,9 @@ class Slider extends Model
     public $filterable = self::ATTRIBUTES;
 
     protected $fillable = [
-        'title', 'subtitle', 'description', 'embeded_video', 'image', 'featured', 'link',  'bg_color', 'status',
+        'title', 'subtitle', 'description',
+        'embeded_video', 'image', 'featured',
+        'link',  'bg_color', 'status',
     ];
 
     protected $casts = [

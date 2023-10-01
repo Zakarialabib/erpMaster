@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Livewire\Admin\Customers;
 
 use App\Models\Customer;
@@ -7,6 +9,7 @@ use Google\Client;
 use Google\Service\PeopleService;
 use Illuminate\Support\Facades\Cache;
 use Livewire\Component;
+use Throwable;
 
 class GoogleContact extends Component
 {
@@ -20,17 +23,18 @@ class GoogleContact extends Component
         // Fetch Google Contacts
         $this->fetchContacts();
     }
+
     public function fetchContacts()
     {
         // Initialize the Google API Client
         $client = new Client();
-        $client->setApplicationName("Laravel");
+        $client->setApplicationName('Laravel');
         $client->setDeveloperKey(env('GOOGLE_SERVER_KEY'));
         $client->setClientId(env('GOOGLE_CLIENT_ID'));
         $client->setClientSecret(env('GOOGLE_CLIENT_SECRET'));
         // $client->setRedirectUri(env('GOOGLE_REDIRECT_URI'));
 
-        $client->setAccessToken(Cache::get('google_access_token')); 
+        $client->setAccessToken(Cache::get('google_access_token'));
 
         // Initialize the People API Service
         $this->contactService = new PeopleService($client);
@@ -53,11 +57,10 @@ class GoogleContact extends Component
 
         // Check if there is a next page of contacts
         while ($contactList->getNextPageToken()) {
-
             // Get the next page of contacts
             $contactList = $this->contactService->people_connections->listPeopleConnections('people/me', [
                 'personFields' => 'names,emailAddresses,phoneNumbers,birthdays',
-                'pageToken' => $contactList->getNextPageToken(),
+                'pageToken'    => $contactList->getNextPageToken(),
             ]);
 
             // Add the contacts from the next page to the list
@@ -87,7 +90,7 @@ class GoogleContact extends Component
 
             // Save the customer object to the database
             $customer->save();
-        } catch (\Throwable $th) {
+        } catch (Throwable $th) {
             //throw $th;
         }
         // Display a success message

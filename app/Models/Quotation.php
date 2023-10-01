@@ -74,14 +74,6 @@ class Quotation extends Model
         );
     }
 
-    /** Get ajustement date. */
-    public function date(): Attribute
-    {
-        return Attribute::make(
-            get: static fn ($value) => Carbon::parse($value)->format('d M, Y'),
-        );
-    }
-
     protected static function boot()
     {
         parent::boot();

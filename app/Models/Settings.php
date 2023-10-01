@@ -11,25 +11,13 @@ class Settings extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'name',
-        'value',
-    ];
+    protected $fillable = ['key', 'value'];
 
     public static function set($key, $value)
     {
-        $setting = self::where('key', $key)->first();
-
-        if ($setting) {
-            $setting->value = $value;
-            $setting->save();
-        } else {
-            $setting = self::create([
-                'key'   => $key,
-                'value' => $value,
-            ]);
-        }
-
-        return $setting;
+        return self::updateOrCreate(
+            ['key' => $key],
+            ['value' => $value]
+        );
     }
 }

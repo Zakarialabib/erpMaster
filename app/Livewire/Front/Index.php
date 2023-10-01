@@ -6,6 +6,7 @@ namespace App\Livewire\Front;
 
 use App\Models\Brand;
 use App\Models\FeaturedBanner;
+use App\Models\Product;
 use App\Models\Section;
 use App\Models\Slider;
 use App\Models\Subcategory;
@@ -25,30 +26,27 @@ class Index extends Component
 
     public function getFeaturedProductsProperty()
     {
-        return \App\Helpers::getEcommerceProducts()
+        return Product::ecommerceProducts()
             ->where('featured', 1)
             ->active()
             ->inRandomOrder()
-            ->limit(4);
-        // dd($query);
+            ->take(4)
+            ->get();
     }
 
     public function getBestOffersProperty()
     {
-        return \App\Helpers::getEcommerceProducts()
+        return Product::ecommerceProducts()
             ->where('best', 1)
             ->active()
             ->inRandomOrder()
-            ->limit(4);
+            ->take(4)
+            ->get();
     }
 
     public function getHotProductsProperty()
     {
-        return \App\Helpers::getEcommerceProducts()
-            ->where('hot', 1)
-            ->active()
-            ->inRandomOrder()
-            ->limit(4);
+        return Product::ecommerceProducts();
     }
 
     public function getBrandsProperty(): Collection

@@ -1,30 +1,30 @@
 <div>
     <div class="flex flex-wrap justify-center">
-        <div class="lg:w-1/2 md:w-1/2 sm:w-full flex flex-col my-md-0 my-2">
-            <div class="my-2 my-md-0">
-                <select wire:model.live="perPage" name="perPage"
-                    class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-auto sm:text-sm border-gray-300 rounded-md focus:outline-none focus:shadow-outline-blue transition duration-150 ease-in-out">
-                    @foreach ($paginationOptions as $value)
-                        <option value="{{ $value }}">{{ $value }}</option>
-                    @endforeach
-                </select>
+        <div class="lg:w-1/2 md:w-1/2 sm:w-full flex flex-col ">
+            <select wire:model.live="perPage" name="perPage"
+                class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-auto sm:text-sm border-gray-300 rounded-md focus:outline-none focus:shadow-outline-blue transition duration-150 ease-in-out">
+                @foreach ($paginationOptions as $value)
+                    <option value="{{ $value }}">{{ $value }}</option>
+                @endforeach
+            </select>
 
-                @if ($this->selectedCount)
-                    <p class="text-sm leading-5">
-                        <span class="font-medium">
-                            {{ $this->selectedCount }}
-                        </span>
-                        {{ __('Entries selected') }}
-                    </p>
-                @endif
-            </div>
+            @if ($this->selectedCount)
+                <p class="text-sm leading-5">
+                    <span class="font-medium">
+                        {{ $this->selectedCount }}
+                    </span>
+                    {{ __('Entries selected') }}
+                </p>
+                <p wire:click="resetSelected" wire:loading.attr="disabled"
+                    class="text-sm leading-5 font-medium text-red-500 cursor-pointer ">
+                    {{ __('Clear Selected') }}
+                </p>
+            @endif
         </div>
-        <div class="lg:w-1/2 md:w-1/2 sm:w-full my-2 my-md-0">
-            <div class="my-2 my-md-0">
-                <input type="text" wire:model.debounce.300ms="search"
-                    class="p-3 leading-5 bg-white text-gray-500 rounded border border-gray-300 mb-1 text-sm w-full focus:shadow-outline-blue focus:border-blue-500"
-                    placeholder="{{ __('Search') }}" />
-            </div>
+        <div class="lg:w-1/2 md:w-1/2 sm:w-full my-2 ">
+            <input type="text" wire:model.debounce.300ms="search"
+                class="p-3 leading-5 bg-white text-gray-500 rounded border border-gray-300 mb-1 text-sm w-full focus:shadow-outline-blue focus:border-blue-500"
+                placeholder="{{ __('Search') }}" />
         </div>
     </div>
 
@@ -95,10 +95,8 @@
         </x-table.tbody>
     </x-table>
 
-    <div class="card-body">
-        <div class="pt-3">
-            {{ $redirects->links() }}
-        </div>
+    <div class="pt-3">
+        {{ $redirects->links() }}
     </div>
 
     <x-modal wire:model="editModal">
@@ -138,4 +136,3 @@
         </x-slot>
     </x-modal>
 </div>
-

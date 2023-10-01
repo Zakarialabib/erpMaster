@@ -9,7 +9,10 @@ use App\Models\Supplier;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Livewire\Attributes\Layout;
+use Illuminate\Support\Facades\Gate;
 
+#[Layout('components.layouts.dashboard')]
 class PurchasesReturnReport extends Component
 {
     use WithPagination;
@@ -44,6 +47,8 @@ class PurchasesReturnReport extends Component
 
     public function render()
     {
+        abort_if(Gate::denies('report access'), 403);
+
         $purchase_returns = PurchaseReturn::whereDate('date', '>=', $this->start_date)
             ->whereDate('date', '<=', $this->end_date)
             ->when($this->supplier_id, fn ($q) => $q->where('supplier_id', $this->supplier_id))

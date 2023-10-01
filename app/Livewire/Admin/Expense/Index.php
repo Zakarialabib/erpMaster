@@ -73,6 +73,7 @@ class Index extends Component
         abort_if(Gate::denies('expense access'), 403);
 
         $query = Expense::with(['category', 'user', 'warehouse'])
+            ->whereBetween('date', [$this->startDate, $this->endDate])
             ->advancedFilter([
                 's'               => $this->search ?: null,
                 'order_column'    => $this->sortBy,

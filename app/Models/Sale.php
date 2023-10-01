@@ -60,6 +60,7 @@ class Sale extends Model
         'customer_id',
         'user_id',
         'warehouse_id',
+        'cash_register_id',
         'tax_percentage',
         'tax_amount',
         'payment_date',

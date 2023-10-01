@@ -58,7 +58,7 @@ class EditorJs extends Component
         }
 
         if (is_string($value)) {
-            $value = json_decode($value, true, 512, JSON_THROW_ON_ERROR);
+            $value = json_decode($value, true);
         }
 
         $this->editorId = $editorId;

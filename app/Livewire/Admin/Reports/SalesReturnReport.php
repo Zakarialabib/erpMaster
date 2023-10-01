@@ -9,7 +9,10 @@ use App\Models\SaleReturn;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Livewire\Attributes\Layout;
+use Illuminate\Support\Facades\Gate;
 
+#[Layout('components.layouts.dashboard')]
 class SalesReturnReport extends Component
 {
     use WithPagination;
@@ -32,7 +35,6 @@ class SalesReturnReport extends Component
 
     public $payment_status;
 
-
     public function mount(): void
     {
         $this->customers = Customer::select(['id', 'name'])->get();
@@ -45,6 +47,8 @@ class SalesReturnReport extends Component
 
     public function render()
     {
+        abort_if(Gate::denies('report access'), 403);
+
         $sale_returns = SaleReturn::whereDate('date', '>=', $this->start_date)
             ->whereDate('date', '<=', $this->end_date)
             ->when($this->customer_id, fn ($q) => $q->where('customer_id', $this->customer_id))

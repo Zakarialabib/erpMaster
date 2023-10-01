@@ -25,12 +25,14 @@
                     </span>
                     {{ __('Entries selected') }}
                 </p>
+                <p wire:click="resetSelected" wire:loading.attr="disabled"
+                    class="text-sm leading-5 font-medium text-red-500 cursor-pointer ">
+                    {{ __('Clear Selected') }}
+                </p>
             @endif
         </div>
         <div class="lg:w-1/2 md:w-1/2 sm:w-full my-2">
-            <div class="my-2">
-                <x-input wire:model.live="search" placeholder="{{ __('Search') }}" autofocus />
-            </div>
+            <x-input wire:model.live="search" placeholder="{{ __('Search') }}" autofocus />
         </div>
     </div>
 
@@ -75,18 +77,18 @@
                     </x-table.td>
                     <x-table.td>
                         <div class="flex justify-start space-x-2">
-                            <x-button alert wire:click="showModal({{ $currency->id }})" type="button"
-                                wire:loading.attr="disabled">
+                            <x-button alert wire:click="$dispatch('showModal', { id : '{{ $currency->id }}'})"
+                                type="button" wire:loading.attr="disabled">
                                 <i class="fas fa-eye"></i>
                             </x-button>
 
-                            <x-button primary wire:click="$dispatch('editModal', {{ $currency->id }})" type="button"
-                                wire:loading.attr="disabled">
+                            <x-button primary wire:click="$dispatch('editModal', { id : '{{ $currency->id }}'})"
+                                type="button" wire:loading.attr="disabled">
                                 <i class="fas fa-edit"></i>
                             </x-button>
 
-                            <x-button danger wire:click="$dispatch('deleteModal', {{ $currency->id }})" type="button"
-                                wire:loading.attr="disabled">
+                            <x-button danger wire:click="$dispatch('deleteModal', { id : '{{ $currency->id }}'})"
+                                type="button" wire:loading.attr="disabled">
                                 <i class="fas fa-trash"></i>
                             </x-button>
                         </div>
@@ -104,48 +106,12 @@
         </x-table.tbody>
     </x-table>
 
-    <div class="p-4">
-        <div class="pt-3">
-            @if ($this->selectedCount)
-                <p class="text-sm leading-5">
-                    <span class="font-medium">
-                        {{ $this->selectedCount }}
-                    </span>
-                    {{ __('Entries selected') }}
-                </p>
-            @endif
-            {{ $currencies->links() }}
-        </div>
+    <div class="pt-3">
+
+        {{ $currencies->links() }}
     </div>
 
-    <x-modal wire:model="showModal">
-        <x-slot name="title">
-            {{ __('Show Currency') }} {{ $currency?->name }}
-        </x-slot>
-
-        <x-slot name="content">
-            <div class="flex flex-col">
-                <div class="flex flex-col">
-                    <x-label for="name" :value="__('Name')" />
-                    {{ $currency?->name }}
-                </div>
-                <div class="flex flex-col">
-                    <x-label for="code" :value="__('Code')" />
-                    {{ $currency?->code }}
-                </div>
-                <div class="flex flex-col">
-                    <x-label for="symbol" :value="__('Symbol')" />
-                    {{ $currency?->symbol }}
-                </div>
-                <div class="flex flex-col">
-                    <x-label for="rate" :value="__('Rate')" />
-                    {{ $currency?->rate }}
-
-                </div>
-            </div>
-        </x-slot>
-    </x-modal>
-
+    <livewire:admin.currency.show :currency="$currency" />
 
     <livewire:admin.currency.edit :currency="$currency" />
 

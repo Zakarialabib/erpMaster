@@ -15,7 +15,10 @@ use App\Models\SaleReturn;
 use App\Models\SaleReturnPayment;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
+use Livewire\Attributes\Layout;
+use Illuminate\Support\Facades\Gate;
 
+#[Layout('components.layouts.dashboard')]
 class ProfitLossReport extends Component
 {
     #[Rule('required', message: 'The start date field is required.')]
@@ -53,7 +56,7 @@ class ProfitLossReport extends Component
     public $payments_sent_amount;
 
     public $payments_net_amount;
-
+    public $warehouse_id;
 
     public function mount(): void
     {
@@ -74,6 +77,8 @@ class ProfitLossReport extends Component
 
     public function render()
     {
+        abort_if(Gate::denies('report access'), 403);
+
         $this->setValues();
 
         return view('livewire.admin.reports.profit-loss-report');

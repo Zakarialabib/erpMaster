@@ -5,11 +5,9 @@
             <livewire:utils.livesearch />
         </x-theme.breadcrumb>
 
-        <div class="w-full px-4 pt-4 pb-10">
-
-            <livewire:admin.customers.google-contact  />
-            {{-- <livewire:admin.stats.transactions /> --}}
-
+        <div class="w-full py-6">
+            {{-- <livewire:admin.customers.google-contact  /> --}}
+            <livewire:admin.stats.transactions />
         </div>
     @endcan
 </div>

@@ -9,6 +9,7 @@ use App\Enums\PaymentStatus;
 use App\Enums\SaleStatus;
 use App\Jobs\PaymentNotification;
 use App\Livewire\Utils\Admin\WithModels;
+use App\Models\CashRegister;
 use App\Models\Customer;
 use App\Models\Warehouse;
 use App\Models\Movement;
@@ -63,10 +64,6 @@ class Index extends Component
 
     public $total_with_shipping;
 
-    public $default_client;
-
-    public $default_warehouse;
-
     #[Rule('required', message: 'Please provide a customer ID')]
     public $customer_id;
 
@@ -99,6 +96,8 @@ class Index extends Component
     #[Rule('string', message: 'Note must be a string')]
     #[Rule('max:1000', message: 'Note must not exceed 1000 characters')]
     public $note;
+    public $user_id;
+    public $cash_register_id;
 
     public function mount(): void
     {
@@ -118,8 +117,28 @@ class Index extends Component
         $this->shipping_amount = 0;
         $this->paid_amount = 0;
 
-        $this->default_client = Customer::find(settings('default_client_id'));
-        $this->default_warehouse = Warehouse::find(settings('default_warehouse_id'));
+        if (settings('default_client_id') !== null) {
+            $this->customer_id = settings('default_client_id');
+        }
+        if (settings('default_warehouse_id') !== null) {
+            $this->warehouse_id = settings('default_warehouse_id');
+        }
+
+        $this->user_id = Auth::user()->id;
+
+        if ($this->user_id && $this->warehouse_id) {
+            $cashRegister = CashRegister::where('user_id', $this->user_id)
+                ->where('warehouse_id', $this->warehouse_id)
+                ->where('status', true)
+                ->first();
+
+            if ($cashRegister) {
+                $this->cash_register_id = $cashRegister->id;
+            } else {
+                $this->dispatch('createModal')->to(CashRegisterCreate::class);
+                return;
+            }
+        }
 
         $this->total_with_shipping = (float) Cart::instance($this->cart_instance)->total() + (float) $this->shipping_amount;
     }
@@ -144,7 +163,7 @@ class Index extends Component
 
     public function store(): void
     {
-        if ( ! $this->warehouse_id) {
+        if (!$this->warehouse_id) {
             $this->alert('error', __('Please select a warehouse'));
 
             return;
@@ -168,7 +187,8 @@ class Index extends Component
                 'date'                => date('Y-m-d'),
                 'customer_id'         => $this->customer_id,
                 'warehouse_id'        => $this->warehouse_id,
-                'user_id'             => Auth::user()->id,
+                'user_id'             => $this->user_id,
+                'cash_register_id'    => $this->cash_register_id,
                 'tax_percentage'      => $this->tax_percentage,
                 'discount_percentage' => $this->discount_percentage,
                 'shipping_amount'     => $this->shipping_amount * 100,
@@ -230,6 +250,7 @@ class Index extends Component
                 SalePayment::create([
                     'date'           => date('Y-m-d'),
                     'amount'         => $this->paid_amount,
+                    'cash_register_id'    => $this->cash_register_id,
                     'sale_id'        => $sale->id,
                     'payment_method' => $this->payment_method,
                     'user_id'        => Auth::user()->id,

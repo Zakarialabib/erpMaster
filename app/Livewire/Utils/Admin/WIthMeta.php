@@ -6,7 +6,7 @@ namespace App\Livewire\Utils\Admin;
 
 use Livewire\Attributes\Rule;
 
-trait WIthMeta
+trait WithMeta
 {
     #[Rule('max:170', message: 'The meta title a max of 170 characters.')]
     #[Rule('min:60', message: 'The meta title field is and must a min of 60.')]

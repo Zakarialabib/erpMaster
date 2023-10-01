@@ -104,7 +104,7 @@
                         <input type="checkbox" value="{{ $product->id }}" wire:model.live="selected">
                     </x-table.td>
                     <x-table.td>
-                        <button type="button" wire:click="$dispatch('showModal',{ id : {{ $product->id }}})"
+                        <button type="button" wire:click="$dispatch('showModal', { id : '{{ $product->id }}' })"
                             class="whitespace-nowrap hover:text-blue-400 active:text-blue-400">
                             {{ $product->name }} <br>
                             <x-badge type="success">
@@ -130,11 +130,10 @@
                         <div class="flex flex-wrap">
                             @foreach ($product->warehouses as $warehouse)
                                 <x-badge type="info">
-                                        {{ $warehouse->name }}
-                                        <span
-                                            class="rounded-full p-1 text-xs font-semibold bg-red-500 text-white ml-2">
-                                            {{ $warehouse->pivot->qty }}
-                                        </span>
+                                    {{ $warehouse->name }}
+                                    <span class="rounded-full p-1 text-xs font-semibold bg-red-500 text-white ml-2">
+                                        {{ $warehouse->pivot->qty }}
+                                    </span>
                                 </x-badge>
                             @endforeach
                         </div>
@@ -153,7 +152,7 @@
                                     <i class="fas fa-eye"></i>
                                     {{ __('Highlighted') }}
                                 </x-dropdown-link>
-                                <x-dropdown-link wire:click="$dispatch('showModal',{ id : {{ $product->id }} })"
+                                <x-dropdown-link wire:click="$dispatch('showModal', { id : '{{ $product->id }}' })"
                                     wire:loading.attr="disabled">
                                     <i class="fas fa-eye"></i>
                                     {{ __('View') }}

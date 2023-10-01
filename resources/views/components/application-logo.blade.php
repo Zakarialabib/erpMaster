@@ -1,1 +1,2 @@
-<img src="{{ asset('images/logo.png') }}" alt="Site Logo" {{ $attributes->merge(['class' => 'w-auto h-30']) }}>
+<img src="{{ asset('images/' . settings('site_logo')) }}" alt="Site Logo"
+    {{ $attributes->merge(['class' => 'w-auto h-30']) }}>

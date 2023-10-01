@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Livewire\Account;
 
-use App\Models\User;
+use App\Models\Customer;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
@@ -12,11 +12,11 @@ use Livewire\Component;
 #[Layout('components.layouts.guest')]
 class Index extends Component
 {
-    public $user;
+    public $customer;
 
     public function mount(): void
     {
-        $this->user = User::find(Auth::user()->id);
+        $this->customer = auth()->guard('customer')->user();
     }
 
     public function render()

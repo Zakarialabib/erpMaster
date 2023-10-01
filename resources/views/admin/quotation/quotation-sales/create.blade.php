@@ -39,7 +39,7 @@
     </section>
 @endsection
 
-<x-app-layout>
+<x-dashboard-layout>
     <x-card>
         <div class="flex flex-wrap">
             <div class="w-full px-4">
@@ -47,10 +47,8 @@
             </div>
 
             <div class="w-full px-4">
-                <form id="sale-form" action="{{ route('sales.store') }}" method="POST">
-                    @csrf
-
-                    <div class="flex flex-wrap -mx-2 mb-3">
+                <form>
+                    <div class="flex flex-wrap">
                         <div class="w-full md:w-1/3 px-2 mb-2">
                             <div class="mb-4">
                                 <label for="reference">{{ __('Reference') }} <span class="text-red-500">*</span></label>
@@ -81,7 +79,7 @@
 
                     <livewire:product-cart :cartInstance="'sale'" :data="$sale" />
 
-                    <div class="flex flex-wrap -mx-2 mb-3">
+                    <div class="flex flex-wrap">
                         <div class="w-full md:w-1/3 px-2 mb-2">
                             <div class="mb-4">
                                 <label for="status">{{ __('Status') }} <span class="text-red-500">*</span></label>
@@ -141,13 +139,12 @@
                     <input type="hidden" name="quotation_id" value="{{ $quotation_id }}">
 
                     <div class="mt-3">
-                        <button type="submit"
-                            class="block uppercase mx-auto shadow bg-indigo-800 hover:bg-indigo-700 focus:shadow-outline focus:outline-none text-white text-xs py-3 px-10 rounded">
-                            {{ __('Create Sale') }} <i class="bi bi-check"></i>
-                        </button>
+                        <x-button type="submit" primary >
+                            {{ __('Create Sale') }} 
+                        </x-button>
                     </div>
                 </form>
             </div>
         </div>
     </x-card>
-</x-app-layout>
+</x-dashboard-layout>

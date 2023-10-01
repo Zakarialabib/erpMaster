@@ -22,8 +22,12 @@ class PermissionsDemoSeeder extends Seeder
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
         // create roles and assign existing permissions
-        $role1 = Role::create(['name' => 'customer']);
-        $role1->givePermissionTo('customer access');
+        $role1 = Role::create([
+            'name' => 'client',
+            'guard_name' => 'customer',
+        ]);
+
+        // $role1->givePermissionTo('customer access');
 
         $customer = \App\Models\Customer::factory()->create([
             'id'       => Str::uuid(),

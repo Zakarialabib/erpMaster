@@ -19,7 +19,7 @@ class Edit extends Component
     use WithMeta;
 
     public $blogcategory;
-   
+
     #[Rule('required', message: 'Title is required')]
     public $title;
 
@@ -29,7 +29,6 @@ class Edit extends Component
     public $language_id;
 
     public $editModal = false;
-
 
     #[On('editModal')]
     public function editModal($id): void

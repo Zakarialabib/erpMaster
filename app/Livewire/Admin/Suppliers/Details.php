@@ -45,7 +45,7 @@ class Details extends Component
     public function TotalPurchaseReturns(): float
     {
         return PurchaseReturn::where('supplier_id', $this->supplier_id)
-            ->sum('total_amount');
+            ->sum('total_amount') / 100;
     }
 
     #[Computed]
@@ -66,12 +66,12 @@ class Details extends Component
         // Step 1: Calculate total purchases revenue for completed purchases
         $purchasesTotal = Purchase::where('supplier_id', $this->supplier_id)
             ->completed()
-            ->sum('total_amount');
+            ->sum('total_amount') / 100;
 
         // Step 2: Calculate total purchases returns
         $purchaseReturnsTotal = PurchaseReturn::where('supplier_id', $this->supplier_id)
             ->completed()
-            ->sum('total_amount');
+            ->sum('total_amount') / 100;
 
         // Step 3: Calculate the total product cost from the pivot table
         $productCosts = 0;

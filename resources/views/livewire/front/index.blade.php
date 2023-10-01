@@ -2,45 +2,13 @@
     @section('title', __('Home'))
 
     <div class="relative mx-auto mb-5">
-        <div class="w-full mx-auto bg-gray-900">
-            <div class="swiper mySwiper">
-                <div class="swiper-wrapper">
-                    <!-- Slides -->
-                    @foreach ($this->sliders as $slider)
-                        <div class="swiper-slide">
-                            <div class="flex flex-wrap -mx-4 py-10 px-4"
-                                style="background-image: url({{ asset('images/sliders/' . $slider->image) }});background-size: cover;background-position: center;">
-                                <div class="w-full max-w-md px-10 lg:mb-5 sm:mb-2">
-                                    <div class="lg:py-5 py-10 text-white px-2">
-                                        <h5 class="xl:text-2xl md:text-xl sm:text-md font-bold mb-2">
-                                            {{ $slider->subtitle }}
-                                        </h5>
-                                        <h2 class="xl:text-6xl md:text-2xl sm:text-xl font-semibold font-heading">
-                                            {{ $slider->title }}
-                                        </h2>
-                                        <p class="py-10 xl:text-lg sm:text-sm">
-                                            {!! $slider->description !!}
-                                        </p>
-                                        @if ($slider->link)
-                                            <a class="inline-block text-white font-bold font-heading py-4 px-6 rounded-md uppercase transition ease-in duration-300 bg-green-500 hover:bg-green-800 hover:shadow-md"
-                                                href="{{ $slider->link }}">
-                                                {{ 'Discover now' }}
-                                            </a>
-                                        @endif
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    @endforeach
-                </div>
-                <div class="swiper-pagination"></div>
-                <div class="swiper-button-prev"></div>
-                <div class="swiper-button-next"></div>
-            </div>
-        </div>
+        <section class="w-full mx-auto bg-gray-900 h-auto relative">
+            <x-theme.slider :sliders="$this->sliders" />
+        </section>
+        
         <div class="w-full py-5 px-4 mx-auto">
             <div class="flex flex-col">
-                <h2 class="text-2xl font-bold text-center mb-4">
+                <h2 class="text-first-brand font-extrabold text-md sm:text-lg md:text-xl lg:text-header-2 mx-auto capitalize relative max-w-[778px]">
                     {{ __('Choose your favorite choice') }}
                 </h2>
 
@@ -155,33 +123,4 @@
             </div>
         </div>
     </div>
-
-
-    @push('scripts')
-        <script>
-            document.addEventListener('livewire:load', function() {
-                var swiper = widnow.Swiper(".mySwiper", {
-                    slidesPerView: "auto",
-                    spaceBetween: 30,
-                    speed: 400,
-                    autoHeight: true,
-                    loop: true,
-                    pagination: {
-                        el: '.swiper-pagination',
-                        clickable: true,
-                    },
-                    navigation: {
-                        nextEl: '.swiper-button-next',
-                        prevEl: '.swiper-button-prev',
-                    },
-                });
-            })
-        </script>
-    @endpush
-
-
-    @push('styles')
-        <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
-    @endpush
-
 </div>

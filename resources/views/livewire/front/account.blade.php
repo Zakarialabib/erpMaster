@@ -4,10 +4,10 @@
             <div class="flex flex-wrap">
                 <div class="w-full px-2 md:w-1/2">
                     <label class="font-bold font-heading text-gray-600" for="">{{ __('First Name') }}</label>
-                    <input wire:model.lazy="first_name"
+                    <input wire:model.lazy="name"
                         class="block w-full mt-4 py-2 px-4 bg-white border border-gray-200 focus:ring-blue-300 focus:border-blue-300 rounded-md"
                         type="text">
-                    <x-input-error :messages="$errors->get('first_name')" for="first_name" class="mt-2" />
+                    <x-input-error :messages="$errors->get('name')" for="name" class="mt-2" />
                 </div>
                 <div class="w-full px-2 md:w-1/2">
                     <label class="font-bold font-heading text-gray-600" for="">{{ __('Last Name') }}</label>

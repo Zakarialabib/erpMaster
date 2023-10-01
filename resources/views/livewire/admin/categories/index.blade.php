@@ -22,11 +22,15 @@
                 </x-button>
             @endif
             @if ($this->selectedCount)
-                <p class="text-sm  my-auto">
+                <p class="text-sm leading-5">
                     <span class="font-medium">
                         {{ $this->selectedCount }}
                     </span>
                     {{ __('Entries selected') }}
+                </p>
+                <p wire:click="resetSelected" wire:loading.attr="disabled"
+                    class="text-sm leading-5 font-medium text-red-500 cursor-pointer ">
+                    {{ __('Clear Selected') }}
                 </p>
             @endif
         </div>
@@ -115,18 +119,8 @@
         </x-table.tbody>
     </x-table>
 
-    <div class="p-4">
-        <div class="pt-3">
-            @if ($this->selectedCount)
-                <p class="text-sm leading-5">
-                    <span class="font-medium">
-                        {{ $this->selectedCount }}
-                    </span>
-                    {{ __('Entries selected') }}
-                </p>
-            @endif
-            {{ $categories->links() }}
-        </div>
+    <div class="pt-3">
+        {{ $categories->links() }}
     </div>
 
     <livewire:admin.categories.edit :category="$category" />

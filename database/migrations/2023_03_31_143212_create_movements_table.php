@@ -18,7 +18,7 @@ return new class () extends Migration {
             $table->id();
             $table->string('type');
             $table->unsignedInteger('quantity');
-            $table->decimal('price', 10, 2);
+            $table->double('price');
             $table->dateTime('date');
             $table->uuid('movable_id');
             $table->string('movable_type');

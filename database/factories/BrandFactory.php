@@ -23,13 +23,13 @@ class BrandFactory extends Factory
     public function definition(): array
     {
         return [
-            'name'              => $this->faker->company(),
-            'slug'              => Str::slug($this->faker->company()),
-            'description'       => $this->faker->realText(100),
-            'image'             => $this->faker->imageUrl(400, 400),
-            'meta_title '       => $this->faker->sentence(),
-            'meta_description ' => $this->faker->sentence(),
-            'origin '           => $this->faker->country(),
+            'name'             => $this->faker->company(),
+            'slug'             => Str::slug($this->faker->company()),
+            'description'      => $this->faker->realText(100),
+            'image'            => uploadImage('images/brands', '640', '480'),
+            'meta_title'       => $this->faker->sentence(),
+            'meta_description' => $this->faker->sentence(),
+            'origin'           => $this->faker->country(),
         ];
     }
 }

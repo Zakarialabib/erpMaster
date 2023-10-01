@@ -103,9 +103,9 @@
                                 <select
                                     class="block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border-gray-300 rounded-md mt-1"
                                     name="status" id="status" required>
-                                    @foreach (\App\Enums\QuotationStatus::cases() as $status)
-                                        <option value="{{ $status->value }}">
-                                            {{ __($status->name) }}
+                                    @foreach (\App\Enums\QuotationStatus::values() as $key => $value)
+                                        <option value="{{ $key }}">
+                                            {{ $value }}
                                         </option>
                                     @endforeach
                                 </select>

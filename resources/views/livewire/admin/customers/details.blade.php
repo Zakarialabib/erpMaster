@@ -56,7 +56,7 @@
                             {{ __('Profit') }}
                         </p>
                         <p class="text-3xl sm:text-lg font-bold text-indigo-700 dark:text-indigo-600">
-                            {{ format_currency($customer->getProfit()) }}
+                            {{-- {{ $this->profit }} --}}
                         </p>
                     </div>
                 </div>

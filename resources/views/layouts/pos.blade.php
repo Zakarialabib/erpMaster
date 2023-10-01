@@ -24,6 +24,8 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     
     @include('includes.main-css')
+    @include('includes.main-js')
+
 </head>
 
 <body class="antialiased bg-gray-50 text-body font-body" dir="ltr">
@@ -50,7 +52,6 @@
         </div>
     </div>
 
-    @include('includes.main-js')
 
 </body>
 

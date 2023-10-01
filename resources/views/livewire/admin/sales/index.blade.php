@@ -185,14 +185,15 @@
                                         </x-dropdown-link>
                                     @endcan
                                     @can('delete_sales')
-                                        <x-dropdown-link wire:click="$dispatch('deleteModal', {{ $sale->id }})"
+                                        <x-dropdown-link wire:click="deleteModal('{{ $sale->id }}')"
                                             wire:loading.attr="disabled">
                                             <i class="fas fa-trash"></i>
                                             {{ __('Delete') }}
                                         </x-dropdown-link>
                                     @endcan
 
-                                    <x-dropdown-link target="_blank" href="{{ route('admin.sales.pos.pdf', $sale->id) }}"
+                                    <x-dropdown-link target="_blank"
+                                        href="{{ route('admin.sales.pos.pdf', $sale->id) }}"
                                         wire:loading.attr="disabled">
                                         <i class="fas fa-print"></i>
                                         {{ __('Print Pos') }}
@@ -205,15 +206,17 @@
                                     </x-dropdown-link>
 
                                     @can('access_sale_payments')
-                                        <x-dropdown-link wire:click="$dispatch('showPayments', {{ $sale->id }})"
-                                            primary wire:loading.attr="disabled">
+                                        <x-dropdown-link
+                                            wire:click="$dispatch('showPayments', {id :'{{ $sale->id }}'})" primary
+                                            wire:loading.attr="disabled">
                                             <i class="fas fa-money-bill-wave"></i>
                                             {{ __('Payments') }}
                                         </x-dropdown-link>
                                     @endcan
                                     @can('access_sale_payments')
                                         @if ($sale->due_amount > 0)
-                                            <x-dropdown-link wire:click="$dispatch('paymentModal', {{ $sale->id }})"
+                                            <x-dropdown-link
+                                                wire:click="$dispatch('paymentModal',{ id : '{{ $sale->id }}'})"
                                                 primary wire:loading.attr="disabled">
                                                 <i class="fas fa-money-bill-wave"></i>
                                                 {{ __('Add Payment') }}
@@ -242,9 +245,9 @@
         {{ $sales->links() }}
     </div>
 
-    @livewire('admin.sales.show', ['sale' => $sale], key('show' . $sale?->id))
+    <livewire:admin.sales.show' :sale="$sale" lazy />
 
-    @livewire('admin.sales.payment-form', ['sale' => $sale], key('payment-form' . $sale?->id))
+    <livewire:admin.sales.payment-form :sale="$sale" lazy />
 
     <x-modal wire:model="importModal">
         <x-slot name="title">

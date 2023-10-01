@@ -30,12 +30,9 @@ class Index extends Component
 
     /** @var array<string> */
     public $listeners = [
-        'importModal', 'showModal',
+        'importModal',
         'downloadAll', 'exportAll', 'delete',
     ];
-
-    /** @var bool */
-    public $showModal = false;
 
     /** @var bool */
     public $importModal = false;
@@ -53,19 +50,6 @@ class Index extends Component
         $suppliers = $query->paginate($this->perPage);
 
         return view('livewire.admin.suppliers.index', ['suppliers' => $suppliers]);
-    }
-
-    public function showModal($id): void
-    {
-        abort_if(Gate::denies('supplier_show'), 403);
-
-        $this->supplier = Supplier::find($id);
-
-        $this->resetErrorBag();
-
-        $this->resetValidation();
-
-        $this->showModal = true;
     }
 
     public function delete(Supplier $supplier): void

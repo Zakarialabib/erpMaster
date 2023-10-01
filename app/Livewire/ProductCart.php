@@ -15,7 +15,7 @@ class ProductCart extends Component
 
     /** @var array<string> */
     public $listeners = [
-        'productSelected', 'discountModalRefresh',
+        'productSelected',
         'warehouseSelected' => 'updatedWarehouseId',
     ];
 
@@ -80,6 +80,8 @@ class ProductCart extends Component
             $this->updatedGlobalTax();
             $this->updatedGlobalDiscount();
             $this->updatedTotalShipping();
+            $this->warehouse_id = settings('default_warehouse_id');
+
         }
     }
 
@@ -121,7 +123,7 @@ class ProductCart extends Component
 
     private function calculatePrices(array $product, $productWarehouse): array
     {
-        $price = $productWarehouse->price;
+        $price = $productWarehouse->price * 100;
         $unit_price = $price;
         $product_tax = 0.00;
         $sub_total = $price;
@@ -154,7 +156,7 @@ class ProductCart extends Component
             'id'      => $product['id'],
             'name'    => $product['name'],
             'qty'     => 1,
-            'price'   => $productWarehouse->price,
+            'price'   => $productWarehouse->price * 100,
             'weight'  => 1,
             'options' => array_merge($calculation, [
                 'product_discount'      => 0.00,

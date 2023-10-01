@@ -27,7 +27,13 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
 
     <!-- Scripts -->
     @vite('resources/js/app.js')
-    @include('includes.main-js')
+    @livewireScriptConfig
+
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+      
+    <x-livewire-alert::scripts />
+    
+    @stack('scripts')
 
 </head>
 

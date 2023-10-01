@@ -27,7 +27,6 @@ return new class () extends Migration {
             $table->unsignedInteger('role_id')->nullable();
             $table->boolean('status')->default(true);
             $table->boolean('is_all_warehouses')->default(false);
-            $table->integer('wallet_id')->nullable();
             $table->integer('default_client_id')->nullable();
             $table->integer('default_warehouse_id')->nullable();
             $table->string('provider_name')->nullable();

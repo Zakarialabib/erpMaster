@@ -101,7 +101,9 @@ class Barcode extends Component
 
         $pdf->getMpdf()->WriteHTML($stylesheet, \Mpdf\HTMLParserMode::HEADER_CSS);
 
-        return $pdf->download('barcodes-'.date('Y-m-d').'.pdf');
+        return response()->streamDownload(function () use ($pdf) {
+            echo $pdf->output();
+        }, 'barcodes-'.date('Y-m-d').'.pdf');
     }
 
     public function deleteProduct($productId): void

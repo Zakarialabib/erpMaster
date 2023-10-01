@@ -23,7 +23,6 @@ return new class () extends Migration {
             $table->string('city')->nullable();
             $table->string('country')->nullable();
             $table->string('tax_number')->nullable();
-            $table->foreignUuid('wallet_id')->nullable()->constrained('wallets')->cascadeOnDelete();
             $table->softDeletes();
             $table->timestamps();
         });

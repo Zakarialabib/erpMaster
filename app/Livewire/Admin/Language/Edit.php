@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\App;
 use App\Models\Language;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
+use Livewire\Attributes\Rule;
 
 class Edit extends Component
 {
@@ -19,30 +20,34 @@ class Edit extends Component
 
     public $language;
 
+    #[Rule('required', message : 'The code field is required')]
     public $name;
 
+    #[Rule('required', message : 'The code field is required')]
     public $code;
 
-    public $editLanguage = false;
+    public $editModal = false;
 
-    protected $rules = [
-        'language.name' => 'required|max:191',
-        'language.code' => 'required',
-    ];
-
-    #[On('editLanguage')]
-    public function editLanguage($id): void
+    #[On('editModal')]
+    public function editModal($id): void
     {
         $this->language = Language::findOrFail($id);
 
-        $this->editLanguage = true;
+        $this->name = $this->language->name;
+
+        $this->code = $this->language->code;
+
+        $this->editModal = true;
     }
 
     public function update(): void
     {
         $this->validate();
 
-        $this->language->save();
+        $this->language->update([
+            'name' => $this->name,
+            'code' => $this->code,
+        ]);
 
         File::copy(App::langPath().('/en.json'), App::langPath().('/'.$this->code.'.json'));
 
@@ -50,7 +55,7 @@ class Edit extends Component
 
         $this->dispatch('refreshIndex')->to(Index::class);
 
-        $this->editLanguage = false;
+        $this->editModal = false;
     }
 
     public function render()

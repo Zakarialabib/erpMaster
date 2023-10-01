@@ -129,7 +129,7 @@ class Index extends Component
 
     public function downloadBackup($file)
     {
-        return response()->download($file);
+        return response()->streamDownload($file);
     }
 
     public function delete($name): void

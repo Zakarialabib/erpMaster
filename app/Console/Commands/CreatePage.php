@@ -27,8 +27,8 @@ class CreatePage extends Command
 
     public function handle(): void
     {
-        $name = Str::snake($this->argument('title'));
+        Str::snake($this->argument('title'));
 
-        $components = json_decode($this->argument('components'), true);
+        json_decode($this->argument('components'), true);
     }
 }

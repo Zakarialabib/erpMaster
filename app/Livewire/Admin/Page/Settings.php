@@ -312,7 +312,7 @@ class Settings extends Component
 
     private function getSelectedTemplateStyles($templateName)
     {
-        $templates = $this->templates;
+        $templates = $this->templates();
 
         if (isset($templates[$templateName])) {
             return $templates[$templateName]['styles'];

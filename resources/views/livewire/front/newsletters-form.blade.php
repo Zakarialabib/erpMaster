@@ -1,20 +1,32 @@
 <div>
-    <h3 class="mb-6 text-xl text-white font-bold font-heading">{{ __('Join our Newsletter') }}</h3>
-    <form wire:submit="subscribe">
-        <div class="mb-6 relative lg:mx-auto bg-white rounded-lg">
-            <div class="relative flex flex-wrap items-center justify-between">
-                <div class="relative flex-1">
-                    <span
-                        class="absolute top-0 left-0 ml-8 mt-4 font-semibold font-heading text-xs text-gray-400">{{ __('Drop your e-mail') }}</span>
-                    <input wire:model.lazy="email" type="email" name="email"
-                        class="inline-block w-full pt-8 pb-4 px-8 placeholder-gray-900 border-0 focus:ring-transparent focus:outline-none rounded-md">
-                    <x-input-error :messages="$errors->get('email')" for="email" class="mt-2" />
+    <div class="bg-gray-80 rounded-lg relative">
+        <form wire:submit="subscribe">
+            <div class="flex items-center gap-10 flex-col justify-center mx-auto p-5 sm:p-10">
+                <div class="flex flex-col mt-2 w-full xl:w-fit">
+                    <p class="header-7 font-bold text-first-brand mb-1">{{ __('Newsletter') }}</p>
+                    <p
+                        class="text-first-brand font-extrabold text-[25px] leading-[35px] sm:text-lg md:text-xl lg:text-header-2 mb-[18px]">
+                        {{ __('Subcribe our newsletter') }}
+                    </p>
+                    <p class="text-base font-medium text-gray-500 mb-7">
+                        {{ __('By clicking the button, you are agreeing with our Term &amp; Conditions') }}
+                    </p>
+                    <div class="rounded-lg flex items-center py-3 pr-3 justify-between bg-gray-0 pl-4 sm:pl-9">
+                        <input class="border-none outline-none text-base text-gray-200 font-medium flex-1"
+                            wire:model.lazy="email" type="email" name="email"
+                            placeholder="{{ __('Enter you mail...') }}">
+                        <button class="bg-first-brand rounded-lg w-14 h-14 flex items-center justify-center"
+                            type="submit">
+                            <svg class="text-second-brand w-4 h-4" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    <x-input-error :messages="$errors->get('email')" for="email" class="mt-2 text-center" />
                 </div>
-                <button type="submit"
-                    class="inline-block w-auto cursor-pointer bg-green-400 hover:bg-green-200 text-white font-bold font-heading py-4 px-6 rounded-md uppercase text-center transition">
-                    {{ __('Join') }}
-                </button>
             </div>
-        </div>
-    </form>
+        </form>
+    </div>
 </div>

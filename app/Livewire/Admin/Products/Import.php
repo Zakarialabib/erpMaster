@@ -44,7 +44,7 @@ class Import extends Component
         return view('livewire.admin.products.import');
     }
 
-    public function downloadSample(): BinaryFileResponse
+    public function downloadSample()
     {
         return Storage::disk('exports')->download('products_import_sample.xls');
     }
@@ -97,21 +97,6 @@ class Import extends Component
         $this->importModal = false;
     }
 
-    // public function import(): void
-    // {
-    //     $this->validate([
-    //         'import_file' => [
-    //             'required',
-    //             'file',
-    //         ],
-    //     ]);
-
-    //     Product::import(new ProductImport(), $this->file('import_file'));
-
-    //     $this->alert('success', __('Products imported successfully'));
-
-    //     $this->importModal = false;
-    // }
 
     public function googleSheetImport()
     {

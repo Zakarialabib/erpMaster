@@ -68,8 +68,8 @@ class Orders extends Component
             if (empty($existingOrder)) {
                 // Create a new order in the inventory system
                 $newOrder = new Sale();
-                $newOrder->order_number = $order['reference'];
-                $newOrder->total = $order['total'];
+                $newOrder->reference = $order['reference'];
+                $newOrder->total = $order['total_amount'];
                 // Map other fields as needed
                 $newOrder->save();
             }

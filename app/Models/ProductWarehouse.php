@@ -51,7 +51,6 @@ class ProductWarehouse extends Pivot
     {
         return Attribute::make(
             get: static fn ($value): int|float => $value / 100,
-            set: static fn ($value): int|float => $value * 100,
         );
     }
 
@@ -59,7 +58,13 @@ class ProductWarehouse extends Pivot
     {
         return Attribute::make(
             get: static fn ($value): int|float => $value / 100,
-            set: static fn ($value): int|float => $value * 100,
+        );
+    }
+
+    protected function old_price(): Attribute
+    {
+        return Attribute::make(
+            get: static fn ($value): int|float => $value / 100,
         );
     }
 }

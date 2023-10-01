@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Exceptions;
 
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
 
@@ -26,4 +27,5 @@ class Handler extends ExceptionHandler
         $this->reportable(static function (Throwable $e): void {
         });
     }
+
 }

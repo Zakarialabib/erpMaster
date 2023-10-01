@@ -93,7 +93,10 @@ class Create extends Component
         $this->paid_amount = 0;
         $this->payment_method = 'cash';
         $this->date = date('Y-m-d');
-        // $this->warehouse_id = "";
+
+        if (settings('default_warehouse_id') !== null) {
+            $this->warehouse_id = settings('default_warehouse_id');
+        }
     }
 
     public function render()
@@ -123,7 +126,7 @@ class Create extends Component
 
     public function store(): void
     {
-        if ( ! $this->warehouse_id) {
+        if (!$this->warehouse_id) {
             $this->alert('error', __('Please select a warehouse'));
 
             return;
@@ -186,7 +189,7 @@ class Create extends Component
                     ->where('warehouse_id', $this->warehouse_id)
                     ->first();
 
-                if ( ! $product_warehouse) {
+                if (!$product_warehouse) {
                     $product_warehouse = new ProductWarehouse([
                         'product_id'   => $cart_item->id,
                         'warehouse_id' => $this->warehouse_id,

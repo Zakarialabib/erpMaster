@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Livewire\Auth;
 
-use App\Models\User;
+use App\Models\Customer;
 use Spatie\Permission\Models\Role;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Auth;
@@ -12,18 +12,24 @@ use Illuminate\Support\Facades\Hash;
 use Livewire\Component;
 use App\Enums\Status;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Rule;
 
 #[Layout('components.layouts.guest')]
 class Register extends Component
 {
+    #[Rule('required')]
     public $name = '';
 
+    #[Rule('required|email|unique:users,email')]
     public $email = '';
 
+    #[Rule('required')]
     public $password = '';
 
+    #[Rule('required|min:8|same:passwordConfirmation')]
     public $passwordConfirmation = '';
 
+    #[Rule('required|numeric')]
     public $phone;
 
     public $city;
@@ -39,14 +45,9 @@ class Register extends Component
 
     public function register()
     {
-        $this->validate([
-            'name'     => 'required',
-            'email'    => 'required|email|unique:users,email',
-            'phone'    => 'required|numeric',
-            'password' => 'required|min:8|same:passwordConfirmation',
-        ]);
+        $this->validate();
 
-        $user = User::create([
+        $customer = Customer::create([
             'name'     => $this->name,
             'email'    => $this->email,
             'password' => Hash::make($this->password),
@@ -58,14 +59,21 @@ class Register extends Component
 
         $role = Role::where('name', 'client')->first();
 
-        $user->assignRole($role);
+        if (!$role) {
+            $role = Role::create([
+                'guard_name' => 'customer',
+                'name' => 'client',
+            ]);
+        }
 
-        event(new Registered($user));
+        $customer->assignRole($role);
 
-        Auth::login($user, true);
+        event(new Registered($customer));
+
+        Auth::guard('customer')->login($customer, true);
 
         $homePage = match (true) {
-            $user->hasRole('admin') => '/admin/dashboard',
+            $customer->hasRole('client') => '/my-account',
             default                 => '/',
         };
 

@@ -46,7 +46,7 @@
                             <div>{{ __('Date') }}:
                                 {{ format_date($quotation?->date) }}</div>
                             <div>
-                                {{ __('Status') }}: <strong>{{ $quotation?->status }}</strong>
+                                {{ __('Status') }}: <strong>{{ $quotation?->status->label() }}</strong>
                             </div>
                         </div>
                     </div>

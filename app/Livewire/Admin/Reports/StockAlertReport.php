@@ -7,7 +7,9 @@ namespace App\Livewire\Admin\Reports;
 use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\Product;
+use Livewire\Attributes\Layout;
 
+#[Layout('components.layouts.dashboard')]
 class StockAlertReport extends Component
 {
     use WithPagination;

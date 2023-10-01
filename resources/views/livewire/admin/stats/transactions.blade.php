@@ -293,7 +293,7 @@
         <div class="sm:w-1/2 w-full px-2">
             <div class="bg-white rounded-lg border border-gray-200 pb-2">
                 <div class="py-3 px-5 w-full inline-flex items-center justify-between text-gray-700">
-                    <span class="text-md font-semibold">{{ __('Recenet Ecommerce Orders') }}</span>
+                    <span class="text-md font-semibold">{{ __('Recent Ecommerce Orders') }}</span>
                 </div>
                 <table class="table">
                     <thead>
@@ -307,9 +307,9 @@
                             <tr class="text-sm antialiased" wire:key="{{ $order->id }}">
 
                                 <td class="px-4 py-2">
-                                    <a href="{{ route('admin.order.show', $order->id) }}">
-                                        {{ $order->reference }}
-                                    </a>
+                                    {{-- <a href="{{ route('admin.order.show', $order->id) }}"> --}}
+                                    {{ $order->reference }}
+                                    {{-- </a> --}}
                                 </td>
                                 <td class="px-4 py-2">{{ format_currency($order->total_amount) }}</td>
                                 <td class="px-4 py-2">{{ format_date($order->created_at) }}</td>

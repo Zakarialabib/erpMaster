@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Livewire\Account;
 
+use Livewire\Attributes\Locked;
 use Livewire\Component;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 
@@ -11,21 +12,19 @@ class UserInfos extends Component
 {
     use LivewireAlert;
 
-    public $user;
+    public $customer;
 
     public $email;
 
-    protected function rules(): array
-    {
-        return [
-            'user.email'    => 'required|email|unique:users,email,'.$this->user->id,
-            'user.password' => 'required|min:6',
-        ];
-    }
+    #[Locked]
+    public $password = '';
 
-    public function mount($user): void
+    public function mount($customer): void
     {
-        $this->user = $user;
+        $this->customer = $customer;
+        // dd($this->customer);
+        $this->email = $this->customer->email;
+
     }
 
     public function render()
@@ -35,13 +34,15 @@ class UserInfos extends Component
 
     public function save(): void
     {
-        $this->email = $this->user->email;
 
-        if ($this->user->password !== '') {
-            $this->user->password = bcrypt($this->user->password);
+        if ($this->password !== '') {
+            $this->password = bcrypt($this->password);
         }
 
-        $this->user->update();
+        $this->customer->update([
+            'email'    => $this->email,
+            'password' => $this->password,
+        ]);
 
         $this->alert(
             'success',

@@ -6,6 +6,7 @@ namespace App\Livewire;
 
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\Warehouse;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Attributes\On;
 use Livewire\Component;
@@ -67,6 +68,8 @@ class SearchProduct extends Component
         if ($warehouse_id) {
             $this->warehouse_id = $warehouse_id;
         } else {
+            $this->warehouse_id = settings('default_warehouse_id');
+            // dd($this->w            $this->invoice_header->storeAs('uploads', $imageName, 'public');arehouse_id);
             $this->search_results = [];
         }
     }

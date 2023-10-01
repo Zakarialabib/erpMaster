@@ -1,82 +1,73 @@
 <div>
-    <div class="flex flex-row">
-        <div class="w-full">
-            <form wire:submit="generateReport">
-                <div class="flex flex-wrap -mx-2 mb-3">
-                    <div class="w-full md:w-1/3 px-2 mb-2">
-                        <div class="mb-4">
-                            <label>{{ __('Start Date') }} <span class="text-red-500">*</span></label>
-                            <x-input wire:model="start_date" type="date" name="start_date" />
-                            @error('start_date')
-                                <span class="text-danger mt-1">{{ $message }}</span>
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="w-full md:w-1/3 px-2 mb-2">
-                        <div class="mb-4">
-                            <label>{{ __('End Date') }} <span class="text-red-500">*</span></label>
-                            <x-input wire:model="end_date" type="date" name="end_date" />
-                            @error('end_date')
-                                <span class="text-danger mt-1">{{ $message }}</span>
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="w-full md:w-1/3 px-2 mb-2">
-                        <div class="mb-4">
-                            <label>{{ __('Supplier') }}</label>
-                            <select wire:model="supplier_id"
-                                class="block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border-gray-300 rounded-md mt-1"
-                                name="supplier_id">
-                                <option value="">{{ __('Select Supplier') }}</option>
-                                @foreach ($suppliers as $supplier)
-                                    <option value="{{ $supplier->id }}">{{ $supplier->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
+    @section('title', __('Purchase Report'))
+
+    <x-theme.breadcrumb :title="__('Purchase Report')" :parent="route('admin.purchases-report.index')" :parentName="__('Purchase Report')" />
+
+    <div class="w-full px-4">
+        <form wire:submit="generateReport">
+            <div class="grid md:grid-cols-2 sm:grid-cols-1 gap-4">
+                <div>
+                    <label>{{ __('Start Date') }} <span class="text-red-500">*</span></label>
+                    <x-input wire:model="start_date" type="date" name="start_date" />
+                    @error('start_date')
+                        <span class="text-danger mt-1">{{ $message }}</span>
+                    @enderror
+
                 </div>
-                <div class="flex flex-wrap -mx-2 mb-3">
-                    <div class="xl:w-1/3 lg:w-1/2 sm:w-full px-3">
-                        <div class="mb-4">
-                            <label>{{ __('Status') }}</label>
-                            <select wire:model="purchase_status"
-                                class="block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border-gray-300 rounded-md mt-1"
-                                name="purchase_status">
-                                @foreach (\App\Enums\PurchaseStatus::cases() as $status)
-                                    <option value="{{ $status->value }}">
-                                        {{ __($status->name) }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                    <div class="xl:w-1/3 lg:w-1/2 sm:w-full px-3">
-                        <div class="mb-4">
-                            <label>{{ __('Payment Status') }}</label>
-                            <select wire:model="payment_status"
-                                class="block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border-gray-300 rounded-md mt-1"
-                                name="payment_status">
-                                <option value="">{{ __('Select Payment Status') }}</option>
-                                @foreach (\App\Enums\PaymentStatus::cases() as $status)
-                                    <option value="{{ $status->value }}">
-                                        {{ __($status->name) }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
+                <div>
+
+                    <label>{{ __('End Date') }} <span class="text-red-500">*</span></label>
+                    <x-input wire:model="end_date" type="date" name="end_date" />
+                    @error('end_date')
+                        <span class="text-danger mt-1">{{ $message }}</span>
+                    @enderror
+
                 </div>
-                <div class="mb-4 md:mb-0">
-                    <button type="submit"
-                        class="block uppercase mx-auto shadow bg-indigo-800 hover:bg-indigo-700 focus:shadow-outline focus:outline-none text-white text-xs py-3 px-10 rounded">
-                        <span wire:target="generateReport" wire:loading class="spinner-border spinner-border-sm"
-                            role="status" aria-hidden="true"></span>
-                        <i wire:target="generateReport" wire:loading.remove class="bi bi-shuffle"></i>
-                        {{ __('Filter Report') }}
-                    </button>
+                <div>
+
+                    <label>{{ __('Supplier') }}</label>
+                    <select wire:model="supplier_id"
+                        class="block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border-gray-300 rounded-md mt-1"
+                        name="supplier_id">
+                        <option value="">{{ __('Select Supplier') }}</option>
+                        @foreach ($suppliers as $supplier)
+                            <option value="{{ $supplier->id }}">{{ $supplier->name }}</option>
+                        @endforeach
+                    </select>
+
                 </div>
-            </form>
-        </div>
+                <div class="xl:w-1/3 lg:w-1/2 sm:w-full px-3">
+                    <label>{{ __('Status') }}</label>
+                    <select wire:model="purchase_status"
+                        class="block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border-gray-300 rounded-md mt-1"
+                        name="purchase_status">
+                        @foreach (\App\Enums\PurchaseStatus::cases() as $status)
+                            <option value="{{ $status->value }}">
+                                {{ __($status->name) }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="xl:w-1/3 lg:w-1/2 sm:w-full px-3">
+                    <label>{{ __('Payment Status') }}</label>
+                    <select wire:model="payment_status"
+                        class="block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border-gray-300 rounded-md mt-1"
+                        name="payment_status">
+                        <option value="">{{ __('Select Payment Status') }}</option>
+                        @foreach (\App\Enums\PaymentStatus::cases() as $status)
+                            <option value="{{ $status->value }}">
+                                {{ __($status->name) }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+            <div class="mb-4 md:mb-0">
+                <x-button type="submit" wire:target="generateReport" wire:loading.attr="disabled">
+                    {{ __('Filter Report') }}
+                </x-button>
+            </div>
+        </form>
     </div>
 
     <div class="flex flex-row pt-3">

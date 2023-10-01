@@ -11,7 +11,10 @@ use App\Models\SaleReturnPayment;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Livewire\Attributes\Layout;
+use Illuminate\Support\Facades\Gate;
 
+#[Layout('components.layouts.dashboard')]
 class PaymentsReport extends Component
 {
     use WithPagination;
@@ -26,11 +29,10 @@ class PaymentsReport extends Component
     #[Rule('after:start_date', message: 'The end date field must be after the start date field.')]
     public $end_date;
     public $payments;
-
     public $payment_method;
 
     protected $rules = [
-        'payments'   => 'required|string',
+        'payments' => 'required|string',
     ];
 
     protected $query;
@@ -45,6 +47,8 @@ class PaymentsReport extends Component
 
     public function render()
     {
+        abort_if(Gate::denies('report access'), 403);
+
         $this->getQuery();
 
         return view('livewire.admin.reports.payments-report', [

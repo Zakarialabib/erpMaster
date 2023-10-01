@@ -173,7 +173,7 @@
                                         </button>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        {{ $pageSetting->page->title ?? '' }} - {{ $pageSetting->page_type->getName() }}
+                                        {{ $pageSetting->page->title ?? '' }} - {{ $pageSetting->page_type->label() }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         {{ $pageSetting->layout_type }}
@@ -228,7 +228,7 @@
                                                         data-id="{{ $key }}" x-data="{ isMenuOpen: false }">
                                                         <form wire:submit="updateSection">
                                                             <div class="flex justify-between">
-                                                                <div class="flex gap-4">
+                                                                <div class="flex gap-4 items-center">
                                                                     <div class="drag-handle cursor-move">
                                                                         <i class="fa fa-bars" aria-hidden="true"></i>
                                                                     </div>

@@ -8,16 +8,18 @@ use App\Models\Order;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Livewire\Component;
+use Livewire\Attributes\Layout;
 
+#[Layout('components.layouts.guest')]
 class ThankYou extends Component
 {
     //  show order description on thank you page
 
     public $order;
 
-    public function mount($order): void
+    public function mount($id): void
     {
-        $this->order = Order::findOrFail($order->id);
+        $this->order = Order::findOrFail($id);
     }
 
     public function render(): View|Factory

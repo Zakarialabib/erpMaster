@@ -33,10 +33,18 @@
                     </div>
                     <div class="w-full md:w-1/2 px-3 mb-4 md:mb-0">
                         <x-label for="warehouse" :value="__('Warehouse')" />
-                        <x-select-list
-                            class="block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border-gray-300 rounded-md mt-1"
-                            required id="warehouse_id" name="warehouse_id" wire:model.live="warehouse_id"
-                            :options="$this->warehouses" />
+                        <select required id="warehouse_id" name="warehouse_id" wire:model.live="warehouse_id"
+                            class="block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border-gray-300 rounded-md mt-1">
+                            <option value="">
+                                {{ __('Select Warehouse') }}
+                            </option>
+                            @foreach ($this->warehouses as $index => $warehouse)
+                                <option value="{{ $warehouse['id'] }}"
+                                    @if (settings('default_warehouse') == $warehouse['id']) selected @endif>
+                                    {{ $warehouse['name'] }}
+                                </option>
+                            @endforeach
+                        </select>
                         <x-input-error :messages="$errors->get('warehouse_id')" class="mt-2" />
                     </div>
                 </div>
@@ -49,7 +57,7 @@
                         <select
                             class="block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border-gray-300 rounded-md mt-1"
                             name="status" id="status" wire:model.live="status" required>
-                            <option>{{ __('Select Status') }}</option>  
+                            <option>{{ __('Select Status') }}</option>
                             @foreach (App\Enums\PurchaseStatus::values() as $key => $value)
                                 <option value="{{ $key }}">{{ $value }}</option>
                             @endforeach
@@ -89,9 +97,9 @@
                         {{ __('Reset') }}
                     </x-button>
 
-                    <button
+                    <button type="button"
                         class="inline-flex items-center px-4 py-2 border border-transparent rounded-md font-bold text-xs text-white uppercase tracking-widest active:bg-indigo-900 focus:outline-none focus:border-indigo-900 focus:ring ring-green-300 disabled:opacity-25 transition ease-in-out duration-150 bg-green-500 hover:bg-green-700"
-                        type="submit" wire:click="proceed" wire:loading.attr="disabled"
+                        wire:click.throttle="proceed" wire:loading.attr="disabled"
                         {{ $total_amount == 0 ? 'disabled' : '' }}>
                         {{ __('Proceed') }}
                     </button>

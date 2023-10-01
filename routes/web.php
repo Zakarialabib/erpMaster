@@ -17,8 +17,10 @@ use App\Livewire\Front\Brands as FrontBrands;
 use App\Livewire\Front\BrandPage as FrontBrandPage;
 use App\Livewire\Front\Catalog as FrontCatalog;
 use App\Livewire\Front\Categories as FrontCategories;
+use App\Livewire\Front\Checkout as CheckoutIndex;
 use App\Livewire\Front\ProductShow;
 use App\Livewire\Front\SubcategoryPage;
+use App\Livewire\Front\ThankYou;
 use Livewire\Livewire;
 
 /*
@@ -33,20 +35,12 @@ use Livewire\Livewire;
 */
 
 require __DIR__.'/auth.php';
-require __DIR__.'/admin.php';
-
-Route::get('/', [AuthenticatedSessionController::class, 'create']);
-
-// Route::get('/docs/{file?}', [DocsController::class, 'index'])->name('docs.index');
 
 Route::get('/docs', function () {
     View::addExtension('html', 'php'); // allows .html
 
     return view('docs.index'); // loads /public/docs/index.html
 });
-
-// change lang
-Route::get('/lang/{lang}', [FrontController::class, 'changeLanguage'])->name('changelanguage');
 
 // Route::group(['middleware' => 'firewall.all'], function () {
 Route::get('/', FrontIndex::class)->name('front.index');
@@ -57,9 +51,10 @@ Route::get('/categories/{slug}', SubcategoryPage::class)->name('front.subcategor
 Route::get('/marques', FrontBrands::class)->name('front.brands');
 Route::get('/marque/{slug}', FrontBrandPage::class)->name('front.brandPage');
 Route::get('/catalog/{slug}', ProductShow::class)->name('front.product');
+
 Route::get('/panier', [FrontController::class, 'cart'])->name('front.cart');
-Route::get('/caisse', [FrontController::class, 'checkout'])->name('front.checkout');
-Route::get('/merci-pour-votre-commande/{order}', [FrontController::class, 'thankyou'])->name('front.thankyou');
+Route::get('/confirmation-panier', CheckoutIndex::class)->name('front.checkout');
+
 Route::get('/blogs', FrontBlogs::class)->name('front.blogs');
 Route::get('/blog/{slug}', FrontBlogShow::class)->name('front.blogPage');
 
@@ -67,11 +62,15 @@ Route::get('/page/{slug}', DynamicPage::class)->name('front.dynamicPage');
 
 Route::get('/generate-sitemap', [FrontController::class, 'generateSitemaps'])->name('generate-sitemaps');
 
-Route::middleware('auth')->group(function () {
+Route::middleware('guest:customer')->group(function () {
     Route::get('myaccount', AccountIndex::class)->name('front.myaccount');
+    Route::get('/merci-pour-votre-commande/{id}', ThankYou::class)->name('front.thankyou');
 });
 
 Route::post('/uploads', [UploadController::class, 'upload'])->name('upload');
+
+Route::get('/lang/{lang}', [FrontController::class, 'changeLanguage'])->name('changelanguage');
+
 // });
 
 // Route::fallback(function (Request $request) {
@@ -81,5 +80,3 @@ Route::post('/uploads', [UploadController::class, 'upload'])->name('upload');
 Livewire::setUpdateRoute(function ($handle) {
     return Route::post('/custom/livewire/update', $handle);
 });
-
-

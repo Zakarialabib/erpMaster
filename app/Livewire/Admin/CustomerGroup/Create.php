@@ -49,10 +49,10 @@ class Create extends Component
         $this->validate();
 
         CustomerGroup::create([
-            'name' => $this->name,
+            'name'       => $this->name,
             'percentage' => $this->percentage,
         ]);
-        
+
         $this->alert('success', __('Customer group created successfully.'));
 
         $this->dispatch('refreshIndex')->to(Index::class);

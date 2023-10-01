@@ -4,11 +4,9 @@
 
 @section('content')
     <div class="container">
-
-        <x-printHeader :customer="$customer" :sale="$sale" style="centered" />
+        <x-print-header :entity="$customer" :sale="$sale" style="centered" template="classic" :logo="$logo" />
 
         <br>
-
         <div style="margin-top: 20px;">
             <table style="border-collapse:collapse">
                 <thead>
@@ -53,40 +51,33 @@
                 </tbody>
             </table>
         </div>
-        <div class="row">
-            <div class="col">
-                <table>
-                    <tbody>
-                        @if ($sale->discount_percentage)
-                            <tr>
-                                <td class="left"><strong>{{ __('Discount') }}
-                                        ({{ $sale->discount_percentage }}%)</strong></td>
-                                <td class="right">{{ format_currency($sale->discount_amount) }}</td>
-                            </tr>
-                        @endif
-                        @if ($sale->tax_percentage)
-                            <tr>
-                                <td class="left"><strong>{{ __('Tax') }}
-                                        ({{ $sale->tax_percentage }}%)</strong></td>
-                                <td class="right">{{ format_currency($sale->tax_amount) }}</td>
-                            </tr>
-                        @endif
-                        @if (settings('show_shipping') == true)
-                            <tr>
-                                <td class="left"><strong>{{ __('Shipping') }}</strong></td>
-                                <td class="right">{{ format_currency($sale->shipping_amount) }}</td>
-                            </tr>
-                        @endif
-                        <tr>
-                            <td class="left"><strong>{{ __('Grand Total') }}</strong></td>
-                            <td class="right">
-                                <strong>{{ format_currency($sale->total_amount) }}</strong>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
+        <x-print-footer style="classic">
+            @if ($sale->discount_percentage)
+                <tr>
+                    <td class="left"><strong>{{ __('Discount') }}
+                            ({{ $sale->discount_percentage }}%)</strong></td>
+                    <td class="right">{{ format_currency($sale->discount_amount) }}</td>
+                </tr>
+            @endif
+            @if ($sale->tax_percentage)
+                <tr>
+                    <td class="left"><strong>{{ __('Tax') }}
+                            ({{ $sale->tax_percentage }}%)</strong></td>
+                    <td class="right">{{ format_currency($sale->tax_amount) }}</td>
+                </tr>
+            @endif
+            @if (settings('show_shipping') == true)
+                <tr>
+                    <td class="left"><strong>{{ __('Shipping') }}</strong></td>
+                    <td class="right">{{ format_currency($sale->shipping_amount) }}</td>
+                </tr>
+            @endif
+            <tr>
+                <td class="left"><strong>{{ __('Grand Total') }}</strong></td>
+                <td class="right">
+                    <strong>{{ format_currency($sale->total_amount) }}</strong>
+                </td>
+            </tr>
+        </x-print-footer>
     </div>
 @endsection

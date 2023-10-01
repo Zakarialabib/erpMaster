@@ -4,22 +4,27 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\ShippingStatus;
 use App\Support\HasAdvancedFilter;
 use Illuminate\Database\Eloquent\Model;
 use App\Enums\OrderStatus;
+use App\Enums\PaymentStatus;
+use App\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class Order extends Model
 {
     use HasAdvancedFilter;
     use SoftDeletes;
+    use HasUuid;
 
     final public const ATTRIBUTES = [
-        'id', 'date', 'reference',
-        'total_amount', 'paid_amount', 'due_amount',
+        'id' , 'date', 'reference',  'shipping_id',
+        'total_amount', 'payment_date', 'status', 'payment_status',
+        'payment_method', 'shipping_status',
     ];
 
     public $orderable = self::ATTRIBUTES;
@@ -27,14 +32,26 @@ class Order extends Model
     public $filterable = self::ATTRIBUTES;
 
     protected $fillable = [
-        'id', 'date', 'reference', 'shipping_id', 'packaging_id',
-         'tax_percentage', 'tax_amount', 'discount_percentage', 'discount_amount', 
-         'shipping_amount', 'total_amount', 'paid_amount', 'due_amount', 'payment_date', '
-         status', 'payment_status', 'payment_method', 'shipping_status', 'document', 'note',
+        'date',
+        'reference',
+        'shipping_id',
+        'customer_id',
+        'tax_amount',
+        'discount_amount',
+        'total_amount',
+        'payment_date',
+        'payment_method',
+        'payment_status',
+        'shipping_status',
+        'status',
+        'document',
+        'note',
     ];
 
     protected $casts = [
-        'status' => OrderStatus::class,
+        'status'          => OrderStatus::class,
+        'shipping_status' => ShippingStatus::class,
+        'payment_status'  => PaymentStatus::class,
     ];
 
     public static function generateReference(): string
@@ -46,19 +63,12 @@ class Order extends Model
         return date('Ymd').'-'.sprintf('%06d', $number);
     }
 
-    public function notifications(): HasMany
+    public function customer(): BelongsTo
     {
-        return $this->hasMany(Notification::class, 'order_id');
-    }
-
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class);
-    }
-
-    public function currency(): BelongsTo
-    {
-        return $this->belongsTo(Currency::class);
+        return $this->belongsTo(
+            related: Customer::class,
+            foreignKey: 'customer_id',
+        );
     }
 
     public function shipping()
@@ -66,14 +76,24 @@ class Order extends Model
         return $this->belongsTo(Shipping::class);
     }
 
-    public function packaging(): BelongsTo
+    public function orderDetails(): HasMany
     {
-        return $this->belongsTo(Packaging::class);
+        return $this->hasMany(orderDetails::class);
     }
 
-    public function products(): BelongsToMany
+    /** get shipping amount */
+    protected function shippingAmount(): Attribute
     {
-        return $this->belongsToMany(Product::class)
-            ->withPivot('qty', 'price', 'tax', 'total');
+        return Attribute::make(
+            get: static fn ($value): int|float => $value / 100,
+        );
+    }
+
+    /** get total amount */
+    protected function totalAmount(): Attribute
+    {
+        return Attribute::make(
+            get: static fn ($value): int|float => $value / 100,
+        );
     }
 }

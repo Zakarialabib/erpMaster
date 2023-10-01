@@ -68,7 +68,6 @@ class Edit extends Component
 
     public function update(): void
     {
-
         $this->validate();
 
         $this->currency->update(

@@ -5,11 +5,10 @@ import "../css/font.css";
 import "perfect-scrollbar/css/perfect-scrollbar.css";
 import { Livewire, Alpine } from '../../vendor/livewire/livewire/dist/livewire.esm';
 
-import swal from 'sweetalert2';
-window.Swal = swal;
-
 import Sortable from 'sortablejs';
 window.Sortable = Sortable;
+
+import editorjs from './editorjs'
 
 import "@fortawesome/fontawesome-free/css/all.css";
 
@@ -19,13 +18,6 @@ window.PerfectScrollbar = PerfectScrollbar;
 Alpine.data('mainState', () => {
     const enableTheme = (isRtl) => {
         document.body.dir = isRtl ? 'rtl' : 'ltr';
-    };
-
-    const scrollToAnchor = (anchor) => {
-        const element = document.querySelector(anchor);
-        if (element) {
-            element.scrollIntoView({ behavior: 'smooth' });
-        }
     };
 
     const loadingMask = {
@@ -57,12 +49,17 @@ Alpine.data('mainState', () => {
     };
 
     const handleOutsideClick = (event) => {
-        if (this.isSidebarOpen && !event.target.closest('.sidebar') && !event.target.closest('.sidebar-toggle')) {
+        if (
+            this.isSidebarOpen &&
+            !event.target.closest(".sidebar") &&
+            !event.target.closest(".sidebar-toggle")
+        ) {
             this.isSidebarOpen = false;
         }
     };
 
-    document.addEventListener('click', handleOutsideClick);
+    document.addEventListener("click", handleOutsideClick);
+
 
     enableTheme(false); // sets document.body.dir to "ltr"
 
@@ -74,7 +71,6 @@ Alpine.data('mainState', () => {
             window.localStorage.setItem('rtl', this.isRtl);
         },
         loadingMask,
-        scrollToAnchor,
         isDarkMode: getTheme(),
         toggleTheme() {
             this.isDarkMode = !this.isDarkMode;

@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Models\CashRegister;
 use App\Models\ExpenseCategory;
 use App\Models\User;
 use App\Models\Warehouse;
@@ -23,11 +24,12 @@ return new class () extends Migration {
             $table->foreignIdFor(ExpenseCategory::class, 'category_id')->constrained()->restrictOnDelete();
             $table->foreignIdFor(User::class)->nullable()->constrained()->restrictOnDelete();
             $table->foreignIdFor(Warehouse::class)->nullable()->constrained()->restrictOnDelete();
+            $table->foreignIdFor(CashRegister::class)->nullable()->cascadeOnDelete();
 
             $table->date('date');
             $table->string('reference')->nullable();
             $table->string('description')->nullable();
-            $table->float('amount');
+            $table->double('amount');
             $table->string('document')->nullable();
             $table->softDeletes();
             $table->timestamps();

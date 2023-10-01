@@ -7,7 +7,6 @@ namespace App;
 use App\Enums\MenuPlacement;
 use App\Models\Brand;
 use App\Models\Category;
-use App\Models\Currency;
 use App\Models\Menu;
 use App\Models\Page;
 use App\Models\Section;
@@ -24,7 +23,7 @@ class Helpers
     {
         return Product::whereHas('warehouses', static function ($query): void {
             $query->where('is_ecommerce', true)
-                ->where('qty', '>', 0);
+                ->where('qty', '>', 0)->get();
         });
     }
 
@@ -52,7 +51,7 @@ class Helpers
 
         $bytes /= (1 << (10 * $pow));
 
-        return round($bytes, 2) . ' ' . $units[$pow];
+        return round($bytes, 2).' '.$units[$pow];
     }
 
     public static function formatDate($timestamp): string
@@ -87,11 +86,7 @@ class Helpers
         return Brand::find($brand_id)->name;
     }
 
-
-    /**
-     *
-     * @return string|null
-     */
+    /** @return string|null */
     public static function productLink(mixed $product)
     {
         if ($product) {
@@ -122,17 +117,14 @@ class Helpers
         $context = stream_context_create($opts);
 
         $image = file_get_contents($image_url, false, $context);
-        $name = Str::slug($productName) . '-' . sprintf('%02d', 0) . '.jpg';
-        $path = public_path() . '/images/products/' . $name;
+        $name = Str::slug($productName).'-'.sprintf('%02d', 0).'.jpg';
+        $path = public_path().'/images/products/'.$name;
         file_put_contents($path, $image);
 
         return $name;
     }
 
-    /**
-     *
-     * @return array<string>|null
-     */
+    /** @return array<string>|null */
     public static function uploadGallery(mixed $gallery): ?array
     {
         // Path cannot be empty
@@ -144,17 +136,15 @@ class Helpers
 
         return array_map(static function ($image): string {
             $image = file_get_contents($image);
-            $name = Str::random(10) . '.jpg';
-            $path = public_path() . '/images/products/' . $name;
+            $name = Str::random(10).'.jpg';
+            $path = public_path().'/images/products/'.$name;
             file_put_contents($path, $image);
+
             return $name;
         }, $gallery);
     }
 
-    /**
-     *
-     * @return mixed
-     */
+    /** @return mixed */
     public static function createCategory(mixed $category)
     {
         // Make sure $category is a string
@@ -188,10 +178,7 @@ class Helpers
         return $subcategoryIds;
     }
 
-    /**
-     *
-     * @return mixed
-     */
+    /** @return mixed */
     public static function createBrand(mixed $brand)
     {
         // Make sure $brand is a string
@@ -203,10 +190,9 @@ class Helpers
         ])->id;
     }
 
-
     public static function handleUpload($image, $width, $height, $productName): string
     {
-        $imageName = Str::slug($productName) . '-' . Str::random(5) . '.' . $image->extension();
+        $imageName = Str::slug($productName).'-'.Str::random(5).'.'.$image->extension();
 
         $img = Image::make($image->getRealPath())->encode('webp', 85);
 
@@ -232,11 +218,10 @@ class Helpers
 
         $img->stream();
 
-        Storage::disk('local_files')->put('products/' . $imageName, $img, 'public');
+        Storage::disk('local_files')->put('products/'.$imageName, $img, 'public');
 
         return $imageName;
     }
-
 
     public static function getHeaderMenu()
     {
@@ -273,7 +258,6 @@ class Helpers
             ->orderBy('sort_order')
             ->get();
     }
-
 
     public static function getSectionByType($type)
     {

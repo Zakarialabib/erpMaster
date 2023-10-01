@@ -1,6 +1,6 @@
 <div>
     <div class="flex flex-wrap justify-center">
-        <div class="lg:w-1/2 md:w-1/2 sm:w-full flex flex-col my-md-0 my-2">
+        <div class="lg:w-1/2 md:w-1/2 sm:w-full flex flex-col ">
             @if ($this->selectedCount)
                 <p class="text-sm leading-5">
                     <span class="font-medium">
@@ -9,22 +9,18 @@
                     {{ __('Entries selected') }}
                 </p>
             @endif
-            <div class="my-2 my-md-0">
-                
-                <select wire:model.live="perPage" name="perPage"
-                    class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-auto sm:text-sm border-gray-300 rounded-md focus:outline-none focus:shadow-outline-blue transition duration-150 ease-in-out">
-                    @foreach ($paginationOptions as $value)
-                        <option value="{{ $value }}">{{ $value }}</option>
-                    @endforeach
-                </select>
-            </div>
+
+            <select wire:model.live="perPage" name="perPage"
+                class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-auto sm:text-sm border-gray-300 rounded-md focus:outline-none focus:shadow-outline-blue transition duration-150 ease-in-out">
+                @foreach ($paginationOptions as $value)
+                    <option value="{{ $value }}">{{ $value }}</option>
+                @endforeach
+            </select>
         </div>
-        <div class="lg:w-1/2 md:w-1/2 sm:w-full my-2 my-md-0">
-            <div class="my-2 my-md-0">
-                <input type="text" wire:model.debounce.300ms="search"
-                    class="p-3 leading-5 bg-white text-gray-500 rounded border border-gray-300 mb-1 text-sm w-full focus:shadow-outline-blue focus:border-blue-500"
-                    placeholder="{{ __('Search') }}" />
-            </div>
+        <div class="lg:w-1/2 md:w-1/2 sm:w-full my-2 ">
+            <input type="text" wire:model.debounce.300ms="search"
+                class="p-3 leading-5 bg-white text-gray-500 rounded border border-gray-300 mb-1 text-sm w-full focus:shadow-outline-blue focus:border-blue-500"
+                placeholder="{{ __('Search') }}" />
         </div>
     </div>
 
@@ -85,12 +81,12 @@
                     </x-table.td>
                     <x-table.td>
                         <div class="flex justify-start space-x-2">
-                            <x-button primary type="button" wire:click="$dispatch('editModal',{ id : {{ $featuredbanner->id }}})"
+                            <x-button primary type="button"
+                                wire:click="$dispatch('editModal',{ id : {{ $featuredbanner->id }}})"
                                 wire:loading.attr="disabled">
                                 <i class="fas fa-edit"></i>
                             </x-button>
-                            <x-button danger type="button"
-                                wire:click="deleteModal({{ $featuredbanner->id }})"
+                            <x-button danger type="button" wire:click="deleteModal({{ $featuredbanner->id }})"
                                 wire:loading.attr="disabled">
                                 <i class="fas fa-trash-alt"></i>
                             </x-button>
@@ -107,11 +103,10 @@
         </x-table.tbody>
     </x-table>
 
-    <div class="card-body">
-        <div class="pt-3">
-            {{ $featuredbanners->links() }}
-        </div>
+    <div class="pt-3">
+        {{ $featuredbanners->links() }}
     </div>
+
 
     <div>
         <!-- Edit Modal -->
@@ -136,16 +131,14 @@
                             <x-label for="language_id" :value="__('Language')" required />
                             <x-select-list
                                 class="block bg-white text-gray-700 rounded border border-gray-300 mb-1 text-sm w-full focus:shadow-outline-blue focus:border-blue-500"
-                                id="language_id" name="language_id" wire:model="language_id"
-                                :options="$this->listsForFields['languages']" />
+                                id="language_id" name="language_id" wire:model="language_id" :options="$this->listsForFields['languages']" />
                             <x-input-error :messages="$errors->get('language_id')" for="language_id" class="mt-2" />
                         </div>
                         <div class="xl:w-1/2 md:w-full px-2">
                             <x-label for="product_id" :value="__('Product')" />
                             <x-select-list
                                 class="block bg-white text-gray-700 rounded border border-gray-300 mb-1 text-sm w-full focus:shadow-outline-blue focus:border-blue-500"
-                                id="product_id" name="product_id" wire:model="product_id"
-                                :options="$this->listsForFields['products']" />
+                                id="product_id" name="product_id" wire:model="product_id" :options="$this->listsForFields['products']" />
                             <x-input-error :messages="$errors->get('product_id')" for="product_id" class="mt-2" />
                         </div>
 
@@ -171,7 +164,8 @@
 
                         <div class="w-full py-2 px-3">
                             <x-label for="image" :value="__('Image')" />
-                            <x-fileupload wire:model="image" :file="$image" accept="image/jpg,image/jpeg,image/png" />
+                            <x-fileupload wire:model="image" :file="$image"
+                                accept="image/jpg,image/jpeg,image/png" />
                             <x-input-error :messages="$errors->get('image')" for="image" class="mt-2" />
                         </div>
                         <div class="w-full px-3">

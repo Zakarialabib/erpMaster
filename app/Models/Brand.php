@@ -29,7 +29,8 @@ class Brand extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'id', 'name', 'image', 'slug', 'description', 'status',
+        'id', 'name', 'image', 'slug',
+        'description', 'status',
         'meta_title', 'meta_description', 'origin',
     ];
 

@@ -20,7 +20,7 @@ class SectionsSeeder extends Seeder
             [
                 'id'             => 1,
                 'title'          => 'Welcome to ErpMaster',
-                'image'          => 'image.jpg',
+                'image'          => uploadImage('images/sections', '640', '480'),
                 'featured_title' => 'ERPMASTER',
                 'subtitle'       => 'ERPMASTER',
                 'label'          => 'ERPMASTER',

@@ -25,13 +25,19 @@ class Page extends Model
     public $filterable = self::ATTRIBUTES;
 
     protected $fillable = [
-        'title', 'slug', 'description',
-        'meta_title', 'meta_description',
-        'status', 'images', 'type',
-        'is_sliders', 'is_contact', 'is_offer',
-        'is_workshop_activity', 'is_outdoor_activity',
-        'is_package', 'is_partners',
-        'is_title', 'is_description',
+        'title',
+        'slug',
+        'description',
+        'image',
+        'type',
+        'meta_title',
+        'meta_description',
+        'is_sliders',
+        'is_contact',
+        'is_offer',
+        'is_title',
+        'is_description',
+        'status',
     ];
 
     protected $casts = [

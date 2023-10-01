@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Models\CashRegister;
 use App\Models\Sale;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
@@ -21,8 +22,9 @@ return new class () extends Migration {
 
             $table->foreignIdFor(Sale::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(CashRegister::class)->nullable()->cascadeOnDelete();
 
-            $table->integer('amount');
+            $table->double('amount');
             $table->date('date');
             $table->string('reference');
             $table->string('payment_method');

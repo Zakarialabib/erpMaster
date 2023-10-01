@@ -9,7 +9,8 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class () extends Migration {
+return new class() extends Migration
+{
     /**
      * Run the migrations.
      *
@@ -18,7 +19,7 @@ return new class () extends Migration {
     public function up()
     {
         Schema::create('quotations', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->foreignIdFor(Customer::class)->nullOnDelete();
             $table->foreignIdFor(User::class)->cascadeOnDelete();
             $table->foreignIdFor(Warehouse::class)->nullable()->cascadeOnDelete();
@@ -29,8 +30,8 @@ return new class () extends Migration {
             $table->integer('discount_percentage')->default(0);
             $table->integer('discount_amount')->default(0);
             $table->integer('shipping_amount')->default(0);
-            $table->integer('total_amount');
-            $table->string('status');
+            $table->double('total_amount');
+            $table->integer('status')->default(0);
             $table->timestamp('sent_on')->nullable();
             $table->timestamp('expires_on')->nullable();
             $table->text('note')->nullable();

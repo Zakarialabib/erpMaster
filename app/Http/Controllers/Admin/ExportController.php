@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Customer;
+use App\Models\Order;
 use App\Models\Purchase;
 use App\Models\PurchaseReturn;
 use App\Models\Quotation;
@@ -13,12 +14,11 @@ use App\Models\Sale;
 use App\Models\SaleReturn;
 use App\Models\Supplier;
 use Mccarlosen\LaravelMpdf\Facades\LaravelMpdf as PDF;
-use Symfony\Component\HttpFoundation\Response;
 
 class ExportController extends Controller
 {
     /** Return a response with the PDF to show in the browser */
-    public function salePos(mixed $id): Response
+    public function salePos(mixed $id)
     {
         $sale = Sale::where('id', $id)->firstOrFail();
 
@@ -30,10 +30,10 @@ class ExportController extends Controller
             'format' => 'a5',
         ]);
 
-        return $pdf->stream(__('Sale').$sale->reference.'.pdf');
+        return $pdf->stream(__('Sale') . $sale->reference . '.pdf');
     }
 
-    public function sale($id): Response
+    public function sale($id)
     {
         $sale = Sale::where('id', $id)->firstOrFail();
 
@@ -50,10 +50,10 @@ class ExportController extends Controller
             'watermark' => $this->setWaterMark($sale),
         ]);
 
-        return $pdf->stream(__('Sale').$sale->reference.'.pdf');
+        return $pdf->stream(__('Sale') . $sale->reference . '.pdf');
     }
 
-    public function purchaseReturns($id): Response
+    public function purchaseReturns($id)
     {
         $purchaseReturn = PurchaseReturn::where('id', $id)->firstOrFail();
         $supplier = Supplier::where('id', $purchaseReturn->supplier->id)->firstOrFail();
@@ -65,10 +65,10 @@ class ExportController extends Controller
 
         $pdf = PDF::loadView('admin.purchasesreturn.print', $data);
 
-        return $pdf->stream(__('Purchase Return').$purchaseReturn->reference.'.pdf');
+        return $pdf->stream(__('Purchase Return') . $purchaseReturn->reference . '.pdf');
     }
 
-    public function quotation($id): Response
+    public function quotation($id)
     {
         $quotation = Quotation::where('id', $id)->firstOrFail();
         $customer = Customer::where('id', $quotation->customer->id)->firstOrFail();
@@ -80,10 +80,10 @@ class ExportController extends Controller
 
         $pdf = PDF::loadView('admin.quotation.print', $data);
 
-        return $pdf->stream(__('Quotation').$quotation->reference.'.pdf');
+        return $pdf->stream(__('Quotation') . $quotation->reference . '.pdf');
     }
 
-    public function purchase($id): Response
+    public function purchase($id)
     {
         $purchase = Purchase::with('supplier', 'purchaseDetails')->where('id', $id)->firstOrFail();
         $supplier = Supplier::where('id', $purchase->supplier->id)->firstOrFail();
@@ -97,10 +97,10 @@ class ExportController extends Controller
             'format' => 'a5',
         ]);
 
-        return $pdf->stream(__('Purchase').$purchase->reference.'.pdf');
+        return $pdf->stream(__('Purchase') . $purchase->reference . '.pdf');
     }
 
-    public function saleReturns($id): Response
+    public function saleReturns($id)
     {
         $saleReturn = SaleReturn::where('id', $id)->firstOrFail();
         $customer = Customer::where('id', $saleReturn->customer->id)->firstOrFail();
@@ -112,12 +112,12 @@ class ExportController extends Controller
 
         $pdf = PDF::loadView('admin.salesreturn.print', $data);
 
-        return $pdf->stream(__('Sale Return').$saleReturn->reference.'.pdf');
+        return $pdf->stream(__('Sale Return') . $saleReturn->reference . '.pdf');
     }
 
     private function getCompanyLogo(): string
     {
-        return 'data:image/png;base64,'.base64_encode(file_get_contents(public_path('images/logo.png')));
+        return 'data:image/png;base64,' . base64_encode(file_get_contents(public_path('images/logo.png')));
     }
 
     private function setWaterMark($model)

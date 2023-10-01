@@ -42,14 +42,19 @@ class Edit extends Component
     #[Rule('nullable')]
     public $warehouse_id;
 
-    public function ExpenseCategories()
+    #[Computed]
+    public function expenseCategories()
     {
         return ExpenseCategory::select('name', 'id')->get();
     }
 
     #[Computed]
-    public function Warehouses()
+    public function warehouses()
     {
+        if (auth()->check()) {
+            $user = auth()->user();
+            return Warehouse::whereIn('id', $user->warehouses->pluck('id'))->select('name', 'id')->get();
+        }
         return Warehouse::select('name', 'id')->get();
     }
 

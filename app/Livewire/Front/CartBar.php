@@ -8,21 +8,13 @@ use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
+use Livewire\Attributes\Computed;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class CartBar extends Component
 {
     use LivewireAlert;
-
-    public $decreaseQuantity;
-
-    public $increaseQuantity;
-
-    public $removeFromCart;
-
-    public $cartTotal;
-
-    // public $cartItems;
 
     public $showCart = false;
 
@@ -31,7 +23,6 @@ class CartBar extends Component
     public $listeners = [
         'showCart',
         'hideCart',
-        'cartBarUpdated',
         'confirmed',
     ];
 
@@ -43,7 +34,7 @@ class CartBar extends Component
     {
         Cart::instance('shopping')->remove($this->productId);
         $this->dispatch('cartCountUpdated');
-        $this->dispatch('cartBarUpdated');
+        $this->cartBarUpdated();
     }
 
     public function showCart(): void
@@ -56,7 +47,7 @@ class CartBar extends Component
         $cartItem = Cart::instance('shopping')->get($rowId);
         $qty = $cartItem->qty - 1;
         Cart::instance('shopping')->update($rowId, $qty);
-        $this->dispatch('cartBarUpdated');
+        $this->cartBarUpdated();
     }
 
     public function increaseQuantity($rowId): void
@@ -64,7 +55,7 @@ class CartBar extends Component
         $cartItem = Cart::instance('shopping')->get($rowId);
         $qty = $cartItem->qty + 1;
         Cart::instance('shopping')->update($rowId, $qty);
-        $this->dispatch('cartBarUpdated');
+        $this->cartBarUpdated();
     }
 
     public function removeFromCart($rowId): void
@@ -84,21 +75,23 @@ class CartBar extends Component
         );
     }
 
+    #[On('cartBarUpdated')]
     public function cartBarUpdated(): void
     {
-        $this->cartTotal = Cart::instance('shopping')->total();
-
-        $this->cartItems = Cart::instance('shopping')->content();
+        $this->cartTotal();
+        $this->cartItems();
     }
 
-    public function getCartItemsProperty()
+    #[Computed]
+    public function cartItems()
     {
         return Cart::instance('shopping')->content();
     }
 
-    public function getSubTotalProperty()
+    #[Computed]
+    public function cartTotal()
     {
-        return Cart::instance('shopping')->subtotal();
+        return Cart::instance('shopping')->total();
     }
 
     public function render(): View|Factory

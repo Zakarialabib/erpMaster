@@ -1,31 +1,34 @@
 <div>
-    <form wire:submit="generateReport">
-        <div class="flex flex-wrap px-2 text--center mb-3">
-            <div class="lg:w-1/2 sm:w-full px-4">
-                <x-label for="start_date" :value="__('Start Date')" required />
-                <x-input wire:model="start_date" type="date" name="start_date" />
-                @error('start_date')
-                    <span class="text-danger mt-1">{{ $message }}</span>
-                @enderror
+    @section('title', __('Profit & Loss Report'))
 
+    <x-theme.breadcrumb :title="__('Profit & Loss Report')" :parent="route('admin.profit-loss-report.index')" :parentName="__('Profit & Loss Report')" />
+
+    <div class="w-full px-4">
+        <form wire:submit="generateReport">
+            <div class="grid md:grid-cols-2 sm:grid-cols-1 gap-4">
+                <div>
+                    <x-label for="start_date" :value="__('Start Date')" required />
+                    <x-input wire:model="start_date" type="date" name="start_date" />
+                    @error('start_date')
+                        <span class="text-danger mt-1">{{ $message }}</span>
+                    @enderror
+
+                </div>
+                <div>
+                    <x-label for="end_date" :value="__('End Date')" required />
+                    <x-input wire:model="end_date" type="date" name="end_date" />
+                    @error('end_date')
+                        <span class="text-danger mt-1">{{ $message }}</span>
+                    @enderror
+                </div>
             </div>
-            <div class="lg:w-1/2 sm:w-full px-4">
-                <x-label for="end_date" :value="__('End Date')" required />
-                <x-input wire:model="end_date" type="date" name="end_date" />
-                @error('end_date')
-                    <span class="text-danger mt-1">{{ $message }}</span>
-                @enderror
+            <div class="my-4 text-center">
+                <x-button primary type="submit" wire:target="generateReport" wire:loading.attr="disabled">
+                    {{ __('Filter Report') }}
+                </x-button>
             </div>
-        </div>
-        <div class="my-4 text-center">
-            <x-button primary type="submit" wire:target="generateReport" wire:loading.attr="disabled">
-                <span wire:target="generateReport" wire:loading class="spinner-border spinner-border-sm" role="status"
-                    aria-hidden="true"></span>
-                <i wire:target="generateReport" wire:loading.remove class="bi bi-shuffle"></i>
-                {{ __('Filter Report') }}
-            </x-button>
-        </div>
-    </form>
+        </form>
+    </div>
 
 
     <div class="grid xl:grid-cols-3 sm:grid-cols-2 gap-2">
@@ -151,6 +154,5 @@
                 </div>
             </div>
         </x-card>
-
     </div>
 </div>

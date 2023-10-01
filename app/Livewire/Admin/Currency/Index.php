@@ -20,15 +20,6 @@ class Index extends Component
     /** @var mixed */
     public $currency;
 
-    /** @var array<string> */
-    public $listeners = [
-        'showModal',
-    ];
-
-    public $showModal = false;
-
-    public $editModal = false;
-
     public $model = Currency::class;
 
     public function render()
@@ -44,15 +35,6 @@ class Index extends Component
         $currencies = $query->paginate($this->perPage);
 
         return view('livewire.admin.currency.index', ['currencies' => $currencies]);
-    }
-
-    public function showModal(Currency $currency): void
-    {
-        abort_if(Gate::denies('currency_show'), 403);
-
-        $this->currency = Currency::find($currency->id);
-
-        $this->showModal = true;
     }
 
     public function delete(Currency $currency): void

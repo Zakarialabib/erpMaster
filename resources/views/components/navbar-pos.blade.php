@@ -1,12 +1,12 @@
-<section class="py-5 px-6 bg-gray-50 shadow">
-    <nav class="flex items-center justify-between flex-shrink-0 px-3">
+<section class="py-5 px-6 bg-blue-800 shadow">
+    <nav class="flex items-center justify-between px-3">
         <!-- Logo -->
         <a href="{{ route('admin.dashboard') }}" class="text-xl font-semibold dark:text-gray-100">
-            <img class="w-14 h-auto" src="{{ asset('images/logo.png') }}" alt="Site Logo">
+            <img class="w-24 h-auto" src="{{ asset('images/logo.png') }}" alt="Site Logo">
             <span class="sr-only">{{ config('settings.site_title') }}</span>
         </a>
 
-        <div class="flex gap-4">
+        <div class="flex gap-4 items-center">
             <div class="md:flex hidden">
                 <x-button-fullscreen />
             </div>

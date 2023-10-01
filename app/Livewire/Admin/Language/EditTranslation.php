@@ -7,7 +7,9 @@ namespace App\Livewire\Admin\Language;
 use Livewire\Component;
 use App\Models\Language;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
+use Livewire\Attributes\Layout;
 
+#[Layout('components.layouts.dashboard')]
 class EditTranslation extends Component
 {
     use LivewireAlert;
@@ -19,9 +21,9 @@ class EditTranslation extends Component
         'translations.*.value' => 'required',
     ];
 
-    public function mount($language): void
+    public function mount($id): void
     {
-        $this->language = Language::where('id', $language)->firstOrFail();
+        $this->language = Language::where('id', $id)->firstOrFail();
         // dd($this->all());
         $this->translations = $this->getTranslations();
         $this->translations = collect($this->translations)->map(static fn ($item, $key): array => [

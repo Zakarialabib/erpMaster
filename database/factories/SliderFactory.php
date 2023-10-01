@@ -26,7 +26,7 @@ class SliderFactory extends Factory
             'title'         => $this->faker->sentence,
             'description'   => $this->faker->paragraph,
             'embeded_video' => $this->faker->url,
-            'image'         => $this->faker->imageUrl(640, 480),
+            'image'         => uploadImage('images/sliders', '640', '480'),
             'bg_color'      => 'bg-white',
             'text_color'    => 'text-black',
             'featured'      => true,

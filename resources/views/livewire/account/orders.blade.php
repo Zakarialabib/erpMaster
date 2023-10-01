@@ -4,7 +4,7 @@
         <h2 class="text-2xl font-bold font-heading text-gray-700 mb-4">{{ __('Orders') }}</h2>
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
             @forelse ($orders as $order)
-                <div class="px-4 py-6 shadow-lg border bg-white rounded-lg">
+                <div class="relative px-4 py-6 shadow-lg border bg-white rounded-lg">
                     <div class="flex justify-between items-center mb-4">
                         <p class="text-gray-700 font-bold">{{ __('Reference') }}:</p>
                         <p class="text-gray-600">{{ $order->reference }}</p>
@@ -21,7 +21,7 @@
                     @endif
                     <div class="flex justify-between items-center mb-4">
                         <p class="text-gray-700 font-bold">{{ __('Order Amount') }}:</p>
-                        <p class="text-gray-600">{{ format_currency($order->amount) }}</p>
+                        <p class="text-gray-600">{{ format_currency($order->total_amount) }}</p>
                     </div>
                     <div class="flex justify-between items-center mb-4">
                         <p class="text-gray-700 font-bold">{{ __('Payment Method') }}:</p>
@@ -38,6 +38,13 @@
                     <div class="flex justify-between items-center">
                         <p class="text-gray-700 font-bold">{{ __('Order Date') }}:</p>
                         <p class="text-gray-600">{{ format_date($order->created_at) }}</p>
+                    </div>
+
+                    <div class="flex justify-end bottom-0 w-full mt-5 items-center">
+                        <x-button target="_blank" primary class="rounded-full"
+                            href="{{ route('admin.order.pdf', $order->id) }}" wire:loading.attr="disabled">
+                            <i class="fas fa-print"></i>
+                        </x-button>
                     </div>
                 </div>
             @empty

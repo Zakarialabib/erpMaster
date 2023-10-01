@@ -7,8 +7,8 @@
     </x-theme.breadcrumb>
 
     <div class="flex flex-wrap justify-center">
-        <div class="lg:w-1/2 md:w-1/2 sm:w-full flex flex-col my-md-0 my-2">
-            <div class="my-2 my-md-0">
+        <div class="lg:w-1/2 md:w-1/2 sm:w-full flex flex-col ">
+            <div class="my-2 ">
                 <select wire:model.live="perPage" name="perPage"
                     class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-auto sm:text-sm border-gray-300 rounded-md focus:outline-none focus:shadow-outline-blue transition duration-150 ease-in-out">
                     @foreach ($paginationOptions as $value)
@@ -26,8 +26,8 @@
                 @endif
             </div>
         </div>
-        <div class="lg:w-1/2 md:w-1/2 sm:w-full my-2 my-md-0">
-            <div class="my-2 my-md-0">
+        <div class="lg:w-1/2 md:w-1/2 sm:w-full my-2 ">
+            <div class="my-2 ">
                 <input type="text" wire:model.debounce.300ms="search"
                     class="p-3 leading-5 bg-white text-gray-500 rounded border border-gray-300 mb-1 text-sm w-full focus:shadow-outline-blue focus:border-blue-500"
                     placeholder="{{ __('Search') }}" />
@@ -107,18 +107,8 @@
         </x-table.tbody>
     </x-table>
 
-    <div class="card-body">
-        <div class="pt-3">
-            @if ($this->selectedCount)
-                <p class="text-sm leading-5">
-                    <span class="font-medium">
-                        {{ $this->selectedCount }}
-                    </span>
-                    {{ __('Entries selected') }}
-                </p>
-            @endif
-            {{ $sliders->links() }}
-        </div>
+    <div class="px-6 py-3">
+        {{ $sliders->links() }}
     </div>
 
     <livewire:admin.slider.edit :slider="$slider" lazy />

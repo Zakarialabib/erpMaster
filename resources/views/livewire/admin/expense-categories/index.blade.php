@@ -62,10 +62,6 @@
                     </x-table.td>
                     <x-table.td>
                         <div class="flex justify-start space-x-2">
-                            <x-button info type="button" wire:click="showModal({{ $expenseCategory->id }})"
-                                wire:loading.attr="disabled">
-                                <i class="fas fa-eye"></i>
-                            </x-button>
                             <x-button primary type="button"
                                 wire:click="$dispatch('editModal',{ id : {{ $expenseCategory->id }}})"
                                 wire:loading.attr="disabled">
@@ -107,27 +103,6 @@
 
     <livewire:admin.expense-categories.edit :expenseCategory="$expenseCategory" />
 
-    <x-modal wire:model="showModal">
-        <x-slot name="title">
-            {{ __('Show Expense Category') }}
-        </x-slot>
-
-        <x-slot name="content">
-            <div class="flex flex-wrap justify-center">
-                <div class="w-full">
-                    <x-label for="name" :value="__('Name')" />
-                    {{ $expenseCategory?->name }}
-                </div>
-                <div class="w-full">
-                    <x-label for="description" :value="__('Description')" />
-                    {{ $expenseCategory?->description }}
-                </div>
-            </div>
-        </x-slot>
-    </x-modal>
-
     <livewire:admin.expense-categories.create lazy />
-
-
 
 </div>

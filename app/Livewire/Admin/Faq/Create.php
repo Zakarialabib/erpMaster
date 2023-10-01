@@ -28,7 +28,6 @@ class Create extends Component
     #[Rule('required', message: 'The description field cannot be empty.')]
     public $description;
 
-
     public function render(): View|Factory
     {
         return view('livewire.admin.faq.create');
