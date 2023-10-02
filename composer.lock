@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "akaunting/laravel-firewall",
-            "version": "2.1.6",
+            "version": "2.1.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/akaunting/laravel-firewall.git",
-                "reference": "62912909f2827017a03623344639a1f082dedcd2"
+                "reference": "b01b55b4e74510b084be5c37feb0fbc442a4484e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/akaunting/laravel-firewall/zipball/62912909f2827017a03623344639a1f082dedcd2",
-                "reference": "62912909f2827017a03623344639a1f082dedcd2",
+                "url": "https://api.github.com/repos/akaunting/laravel-firewall/zipball/b01b55b4e74510b084be5c37feb0fbc442a4484e",
+                "reference": "b01b55b4e74510b084be5c37feb0fbc442a4484e",
                 "shasum": ""
             },
             "require": {
@@ -69,9 +69,9 @@
             ],
             "support": {
                 "issues": "https://github.com/akaunting/laravel-firewall/issues",
-                "source": "https://github.com/akaunting/laravel-firewall/tree/2.1.6"
+                "source": "https://github.com/akaunting/laravel-firewall/tree/2.1.7"
             },
-            "time": "2023-09-25T06:17:03+00:00"
+            "time": "2023-10-02T05:34:28+00:00"
         },
         {
             "name": "automattic/woocommerce",
