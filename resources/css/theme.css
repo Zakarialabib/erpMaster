@@ -1,3 +1,62 @@
+h1 {
+  @apply text-4xl font-extrabold text-center text-gray-800;
+}
+
+h2 {
+  @apply text-2xl font-extrabold text-center text-gray-800;
+}
+
+h3 {
+  @apply text-xl font-extrabold text-left text-gray-800;
+}
+
+h4 {
+  @apply text-lg font-bold text-left text-gray-800;
+}
+
+h5 {
+  @apply text-base font-bold text-left text-gray-800;
+}
+
+h6 {
+  @apply text-sm font-bold text-left text-gray-800;
+}
+
+.ce-paragraph {
+  @apply text-base font-normal text-left text-gray-800;
+}
+
+.codex-editor__redactor {
+  padding-bottom: 30px !important;
+}
+
+.ce-block__content {
+  @apply max-w-full;
+}
+
+.editorjs-wrapper {
+  border: 1px solid #eee;
+  border-radius: 5px;
+  padding: 0px;
+  margin-bottom: 10px;
+  box-shadow: 0 6px 18px #e8edfa80;
+}
+
+.ce-editorjsColumns_col {
+  border: 1px solid #eee;
+  border-radius: 5px;
+  gap: 10px;
+  padding-top: 10px;
+}
+
+.ce-editorjsColumns_col:focus-within {
+  box-shadow: 0 6px 18px #e8edfa80;
+}
+
+.image-tool__caption {
+  display: none !important;
+}
+
 .row {
   @apply w-full px-4 mb-12 flex flex-wrap items-center justify-center;
 }

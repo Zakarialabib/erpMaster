@@ -23,7 +23,7 @@ class PermissionsDemoSeeder extends Seeder
 
         // create roles and assign existing permissions
         $role1 = Role::create([
-            'name' => 'client',
+            'name'       => 'client',
             'guard_name' => 'customer',
         ]);
 

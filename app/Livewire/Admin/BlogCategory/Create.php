@@ -26,7 +26,9 @@ class Create extends Component
     #[Rule('required', message: 'Title is required')]
     #[Rule('min:3', message: 'Title must be at least 3 characters')]
     public $title;
+
     public $description;
+
     public $language_id;
 
     public function render()

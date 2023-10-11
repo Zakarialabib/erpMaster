@@ -59,10 +59,10 @@ class Register extends Component
 
         $role = Role::where('name', 'client')->first();
 
-        if (!$role) {
+        if ( ! $role) {
             $role = Role::create([
                 'guard_name' => 'customer',
-                'name' => 'client',
+                'name'       => 'client',
             ]);
         }
 
@@ -74,7 +74,7 @@ class Register extends Component
 
         $homePage = match (true) {
             $customer->hasRole('client') => '/my-account',
-            default                 => '/',
+            default                      => '/',
         };
 
         return $this->redirect($homePage, navigate: true);

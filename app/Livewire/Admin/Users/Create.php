@@ -32,13 +32,13 @@ class Create extends Component
     #[Rule('required|numeric')]
     public $phone;
 
-    #[Rule('nullable')]
+
     public $city;
 
-    #[Rule('nullable')]
+
     public $country;
 
-    #[Rule('nullable')]
+
     public $address;
 
     public $selectedWarehouses = [];
@@ -79,16 +79,16 @@ class Create extends Component
     {
         if (auth()->check()) {
             $user = auth()->user();
+
             return Warehouse::whereIn('id', $user->warehouses->pluck('id'))->select('name', 'id')->get();
         }
+
         return Warehouse::pluck('name', 'id')->toArray();
     }
-
 
     #[Computed]
     public function roles()
     {
         return Role::pluck('name', 'id')->toArray();
     }
-    
 }

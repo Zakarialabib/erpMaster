@@ -10,27 +10,27 @@
                 </ul>
                 <ul class="my-6 flex items-center text-center  justify-center gap-8">
                     <li>
-                        <a href="{{ settings('social_facebook') }}">
+                        <a href="{{ settings('social_facebook') }}" target="__blank">
                             <i class="fab fa-facebook-f"></i>
                         </a>
                     </li>
                     <li>
-                        <a href="{{ settings('social_instagram') }}">
+                        <a href="{{ settings('social_instagram') }}" target="__blank">
                             <i class="fab fa-instagram"></i>
                         </a>
                     </li>
                     <li>
-                        <a href="{{ settings('social_linkedin') }}">
+                        <a href="{{ settings('social_linkedin') }}" target="__blank">
                             <i class="fab fa-linkedin-in"></i>
                         </a>
                     </li>
                     <li>
-                        <a href="{{ settings('social_tiktok') }}">
+                        <a href="{{ settings('social_tiktok') }}" target="__blank">
                             <i class="fab fa-tiktok"></i>
                         </a>
                     </li>
                     <li>
-                        <a href="{{ settings('social_whatsapp') }}">
+                        <a href="{{ settings('social_whatsapp') }}" target="__blank">
                             <i class="fab fa-whatsapp"></i>
                         </a>
                     </li>

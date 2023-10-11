@@ -29,7 +29,7 @@
         @if ($page->is_about)
             <section class="mx-auto px-10 py-20 h-auto bg-gray-100" id="about">
                 <div class="flex flex-wrap items-center">
-                    <div class="w-3/4">
+                    <div class="md:w-1/2 sm:w-full text-center sm:text-left">
                         <h3
                             class="pb-10 text-3xl md:text-4xl lg:text-5xl text-left leading-tight text-green-600 font-bold tracking-tighter uppercase cursor-pointer">
                             <span class="hover:underline transition duration-200 ease-in-out">
@@ -44,10 +44,9 @@
                         </div>
                     </div>
 
-                    <div class="w-1/4">
-                        <div class="flex justify-center items-center pin bg-no-repeat md:bg-left w-full bg-center bg-cover h-screen"
-                            style="background-image: url({{ asset('uploads/sections/' . $this->aboutSection->image) }});">
-                        </div>
+                    <div class="md:w-1/2 sm:w-full">
+                        <img class="pin bg-no-repeat md:bg-left w-full bg-center bg-cover h-screen"
+                            src="{{ asset('uploads/sections/' . $this->aboutSection->image) }}">
                     </div>
                 </div>
             </section>

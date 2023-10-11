@@ -24,7 +24,7 @@ return new class () extends Migration {
 
             $table->integer('recieved')->nullable();
             $table->integer('sent')->nullable();
-    
+
             $table->boolean('status');
             $table->timestamps();
         });

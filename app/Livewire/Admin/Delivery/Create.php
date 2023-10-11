@@ -23,34 +23,36 @@ class Create extends Component
     use WithModels;
 
     public $createModal = false;
+
     public Delivery $delivery;
 
     #[Rule('required')]
     public $reference;
 
-    #[Rule('nullable')]
+
     public $sale_id;
 
-    #[Rule('nullable')]
+
     public $order_id;
 
-    #[Rule('nullable')]
+
     public $shipping_id;
 
-    #[Rule('nullable')]
+
     public $document;
 
-    #[Rule('nullable')]
+
     public $note;
 
-    #[Rule('nullable')]
+
     public $address;
 
-    #[Rule('nullable')]
+
     public $delivered_by;
 
-    #[Rule('nullable')]
+
     public $recieved_by;
+
     public $status;
 
     public function render()
@@ -107,23 +109,24 @@ class Create extends Component
         return Shipping::all();
     }
 
-    // Sale with status pending or processing 
+    // Sale with status pending or processing
     #[Computed]
     public function sales()
     {
         if ($this->order_id) {
             return  Sale::where('id', $this->sale_id)->get();
         }
+
         return Sale::all();
     }
 
     #[Computed]
     public function orders()
     {
-
         if ($this->order_id) {
             return  Order::where('id', $this->order_id)->get();
         }
+
         return Order::all();
     }
 }

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Observers;
 
-
 class SettingsObserver
 {
     public function updated(): void

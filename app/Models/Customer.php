@@ -45,10 +45,10 @@ class Customer extends Authenticatable
      */
     protected $fillable = [
         'id', 'name', 'phone', 'email', 'city', 'country',
-        'address', 'tax_number', 'password','status',
+        'address', 'tax_number', 'password', 'status',
     ];
 
-        /**
+    /**
      * The attributes that should be hidden for arrays.
      *
      * @var array
@@ -57,7 +57,6 @@ class Customer extends Authenticatable
         'password',
         'remember_token',
     ];
-
 
     /** @return HasOne<Sale> */
     public function sales(): HasOne

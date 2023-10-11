@@ -58,8 +58,8 @@
                                 wire:loading.attr="disabled">
                                 <i class="fas fa-edit"></i>
                             </x-button>
-                            <x-button danger type="button" wire:click="delete({{ $role->id }})"
-                                type="button" wire:loading.attr="disabled">
+                            <x-button danger type="button" wire:click="delete({{ $role->id }})" type="button"
+                                wire:loading.attr="disabled">
                                 <i class="fas fa-trash"></i>
                             </x-button>
                         </div>
@@ -75,16 +75,12 @@
         </x-table.tbody>
     </x-table>
 
-
-    <div class="p-4">
-        <div class="pt-3">
-            {{ $roles->links() }}
-        </div>
+    <div class="pt-3">
+        {{ $roles->links() }}
     </div>
 
-    @livewire('admin.role.create')
+    <livewire:admin.role.create lazy />
 
-    @livewire('admin.role.edit', ['role' => $role])
+    <livewire:admin.role.edit lazy :role="$role" />
 
 </div>
-

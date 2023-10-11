@@ -18,6 +18,7 @@ class GoogleDriveServiceProvider extends ServiceProvider
             if ( ! empty(config('filesystems.disks.google.teamDriveId') ?? null)) {
                 $options['teamDriveId'] = config('filesystems.disks.google.teamDriveId');
             }
+
             $client = new \Google\Client();
             $client->setClientId(config('filesystems.disks.google.clientId'));
             $client->setClientSecret(config('filesystems.disks.google.clientSecret'));

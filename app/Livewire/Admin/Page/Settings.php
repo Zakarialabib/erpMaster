@@ -24,10 +24,10 @@ class Settings extends Component
 
     public $colors = ['gray', 'red', 'green', 'blue', 'indigo'];
 
-    #[Rule('nullable')]
+
     public $selectedColor;
 
-    #[Rule('nullable')]
+
     public $bg_color;
 
     public $colorOptions = [100, 200, 300, 400, 500, 600, 700, 800, 900];

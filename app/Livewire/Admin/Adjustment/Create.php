@@ -32,6 +32,7 @@ class Create extends Component
 
     #[Rule('required|string|max:255')]
     public $reference;
+
     public $quantities;
 
     public $types;
@@ -54,7 +55,7 @@ class Create extends Component
         $this->reference = 'Adj-'.Str::random(5);
         $this->date = date('Y-m-d');
 
-        if(settings('default_warehouse_id') !== null){
+        if (settings('default_warehouse_id') !== null) {
             $this->warehouse_id = settings('default_warehouse_id');
         }
     }

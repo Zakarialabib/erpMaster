@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Livewire\Admin\CashRegister;
 
 use App\Enums\SaleStatus;
@@ -15,26 +17,33 @@ use Livewire\Component;
 class Show extends Component
 {
     use LivewireAlert;
-    
+
     public $showModal = false;
 
     public $cashRegister;
+
     public $total_sale_amount;
+
     public $total_payment;
+
     public $cash_payment;
+
     public $cheque_payment;
+
     public $total_sale_return;
+
     public $total_expense;
+
     public $total_cash;
 
     #[On('showModal')]
-    public function showModal($id)
+    public function showModal($id): void
     {
         $this->cashRegister = CashRegister::find($id);
 
         $this->total_sale_amount = Sale::where([
             ['cash_register_id', $this->cashRegister->id],
-            ['status', SaleStatus::COMPLETED]
+            ['status', SaleStatus::COMPLETED],
         ])->sum('total_amount') / 100;
 
         $this->total_payment = SalePayment::where('cash_register_id', $this->cashRegister->id)
@@ -42,17 +51,17 @@ class Show extends Component
 
         $this->cash_payment = SalePayment::where([
             ['cash_register_id', $this->cashRegister->id],
-            ['payment_method', 'Cash']
+            ['payment_method', 'Cash'],
         ])->sum('amount') / 100;
 
         $this->cheque_payment = SalePayment::where([
             ['cash_register_id', $this->cashRegister->id],
-            ['payment_method', 'Cheque']
+            ['payment_method', 'Cheque'],
         ])->sum('amount') / 100;
 
         $this->total_sale_return = SaleReturn::where('cash_register_id', $this->cashRegister->id)
             ->sum('total_amount') / 100;
-            
+
         $this->total_expense = Expense::where('cash_register_id', $this->cashRegister->id)
             ->sum('amount') / 100;
 
@@ -61,15 +70,14 @@ class Show extends Component
         $this->showModal = true;
     }
 
-    public function close()
-	{
+    public function close(): void
+    {
         $this->cashRegister->status = false;
 
         $this->cashRegister->save();
 
-		$this->alert('success', __('Cash register closed successfully'));
-	}
-
+        $this->alert('success', __('Cash register closed successfully'));
+    }
 
     public function render()
     {

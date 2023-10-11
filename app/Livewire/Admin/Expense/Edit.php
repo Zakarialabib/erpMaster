@@ -39,7 +39,7 @@ class Edit extends Component
     #[Rule('nullable|string|max:255')]
     public $description;
 
-    #[Rule('nullable')]
+
     public $warehouse_id;
 
     #[Computed]
@@ -53,8 +53,10 @@ class Edit extends Component
     {
         if (auth()->check()) {
             $user = auth()->user();
+
             return Warehouse::whereIn('id', $user->warehouses->pluck('id'))->select('name', 'id')->get();
         }
+
         return Warehouse::select('name', 'id')->get();
     }
 

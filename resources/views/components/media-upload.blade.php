@@ -1,67 +1,58 @@
-<label class="block mt-4 text-sm">
-    <div
-        class="w-full p-2 bg-gray-100 border border-gray-300 border-dashed rounded"
-        x-data="{ isUploading: false, progress: 0 }"
-                x-on:livewire-upload-start="isUploading = true"
-                x-on:livewire-upload-finish="isUploading = false"
-                x-on:livewire-upload-error="isUploading = false"
-                x-on:livewire-upload-progress="progress = $event.detail.progress">
+@props(['file', 'multiple' => false, 'single' => false, 'preview' => false, 'path' => null])
 
-        <div x-show="!isUploading">
+<div x-data="{ isUploading: false, progress: 0 }">
+    <label class="block mt-4 text-sm">
+        <div class="w-full p-2 bg-gray-100 border border-zinc-300 border-dashed rounded"
+            x-on:livewire-upload-start="isUploading = true" x-on:livewire-upload-finish="isUploading = false"
+            x-on:livewire-upload-error="isUploading = false"
+            x-on:livewire-upload-progress="progress = $event.detail.progress">
+            <input type="file" class="hidden" accept="{{ $rules ?? '' }}"
+                @if ($multiple) multiple @endif
+                wire:model="{{ $attributes->wire('model')->value }}" />
 
-            {{-- Form File picker --}}
-            <input type="file" class="hidden" accept="{{ $rules ?? '' }}" {{ ($multiple ?? false) ? 'multiple':'' }}
-                @if ( $defer ?? true )
-                    wire:model='{{ $name ?? '' }}'
-                @else
-                    wire:model.live='{{ $name ?? '' }}'
-                @endif
-            />
-
-            @if ( !empty($image) )
-
-                <div class="flex items-center space-x-4">
-                    @if ( $image ?? true )
-                        <img src="{{ $image->temporaryUrl() ?? '' }}" class="w-20 h-20">
-                    @endif
-                    <div class="font-light text-gray-500">
-                        <p>Type: {{ Str::upper($photoInfo["extension"]) }}</p>
-                        <p>Size: {{ $photoInfo["size"] }} MB</p>
-                        <button wire:click="$set('{{ $name }}')" class="px-2 mt-2 text-xs text-red-400 border border-red-400 rounded">
-                            {{__('Remove')}}
-                        </button>
-                    </div>
-                </div>
-
-            @elseif ( !empty($preview) )
-
-                <div class="flex items-center space-x-4">
-                    <img src="{{ $preview }}" class="w-20 h-20">
-                    <div class="font-light text-gray-500">
-                        <div class="px-2 mt-2 text-xs border rounded text-primary-400 border-primary-400">
-                            {{__('Change')}}
+            @if ($multiple && is_array($file))
+                @foreach ($file as $key => $tempFile)
+                    <div class="py-3 flex {{ !$loop->last ? 'border-b border-gray-200' : '' }}">
+                        <div class="flex items-center space-x-4 py-2">
+                            <img src="{{ $tempFile->temporaryUrl() }}" class="w-20 h-20" />
+                            <div class="font-light text-gray-500">
+                                <p>Type: {{ Str::upper($tempFile->extension()) }}</p>
+                                <p>Filename: {{ $tempFile->getClientOriginalName() }}</p>
+                            </div>
                         </div>
                     </div>
-                </div>
-
-            @else
-
-                {{-- empty state --}}
-                <p class="flex items-center text-sm font-light text-gray-400">
-                    <i class="bi bi-cloud-upload mr-2"></i>
-                    {{ __('Upload a file or drag and drop') }} | {{ $types ?? 'Any File' }}
-                </p>
-
+                @endforeach
             @endif
-        </div>
 
-        {{-- during upload --}}
-        <!-- Progress Bar -->
-        <div x-show="isUploading">
-            <progress max="100" x-bind:value="progress" class="w-full h-1 overflow-hidden bg-red-500 rounded"></progress>
+            @if ($single && $file)
+                <div class="flex items-center space-x-4">
+                    <img src="{{ is_string($file) ? asset($path . $file) : $file->temporaryUrl() }}"
+                        class="w-20 h-20" />
+                    <div class="font-light text-gray-500">
+                        <p>Type: {{ is_string($file) ? 'Image' : Str::upper($file->extension()) }}</p>
+                        <p>Filename: {{ is_string($file) ? $file : $file->getClientOriginalName() }}</p>
+                    </div>
+                </div>
+            @endif
+
+            <div class="relative leading-tight bg-white hover:bg-gray-100 cursor-pointer inline-flex items-center transition duration-500 ease-in-out group overflow-hidden border-2 w-full pl-3 pr-4 py-2 border-dashed"
+                x-bind:class="{ 'opacity-50': isUploading }">
+                <p class="flex items-center text-sm font-light text-gray-400">
+                    <i class="fa fa-upload w-6 h-6 p-1 mr-3 text-gray-500 border rounded-full shadow"></i>
+                    {{ __('Upload a file or Image') }} | {{ $types ?? 'Any File' }}
+                </p>
+                <div x-show="isUploading">
+                    <progress max="100" x-bind:value="progress"
+                        class="w-full h-1 overflow-hidden bg-red-500 rounded"></progress>
+                </div>
+                <div class="absolute inset-0 h-full flex items-center justify-center pointer-events-none"
+                    x-bind:class="{ 'opacity-0': !isUploading, 'opacity-100': isUploading }">
+                    <i class="fa fa-spinner fa-spin w-6 h-6 text-gray-500"></i>
+                </div>
+            </div>
         </div>
-    </div>
-    @error($name ?? '')
-        <span class="mt-1 text-xs text-red-700">{{ $message }}</span>
-    @enderror
-  </label>
+        @error($attributes->wire('model')->value)
+            <span class="mt-1 text-xs text-red-700">{{ $message }}</span>
+        @enderror
+    </label>
+</div>

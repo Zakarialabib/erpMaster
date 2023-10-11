@@ -12,6 +12,7 @@ use Livewire\Attributes\On;
 class Show extends Component
 {
     public $showModal = false;
+
     public $currency;
 
     #[On('showModal')]

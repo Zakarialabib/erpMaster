@@ -17,8 +17,11 @@ class MaintenanceMode extends Component
     use LivewireAlert;
 
     public $site_maintenance_message;
+
     public $status;
+
     public $secret;
+
     public $refresh;
 
     public function mount(): void

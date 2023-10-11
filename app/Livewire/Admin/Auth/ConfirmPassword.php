@@ -16,12 +16,12 @@ class ConfirmPassword extends Component
     #[Rule(['required', 'string'])]
     public string $password = '';
 
-    public function confirmPassword()
+    public function confirmPassword(): void
     {
         $this->validate();
 
-        if (! auth()->guard('web')->validate([
-            'email' => auth()->user()->email,
+        if ( ! auth()->guard('web')->validate([
+            'email'    => auth()->user()->email,
             'password' => $this->password,
         ])) {
             throw ValidationException::withMessages([

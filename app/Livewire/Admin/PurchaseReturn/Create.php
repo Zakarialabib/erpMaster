@@ -5,9 +5,7 @@ declare(strict_types=1);
 namespace App\Livewire\Admin\PurchaseReturn;
 
 use App\Models\PurchaseReturn;
-use App\Models\Warehouse;
 use Illuminate\Support\Facades\Gate;
-use Livewire\Attributes\On;
 use Livewire\Component;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Gloudemans\Shoppingcart\Facades\Cart;
@@ -18,43 +16,42 @@ class Create extends Component
     use LivewireAlert;
 
     public $warehouse_id;
-    
+
     #[Rule('required')]
-    public $supplier_id;   
+    public $supplier_id;
 
     #[Rule('required|string|max:255')]
-    public $reference;           
+    public $reference;
 
     #[Rule('required|integer|min:0|max:100')]
-    public $tax_percentage;      
-    
+    public $tax_percentage;
+
     #[Rule('required|integer|min:0|max:100')]
-    public $discount_percentage; 
-    
+    public $discount_percentage;
+
     #[Rule('required|numeric')]
-    public $shipping_amount;     
-    
+    public $shipping_amount;
+
     #[Rule('required|numeric')]
-    public $total_amount;        
-    
+    public $total_amount;
+
     #[Rule('required|numeric')]
-    public $paid_amount;         
-    
+    public $paid_amount;
+
     #[Rule('required|integer|max:255')]
-    public $status;              
-    
+    public $status;
+
     #[Rule('required|integer|max:255')]
-    public $payment_method;      
-    
+    public $payment_method;
+
     #[Rule('nullable|string|max:1000')]
-    public $note;                
-
+    public $note;
 
     public function mount(): void
     {
         abort_if(Gate::denies('purchase return create'), 403);
-        
-        if(settings('default_warehouse_id') !== null){
+
+        if (settings('default_warehouse_id') !== null) {
             $this->warehouse_id = settings('default_warehouse_id');
         }
 

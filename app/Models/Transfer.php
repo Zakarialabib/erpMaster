@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Model;
 use App\Support\HasAdvancedFilter;
 use App\Traits\HasUuid;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Transfer extends Model
 {
@@ -38,12 +39,11 @@ class Transfer extends Model
         'reference',
         'from_warehouse_id',
         'to_warehouse_id',
-        'item',
         'total_qty',
-        'total_tax',
         'total_cost',
         'total_amount',
-        'shipping',
+        'date',
+        'shipping_amount',
         'document',
         'status',
         'note',
@@ -63,6 +63,11 @@ class Transfer extends Model
             related: Warehouse::class,
             foreignKey: 'to_warehouse_id',
         );
+    }
+
+    public function transferDetails(): HasMany
+    {
+        return $this->hasMany(TransferDetail::class);
     }
 
     public function user(): BelongsTo

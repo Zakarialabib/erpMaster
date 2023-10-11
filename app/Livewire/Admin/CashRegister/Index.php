@@ -9,7 +9,6 @@ use App\Models\CashRegister;
 use Illuminate\Support\Facades\Gate;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Livewire\Attributes\Layout;
 
 #[Layout('components.layouts.dashboard')]

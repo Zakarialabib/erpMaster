@@ -134,8 +134,8 @@ class Create extends Component
 
         foreach ($this->productWarehouse as $warehouseId => $warehouse) {
             $quantity = $warehouse['quantity'] ?? 0;
-            $price = $warehouse['price'];
-            $cost = $warehouse['cost'];
+            $price = $warehouse['price'] * 100;
+            $cost = $warehouse['cost'] * 100;
 
             ProductWarehouse::create([
                 'product_id'   => $this->product->id,
@@ -170,8 +170,10 @@ class Create extends Component
     {
         if (auth()->check()) {
             $user = auth()->user();
+
             return Warehouse::whereIn('id', $user->warehouses->pluck('id'))->select('name', 'id')->get();
         }
+
         return Warehouse::select('name', 'id')->get();
     }
 }

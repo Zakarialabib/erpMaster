@@ -18,15 +18,14 @@ return new class () extends Migration {
         Schema::create('transfers', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('reference');
+            $table->date('date');
             $table->integer('from_warehouse_id');
             $table->integer('to_warehouse_id');
             $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
-            $table->integer('item');
             $table->double('total_qty');
-            $table->double('total_tax');
             $table->double('total_cost');
             $table->double('total_amount');
-            $table->double('shipping')->nullable();
+            $table->double('shipping_amount')->nullable();
             $table->string('document')->nullable();
             $table->integer('status');
             $table->text('note')->nullable();

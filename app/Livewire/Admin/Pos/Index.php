@@ -10,8 +10,6 @@ use App\Enums\SaleStatus;
 use App\Jobs\PaymentNotification;
 use App\Livewire\Utils\Admin\WithModels;
 use App\Models\CashRegister;
-use App\Models\Customer;
-use App\Models\Warehouse;
 use App\Models\Movement;
 use App\Models\Product;
 use App\Models\Sale;
@@ -96,7 +94,9 @@ class Index extends Component
     #[Rule('string', message: 'Note must be a string')]
     #[Rule('max:1000', message: 'Note must not exceed 1000 characters')]
     public $note;
+
     public $user_id;
+
     public $cash_register_id;
 
     public function mount(): void
@@ -120,6 +120,7 @@ class Index extends Component
         if (settings('default_client_id') !== null) {
             $this->customer_id = settings('default_client_id');
         }
+
         if (settings('default_warehouse_id') !== null) {
             $this->warehouse_id = settings('default_warehouse_id');
         }
@@ -136,6 +137,7 @@ class Index extends Component
                 $this->cash_register_id = $cashRegister->id;
             } else {
                 $this->dispatch('createModal')->to(CashRegisterCreate::class);
+
                 return;
             }
         }
@@ -163,7 +165,7 @@ class Index extends Component
 
     public function store(): void
     {
-        if (!$this->warehouse_id) {
+        if ( ! $this->warehouse_id) {
             $this->alert('error', __('Please select a warehouse'));
 
             return;
@@ -248,12 +250,12 @@ class Index extends Component
 
             if ($this->paid_amount > 0) {
                 SalePayment::create([
-                    'date'           => date('Y-m-d'),
-                    'amount'         => $this->paid_amount,
-                    'cash_register_id'    => $this->cash_register_id,
-                    'sale_id'        => $sale->id,
-                    'payment_method' => $this->payment_method,
-                    'user_id'        => Auth::user()->id,
+                    'date'             => date('Y-m-d'),
+                    'amount'           => $this->paid_amount,
+                    'cash_register_id' => $this->cash_register_id,
+                    'sale_id'          => $sale->id,
+                    'payment_method'   => $this->payment_method,
+                    'user_id'          => Auth::user()->id,
                 ]);
             }
 

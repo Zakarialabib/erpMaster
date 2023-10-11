@@ -124,18 +124,16 @@
         </x-table.tbody>
     </x-table>
 
-    <div class="p-4">
-        <div class="pt-3">
-            @if ($this->selectedCount)
-                <p class="text-sm leading-5">
-                    <span class="font-medium">
-                        {{ $this->selectedCount }}
-                    </span>
-                    {{ __('Entries selected') }}
-                </p>
-            @endif
-            {{ $users->links() }}
-        </div>
+    <div class="pt-3">
+        @if ($this->selectedCount)
+            <p class="text-sm leading-5">
+                <span class="font-medium">
+                    {{ $this->selectedCount }}
+                </span>
+                {{ __('Entries selected') }}
+            </p>
+        @endif
+        {{ $users->links() }}
     </div>
 
     <livewire:admin.users.show :user="$user" lazy />

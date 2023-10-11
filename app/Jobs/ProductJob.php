@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Jobs;
 
 use App\Imports\ImportUpdates;
-use App\Imports\ProductImport;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -33,8 +32,6 @@ class ProductJob implements ShouldQueue
     /** Execute the job. */
     public function handle(): void
     {
-        Excel::import(new ProductImport(), public_path('images/products/'.$this->filename));
-
         Excel::import(new ImportUpdates(), public_path('images/products/'.$this->filename));
 
         File::delete(public_path('images/products/'.$this->filename));

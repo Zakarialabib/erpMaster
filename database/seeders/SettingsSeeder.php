@@ -37,14 +37,10 @@ class SettingsSeeder extends Seeder
         ],
         [
             'key'   => 'site_logo',
-            'value' => '',
+            'value' => 'logo.png',
         ],
         [
             'key'   => 'site_favicon',
-            'value' => '',
-        ],
-        [
-            'key'   => 'footer_copyright_text',
             'value' => '',
         ],
         [
@@ -61,6 +57,10 @@ class SettingsSeeder extends Seeder
         ],
         [
             'key'   => 'social_twitter',
+            'value' => '#',
+        ],
+        [
+            'key'   => 'social_tiktok',
             'value' => '#',
         ],
         [
@@ -81,6 +81,10 @@ class SettingsSeeder extends Seeder
         ],
         [
             'key'   => 'body_tags',
+            'value' => '',
+        ],
+        [
+            'key'   => 'whatsapp_custom_message',
             'value' => '',
         ],
         [
@@ -162,6 +166,14 @@ class SettingsSeeder extends Seeder
         [
             'key'   => 'purchasePayment_prefix',
             'value' => 'PP-000',
+        ],
+        [
+            'key'   => 'expense_prefix',
+            'value' => 'exp-000',
+        ],
+        [
+            'key'   => 'delivery_prefix',
+            'value' => 'del-000',
         ],
         [
             'key'   => 'show_email',

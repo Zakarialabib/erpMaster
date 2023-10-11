@@ -50,6 +50,7 @@ class Checkout extends Component
 
     #[Rule('required')]
     public $city;
+
     public $country = 'Maroc';
 
     #[Rule('required|numeric')]
@@ -82,7 +83,7 @@ class Checkout extends Component
             $this->alert('error', __('Your cart is empty'));
         }
 
-        $shipping = Shipping::find($this->shipping_id);
+        Shipping::find($this->shipping_id);
 
         $customer = Customer::where('email', $this->email)->first();
 
@@ -105,17 +106,17 @@ class Checkout extends Component
         }
 
         $order = Order::create([
-            'reference'       => Order::generateReference(),
-            'date'            => now(),
-            'shipping_id'     => $this->shipping_id,
-            'customer_id'     => $customer->id,
-            'payment_method'  => $this->payment_method,
+            'reference'      => Order::generateReference(),
+            'date'           => now(),
+            'shipping_id'    => $this->shipping_id,
+            'customer_id'    => $customer->id,
+            'payment_method' => $this->payment_method,
             // 'shipping_amount' => $shipping->cost,
             'shipping_status' => ShippingStatus::PENDING,
             'total_amount'    => $this->cartTotal * 100,
             'payment_status'  => PaymentStatus::PENDING,
             'status'          => OrderStatus::PENDING,
-            'delivery_id' => null,
+            'delivery_id'     => null,
         ]);
 
         Mail::to($order->customer->email)->send(new CheckoutMail($order, $customer));
@@ -145,9 +146,9 @@ class Checkout extends Component
         return redirect()->route('front.thankyou', $order->id);
     }
 
-    public function mount()
+    public function mount(): void
     {
-        // if customer is auth we could fill propreties like email phone and such 
+        // if customer is auth we could fill propreties like email phone and such
         if (auth()->guard('customer')->check()) {
             // dd(auth()->guard('customer')->user());
             $this->customer = auth()->guard('customer')->user();
@@ -158,8 +159,8 @@ class Checkout extends Component
             $this->city = $this->customer->city;
             $this->country = $this->customer->country;
         }
-
     }
+
     public function updateCartTotal(): void
     {
         if ($this->shipping_id) {
@@ -203,8 +204,6 @@ class Checkout extends Component
             ]
         );
     }
-
-  
 
     #[Computed]
     public function shippings()

@@ -35,6 +35,7 @@ class Edit extends Component
 
     #[Rule('required', message: 'Please provide warehouse')]
     public $warehouse_id;
+
     public $quantity;
 
     public $type;
@@ -157,8 +158,10 @@ class Edit extends Component
     {
         if (auth()->check()) {
             $user = auth()->user();
+
             return Warehouse::whereIn('id', $user->warehouses->pluck('id'))->select('name', 'id')->get();
         }
+
         return Warehouse::pluck('name', 'id')->toArray();
     }
 

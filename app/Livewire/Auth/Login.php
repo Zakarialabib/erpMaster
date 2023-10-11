@@ -5,12 +5,10 @@ declare(strict_types=1);
 namespace App\Livewire\Auth;
 
 use App\Models\Customer;
-use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Rule;
-use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
@@ -24,6 +22,7 @@ class Login extends Component
 
     #[Rule(['required', 'string', 'email'])]
     public string $email = '';
+
     #[Rule(['required', 'string'])]
     public string $password = '';
 
@@ -40,19 +39,22 @@ class Login extends Component
 
         if ($customer) {
             Auth::guard('customer')->login($customer, true);
+
             return redirect('myaccount');
-        } 
+        }
 
         $this->addError('status', 'Creadentials not found');
     }
 
     protected function ensureIsNotRateLimited(): void
     {
-        if (!RateLimiter::tooManyAttempts($this->throttleKey(), 5)) {
+        if ( ! RateLimiter::tooManyAttempts($this->throttleKey(), 5)) {
             return;
         }
+
         event(new Lockout(request()));
         $seconds = RateLimiter::availableIn($this->throttleKey());
+
         throw ValidationException::withMessages([
             'email' => __('Authentification throttle', [
                 'seconds' => $seconds,
@@ -63,7 +65,7 @@ class Login extends Component
 
     protected function throttleKey(): string
     {
-        return Str::transliterate(Str::lower($this->email) . '|' . request()->ip());
+        return Str::transliterate(Str::lower($this->email).'|'.request()->ip());
     }
 
     public function render()

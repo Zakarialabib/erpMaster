@@ -5,7 +5,7 @@ declare(strict_types=1);
 if ( ! function_exists('settings')) {
     function settings($key = null)
     {
-        $settings = cache()->rememberForever('settings', function () {
+        $settings = cache()->rememberForever('settings', static function () {
             return \App\Models\Settings::pluck('value', 'key');
         });
 
@@ -58,7 +58,7 @@ if ( ! function_exists('format_date')) {
 
         try {
             $date = \Carbon\Carbon::createFromFormat('Y-m-d', $dateString);
-        } catch (Exception $e) {
+        } catch (Exception) {
             return null; // Return null if date creation fails
         }
 
@@ -67,16 +67,18 @@ if ( ! function_exists('format_date')) {
 }
 
 if ( ! function_exists('make_reference_id')) {
-    function make_reference_id($prefix, $number)
+    function make_reference_id(string $prefix, $number): string
     {
         return $prefix.'-'.str_pad((string) $number, 5, '0', STR_PAD_LEFT);
     }
 }
 
 if ( ! function_exists('array_merge_numeric_values')) {
-    function array_merge_numeric_values()
+    /**
+     * @return numeric-string[]|int[]|float[]
+     */
+    function array_merge_numeric_values(...$arrays): array
     {
-        $arrays = func_get_args();
         $merged = [];
 
         foreach ($arrays as $array) {

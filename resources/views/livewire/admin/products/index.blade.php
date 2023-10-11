@@ -169,7 +169,7 @@
                                     <i class="fas fa-paper-plane"></i>
                                     {{ __('Send to Whatsapp') }}
                                 </x-dropdown-link>
-                                <x-dropdown-link wire:click="$dispatch('editModal',{ id : {{ $product->id }} })"
+                                <x-dropdown-link wire:click="$dispatch('editModal',{ id : '{{ $product->id }}' })"
                                     wire:loading.attr="disabled">
                                     <i class="fas fa-edit"></i>
                                     {{ __('Edit') }}
@@ -194,18 +194,16 @@
         </x-table.tbody>
     </x-table>
 
-    <div class="p-4">
-        <div class="pt-3">
-            @if ($this->selectedCount)
-                <p class="text-sm leading-5">
-                    <span class="font-medium">
-                        {{ $this->selectedCount }}
-                    </span>
-                    {{ __('Entries selected') }}
-                </p>
-            @endif
-            {{ $products->links() }}
-        </div>
+    <div class="pt-3">
+        @if ($this->selectedCount)
+            <p class="text-sm leading-5">
+                <span class="font-medium">
+                    {{ $this->selectedCount }}
+                </span>
+                {{ __('Entries selected') }}
+            </p>
+        @endif
+        {{ $products->links() }}
     </div>
 
     <!-- Show Modal -->
@@ -218,11 +216,8 @@
 
     <livewire:admin.products.create lazy />
 
-    {{-- Import modal --}}
-
     <livewire:admin.products.import lazy />
 
-    {{-- End Import modal --}}
     <livewire:admin.products.highlighted :product="$product" lazy />
 
 </div>

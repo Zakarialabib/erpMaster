@@ -20,8 +20,9 @@ use App\Helpers;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Livewire\Attributes\On;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\ProductImport;
 
 class Import extends Component
 {
@@ -83,20 +84,24 @@ class Import extends Component
     {
         abort_if(Gate::denies('product access'), 403);
 
-        if ($this->file->extension() === 'xlsx' || $this->file->extension() === 'xls') {
-            $filename = time().'-product.'.$this->file->getClientOriginalExtension();
-            $this->file->storeAs('products', $filename);
-
-            ProductJob::dispatch($filename);
-
+        try {
+      
+            $this->validate([
+                'file' => 'required|mimes:xls,xlsx',
+            ]);
+    
+            Excel::import(new ProductImport(), $this->file);
+    
             $this->alert('success', __('Product imported successfully!'));
-        } else {
-            $this->alert('error', __('File is a '.$this->file->extension().' file.!! Please upload a valid xls/csv file..!!'));
+            
+            $this->importModal = false;
+
+        } catch (\Throwable $th) {
+            throw $th;
+            // $this->alert('error', __('File is a '.$this->file->extension().' file.!! Please upload a valid xls/csv file..!!'));
         }
 
-        $this->importModal = false;
     }
-
 
     public function googleSheetImport()
     {

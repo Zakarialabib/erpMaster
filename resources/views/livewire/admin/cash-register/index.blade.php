@@ -142,14 +142,12 @@
         </x-table.tbody>
     </x-table>
 
-    <div class="p-4">
-        <div class="pt-3">
-            {{ $cashRegisters->links() }}
-        </div>
+    <div class="pt-3">
+        {{ $cashRegisters->links() }}
     </div>
 
     <livewire:admin.cashRegister.show lazy />
 
-    <livewire:admin.cashRegister.create />
+    <livewire:admin.cashRegister.create lazy />
 
 </div>

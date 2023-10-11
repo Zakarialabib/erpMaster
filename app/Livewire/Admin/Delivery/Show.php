@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Livewire\Admin\Delivery;
 
 use App\Models\Delivery;
@@ -8,8 +10,8 @@ use Illuminate\Support\Facades\Gate;
 
 class Show extends Component
 {
-
     public $showModal = false;
+
     public $delivery;
 
     public function showModal($id): void

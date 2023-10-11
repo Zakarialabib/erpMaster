@@ -18,8 +18,11 @@ class ResetPassword extends Component
 {
     #[Locked]
     public string $token = '';
+
     public string $email = '';
+
     public string $password = '';
+
     public string $password_confirmation = '';
 
     public function mount(string $token): void
@@ -27,11 +30,12 @@ class ResetPassword extends Component
         $this->token = $token;
         $this->email = request()->string('email');
     }
+
     public function resetPassword(): void
     {
         $this->validate([
-            'token' => ['required'],
-            'email' => ['required', 'string', 'email'],
+            'token'    => ['required'],
+            'email'    => ['required', 'string', 'email'],
             'password' => ['required', 'string', 'confirmed', Rules\Password::defaults()],
         ]);
         // Here we will attempt to reset the user's password. If it is successful we
@@ -39,21 +43,24 @@ class ResetPassword extends Component
         // database. Otherwise we will parse the error and return the response.
         $status = Password::reset(
             $this->only('email', 'password', 'password_confirmation', 'token'),
-            function ($user) {
+            function ($user): void {
                 $user->forceFill([
-                    'password' => Hash::make($this->password),
+                    'password'       => Hash::make($this->password),
                     'remember_token' => Str::random(60),
                 ])->save();
                 event(new PasswordReset($user));
             }
         );
+
         // If the password was successfully reset, we will redirect the user back to
         // the application's home authenticated view. If there is an error we can
         // redirect them back to where they came from with their error message.
         if ($status != Password::PASSWORD_RESET) {
             $this->addError('email', __($status));
+
             return;
         }
+
         session()->flash('status', __($status));
         $this->redirectRoute('login', navigate: true);
     }
@@ -62,5 +69,4 @@ class ResetPassword extends Component
     {
         return view('livewire.admin.auth.reset-password');
     }
-
 }

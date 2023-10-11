@@ -29,28 +29,27 @@ class Edit extends Component
     public $reference;
 
 
-    #[Rule('nullable')]
     public $sale_id;
 
-    #[Rule('nullable')]
+
     public $order_id;
 
-    #[Rule('nullable')]
+
     public $shipping_id;
 
-    #[Rule('nullable')]
+
     public $document;
 
-    #[Rule('nullable')]
+
     public $note;
 
-    #[Rule('nullable')]
+
     public $address;
 
-    #[Rule('nullable')]
+
     public $delivered_by;
 
-    #[Rule('nullable')]
+
     public $recieved_by;
 
     public function render()
@@ -115,6 +114,7 @@ class Edit extends Component
         if ($this->order_id) {
             return  Sale::where('id', $this->sale_id)->get();
         }
+
         return Sale::all();
     }
 
@@ -124,6 +124,7 @@ class Edit extends Component
         if ($this->order_id) {
             return  Order::where('id', $this->order_id)->get();
         }
+
         return Order::all();
     }
 }

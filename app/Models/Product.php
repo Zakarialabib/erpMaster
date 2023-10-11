@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Enums\Status;
+use App\Enums\TaxType;
 use App\Scopes\ProductScope;
 use App\Support\HasAdvancedFilter;
 use App\Traits\HasUuid;
@@ -13,7 +14,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -47,6 +47,7 @@ class Product extends Model
      */
     protected $fillable = [
         'id', 'name', 'code', 'barcode_symbology', 'quantity', 'slug',
+        'category_id',
         'image', 'gallery', 'unit', 'order_tax', 'description', 'status',
         'tax_type', 'featured', 'usage', 'embeded_video', 'subcategories',
         'options', 'meta_title', 'meta_description', 'best', 'hot',
@@ -65,6 +66,7 @@ class Product extends Model
     protected $casts = [
         'options'       => 'array',
         'subcategories' => 'array',
+        'tax_type'  => TaxType::class,
         'status'        => Status::class,
     ];
 
@@ -100,17 +102,11 @@ class Product extends Model
 
     public static function ecommerceProducts()
     {
-        return static::whereHas('warehouses', function ($query) {
+        return static::whereHas('warehouses', static function ($query) : void {
             $query->where('is_ecommerce', 1);
-        })->with(['warehouses' => function ($query) {
+        })->with(['warehouses' => static function ($query) : void {
             $query->select('product_id', 'qty', 'price', 'old_price', 'is_discount', 'discount_date');
         }]);
-    }
-
-    /** @return HasMany<PriceHistory> */
-    public function priceHistory(): HasMany
-    {
-        return $this->hasMany(PriceHistory::class);
     }
 
     public function getTotalQuantityAttribute(): int|float|null

@@ -81,7 +81,6 @@ class ProductCart extends Component
             $this->updatedGlobalDiscount();
             $this->updatedTotalShipping();
             $this->warehouse_id = settings('default_warehouse_id');
-
         }
     }
 

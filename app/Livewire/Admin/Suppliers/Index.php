@@ -25,7 +25,9 @@ class Index extends Component
 
     /** @var mixed */
     public $supplier;
-
+    
+    public $file;
+    
     public $model = Supplier::class;
 
     /** @var array<string> */

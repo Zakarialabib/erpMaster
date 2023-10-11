@@ -74,7 +74,7 @@ class GenerateProperty extends Command
     protected function formatProperties(array $columns): string
     {
         $properties = array_map(static function ($type, $name): string {
-            return sprintf('\'%s\'', $name);
+            return sprintf("'%s'", $name);
         }, $columns, array_keys($columns));
 
         return implode(', ', $properties);

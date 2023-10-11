@@ -22,7 +22,7 @@ class Order extends Model
     use HasUuid;
 
     final public const ATTRIBUTES = [
-        'id' , 'date', 'reference',  'shipping_id',
+        'id', 'date', 'reference',  'shipping_id',
         'total_amount', 'payment_date', 'status', 'payment_status',
         'payment_method', 'shipping_status',
     ];

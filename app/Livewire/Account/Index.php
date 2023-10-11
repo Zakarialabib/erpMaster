@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Livewire\Account;
 
-use App\Models\Customer;
-use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 

@@ -26,25 +26,25 @@ enum OrderStatus: string
     public function label(): string
     {
         return match ($this) {
-            static::PENDING   => __('Pending'),
-            static::PROCESSING   => __('Processing'),
-            static::COMPLETED => __('Completed'),
-            static::SHIPPED   => __('Shipped'),
-            static::RETURNED  => __('Returned'),
-            static::CANCELED  => __('Canceled'),
+            static::PENDING    => __('Pending'),
+            static::PROCESSING => __('Processing'),
+            static::COMPLETED  => __('Completed'),
+            static::SHIPPED    => __('Shipped'),
+            static::RETURNED   => __('Returned'),
+            static::CANCELED   => __('Canceled'),
         };
     }
 
     public function getBadgeType(): string
     {
         return match ($this) {
-            self::PENDING   => 'warning',
-            self::PROCESSING   => 'info',
-            self::COMPLETED => 'success',
-            self::SHIPPED   => 'primary',
-            self::RETURNED  => 'alert',
-            self::CANCELED  => 'danger',
-            default         => 'secondary',
+            self::PENDING    => 'warning',
+            self::PROCESSING => 'info',
+            self::COMPLETED  => 'success',
+            self::SHIPPED    => 'primary',
+            self::RETURNED   => 'alert',
+            self::CANCELED   => 'danger',
+            default          => 'secondary',
         };
     }
 

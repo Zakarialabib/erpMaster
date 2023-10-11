@@ -24,8 +24,10 @@ class Profile extends Component
     #[Rule('required|string|max:255')]
 
     public $name;
+
     #[Rule('required|email|unique:users,email')]
     public $email;
+
     #[Rule('required|numeric')]
     public $phone;
 

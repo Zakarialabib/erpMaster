@@ -7,10 +7,10 @@
                     <option value="{{ $value }}">{{ $value }}</option>
                 @endforeach
             </select>
-            @if($this->selectedCount)
-            <x-button danger wire:click="deleteSelected" class="ml-3">
-                <i class="fas fa-trash"></i>
-            </x-button>
+            @if ($this->selectedCount)
+                <x-button danger wire:click="deleteSelected" class="ml-3">
+                    <i class="fas fa-trash"></i>
+                </x-button>
             @endif
         </div>
         <div class="lg:w-1/2 md:w-1/2 sm:w-full my-2">
@@ -19,10 +19,10 @@
             </div>
         </div>
     </div>
-   
+
     <x-table>
         <x-slot name="thead">
-            <x-table.th >
+            <x-table.th>
                 <x-input type="checkbox" class="rounded-tl rounded-bl" wire:model.live="selectPage" />
             </x-table.th>
             <x-table.th sortable wire:click="sortingBy('name')" field="name" :direction="$sorts['name'] ?? null">
@@ -31,7 +31,8 @@
             <x-table.th sortable wire:click="sortingBy('connection_type')" field="connection_type" :direction="$sorts['connection_type'] ?? null">
                 {{ __('Connection type') }}
             </x-table.th>
-            <x-table.th sortable wire:click="sortingBy('capability_profile')" field="capability_profile" :direction="$sorts['capability_profile'] ?? null">
+            <x-table.th sortable wire:click="sortingBy('capability_profile')" field="capability_profile"
+                :direction="$sorts['capability_profile'] ?? null">
                 {{ __('Capability profile') }}
             </x-table.th>
             <x-table.th sortable wire:click="sortingBy('char_per_line')" field="char_per_line" :direction="$sorts['char_per_line'] ?? null">
@@ -89,18 +90,16 @@
         </x-table.tbody>
     </x-table>
 
-    <div class="p-4">
-        <div class="pt-3">
-            @if ($this->selectedCount)
-                <p class="text-sm leading-5">
-                    <span class="font-medium">
-                        {{ $this->selectedCount }}
-                    </span>
-                    {{ __('Entries selected') }}
-                </p>
-            @endif
-            {{ $printers->links() }}
-        </div>
+    <div class="pt-3">
+        @if ($this->selectedCount)
+            <p class="text-sm leading-5">
+                <span class="font-medium">
+                    {{ $this->selectedCount }}
+                </span>
+                {{ __('Entries selected') }}
+            </p>
+        @endif
+        {{ $printers->links() }}
     </div>
 
     <x-modal wire:model="showModal">
@@ -186,17 +185,18 @@
                     </div>
                     <div class="md:w-1/2 sm:w-full px-3">
                         <x-label for="printer.port" :value="__('Port')" />
-                        <x-input id="port" class="block mt-1 w-full" type="text" wire:model="printer.port" />
+                        <x-input id="port" class="block mt-1 w-full" type="text"
+                            wire:model="printer.port" />
                     </div>
                     <div class="md:w-1/2 sm:w-full px-3">
                         <x-label for="printer.path" :value="__('Path')" />
-                        <x-input id="path" class="block mt-1 w-full" type="text" wire:model="printer.path" />
+                        <x-input id="path" class="block mt-1 w-full" type="text"
+                            wire:model="printer.path" />
                     </div>
                 </div>
 
                 <div class="w-full px-3">
-                    <x-button primary type="submit" class="w-full text-center" 
-                              wire:loading.attr="disabled">
+                    <x-button primary type="submit" class="w-full text-center" wire:loading.attr="disabled">
                         {{ __('Update') }}
                     </x-button>
                 </div>
@@ -204,6 +204,5 @@
         </x-slot>
     </x-modal>
 
-    <livewire:admin.printer.create />
+    <livewire:admin.printer.create lazy />
 </div>
-

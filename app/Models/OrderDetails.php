@@ -52,7 +52,6 @@ class OrderDetails extends Model
         );
     }
 
-
     /** Interact with unit price */
     protected function unitPrice(): Attribute
     {

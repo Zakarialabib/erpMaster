@@ -50,10 +50,7 @@
         </x-table.tbody>
     </x-table>
 
-    <div class="p-4">
-        <div class="pt-3">
-
-            {{ $permissions->links() }}
-        </div>
+    <div class="pt-3">
+        {{ $permissions->links() }}
     </div>
 </div>

@@ -7,7 +7,6 @@ namespace App\Livewire\Front;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
-use App\Models\ProductWarehouse;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -52,7 +51,6 @@ class ProductShow extends Component
 
     public function AddToCart($id, $price): void
     {
-
         $product = Product::where('id', $id)->first();
         // Cart::instance('shopping')->add($id, $this->quantity)->associate(Product::class);
 

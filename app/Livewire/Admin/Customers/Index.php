@@ -31,11 +31,10 @@ class Index extends Component
     public $file;
 
     public $listeners = [
-        'exportAll', 'downloadAll',
         'delete',
     ];
 
-    public $import;
+    public $importModal = false;
 
     public $model = Customer::class;
 
@@ -56,7 +55,7 @@ class Index extends Component
 
     public function deleteSelected(): void
     {
-        abort_if(Gate::denies('customer_delete'), 403);
+        abort_if(Gate::denies('customer delete'), 403);
 
         Customer::whereIn('id', $this->selected)->delete();
 
@@ -65,7 +64,7 @@ class Index extends Component
 
     public function delete(Customer $customer): void
     {
-        abort_if(Gate::denies('customer_delete'), 403);
+        abort_if(Gate::denies('customer delete'), 403);
 
         $customer->delete();
 
@@ -102,13 +101,6 @@ class Index extends Component
         return $this->callExport()->download('customers.pdf', \Maatwebsite\Excel\Excel::MPDF);
     }
 
-    public function import(): void
-    {
-        abort_if(Gate::denies('customer access'), 403);
-
-        $this->import = true;
-    }
-
     public function importExcel(): void
     {
         abort_if(Gate::denies('customer access'), 403);
@@ -117,11 +109,9 @@ class Index extends Component
             'file' => 'required|mimes:xls,xlsx',
         ]);
 
-        $file = $this->file('file');
+        Excel::import(new CustomerImport(), $this->file);
 
-        Excel::import(new CustomerImport(), $file);
-
-        $this->import = false;
+        $this->importModal = false;
 
         $this->alert('success', __('Customer imported successfully.'));
     }
@@ -130,4 +120,10 @@ class Index extends Component
     {
         return new CustomerExport();
     }
+
+    public function downloadSample()
+    {
+        return Storage::disk('exports')->download('customers_import_sample.xls');
+    }
+
 }

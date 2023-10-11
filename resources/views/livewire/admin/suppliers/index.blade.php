@@ -1,6 +1,9 @@
 <div>
     @section('title', __('Supplier'))
     <x-theme.breadcrumb :title="__('Supplier List')" :parent="route('admin.suppliers.index')" :parentName="__('Supplier List')">
+        <x-button primary type="button" wire:click="$set('importModal', true)">
+            {{ __('Import Supplier') }}
+        </x-button>
         <x-button primary type="button" wire:click="dispatchTo('admin.suppliers.create', 'createModal')">
             {{ __('Create Supplier') }}
         </x-button>
@@ -88,7 +91,8 @@
                                     </x-button>
                                 </x-slot>
                                 <x-slot name="content">
-                                    <x-dropdown-link wire:click="$dispatch('showModal', { id : '{{ $supplier->id }}' })"
+                                    <x-dropdown-link
+                                        wire:click="$dispatch('showModal', { id : '{{ $supplier->id }}' })"
                                         wire:loading.attr="disabled">
                                         <i class="fas fa-eye"></i>
                                         {{ __('View') }}
@@ -98,12 +102,14 @@
                                         {{ __('Details') }}
                                     </x-dropdown-link>
 
-                                    <x-dropdown-link wire:click="$dispatch('editModal', { id : '{{ $supplier->id }}' })"
+                                    <x-dropdown-link
+                                        wire:click="$dispatch('editModal', { id : '{{ $supplier->id }}' })"
                                         wire:loading.attr="disabled">
                                         <i class="fas fa-edit"></i>
                                         {{ __('Edit') }}
                                     </x-dropdown-link>
-                                    <x-dropdown-link wire:click="$dispatch('deleteModal', { id :'{{ $supplier->id }}' })"
+                                    <x-dropdown-link
+                                        wire:click="$dispatch('deleteModal', { id :'{{ $supplier->id }}' })"
                                         wire:loading.attr="disabled">
                                         <i class="fas fa-trash"></i>
                                         {{ __('Delete') }}
@@ -137,7 +143,6 @@
 
     <livewire:admin.suppliers.create lazy />
 
-    {{-- Import modal --}}
     <x-modal wire:model="importModal">
         <x-slot name="title">
             <div class="flex justify-between items-center">
@@ -150,7 +155,7 @@
 
         <x-slot name="content">
             <form wire:submit="import">
-                <div class="mb-4">
+                <div class="mb-4 space-y-4">
                     <div class="w-full px-3 mt-4">
                         <x-label for="file" :value="__('Import')" />
                         <x-input id="file" class="block mt-1 w-full" type="file" name="file"
@@ -158,7 +163,35 @@
                         <x-input-error :messages="$errors->get('file')" for="file" class="mt-2" />
                     </div>
 
-                    <div class="w-full px-3">
+                    <x-table-responsive>
+                        <x-table.tr>
+                            <x-table.th>{{ __('Name') }}</x-table.th>
+                            <x-table.td>{{ __('Required') }}</x-table.td>
+                        </x-table.tr>
+                        <x-table.tr>
+                            <x-table.th>{{ __('Phone') }}</x-table.th>
+                            <x-table.td>{{ __('Required') }}</x-table.td>
+                        </x-table.tr>
+                        <x-table.tr>
+                            <x-table.th>{{ __('Email') }}</x-table.th>
+                            <x-table.td>{{ __('Optional') }}</x-table.td>
+                        </x-table.tr>
+                        <x-table.tr>
+                            <x-table.th>{{ __('Address') }}</x-table.th>
+                            <x-table.td>{{ __('Optional') }}</x-table.td>
+                        </x-table.tr>
+                        <x-table.tr>
+                            <x-table.th>{{ __('City') }}</x-table.th>
+                            <x-table.td>{{ __('Optional') }}</x-table.td>
+                        </x-table.tr>
+                        <x-table.tr>
+                            <x-table.th>{{ __('Tax Number') }}</x-table.th>
+                            <x-table.td>{{ __('Optional') }}</x-table.td>
+                        </x-table.tr>
+                    </x-table-responsive>
+
+
+                    <div class="w-full flex justify-start">
                         <x-button primary type="submit" class="w-full text-center" wire:loading.attr="disabled">
                             {{ __('Import') }}
                         </x-button>
@@ -167,5 +200,4 @@
             </form>
         </x-slot>
     </x-modal>
-    {{-- End Import modal --}}
 </div>

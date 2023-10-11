@@ -137,7 +137,7 @@
                 </x-table.tr>
             @empty
                 <x-table.tr>
-                    <x-table.td colspan="7">
+                    <x-table.td colspan="8">
                         <div class="flex justify-center items-center space-x-2">
                             <svg class="w-8 h-8 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd"
@@ -156,17 +156,15 @@
         </x-table.tbody>
     </x-table>
 
-    <div class="p-4">
-        <div class="pt-3">
-            {{ $expenses->links() }}
-        </div>
+    <div class="pt-3">
+        {{ $expenses->links() }}
     </div>
 
-    @livewire('admin.expense.edit', ['expense' => $expense])
+    <livewire:admin.expense.edit :expense="$expense" lazy />
 
-    <livewire:admin.expense.create />
-    
-    <livewire:admin.cash-register.create />
+    <livewire:admin.expense.create lazy />
+
+    <livewire:admin.cash-register.create lazy />
 
     <x-modal wire:model="showModal">
         <x-slot name="title">
@@ -202,6 +200,63 @@
                     </div>
                 </div>
             </div>
+        </x-slot>
+    </x-modal>
+
+    <x-modal wire:model="importModal">
+        <x-slot name="title">
+            <div class="flex justify-between items-center">
+                {{ __('Import Excel') }}
+                <x-button primary wire:click="downloadSample" type="button">
+                    {{ __('Download Sample') }}
+                </x-button>
+            </div>
+        </x-slot>
+
+        <x-slot name="content">
+            <form wire:submit="importExcel">
+                <div class="space-y-4">
+                    <div class="mt-4">
+                        <x-label for="file" :value="__('Import')" />
+                        <x-input id="file" class="block mt-1 w-full" type="file" name="file"
+                            wire:model="file" />
+                        <x-input-error :messages="$errors->get('file')" for="file" class="mt-2" />
+                    </div>
+
+                    {{-- <x-table-responsive>
+                        <x-table.tr>
+                            <x-table.th>{{ __('Name') }}</x-table.th>
+                            <x-table.td>{{ __('Required') }}</x-table.td>
+                        </x-table.tr>
+                        <x-table.tr>
+                            <x-table.th>{{ __('Phone') }}</x-table.th>
+                            <x-table.td>{{ __('Required') }}</x-table.td>
+                        </x-table.tr>
+                        <x-table.tr>
+                            <x-table.th>{{ __('Email') }}</x-table.th>
+                            <x-table.td>{{ __('Optional') }}</x-table.td>
+                        </x-table.tr>
+                        <x-table.tr>
+                            <x-table.th>{{ __('Address') }}</x-table.th>
+                            <x-table.td>{{ __('Optional') }}</x-table.td>
+                        </x-table.tr>
+                        <x-table.tr>
+                            <x-table.th>{{ __('City') }}</x-table.th>
+                            <x-table.td>{{ __('Optional') }}</x-table.td>
+                        </x-table.tr>
+                        <x-table.tr>
+                            <x-table.th>{{ __('Tax Number') }}</x-table.th>
+                            <x-table.td>{{ __('Optional') }}</x-table.td>
+                        </x-table.tr>
+                    </x-table-responsive> --}}
+
+                    <div class="w-full flex justify-start">
+                        <x-button primary type="submit" wire:loading.attr="disabled">
+                            {{ __('Import') }}
+                        </x-button>
+                    </div>
+                </div>
+            </form>
         </x-slot>
     </x-modal>
 

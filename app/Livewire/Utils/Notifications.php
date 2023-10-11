@@ -7,6 +7,7 @@ namespace App\Livewire\Utils;
 use App\Models\ProductWarehouse;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Livewire\Attributes\Computed;
 
 class Notifications extends Component
 {
@@ -21,17 +22,21 @@ class Notifications extends Component
     public function mount(): void
     {
         $this->user = auth()->user();
+    }
 
-        $this->low_quantity_products = ProductWarehouse::select('product_id', 'qty', 'stock_alert')
-            ->whereColumn('qty', '<=', 'stock_alert')
-            ->take($this->how_many)
-            ->get();
+    #[Computed]
+    public function lowQuantity()
+    {
+       return ProductWarehouse::select('product_id', 'qty', 'stock_alert')
+        ->whereColumn('qty', '<=', 'stock_alert')
+        ->take($this->how_many)
+        ->get();
     }
 
     public function loadMore(): void
     {
         $this->how_many += 5;
-        $this->mount();
+        $this->lowQuantity();
     }
 
     public function markAsRead($key): void
@@ -42,22 +47,17 @@ class Notifications extends Component
 
     public function readAll(): void
     {
-        // mark all notifications as read
-        $user = auth()->user();
-        $user->unreadNotifications->markAsRead();
+        $this->user->unreadNotifications->markAsRead();
     }
 
     public function clear(): void
     {
         // clear all notifications
-        $user = auth()->user();
-        $user->notifications()->delete();
+        $this->user->notifications()->delete();
     }
 
     public function render()
     {
-        return view('livewire.utils.notifications', [
-            'low_quantity_products' => $this->low_quantity_products,
-        ]);
+        return view('livewire.utils.notifications');
     }
 }

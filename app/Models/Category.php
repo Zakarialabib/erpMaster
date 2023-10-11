@@ -47,6 +47,11 @@ class Category extends Model
         parent::__construct($attributes);
     }
 
+    public function setSlugAttribute($value): void
+    {
+        $this->attributes['slug'] = str_replace(' ', '-', (string) $value);
+    }
+
     public function scopeActive($query)
     {
         return $query->where('status', true);

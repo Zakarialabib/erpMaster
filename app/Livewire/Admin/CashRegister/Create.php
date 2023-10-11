@@ -25,14 +25,12 @@ class Create extends Component
     public $warehouse_id;
 
     #[Rule('required', message: 'Please provide a cash in hand')]
-    #[Rule('numeric', message: 'Cash in hand must be numeric')]  
+    #[Rule('numeric', message: 'Cash in hand must be numeric')]
     public $cash_in_hand;
-
 
     #[On('createModal')]
     public function createModal(): void
     {
-
         $this->resetErrorBag();
 
         $this->resetValidation();
@@ -47,8 +45,8 @@ class Create extends Component
         CashRegister::create([
             'cash_in_hand' => $this->cash_in_hand,
             'warehouse_id' => $this->warehouse_id,
-            'user_id' => auth()->user()->id,
-            'status' => true,
+            'user_id'      => auth()->user()->id,
+            'status'       => true,
         ]);
 
         $this->dispatch('refreshIndex')->to(Index::class);

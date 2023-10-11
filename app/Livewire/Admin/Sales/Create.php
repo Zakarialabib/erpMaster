@@ -12,14 +12,12 @@ use App\Livewire\Utils\Admin\WithModels;
 use App\Models\CashRegister;
 use App\Livewire\Admin\CashRegister\Create as CashRegisterCreate;
 use App\Models\Category;
-use App\Models\Customer;
 use App\Models\Movement;
 use App\Models\Product;
 use App\Models\Sale;
 use App\Models\SaleDetails;
 use App\Models\SalePayment;
 use App\Models\ProductWarehouse;
-use App\Models\Warehouse;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Support\Facades\Auth;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
@@ -93,7 +91,9 @@ class Create extends Component
     public $status;
 
     public $payment_method = 'cash';
+
     public $cash_register_id;
+
     public $user_id;
 
     public function mount(): void
@@ -132,6 +132,7 @@ class Create extends Component
                 $this->cash_register_id = $cashRegister->id;
             } else {
                 $this->dispatch('createModal')->to(CashRegisterCreate::class);
+
                 return;
             }
         }
@@ -177,14 +178,16 @@ class Create extends Component
 
     public function store(): void
     {
-        if (!$this->warehouse_id) {
+        if ( ! $this->warehouse_id) {
             $this->alert('error', __('Please select a warehouse'));
 
             return;
         }
-        if (!$this->customer_id) {
+
+        if ( ! $this->customer_id) {
             $this->alert('error', __('Please select a customer!'));
         }
+
         DB::transaction(function () {
             $this->validate();
 
@@ -267,12 +270,12 @@ class Create extends Component
 
             if ($this->paid_amount > 0) {
                 SalePayment::create([
-                    'date'           => date('Y-m-d'),
-                    'amount'         => $this->paid_amount * 100,
-                    'sale_id'        => $sale->id,
-                    'payment_method' => $this->payment_method,
-                    'cash_register_id'    => $this->cash_register_id,
-                    'user_id'        => Auth::user()->id,
+                    'date'             => date('Y-m-d'),
+                    'amount'           => $this->paid_amount * 100,
+                    'sale_id'          => $sale->id,
+                    'payment_method'   => $this->payment_method,
+                    'cash_register_id' => $this->cash_register_id,
+                    'user_id'          => Auth::user()->id,
                 ]);
             }
 

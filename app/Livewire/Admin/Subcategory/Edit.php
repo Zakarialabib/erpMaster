@@ -30,13 +30,13 @@ class Edit extends Component
     #[Rule('min:3', message: 'This name is too short')]
     public string $name;
 
-    #[Rule('nullable')]
+
     public $slug;
 
-    #[Rule('nullable')]
+
     public $category_id;
 
-    #[Rule('nullable')]
+
     public $language_id;
 
     public $image;

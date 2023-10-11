@@ -28,7 +28,9 @@ class PaymentsReport extends Component
     #[Rule('date', message: 'The end date field must be a valid date.')]
     #[Rule('after:start_date', message: 'The end date field must be after the start date field.')]
     public $end_date;
+
     public $payments;
+
     public $payment_method;
 
     protected $rules = [

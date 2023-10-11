@@ -29,16 +29,13 @@ class Edit extends Component
     #[Rule('min:3', message: 'This name is too short')]
     public string $name;
 
-    #[Rule('nullable')]
-    public string $description;
+    public $description;
 
-    #[Rule('nullable')]
-    public string $slug;
+    public $slug;
 
     public $image;
 
-    #[Rule('nullable')]
-    public string $origin;
+    public $origin;
 
     #[On('editModal')]
     public function editModal($id): void

@@ -6,7 +6,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Customer;
-use App\Models\Order;
 use App\Models\Purchase;
 use App\Models\PurchaseReturn;
 use App\Models\Quotation;
@@ -30,7 +29,7 @@ class ExportController extends Controller
             'format' => 'a5',
         ]);
 
-        return $pdf->stream(__('Sale') . $sale->reference . '.pdf');
+        return $pdf->stream(__('Sale').$sale->reference.'.pdf');
     }
 
     public function sale($id)
@@ -50,7 +49,7 @@ class ExportController extends Controller
             'watermark' => $this->setWaterMark($sale),
         ]);
 
-        return $pdf->stream(__('Sale') . $sale->reference . '.pdf');
+        return $pdf->stream(__('Sale').$sale->reference.'.pdf');
     }
 
     public function purchaseReturns($id)
@@ -65,7 +64,7 @@ class ExportController extends Controller
 
         $pdf = PDF::loadView('admin.purchasesreturn.print', $data);
 
-        return $pdf->stream(__('Purchase Return') . $purchaseReturn->reference . '.pdf');
+        return $pdf->stream(__('Purchase Return').$purchaseReturn->reference.'.pdf');
     }
 
     public function quotation($id)
@@ -80,7 +79,7 @@ class ExportController extends Controller
 
         $pdf = PDF::loadView('admin.quotation.print', $data);
 
-        return $pdf->stream(__('Quotation') . $quotation->reference . '.pdf');
+        return $pdf->stream(__('Quotation').$quotation->reference.'.pdf');
     }
 
     public function purchase($id)
@@ -97,7 +96,7 @@ class ExportController extends Controller
             'format' => 'a5',
         ]);
 
-        return $pdf->stream(__('Purchase') . $purchase->reference . '.pdf');
+        return $pdf->stream(__('Purchase').$purchase->reference.'.pdf');
     }
 
     public function saleReturns($id)
@@ -112,12 +111,12 @@ class ExportController extends Controller
 
         $pdf = PDF::loadView('admin.salesreturn.print', $data);
 
-        return $pdf->stream(__('Sale Return') . $saleReturn->reference . '.pdf');
+        return $pdf->stream(__('Sale Return').$saleReturn->reference.'.pdf');
     }
 
     private function getCompanyLogo(): string
     {
-        return 'data:image/png;base64,' . base64_encode(file_get_contents(public_path('images/logo.png')));
+        return 'data:image/png;base64,'.base64_encode(file_get_contents(public_path('images/logo.png')));
     }
 
     private function setWaterMark($model)

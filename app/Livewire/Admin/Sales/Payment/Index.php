@@ -34,7 +34,7 @@ class Index extends Component
     {
         abort_if(Gate::denies('sale payment access'), 403);
 
-        $query = SalePayment::when($this->sale_id, function ($query) {
+        $query = SalePayment::when($this->sale_id, function ($query): void {
             $query->where('sale_id', $this->sale_id);
         })
             ->advancedFilter([
@@ -68,7 +68,7 @@ class Index extends Component
         // need to change status of sale , if all payment deleted
 
         Sale::where('id', $salepayment->sale_id)->update([
-            'status' => SaleStatus::PENDING,
+            'status'         => SaleStatus::PENDING,
             'payment_status' => PaymentStatus::PENDING,
         ]);
 

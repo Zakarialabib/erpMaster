@@ -1,12 +1,10 @@
 <div>
-    <!-- Show Modal -->
     <x-modal wire:model="showModal">
         <x-slot name="title">
             {{ __('Show Product') }} - {{ $product?->code }}
         </x-slot>
 
         <x-slot name="content">
-
             <div class="px-4 mx-auto mb-4">
                 @if ($product)
                     @if (settings('telegram_channel'))
@@ -21,8 +19,8 @@
                     <div class="grid grid-cols-2 gap-6 mb-4">
                         @if ($product->image)
                             <div>
-                                <img src="{{ asset('images/products/' . $product?->image) }}" alt="{{ $product?->name }}"
-                                    class="w-32 h-32 rounded">
+                                <img src="{{ asset('images/products/' . $product?->image) }}"
+                                    alt="{{ $product?->name }}" class="w-32 h-32 rounded">
                             </div>
                         @endif
                         <div>
@@ -81,6 +79,9 @@
                                                         <p class="text-sm">{{ __('Stock Worth') }}:
                                                             {{ format_currency($warehouse->pivot->cost * $warehouse->pivot->qty) }}
                                                         </p>
+                                                        <p class="text-sm">{{ __('Alert Quantity') }}:
+                                                            {{ format_currency($warehouse->pivot->stock_alert) }}
+                                                        </p>
                                                     </div>
                                                 @empty
                                                     {{ __('No warehouse assigned') }}
@@ -88,10 +89,6 @@
                                             @endif
                                         </div>
                                     </x-table.td>
-                                    <x-table.tr>
-                                        <x-table.th>{{ __('Alert Quantity') }}</x-table.th>
-                                        <x-table.td>{{ $product?->stock_alert }}</x-table.td>
-                                    </x-table.tr>
                                     <x-table.tr>
                                         <x-table.th>{{ __('Tax (%)') }}</x-table.th>
                                         <x-table.td>{{ $product?->order_tax ?? 'N/A' }}</x-table.td>
@@ -147,11 +144,9 @@
                                 </ul>
                             @endif
                         </div>
-
                     </div>
                 </div>
             </div>
         </x-slot>
     </x-modal>
-    <!-- End Show Modal -->
 </div>

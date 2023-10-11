@@ -10,7 +10,6 @@ use App\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -66,7 +65,7 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
-        'status'        => Status::class,
+        'status'            => Status::class,
     ];
 
     /** @return mixed */
@@ -81,6 +80,4 @@ class User extends Authenticatable
         return $this->belongsToMany(Warehouse::class)->using(UserWarehouse::class)
             ->withPivot('user_id', 'warehouse_id', 'is_default');
     }
-
-
 }

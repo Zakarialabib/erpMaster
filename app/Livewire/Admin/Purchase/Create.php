@@ -10,9 +10,7 @@ use App\Enums\PurchaseStatus;
 use App\Jobs\UpdateProductCostHistory;
 use App\Livewire\Utils\Admin\WithModels;
 use App\Models\Movement;
-use App\Models\Warehouse;
 use App\Models\Product;
-use App\Models\PriceHistory;
 use App\Models\ProductWarehouse;
 use App\Models\Purchase;
 use App\Models\PurchaseDetail;
@@ -126,7 +124,7 @@ class Create extends Component
 
     public function store(): void
     {
-        if (!$this->warehouse_id) {
+        if ( ! $this->warehouse_id) {
             $this->alert('error', __('Please select a warehouse'));
 
             return;
@@ -189,7 +187,7 @@ class Create extends Component
                     ->where('warehouse_id', $this->warehouse_id)
                     ->first();
 
-                if (!$product_warehouse) {
+                if ( ! $product_warehouse) {
                     $product_warehouse = new ProductWarehouse([
                         'product_id'   => $cart_item->id,
                         'warehouse_id' => $this->warehouse_id,
@@ -218,12 +216,6 @@ class Create extends Component
                 ]);
 
                 $movement->save();
-
-                PriceHistory::create([
-                    'product_id'   => $cart_item->id,
-                    'warehouse_id' => $this->warehouse_id,
-                    'cost'         => $new_cost * 100,
-                ]);
             }
 
             if ($purchase->paid_amount > 0) {

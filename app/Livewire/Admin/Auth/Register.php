@@ -25,10 +25,10 @@ class Register extends Component
 
     #[Rule('required')]
     public $password = '';
-    
+
     #[Rule('required|min:8|same:passwordConfirmation')]
     public $passwordConfirmation = '';
-    
+
     #[Rule('required|numeric')]
     public $phone;
 

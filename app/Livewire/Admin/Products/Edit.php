@@ -34,6 +34,8 @@ class Edit extends Component
     public string $name;
 
     public string $barcode_symbology;
+    
+    public string $code;
 
     public string $slug;
 
@@ -62,6 +64,7 @@ class Edit extends Component
     public array $options = [];
 
     public $image;
+
     public array $gallery = [];
 
     public bool $best;
@@ -100,11 +103,10 @@ class Edit extends Component
         $this->options = array_values($this->options);
     }
 
-    public function fetchSubcategories(): void
-    {
-        $selectedCategory = $this->product['category_id'];
-        $this->subcategories = Subcategory::where('category_id', $selectedCategory)->get();
-    }
+    // public function fetchSubcategories(): void
+    // {
+    //     $this->subcategories = Subcategory::where('category_id', $this->product->category_id)->get();
+    // }
 
     #[On('editModal')]
     public function editModal($id): void
@@ -115,7 +117,7 @@ class Edit extends Component
 
         $this->product = Product::findOrFail($id);
 
-        $this->fetchSubcategories();
+        // $this->fetchSubcategories();
 
         $this->description = $this->product->description;
 

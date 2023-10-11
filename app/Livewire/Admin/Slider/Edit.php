@@ -28,18 +28,18 @@ class Edit extends Component
     #[Rule('nullable', 'max:255')]
     public $subtitle;
 
-    #[Rule('nullable')]
+
     public $link;
 
-    #[Rule('nullable')]
+
     public $bg_color;
 
-    #[Rule('nullable')]
+
     public $embeded_video;
 
     public $image;
 
-    #[Rule('nullable')]
+
     public $description;
 
     #[On('editModal')]

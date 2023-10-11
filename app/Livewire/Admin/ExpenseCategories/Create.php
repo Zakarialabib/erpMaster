@@ -22,7 +22,7 @@ class Create extends Component
     #[Rule('required|min:3|max:255')]
     public string $name;
 
-    #[Rule('nullable')]
+
 
     public ?string $description = null;
 

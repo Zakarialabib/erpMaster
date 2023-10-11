@@ -36,6 +36,7 @@ class Edit extends Component
 
     #[Rule('required|numeric')]
     public $phone;
+
     public $roles;
 
     #[Rule('nullable|string')]
@@ -102,14 +103,16 @@ class Edit extends Component
     {
         return Role::pluck('name', 'id')->toArray();
     }
-    
+
     #[Computed]
     public function warehouses()
     {
         if (auth()->check()) {
             $user = auth()->user();
+
             return Warehouse::whereIn('id', $user->warehouses->pluck('id'))->select('name', 'id')->get();
         }
+
         return Warehouse::pluck('name', 'id')->toArray();
     }
 

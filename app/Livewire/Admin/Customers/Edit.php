@@ -22,26 +22,24 @@ class Edit extends Component
     /** @var mixed */
     public $customer;
 
-    #[Rule('required|string|min:3|max:255', message: 'The name field is required and must be a string between 3 and 255 characters.')]
+    #[Rule('required', message: 'The name field is required')]
+    #[Rule('min:3', message: 'The name field must be more than 3 characters.')]
+    #[Rule('max:255', message: 'The name field must be less 255 characters.')]
     public string $name;
 
-    #[Rule('nullable|email|max:255', message: 'The email field must be a valid email address with a maximum of 255 characters.')]
-    public ?string $email = null;
+    public $email;
 
-    #[Rule('required|numeric', message: 'The phone field is required and must be a numeric value.')]
-    public string $phone;
+    #[Rule('required', message: 'The phone field is required')]
+    #[Rule('numeric', message: 'The phone field must be a numeric value.')]
+    public $phone;
 
-    #[Rule('nullable|max:255', message: 'The city field must be a string with a maximum of 255 characters.')]
-    public ?string $city = null;
+    public $city;
 
-    #[Rule('nullable|max:255', message: 'The country field must be a string with a maximum of 255 characters.')]
-    public ?string $country = null;
+    public $country;
 
-    #[Rule('nullable|max:255', message: 'The address field must be a string with a maximum of 255 characters.')]
-    public ?string $address = null;
+    public $address;
 
-    #[Rule('nullable|max:255', message: 'The tax number field must be a string with a maximum of 255 characters.')]
-    public ?string $tax_number = null;
+    public $tax_number;
 
     public function render()
     {

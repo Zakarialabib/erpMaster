@@ -31,14 +31,11 @@ class Create extends Component
     #[Rule('min:3', message: 'This name is too short')]
     public string $name;
 
-    #[Rule('nullable')]
-    public string $slug;
+    public $slug;
 
-    #[Rule('nullable')]
-    public int $category_id;
+    public $category_id;
 
-    #[Rule('nullable')]
-    public int $language_id;
+    public $language_id;
 
     public $image;
 

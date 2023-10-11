@@ -21,6 +21,7 @@ class Login extends Component
 {
     #[Rule(['required', 'string', 'email'])]
     public string $email = '';
+
     #[Rule(['required', 'string'])]
     public string $password = '';
 
@@ -41,6 +42,7 @@ class Login extends Component
                 return $this->redirect(Dashboard::class);
             }
         }
+
         session()->regenerate();
 
         $this->redirect(
@@ -48,16 +50,17 @@ class Login extends Component
             navigate: true
         );
 
-        // 
     }
 
     protected function ensureIsNotRateLimited(): void
     {
-        if (!RateLimiter::tooManyAttempts($this->throttleKey(), 5)) {
+        if ( ! RateLimiter::tooManyAttempts($this->throttleKey(), 5)) {
             return;
         }
+
         event(new Lockout(request()));
         $seconds = RateLimiter::availableIn($this->throttleKey());
+
         throw ValidationException::withMessages([
             'email' => __('Authentification throttle', [
                 'seconds' => $seconds,
@@ -68,7 +71,7 @@ class Login extends Component
 
     protected function throttleKey(): string
     {
-        return Str::transliterate(Str::lower($this->email) . '|' . request()->ip());
+        return Str::transliterate(Str::lower($this->email).'|'.request()->ip());
     }
 
     public function render()

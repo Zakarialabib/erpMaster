@@ -17,14 +17,20 @@ use Exception;
 class VerifySite extends Component
 {
     public $siteUrl = '';
-    public $verificationMethod = 'META'; // Default verification method is META
-    public $verificationToken = ''; // Store the verification token here
-    public $verificationStatus = ''; // Flag to track if the site is verified
-    public $webResources = []; // Store the list of web resources here
-    public $verifySiteModal = false;
-    private $siteVerificationService;
 
-    public function mount()
+    public $verificationMethod = 'META';
+     // Default verification method is META
+    public $verificationToken = '';
+     // Store the verification token here
+    public $verificationStatus = '';
+     // Flag to track if the site is verified
+    public $webResources = [];
+     // Store the list of web resources here
+    public $verifySiteModal = false;
+
+    private ?\Google\Service\SiteVerification $siteVerificationService = null;
+
+    public function mount(): void
     {
         $client = new Client();
         $client->setApplicationName('Laravel');
@@ -39,12 +45,12 @@ class VerifySite extends Component
         $this->webResources = $this->siteVerificationService->webResource->listWebResource();
     }
 
-    public function verifySiteModal()
+    public function verifySiteModal(): void
     {
         $this->verifySiteModal = true;
     }
 
-    public function isVerified()
+    public function isVerified(): bool
     {
         // Make a GET request to get the web resource (site) status
         $webResource = $this->siteVerificationService->webResource->get($this->siteUrl);
@@ -56,7 +62,7 @@ class VerifySite extends Component
         return $isVerified;
     }
 
-    public function getVerificationToken()
+    public function getVerificationToken(): void
     {
         $siteVerificationService = new SiteVerification();
 
@@ -66,17 +72,18 @@ class VerifySite extends Component
         $site = new SiteVerificationWebResourceGettokenRequestSite();
         $site->setType('SITE');
         $site->setIdentifier($this->siteUrl);
+
         $postBody->setSite($site);
 
         try {
             $tokenResponse = $siteVerificationService->webResource->getToken($postBody);
             $this->verificationToken = $tokenResponse->getToken();
-        } catch (Google_Service_Exception $e) {
-            $this->verificationStatus = 'Verification failed: '.$e->getMessage();
+        } catch (Google_Service_Exception $googleServiceException) {
+            $this->verificationStatus = 'Verification failed: '.$googleServiceException->getMessage();
         }
     }
 
-    public function verifySite()
+    public function verifySite(): void
     {
         try {
             $site = new SiteVerificationWebResourceResourceSite();
@@ -86,8 +93,8 @@ class VerifySite extends Component
             $this->siteVerificationService->webResource->insert($site, $this->verificationMethod);
 
             $this->verificationStatus = 'Verification successful';
-        } catch (Exception $e) {
-            $this->verificationStatus = 'Verification failed: '.$e->getMessage();
+        } catch (Exception $exception) {
+            $this->verificationStatus = 'Verification failed: '.$exception->getMessage();
         }
     }
 

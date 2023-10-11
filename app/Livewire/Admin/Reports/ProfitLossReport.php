@@ -56,6 +56,7 @@ class ProfitLossReport extends Component
     public $payments_sent_amount;
 
     public $payments_net_amount;
+
     public $warehouse_id;
 
     public function mount(): void

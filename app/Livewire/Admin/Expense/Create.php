@@ -23,6 +23,7 @@ class Create extends Component
     use WithModels;
 
     public $createModal = false;
+
     public Expense $expense;
 
     #[Rule('required|string|max:255')]
@@ -40,13 +41,13 @@ class Create extends Component
     #[Rule('nullable|min:3')]
     public $description;
 
-    #[Rule('nullable')]
+
     public $user_id;
 
-    #[Rule('nullable')]
+
     public $warehouse_id;
 
-    #[Rule('nullable')]
+
     public $cash_register_id;
 
     public function render()
@@ -71,7 +72,7 @@ class Create extends Component
             $this->warehouse_id = settings('default_warehouse_id');
         }
 
-        if($this->user_id && $this->warehouse_id) {
+        if ($this->user_id && $this->warehouse_id) {
             $cashRegister = CashRegister::where('user_id', $this->user_id)
                 ->where('warehouse_id', $this->warehouse_id)
                 ->where('status', true)
@@ -81,6 +82,7 @@ class Create extends Component
                 $this->cash_register_id = $cashRegister->id;
             } else {
                 $this->dispatch('createModal')->to(CashRegisterCreate::class);
+
                 return;
             }
         }
@@ -99,11 +101,12 @@ class Create extends Component
         $this->alert('success', __('Expense created successfully.'));
 
         $this->dispatch('refreshIndex')->to(Index::class);
-        
+
         $this->createModal = false;
-        
+
         $this->reset(['reference', 'category_id', 'date', 'amount', 'description', 'user_id', 'warehouse_id', 'cash_register_id']);
     }
+
     #[Computed]
     public function expenseCategories()
     {
@@ -115,8 +118,10 @@ class Create extends Component
     {
         if (auth()->check()) {
             $user = auth()->user();
+
             return Warehouse::whereIn('id', $user->warehouses->pluck('id'))->select('name', 'id')->get();
         }
+
         return Warehouse::select('name', 'id')->get();
     }
 }

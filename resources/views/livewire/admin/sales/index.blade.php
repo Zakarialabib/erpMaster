@@ -10,18 +10,12 @@
                 </x-button>
             </x-slot>
             <x-slot name="content">
-                <x-dropdown-link wire:click="dispatch('importModal')" wire:loading.attr="disabled">
-                    {{ __('Import') }}
+                <x-dropdown-link wire:click="dispatch('exportAll')" wire:loading.attr="disabled">
+                    {{ __('PDF') }}
                 </x-dropdown-link>
-                {{-- use livewire - coming soon --}}
-                {{-- <x-dropdown-link wire:click="dispatch('exportAll')" 
-                wire:loading.attr="disabled">
-                {{ __('PDF') }}
-            </x-dropdown-link>
-            <x-dropdown-link wire:click="dispatch('downloadAll')" 
-                wire:loading.attr="disabled">
-                {{ __('Excel') }}
-            </x-dropdown-link> --}}
+                <x-dropdown-link wire:click="dispatch('downloadAll')" wire:loading.attr="disabled">
+                    {{ __('Excel') }}
+                </x-dropdown-link>
             </x-slot>
         </x-dropdown>
         @can('sale_create')
@@ -165,7 +159,7 @@
                                 </x-slot>
 
                                 <x-slot name="content">
-                                    <x-dropdown-link wire:click="$dispatch('showModal', {{ $sale->id }})"
+                                    <x-dropdown-link wire:click="$dispatch('showModal', { id : '{{ $sale->id }}'})"
                                         wire:loading.attr="disabled">
                                         <i class="fas fa-eye"></i>
                                         {{ __('View') }}
@@ -245,40 +239,9 @@
         {{ $sales->links() }}
     </div>
 
-    <livewire:admin.sales.show' :sale="$sale" lazy />
+    <livewire:admin.sales.show :sale="$sale" lazy />
 
     <livewire:admin.sales.payment-form :sale="$sale" lazy />
-
-    <x-modal wire:model="importModal">
-        <x-slot name="title">
-            <div class="flex justify-between items-center">
-                {{ __('Import Excel') }}
-                <x-button primary wire:click="downloadSample" type="button">
-                    {{ __('Download Sample') }}
-                </x-button>
-            </div>
-        </x-slot>
-
-        <x-slot name="content">
-            <form wire:submit="import">
-                <div class="mb-4">
-
-                    <div class="w-full px-3">
-                        <x-label for="import" :value="__('Import')" />
-                        <x-input id="import" class="block mt-1 w-full" type="file" name="import"
-                            wire:model="import_file" />
-                        <x-input-error :messages="$errors->get('import')" for="import" class="mt-2" />
-                    </div>
-
-                    <div class="w-full px-3">
-                        <x-button primary type="submit" class="w-full text-center" wire:loading.attr="disabled">
-                            {{ __('Import') }}
-                        </x-button>
-                    </div>
-                </div>
-            </form>
-        </x-slot>
-    </x-modal>
 
     @if (empty($showPayments))
         <livewire:admin.sales.payment.index :sale="$sale" />

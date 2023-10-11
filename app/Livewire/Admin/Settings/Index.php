@@ -8,7 +8,6 @@ use App\Models\Currency;
 use App\Models\Customer;
 use App\Models\Settings;
 use App\Models\Warehouse;
-use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
@@ -16,6 +15,7 @@ use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Computed;
 use Livewire\Attributes\Rule;
 use Illuminate\Support\Str;
 
@@ -30,8 +30,6 @@ class Index extends Component
     /** @var array<string> */
     public $listeners = ['update'];
 
-    public $listsForFields = [];
-
     public $invoice_header;
 
     public $invoice_footer;
@@ -39,15 +37,22 @@ class Index extends Component
     public $image;
 
     public $site_logo;
-    public $site_title;
-    public $social_facebook;
-    public $social_twitter;
-    public $social_instagram;
-    public $social_linkedin;
-    public $social_whatsapp;
-    public $siteImage;
 
-    public $favicon;
+    public $site_title;
+
+    public $social_facebook;
+
+    public $social_twitter;
+
+    public $social_instagram;
+
+    public $social_linkedin;
+
+    public $social_whatsapp;
+
+    public $social_tiktok;
+
+    public $site_favicon;
 
     #[Rule('required|string|min:1|max:255')]
     public $company_name;
@@ -57,7 +62,6 @@ class Index extends Component
 
     #[Rule('required|string|min:1|max:255')]
     public $company_phone;
-    public $company_logo;
 
     #[Rule('required|string|min:1|max:255')]
     public $company_address;
@@ -77,10 +81,10 @@ class Index extends Component
     #[Rule('required|string|min:1|max:255')]
     public $default_date_format;
 
-    #[Rule('nullable')]
+
     public $default_client_id;
 
-    #[Rule('nullable')]
+
     public $default_warehouse_id;
 
     #[Rule('required|string|min:1|max:255')]
@@ -102,6 +106,10 @@ class Index extends Component
 
     public $purchasePayment_prefix;
 
+    public $expense_prefix;
+
+    public $delivery_prefix;
+
     public $is_rtl;
 
     public $show_email;
@@ -114,6 +122,16 @@ class Index extends Component
 
     public $show_shipping;
 
+    public $head_tags;
+
+    public $body_tags;
+
+    public $seo_meta_title;
+
+    public $seo_meta_description;
+
+    public $whatsapp_custom_message;
+    
     public function render()
     {
         return view('livewire.admin.settings.index');
@@ -125,11 +143,10 @@ class Index extends Component
 
         $this->site_logo = settings('site_logo');
         $this->site_title = settings('site_title');
-        $this->favicon = settings('site_favicon');
+        $this->site_favicon = settings('site_favicon');
         $this->company_name = settings('company_name');
         $this->company_email = settings('company_email');
         $this->company_phone = settings('company_phone');
-        $this->company_logo = settings('company_logo');
         $this->company_address = settings('company_address');
         $this->company_tax = settings('company_tax');
         $this->telegram_channel = settings('telegram_channel');
@@ -147,6 +164,8 @@ class Index extends Component
         $this->quotation_prefix = settings('quotation_prefix');
         $this->salePayment_prefix = settings('salePayment_prefix');
         $this->purchasePayment_prefix = settings('purchasePayment_prefix');
+        $this->expense_prefix = settings('expense_prefix');
+        $this->delivery_prefix = settings('delivery_prefix');
         $this->is_rtl = settings('is_rtl');
         $this->show_email = settings('show_email');
         $this->show_address = settings('show_address');
@@ -158,82 +177,92 @@ class Index extends Component
         $this->social_instagram = settings('social_instagram');
         $this->social_linkedin = settings('social_linkedin');
         $this->social_whatsapp = settings('social_whatsapp');
-
-        $this->initListsForFields();
+        $this->social_tiktok = settings('social_tiktok');
+        $this->head_tags = settings('head_tags');
+        $this->body_tags = settings('body_tags');
+        $this->seo_meta_title = settings('seo_meta_title');
+        $this->seo_meta_description = settings('seo_meta_description');
+        $this->whatsapp_custom_message = settings('whatsapp_custom_message');
     }
 
     public function update(): void
     {
         $this->validate();
 
-        if ($this->company_logo) {
-            $imageName = Str::slug($this->company_name) . '.' . $this->company_logo->extension();
-            $this->company_logo->storeAs('uploads', $imageName, 'public');
-            $this->company_logo = $imageName;
-        }
-
         if ($this->invoice_header) {
             $imageName = 'invoice-header';
-            Storage::put('uploads', $imageName, 'public');
-                $this->createHTMLfile($this->invoice_header, $imageName);
+            Storage::put('invoice', $imageName, 'local_files');
+            $this->createHTMLfile($this->invoice_header, $imageName);
             $this->invoice_header = $imageName;
         }
 
         if ($this->invoice_footer) {
             $imageName = 'invoice-footer';
-            Storage::put('uploads', $imageName, 'public');
+            Storage::put('invoice', $imageName, 'local_files');
             $this->createHTMLfile($this->invoice_footer, $imageName);
             $this->invoice_footer = $imageName;
         }
 
         if ($this->site_logo) {
-            $imageName = 'site-logo';
-            $this->site_logo->storeAs('uploads', $imageName, 'public');
+            $imageName = 'logo';
+            $this->site_logo->storeAs('images', $imageName, 'local_files');
             $this->site_logo = $imageName;
         }
 
-        if ($this->favicon) {
+        if ($this->site_favicon) {
             $imageName = 'favicon';
-            $this->favicon->storeAs('uploads', $imageName, 'public');
-            $this->favicon = $imageName;
+            $this->site_favicon->storeAs('images', $imageName, 'local_files');
+            $this->site_favicon = $imageName;
         }
 
-        Settings::set('site_logo', $this->site_logo);
-        Settings::set('site_title', $this->site_title);
-        Settings::set('site_favicon', $this->favicon);
-        Settings::set('company_name', $this->company_name);
-        Settings::set('company_email', $this->company_email);
-        Settings::set('company_phone', $this->company_phone);
-        Settings::set('company_logo', $this->company_logo);
-        Settings::set('company_address', $this->company_address);
-        Settings::set('company_tax', $this->company_tax);
-        Settings::set('telegram_channel', $this->telegram_channel);
-        Settings::set('default_currency_id', $this->default_currency_id);
-        Settings::set('default_currency_position', $this->default_currency_position);
-        Settings::set('default_date_format', $this->default_date_format);
-        Settings::set('default_client_id', $this->default_client_id);
-        Settings::set('default_warehouse_id', $this->default_warehouse_id);
-        Settings::set('default_language', $this->default_language);
-        Settings::set('invoice_footer_text', $this->invoice_footer_text);
-        Settings::set('sale_prefix', $this->sale_prefix);
-        Settings::set('saleReturn_prefix', $this->saleReturn_prefix);
-        Settings::set('purchase_prefix', $this->purchase_prefix);
-        Settings::set('purchaseReturn_prefix', $this->purchaseReturn_prefix);
-        Settings::set('quotation_prefix', $this->quotation_prefix);
-        Settings::set('salePayment_prefix', $this->salePayment_prefix);
-        Settings::set('purchasePayment_prefix', $this->purchasePayment_prefix);
-        Settings::set('is_rtl', $this->is_rtl);
-        Settings::set('show_email', $this->show_email);
-        Settings::set('show_address', $this->show_address);
-        Settings::set('show_order_tax', $this->show_order_tax);
-        Settings::set('show_discount', $this->show_discount);
-        Settings::set('show_shipping', $this->show_shipping);
-        Settings::set('social_facebook', $this->social_facebook);
-        Settings::set('social_twitter', $this->social_twitter);
-        Settings::set('social_instagram', $this->social_instagram);
-        Settings::set('social_linkedin', $this->social_linkedin);
-        Settings::set('social_whatsapp', $this->social_whatsapp);
+        $settings = [
+            'site_logo' => $this->site_logo,
+            'site_title' => $this->site_title,
+            'site_favicon' => $this->site_favicon,
+            'company_name' => $this->company_name,
+            'company_email' => $this->company_email,
+            'company_phone' => $this->company_phone,
+            'company_address' => $this->company_address,
+            'company_tax' => $this->company_tax,
+            'telegram_channel' => $this->telegram_channel,
+            'default_currency_id' => $this->default_currency_id,
+            'default_currency_position' => $this->default_currency_position,
+            'default_date_format' => $this->default_date_format,
+            'default_client_id' => $this->default_client_id,
+            'default_warehouse_id' => $this->default_warehouse_id,
+            'default_language' => $this->default_language,
+            'invoice_footer_text' => $this->invoice_footer_text,
+            'sale_prefix' => $this->sale_prefix,
+            'saleReturn_prefix' => $this->saleReturn_prefix,
+            'purchase_prefix' => $this->purchase_prefix,
+            'purchaseReturn_prefix' => $this->purchaseReturn_prefix,
+            'quotation_prefix' => $this->quotation_prefix,
+            'salePayment_prefix' => $this->salePayment_prefix,
+            'purchasePayment_prefix' => $this->purchasePayment_prefix,
+            'expense_prefix' => $this->expense_prefix,
+            'delivery_prefix' => $this->delivery_prefix,
+            'is_rtl' => $this->is_rtl,
+            'show_email' => $this->show_email,
+            'show_address' => $this->show_address,
+            'show_order_tax' => $this->show_order_tax,
+            'show_discount' => $this->show_discount,
+            'show_shipping' => $this->show_shipping,
+            'social_facebook' => $this->social_facebook,
+            'social_twitter' => $this->social_twitter,
+            'social_instagram' => $this->social_instagram,
+            'social_linkedin' => $this->social_linkedin,
+            'social_whatsapp' => $this->social_whatsapp,
+            'social_tiktok' => $this->social_tiktok,
+            'head_tags' => $this->head_tags,
+            'body_tags' => $this->body_tags,
+            'seo_meta_title' => $this->seo_meta_title,
+            'seo_meta_description' => $this->seo_meta_description,
+            'whatsapp_custom_message' => $this->whatsapp_custom_message,
+        ];
 
+        foreach ($settings as $key => $value) {
+            Settings::set($key, $value);
+        }
 
         cache()->forget('settings');
 
@@ -244,23 +273,34 @@ class Index extends Component
     {
         $extension = $file->extension();
         $data = File::get($file->getRealPath());
-        $base64 = 'data:image/' . $extension . ';base64,' . base64_encode($data);
+        $base64 = 'data:image/'.$extension.';base64,'.base64_encode($data);
 
         $html = sprintf(
             '<div><img style="width: 100%%; display: block;" src="%s"></div>',
             $base64
         );
 
-        $path = public_path('print/' . $name . '.html');
+        $path = public_path('print/'.$name.'.html');
         File::put($path, $html);
 
         return $base64;
     }
-
-    protected function initListsForFields(): void
+    
+    #[Computed]
+    public function currencies()
     {
-        $this->listsForFields['currencies'] = Currency::pluck('name', 'id')->toArray();
-        $this->listsForFields['warehouses'] = Warehouse::pluck('name', 'id')->toArray();
-        $this->listsForFields['customers'] = Customer::pluck('name', 'id')->toArray();
+        return Currency::pluck('name', 'id')->toArray();
+    }
+
+    #[Computed]
+    public function warehouses()
+    {
+        return Warehouse::pluck('name', 'id')->toArray();
+    }
+
+    #[Computed]
+    public function customers()
+    {
+        return Customer::pluck('name', 'id')->toArray();   
     }
 }

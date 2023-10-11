@@ -16,6 +16,9 @@ class SupplierImport implements ToModel
             'phone'      => $row['phone'],
             'address'    => $row['address'] ?? null,
             'tax_number' => $row['tax_number'] ?? null,
+            'email'         => $row['email'] ?? null,
+            'city'      => $row['city'] ?? null, 
+            'country'       => $row['country'] ?? null,
         ]);
     }
 }

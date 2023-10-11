@@ -23,28 +23,29 @@ class Edit extends Component
     public $editModal = false;
 
     public $section;
+
     #[Rule('required', message: 'The title is required')]
     #[Rule('max:255', message: 'The title must not exceed 255 characters')]
     public $title;
 
-    #[Rule('nullable')]
+
     #[Rule('max:255', message: 'The subtitle must not exceed 255 characters')]
     public $subtitle;
 
-    #[Rule('nullable')]
+
     #[Rule('min:3', message: 'The description must be at least 3 characters')]
     public $description;
 
-    #[Rule('nullable')]
+
     public $link;
 
-    #[Rule('nullable')]
+
     #[Rule('max:255', message: 'The label must not exceed 255 characters')]
     public $label;
 
     public $bg_color;
 
-    #[Rule('nullable')]
+
     #[Rule('integer')]
     #[Rule('exists:pages,id', 'The selected page does not exist')]
     public $page_id;
@@ -53,11 +54,12 @@ class Edit extends Component
     #[Rule('max:255', message: 'The type must not exceed 255 characters')]
     public $type;
 
-    #[Rule('nullable')]
+
     #[Rule('max:255', message: 'The featured title must not exceed 255 characters')]
     public $featured_title;
 
     public $text_color;
+
     public $image;
 
     public $position;

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Livewire\Admin\Auth;
 
 use App\Providers\RouteServiceProvider;
-use Illuminate\Support\Facades\Auth;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
 use Livewire\Attributes\Layout;
@@ -22,8 +21,10 @@ class Verify extends Component
                 session('url.intended', RouteServiceProvider::ADMIN_HOME),
                 navigate: true
             );
+
             return;
         }
+
         auth()->user()->sendEmailVerificationNotification();
         session()->flash('status', 'verification-link-sent');
     }

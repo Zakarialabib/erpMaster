@@ -2,7 +2,10 @@
     @section('title', __('Customer'))
 
     <x-theme.breadcrumb :title="__('Customer List')" :parent="route('admin.customers.index')" :parentName="__('Customer List')">
-        <x-button primary type="button" wire:click="dispatchTo('admin.customer.create', 'createModal')">
+        <x-button primary type="button" wire:click="$set('importModal', true)">
+            {{ __('Import Customer') }}
+        </x-button>
+        <x-button primary type="button" wire:click="dispatch('createModal')">
             {{ __('Create Customer') }}
         </x-button>
     </x-theme.breadcrumb>
@@ -64,6 +67,9 @@
                 {{ __('Address') }}
             </x-table.th>
             <x-table.th>
+                {{ __('Tax number') }}
+            </x-table.th>
+            <x-table.th>
                 {{ __('Actions') }}
             </x-table.th>
         </x-slot>
@@ -80,10 +86,15 @@
                         </button>
                     </x-table.td>
                     <x-table.td>
-                        {{ $customer->phone }}
+                        <a href="tel:{{ $customer->phone }}" target="__blank" class="text-blue-500 hover:underline">
+                            {{ $customer->phone }}
+                        </a>
                     </x-table.td>
                     <x-table.td>
                         {{ $customer->address }}
+                    </x-table.td>
+                    <x-table.td>
+                        {{ $customer->tax_number }}
                     </x-table.td>
                     <x-table.td>
                         <div class="flex justify-start space-x-2">
@@ -134,11 +145,8 @@
         </x-table.tbody>
     </x-table>
 
-    <div class="p-4">
-        <div class="pt-3">
-
-            {{ $customers->links() }}
-        </div>
+    <div class="pt-3">
+        {{ $customers->links() }}
     </div>
 
     <livewire:admin.customers.show :customer="$customer" lazy />
@@ -147,19 +155,24 @@
 
     <livewire:admin.customers.create lazy />
 
-    <x-modal wire:model="import">
+    <x-modal wire:model="importModal">
         <x-slot name="title">
-            {{ __('Import Customers') }}
+            <div class="flex justify-between items-center">
+                {{ __('Import Excel') }}
+                <x-button primary wire:click="downloadSample" type="button">
+                    {{ __('Download Sample') }}
+                </x-button>
+            </div>
         </x-slot>
 
         <x-slot name="content">
             <form wire:submit="importExcel">
                 <div class="space-y-4">
                     <div class="mt-4">
-                        <x-label for="import" :value="__('Import')" />
-                        <x-input id="import" class="block mt-1 w-full" type="file" name="import"
-                            wire:model="import" />
-                        <x-input-error :messages="$errors->get('import')" for="import" class="mt-2" />
+                        <x-label for="file" :value="__('Import')" />
+                        <x-input id="file" class="block mt-1 w-full" type="file" name="file"
+                            wire:model="file" />
+                        <x-input-error :messages="$errors->get('file')" for="file" class="mt-2" />
                     </div>
 
                     <x-table-responsive>
@@ -198,5 +211,4 @@
             </form>
         </x-slot>
     </x-modal>
-
 </div>

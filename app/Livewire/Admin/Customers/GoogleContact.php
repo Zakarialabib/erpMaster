@@ -14,17 +14,19 @@ use Throwable;
 class GoogleContact extends Component
 {
     public $contacts = [];
+
     public $contactService;
+
     public $showContacts = false;
 
-    public function showContacts()
+    public function showContacts(): void
     {
         $this->showContacts = true;
         // Fetch Google Contacts
         $this->fetchContacts();
     }
 
-    public function fetchContacts()
+    public function fetchContacts(): void
     {
         // Initialize the Google API Client
         $client = new Client();
@@ -69,14 +71,14 @@ class GoogleContact extends Component
 
         // Return the list of contacts
         return collect($connections)
-            ->sortBy(function ($person, $index) {
+            ->sortBy(static function ($person, $index) {
                 return $person->names[0]->displayName ?? ' ';
             })
             ->values()
             ->toArray();
     }
 
-    public function convertToCustomer(string $resourceName)
+    public function convertToCustomer(string $resourceName): void
     {
         try {
             // Get the contact details from the API
@@ -90,9 +92,10 @@ class GoogleContact extends Component
 
             // Save the customer object to the database
             $customer->save();
-        } catch (Throwable $th) {
+        } catch (Throwable) {
             //throw $th;
         }
+
         // Display a success message
         // dd('Customer created successfully!');
     }

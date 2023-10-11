@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace App\Livewire\Admin\Quotations;
 
 use App\Livewire\Utils\Admin\WithModels;
-use App\Models\Customer;
-use App\Models\Warehouse;
 use Livewire\Component;
 use App\Models\Quotation;
 use App\Models\QuotationDetails;
@@ -37,7 +35,7 @@ class Create extends Component
     #[Rule('numeric')]
     public $shipping_amount;
 
-    #[Rule('nullable')]
+
     public $note;
 
     #[Rule('required|integer|max:255')]
@@ -71,10 +69,11 @@ class Create extends Component
         $this->tax_percentage = 0;
         $this->shipping_amount = 0;
 
-        if(settings('default_client_id') !== null){
+        if (settings('default_client_id') !== null) {
             $this->customer_id = settings('default_client_id');
         }
-        if(settings('default_warehouse_id') !== null){
+
+        if (settings('default_warehouse_id') !== null) {
             $this->warehouse_id = settings('default_warehouse_id');
         }
 

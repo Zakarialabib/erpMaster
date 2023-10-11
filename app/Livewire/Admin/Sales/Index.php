@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Livewire\Admin\Sales;
 
-use App\Imports\SaleImport;
 use App\Livewire\Utils\Admin\WithModels;
 use App\Models\Sale;
 use Illuminate\Support\Facades\Gate;
@@ -30,16 +29,9 @@ class Index extends Component
 
     public $model = Sale::class;
 
-    /** @var array<string> */
-    public $listeners = [
-        'importModal',
-    ];
-
     public $startDate;
 
     public $endDate;
-
-    public $importModal = false;
 
     // public $deleteModal = false;
 
@@ -99,26 +91,6 @@ class Index extends Component
         return Storage::disk('exports')->download('sales_import_sample.xls');
     }
 
-    public function import(): void
-    {
-        abort_if(Gate::denies('sale create'), 403);
-
-        $this->validate([
-            'import_file' => [
-                'required',
-                'file',
-            ],
-        ]);
-
-        Sale::import(new SaleImport(), $this->file('import_file'));
-
-        $this->alert('success', __('Sales imported successfully'));
-
-        $this->dispatch('refreshIndex');
-
-        $this->importModal = false;
-    }
-
 
     public function deleteSelected(): void
     {
@@ -153,7 +125,6 @@ class Index extends Component
         $this->sale = $id;
     }
 
-
     public function sendWhatsapp($sale)
     {
         $this->sale = Sale::find($sale);
@@ -170,7 +141,7 @@ class Index extends Component
         }
 
         // Add the country code to the beginning of the phone number.
-        $phone = '+212' . $phone;
+        $phone = '+212'.$phone;
 
         $greeting = __('Hello');
 

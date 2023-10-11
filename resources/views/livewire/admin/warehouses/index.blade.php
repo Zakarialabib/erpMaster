@@ -85,7 +85,7 @@
                 </x-table.tr>
             @empty
                 <x-table.tr>
-                    <x-table.td colspan="4">
+                    <x-table.td colspan="5">
                         <div class="flex justify-center items-center">
                             <p class="text-gray-500">{{ __('No results found') }}</p>
                         </div>

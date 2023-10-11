@@ -24,7 +24,6 @@ class UserInfos extends Component
         $this->customer = $customer;
         // dd($this->customer);
         $this->email = $this->customer->email;
-
     }
 
     public function render()
@@ -34,7 +33,6 @@ class UserInfos extends Component
 
     public function save(): void
     {
-
         if ($this->password !== '') {
             $this->password = bcrypt($this->password);
         }

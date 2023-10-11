@@ -1,4 +1,12 @@
 <div>
+    @section('title', __('Customer Groups'))
+
+    <x-theme.breadcrumb :title="__('Customer Groups')" :parent="route('admin.customer-group.index')" :parentName="__('Customer Group List')">
+        <x-button primary type="button" wire:click="dispatch('createModal')">
+            {{ __('Create Customer Group') }}
+        </x-button>
+    </x-theme.breadcrumb>
+
     <div class="flex flex-wrap justify-center">
         <div class="lg:w-1/2 md:w-1/2 sm:w-full flex flex-wrap my-2">
             <select wire:model.live="perPage"
@@ -92,11 +100,10 @@
     </x-table>
 
     <div class="pt-3">
-
         {{ $customergroups->links() }}
     </div>
 
-    @livewire('admin.customer-group.edit', ['customergroup' => $customergroup])
+    <livewire:admin.customer-group.edit :customergroup="$customergroup" lazy /> 
 
     <livewire:admin.customer-group.create />
 
@@ -118,5 +125,4 @@
             </div>
         </x-slot>
     </x-modal>
-
 </div>

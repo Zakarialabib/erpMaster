@@ -37,7 +37,7 @@ class SuperUserSeeder extends Seeder
 
         $role = Role::create([
             'guard_name' => 'admin',
-            'name' => 'admin',
+            'name'       => 'admin',
         ]);
 
         $role->givePermissionTo(Permission::where('guard_name', 'admin')->get());

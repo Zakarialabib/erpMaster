@@ -50,11 +50,14 @@ class Edit extends Component
 
     #[Rule('required', message : 'The payment status field is required.')]
     public $payment_status;
+
     public $delivery_id;
 
     #[Rule('required', message : 'The status field is required.')]
     public $status;
+
     public $document;
+
     public $note;
 
     public function render()
@@ -116,25 +119,24 @@ class Edit extends Component
         return Customer::select('id', 'name')->get();
     }
 
-
     public function update(): void
     {
         $this->validate();
 
         $this->order->update([
-            'date' => $this->date,
-            'reference' => $this->reference,
-            'shipping_id' => $this->shipping_id,
-            'customer_id' => $this->customer_id,
-            'tax_amount' => $this->tax_amount,
+            'date'            => $this->date,
+            'reference'       => $this->reference,
+            'shipping_id'     => $this->shipping_id,
+            'customer_id'     => $this->customer_id,
+            'tax_amount'      => $this->tax_amount,
             'discount_amount' => $this->discount_amount,
-            'total_amount' => $this->total_amount,
-            'payment_date' => $this->payment_date,
-            'payment_method' => $this->payment_method,
-            'payment_status' => $this->payment_status,
-            'status' => $this->status,
-            'document' => $this->document,
-            'note' => $this->note,
+            'total_amount'    => $this->total_amount,
+            'payment_date'    => $this->payment_date,
+            'payment_method'  => $this->payment_method,
+            'payment_status'  => $this->payment_status,
+            'status'          => $this->status,
+            'document'        => $this->document,
+            'note'            => $this->note,
         ]);
 
         $this->alert('success', __('Order updated successfully.'));

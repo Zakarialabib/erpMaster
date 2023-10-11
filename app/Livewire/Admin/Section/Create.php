@@ -28,11 +28,11 @@ class Create extends Component
     #[Rule('max:255', message: 'This title is too long')]
     public $title;
 
-    #[Rule('nullable')]
+
     #[Rule('max:255', message: 'This subtitle is too long')]
     public $subtitle;
 
-    #[Rule('nullable')]
+
     #[Rule('max:255', message: 'This featured title is too long')]
     public $featured_title;
 
@@ -44,7 +44,7 @@ class Create extends Component
     #[Rule('nullable|string|max:255 ')]
     public $label;
 
-    #[Rule('nullable')]
+
     public $bg_color;
 
     #[Rule('required|unique:sections,type')]

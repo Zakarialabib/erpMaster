@@ -13,22 +13,29 @@ class SubscribedMail extends Mailable
     use Queueable;
     use SerializesModels;
 
-    public function __construct()
-    {
+   /** Create a new message instance. */
+   public function __construct(
+    protected Subscriber $subscriber,
+    ) {
     }
 
-    /**
-     * Build the message.
-     *
-     * @return $this
-     */
-    public function build()
+    /** Get the message envelope. */
+    public function envelope(): Envelope
     {
-        return $this->from((settings('company_email') ?? 'noreply@'.request()->getHost()), settings('site_name'))
-            ->replyTo(request()->input('email'))
-            ->subject(__('Thank you for your subscription').settings('site_mame'))
-            ->markdown('vendor.notifications.email', [
-                'introLines' => [__('We will get you updated once we will.')],
-            ]);
+        return new Envelope(
+            from: new Address(settings('company_email'), settings('site_title')),
+            subject: $this->subscriber->name.' You are Subscribed to our Newsletters '.settings('site_title'),
+        );
+    }
+
+    /** Get the message content definition. */
+    public function content(): Content
+    {
+        return new Content(
+            markdown: 'emails.subscribe-mail',
+            with: [
+                'subscriber' => $this->subscriber,
+            ],
+        );
     }
 }

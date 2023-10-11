@@ -24,12 +24,12 @@ enum ShippingStatus: string
     {
         return match ($this) {
             static::PENDING   => __('Pending'),
-            static::PREPARING   => __('Processing'),
+            static::PREPARING => __('Processing'),
             static::SUBMITTED => __('Completed'),
-            static::SHIPPING   => __('Shipped'),
-            static::DELIVERED  => __('Returned'),
-            static::CANCELLED  => __('Canceled'),
-            static::FAILED  => __('Failed'),
+            static::SHIPPING  => __('Shipped'),
+            static::DELIVERED => __('Returned'),
+            static::CANCELLED => __('Canceled'),
+            static::FAILED    => __('Failed'),
         };
     }
 
@@ -37,14 +37,13 @@ enum ShippingStatus: string
     {
         return match ($this) {
             self::PENDING   => 'secondary',
-            self::PREPARING   => 'info',
+            self::PREPARING => 'info',
             self::SUBMITTED => 'success',
-            self::SHIPPING   => 'primary',
-            self::DELIVERED  => 'success',
-            self::CANCELLED  => 'warning',
-            self::FAILED  => 'danger',
+            self::SHIPPING  => 'primary',
+            self::DELIVERED => 'success',
+            self::CANCELLED => 'warning',
+            self::FAILED    => 'danger',
             default         => 'secondary',
         };
     }
-
 }

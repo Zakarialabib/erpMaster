@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Gate;
 class Show extends Component
 {
     public $showModal = false;
+
     public $supplier;
 
     #[On('showModal')]

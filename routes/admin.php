@@ -5,7 +5,6 @@ declare(strict_types=1);
 use App\Http\Controllers\Admin\ExportController;
 use App\Http\Controllers\Admin\HomeController;
 use App\Http\Controllers\Admin\IntegrationController;
-use App\Http\Controllers\Admin\PosController;
 use App\Http\Controllers\Admin\PurchasePaymentsController;
 use App\Http\Controllers\Admin\PurchaseReturnPaymentsController;
 use App\Http\Controllers\Admin\PurchasesReturnController;
@@ -68,11 +67,14 @@ use App\Livewire\Admin\PurchaseReturn\Index as PurchaseReturnIndex;
 use App\Livewire\Admin\Quotations\Index as QuotationsIndex;
 use App\Livewire\Admin\Quotations\Create as CreateQuotation;
 use App\Livewire\Admin\Quotations\Edit as EditQuotation;
+use App\Livewire\Admin\Transfer\Index as TransferIndex;
 use App\Livewire\Admin\SaleReturn\Index as SaleReturnIndex;
 use App\Livewire\Admin\Sales\Index as SalesIndex;
 use App\Livewire\Admin\Sales\Create as CreateSale;
 use App\Livewire\Admin\Sales\Edit as EditSale;
 use App\Livewire\Admin\Settings\Index as SettingsIndex;
+use App\Livewire\Admin\Settings\PopupSettings;
+use App\Livewire\Admin\Settings\Redirects as RedirectsIndex;
 use App\Livewire\Admin\Subscriber\Index as SubscriberIndex;
 use App\Livewire\Admin\Contacts as ContactsIndex;
 use App\Livewire\Admin\Settings\InvoiceTheme;
@@ -100,10 +102,8 @@ use Illuminate\Support\Facades\Route;
 // Dashboard
 Route::get('/dashboard', Dashboard::class)->name('dashboard');
 
-// Charts
-Route::get('/sales-purchases/chart-data', [HomeController::class, 'salesPurchasesChart'])->name('sales-purchases.chart');
-Route::get('/current-month/chart-data', [HomeController::class, 'currentMonthChart'])->name('current-month.chart');
-Route::get('/payment-flow/chart-data', [HomeController::class, 'paymentChart'])->name('payment-flow.chart');
+//POS
+Route::get('/pos', PosIndex::class)->name('pos.index');
 
 //Product Adjustment
 Route::get('/adjustments', AdjustmentIndex::class)->name('adjustments.index');
@@ -111,33 +111,32 @@ Route::get('/adjustment/create', CreateAdjustment::class)->name('adjustments.cre
 Route::get('/adjustment/update/{id}', EditAdjustment::class)->name('adjustments.edit');
 
 //Currencies
-Route::get('currencies', CurrencyIndex::class)->name('currencies.index');
+Route::get('/currencies', CurrencyIndex::class)->name('currencies.index');
 
 //Cash Register
-Route::get('cash-registers', CashRegisterIndex::class)->name('cash-register.index');
+Route::get('/cash-registers', CashRegisterIndex::class)->name('cash-register.index');
 
 //Expense Category
-Route::get('expense-categories', ExpenseCategoriesIndex::class)->name('expense-categories.index');
+Route::get('/expense-categories', ExpenseCategoriesIndex::class)->name('expense-categories.index');
 
 //Expense
-Route::get('expenses', ExpensesIndex::class)->name('expenses.index');
+Route::get('/expenses', ExpensesIndex::class)->name('expenses.index');
 
 //Customers
-Route::get('customers', CustomersIndex::class)->name('customers.index');
-Route::get('customer/details/{id}', CustomerDetails::class)->name('customer.details');
+Route::get('/customers', CustomersIndex::class)->name('customers.index');
+Route::get('/customer/details/{id}', CustomerDetails::class)->name('customer.details');
+Route::get('/customergroup', CustomerGroupIndex::class)->name('customer-group.index');
 
-Route::get('customergroup', CustomerGroupIndex::class)->name('customer-group.index');
+Route::get('/deliveries', DeliveryIndex::class)->name('deliveries.index');
 
-Route::get('deliveries', DeliveryIndex::class)->name('deliveries.index');
-
-Route::get('suppliers', SuppliersIndex::class)->name('suppliers.index');
-Route::get('supplier/details/{id}', SupplierDetails::class)->name('supplier.details');
+Route::get('/suppliers', SuppliersIndex::class)->name('suppliers.index');
+Route::get('/supplier/details/{id}', SupplierDetails::class)->name('supplier.details');
 
 //Warehouses
-Route::get('warehouses', WarehouseIndex::class)->name('warehouses.index');
+Route::get('/warehouses', WarehouseIndex::class)->name('warehouses.index');
 
-Route::get('brands', BrandIndex::class)->name('brands.index');
-Route::get('product-categories', CategoryIndex::class)->name('product-categories.index');
+Route::get('/brands', BrandIndex::class)->name('brands.index');
+Route::get('/product-categories', CategoryIndex::class)->name('product-categories.index');
 
 Route::get('/subcategories', SubcategoryIndex::class)->name('product-subcategories.index');
 
@@ -202,9 +201,6 @@ Route::get('/purchases-report', PurchasesReport::class)->name('purchases-report.
 Route::get('/purchases-return-report', PurchasesReturnReport::class)->name('purchases-return-report.index');
 Route::get('/payments-report', PaymentsReport::class)->name('payments-report.index');
 
-//POS
-Route::get('/pos', PosIndex::class)->name('pos.index');
-
 //Generate Sale PDF
 Route::get('/sales/pdf/{id}', [ExportController::class, 'sale'])->name('sales.pdf');
 Route::get('/sales/pos/pdf/{id}', [ExportController::class, 'salePos'])->name('sales.pos.pdf');
@@ -219,6 +215,8 @@ Route::get('/sale-returns/pdf/{id}', [ExportController::class, 'saleReturns'])->
 
 //Sale Returns
 Route::resource('sale-returns', SalesReturnController::class);
+
+Route::get('/transfers', TransferIndex::class)->name('tranfers.index');
 
 //User Profile
 Route::get('/user/profile', ProfileIndex::class)->name('profile.index');
@@ -268,8 +266,8 @@ Route::get('/blog/category', BlogCategoryIndex::class)->name('blog-categories.in
 
 Route::get('/backup', BackupIndex::class)->name('setting.backup');
 Route::get('/shipping', ShippingIndex::class)->name('shipping.index');
-Route::get('/popupsettings', [SettingController::class, 'popupsettings'])->name('setting.popupsettings');
-Route::get('/redirects', [SettingController::class, 'redirects'])->name('setting.redirects');
+Route::get('/popupsettings', PopupSettings::class)->name('setting.popupsettings');
+Route::get('/redirects', RedirectsIndex::class)->name('setting.redirects');
 
 Route::get('/notification', NotificationIndex::class)->name('notification');
 
@@ -282,7 +280,7 @@ Route::get('/menus', MenuIndex::class)->name('menus');
 Route::get('/printers', PrinterIndex::class)->name('printers');
 Route::get('/subscribers', SubscriberIndex::class)->name('subscribers.index');
 
-    // Route::get('/package', PackageIndex::class);
-    // Route::get('/partner', PartnerIndex::class);
-    // Route::get('/purchasereturn', PurchaseReturnIndex::class);
-    // Route::get('/salereturn', SaleReturnIndex::class);
+// Route::get('/package', PackageIndex::class);
+// Route::get('/partner', PartnerIndex::class);
+// Route::get('/purchasereturn', PurchaseReturnIndex::class);
+// Route::get('/salereturn', SaleReturnIndex::class);

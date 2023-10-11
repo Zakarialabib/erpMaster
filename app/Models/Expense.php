@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Support\HasAdvancedFilter;
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -41,16 +40,19 @@ class Expense extends Model
         'reference',
         'description',
         'amount',
-        'cash_register_id'
+        'cash_register_id',
     ];
 
-    public function __construct(array $attributes = [])
+    protected static function boot()
     {
-        $this->setRawAttributes([
-            'reference' => 'EXP-'.Carbon::now()->format('d/m/Y'),
-            'date'      => Carbon::now()->format('d/m/Y'),
-        ], true);
-        parent::__construct($attributes);
+        parent::boot();
+
+        static::creating(static function ($expense): void {
+            $prefix = settings('expense_prefix');
+            $latestExpense = self::latest()->first();
+            $number = $latestExpense ? (int) substr((string) $latestExpense->reference, -3) + 1 : 1;
+            $expense->reference = $prefix.str_pad((string) $number, 3, '0', STR_PAD_LEFT);
+        });
     }
 
     /** @return BelongsTo<ExpenseCategory> */
@@ -66,8 +68,8 @@ class Expense extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(
-            related : User::class,
-            foreignKey : 'user_id'
+            related: User::class,
+            foreignKey: 'user_id'
         );
     }
 

@@ -18,14 +18,14 @@ class Settings extends Component
     use LivewireAlert;
     public $colors = ['gray', 'red', 'green', 'blue', 'indigo'];
 
-    #[Rule('nullable')]
+
     public $bg_color;
 
     public $text_color;
 
     public $sectionSetting;
 
-    #[Rule('nullable')]
+
     public $section_id;
 
     public $colorOptions = [100, 200, 300, 400, 500, 600, 700, 800, 900];
@@ -78,18 +78,18 @@ class Settings extends Component
             $this->sectionSetting = PageSetting::where('section_id', $this->section_id)->first();
 
             if ($this->sectionSetting) {
-                $this->layout_config = json_decode($this->sectionSetting->layout_config, true);
+                $this->layout_config = json_decode((string) $this->sectionSetting->layout_config, true);
             }
         }
     }
 
-    public function mount()
+    public function mount(): void
     {
         $this->sectionSetting = PageSetting::where('section_id', $this->section_id)->first();
 
         if ($this->sectionSetting) {
             $this->fill([
-                'layout_config' => json_decode($this->sectionSetting->layout_config, true),
+                'layout_config' => json_decode((string) $this->sectionSetting->layout_config, true),
                 // 'type'          => $this->pageSetting->type,
             ]);
 

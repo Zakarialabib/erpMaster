@@ -23,7 +23,6 @@ class Index extends Component
 
     public $model = ExpenseCategory::class;
 
-
     public function render()
     {
         abort_if(Gate::denies('expense_categories access'), 403);
@@ -38,7 +37,6 @@ class Index extends Component
 
         return view('livewire.admin.expense-categories.index', ['expenseCategories' => $expenseCategories]);
     }
-
 
     public function deleteSelected(): void
     {

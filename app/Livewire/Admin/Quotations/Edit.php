@@ -40,7 +40,7 @@ class Edit extends Component
     #[Rule('numeric')]
     public $shipping_amount;
 
-    #[Rule('nullable')]
+
     public $note;
 
     #[Rule('required|integer|max:255')]
