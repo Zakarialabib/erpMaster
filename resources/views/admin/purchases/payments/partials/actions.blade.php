@@ -1,6 +1,6 @@
 @can('access_sale_payments')
     <a href="{{ route('purchase-payments.edit', [$data->purchase->id, $data->id]) }}" class="btn btn-info btn-sm">
-        <i class="bi bi-pencil"></i>
+        <i class="fa fa-pencil"></i>
     </a>
 @endcan
 @can('access_sale_payments')

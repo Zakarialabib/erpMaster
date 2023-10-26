@@ -8,6 +8,8 @@ import { Livewire, Alpine } from '../../vendor/livewire/livewire/dist/livewire.e
 import Sortable from 'sortablejs';
 window.Sortable = Sortable;
 
+import editorjs from './editorjs'
+
 import PerfectScrollbar from "perfect-scrollbar";
 window.PerfectScrollbar = PerfectScrollbar;
 

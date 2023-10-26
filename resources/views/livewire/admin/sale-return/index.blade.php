@@ -173,7 +173,7 @@
                                 @if ($this->salereturn != null)
                                     <a target="_blank" class="btn-secondary mfs-auto mfe-1 d-print-none"
                                         href="{{ route('sale-returns.pdf', $this->salereturn->id) }}">
-                                        <i class="bi bi-printer"></i> {{ __('Print') }}
+                                        <i class="fa fa-printer"></i> {{ __('Print') }}
                                     </a>
                                 @endif
                             </div>

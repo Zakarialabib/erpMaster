@@ -48,7 +48,7 @@ class Catalog extends Component
 
     public function filterProducts($type, $value): void
     {
-        switch($type) {
+        switch ($type) {
             case 'category':
                 $this->category_id = $value;
 
@@ -68,7 +68,7 @@ class Catalog extends Component
 
     public function clearFilter($filter): void
     {
-        switch($filter) {
+        switch ($filter) {
             case 'category':
                 $this->category_id = null;
                 unset($this->selectedFilters['category']);
@@ -106,8 +106,8 @@ class Catalog extends Component
     public function render(): View|Factory
     {
         $query = \App\Helpers::getEcommerceProducts()
-            ->when($this->minPrice, fn ($query) => $query->where('price', '>=', $this->minPrice))
-            ->when($this->maxPrice, fn ($query) => $query->where('price', '<=', $this->maxPrice))
+            // ->when($this->minPrice, fn ($query) => $query->where('price', '>=', $this->minPrice))
+            // ->when($this->maxPrice, fn ($query) => $query->where('price', '<=', $this->maxPrice))
             ->when($this->category_id, fn ($query) => $query->where('category_id', $this->category_id))
             ->when($this->subcategory_id, fn ($query) => $query->whereIn('subcategories', $this->subcategory_id))
             ->when($this->brand_id, fn ($query) => $query->where('brand_id', $this->brand_id));

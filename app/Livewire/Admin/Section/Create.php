@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Livewire\Admin\Section;
 
 use App\Models\Language;
+use App\Models\Page;
 use App\Models\Section;
 use Illuminate\Support\Str;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
@@ -79,7 +80,7 @@ class Create extends Component
         $this->validate();
 
         if ($this->image) {
-            $imageName = Str::slug($this->title).'.'.$this->image->extension();
+            $imageName = Str::slug($this->title) . '.' . $this->image->extension();
             $this->image->storeAs('sections', $imageName);
             $this->image = $imageName;
         }
@@ -97,5 +98,11 @@ class Create extends Component
     public function languages()
     {
         return Language::pluck('name', 'id')->toArray();
+    }
+
+    #[Computed]
+    public function pages()
+    {
+        return Page::select('title', 'id')->get();
     }
 }

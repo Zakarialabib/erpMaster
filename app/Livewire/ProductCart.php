@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Livewire;
 
+use App\Models\Product;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use App\Models\ProductWarehouse;
@@ -84,16 +85,12 @@ class ProductCart extends Component
         }
     }
 
-    public function productSelected(array $product): void
+    public function productSelected($id): void
     {
-        if ($product === []) {
-            $this->alert('error', __('Something went wrong!'));
-
-            return;
-        }
+        $product = Product::find($id);
 
         $cart = Cart::instance($this->cart_instance);
-        $exists = $cart->search(static fn ($cartItem): bool => $cartItem->id === $product['id']);
+        $exists = $cart->search(static fn ($cartItem): bool => $cartItem->id === $product->id);
 
         if ($exists->isNotEmpty()) {
             $this->alert('error', __('Product already added to cart!'));
@@ -101,39 +98,39 @@ class ProductCart extends Component
             return;
         }
 
-        $productWarehouse = ProductWarehouse::where('product_id', $product['id'])
+        $productWarehouse = ProductWarehouse::where('product_id', $id)
             ->where('warehouse_id', $this->warehouse_id)
             ->first();
 
         $cartItem = $this->createCartItem($product, $productWarehouse);
 
         $cart->add($cartItem);
-        $this->updateQuantityAndCheckQuantity($product['id'], $productWarehouse->qty);
+        $this->updateQuantityAndCheckQuantity($product->id, $productWarehouse->qty);
     }
 
-    public function calculate(array $product): array
+    public function calculate($product): array
     {
-        $productWarehouse = ProductWarehouse::where('product_id', $product['id'])
+        $productWarehouse = ProductWarehouse::where('product_id', $product->id)
             ->where('warehouse_id', $this->warehouse_id)
             ->first();
 
         return $this->calculatePrices($product, $productWarehouse);
     }
 
-    private function calculatePrices(array $product, $productWarehouse): array
+    private function calculatePrices($product, $productWarehouse)
     {
         $price = $productWarehouse->price * 100;
         $unit_price = $price;
         $product_tax = 0.00;
         $sub_total = $price;
 
-        if ($product['tax_type'] === 1) {
-            $tax = $price * $product['order_tax'] / 100;
+        if ($product->tax_type === 1) {
+            $tax = $price * $product->order_tax / 100;
             $price += $tax;
             $product_tax = $tax;
             $sub_total = $price;
-        } elseif ($product['tax_type'] === 2) {
-            $tax = $price * $product['order_tax'] / 100;
+        } elseif ($product->tax_type === 2) {
+            $tax = $price * $product->order_tax / 100;
             $unit_price -= $tax;
             $product_tax = $tax;
         }
@@ -147,22 +144,22 @@ class ProductCart extends Component
         $this->quantity[$productId] = 1;
     }
 
-    private function createCartItem(array $product, $productWarehouse): array
+    private function createCartItem($product, $productWarehouse): array
     {
         $calculation = $this->calculate($product);
 
         return [
-            'id'      => $product['id'],
-            'name'    => $product['name'],
+            'id'      => $product->id,
+            'name'    => $product->name,
             'qty'     => 1,
             'price'   => $productWarehouse->price * 100,
             'weight'  => 1,
             'options' => array_merge($calculation, [
                 'product_discount'      => 0.00,
                 'product_discount_type' => 'fixed',
-                'code'                  => $product['code'],
+                'code'                  => $product->code,
                 'stock'                 => $productWarehouse->qty,
-                'unit'                  => $product['unit'],
+                'unit'                  => $product->unit,
             ]),
         ];
     }

@@ -38,7 +38,7 @@
                 <form wire:submit="update">
                     <div x-show="tab === 'company'">
                         <div class="py-3 px-6 mb-2 bg-indigo-500 border-b-1 border-gray-light text-white">
-                            <h2>{{ __('Company Info') }}</h2>
+                            <h2 class="text-white">{{ __('Company Info') }}</h2>
                         </div>
                         <div class="flex flex-wrap -mx-2 mb-3">
                             <div class="w-full md:w-1/3 px-3 mb-4">
@@ -104,15 +104,15 @@
                     </div>
                     <div x-show="tab === 'system'">
                         <div class="py-3 px-6 mb-2 bg-indigo-500 border-b-1 border-gray-light text-white">
-                            <h2>{{ __('System Configuration') }}</h2>
+                            <h2 class="text-white">{{ __('System Configuration') }}</h2>
                         </div>
                         <div class="flex flex-wrap -mx-2 mb-3">
                             <div class="w-full md:w-1/3 px-3 mb-4">
                                 <x-label for="default_currency_id" :value="__('Default currency')" required />
                                 <x-select-list
                                     class="block bg-white dark:bg:bg-slate-200 text-gray-700 dark:text-gray-300 rounded border border-gray-300 mb-1 text-sm w-full focus:shadow-outline-blue focus:border-blue-500"
-                                    id="default_currency_id" name="default_currency_id" wire:model="default_currency_id"
-                                    :options="$this->currencies" required />
+                                    id="default_currency_id" name="default_currency_id"
+                                    wire:model="default_currency_id" :options="$this->currencies" required />
                             </div>
 
                             <div class="w-full md:w-1/3 px-3 mb-4">
@@ -193,80 +193,100 @@
                         </div>
                     </div>
                     <div x-show="tab === 'invoice'">
-                        <div class="py-3 px-6 mb-2 bg-indigo-500 border-b-1 border-gray-light text-white">
-                            <h2>{{ __('Invoice Configuration') }}</h2>
+                        <div class="py-3 px-6 mb-2 bg-indigo-500 border-b-1 border-gray-light ">
+                            <h2 class="text-white">{{ __('Invoice Configuration') }}</h2>
                         </div>
-                        <div class="flex flex-wrap -mx-2 mb-3">
-                            <div class="w-full md:w-1/2 px-3 mb-4">
+
+                        <x-theme.accordion :title="__('Select invoice template')">
+                            <div class="flex items-center">
+                                <div class="w-full md:w-1/2 px-3 mb-4">
+                                    <x-label for="invoice_template" :value="__('Invoice Template')" />
+                                    <select wire:model.live="invoice_template" id="invoice_template"
+                                        name="invoice_template"
+                                        class="block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border-gray-300 rounded-md mt-1">
+                                        @for ($i = 1; $i <= 5; $i++)
+                                            <option value="invoice-{{ $i }}">Invoice {{ $i }}</option>
+                                        @endfor
+                                    </select>
+                                </div>
+                                <div class="w-full md:w-1/2 px-3 mb-4">
+                                    <img src="{{ asset('assets/screens/' . $invoice_template . '.png') }}"
+                                        alt="Invoice Preview" class="w-full h-auto">
+                                </div>
+                            </div>
+                        </x-theme.accordion>
+                        <div class="grid md:grid-cols-2 sm:grid-cols-2 mb-3 gap-6">
+                            {{-- <div class=mb-4">
                                 <x-label for="invoice_header" :value="__('Invoice Header')" />
                                 <x-fileupload wire:model="invoice_header" accept="image/jpg,image/jpeg,image/png" />
                             </div>
-
-                            <div class="w-full md:w-1/2 px-3 mb-4">
+                            <div class=mb-4">
                                 <x-label for="invoice_footer" :value="__('Invoice Footer')" />
                                 <x-fileupload wire:model="invoice_footer" accept="image/jpg,image/jpeg,image/png" />
-                            </div>
-                            <div class="w-full md:w-1/3 px-3 mb-4">
+                            </div> --}}
+                            <div class="col-span-full mb-4">
                                 <x-label for="invoice_footer_text" :value="__('Invoice footer text')" />
                                 <x-input type="text" wire:model="invoice_footer_text" id="invoice_footer_text"
                                     name="invoice_footer_text" />
                                 <x-input-error :messages="$errors->get('invoice_footer_text')" class="mt-2" />
                             </div>
-                            <div class="w-full md:w-1/3 px-3 mb-4">
+                        </div>
+                        <div class="grid md:grid-cols-3 sm:grid-cols-2 gap-6">
+                            <div>
                                 <x-label for="sale_prefix" :value="__('Sale Prefix')" />
                                 <input wire:model="sale_prefix" type="text" id="sale_prefix" name="sale_prefix"
                                     class="block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border-gray-300 rounded-md mt-1" />
                             </div>
-                            <div class="w-full md:w-1/3 px-3 mb-4">
+                            <div>
                                 <x-label for="saleReturn_prefix" :value="__('Sale Prefix')" />
                                 <input wire:model="saleReturn_prefix" type="text" id="saleReturn_prefix"
                                     name="saleReturn_prefix"
                                     class="block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border-gray-300 rounded-md mt-1" />
                             </div>
-                            <div class="w-full md:w-1/3 px-3 mb-4">
+                            <div>
                                 <x-label for="salePayment_prefix" :value="__('Sale Payment Prefix')" />
                                 <input wire:model="salePayment_prefix" type="text" id="salePayment_prefix"
                                     name="salePayment_prefix"
                                     class="block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border-gray-300 rounded-md mt-1" />
                             </div>
-                            <div class="w-full md:w-1/3 px-3 mb-4">
+                            <div>
                                 <x-label for="purchase_prefix" :value="__('Purchase Prefix')" />
                                 <input wire:model="purchase_prefix" type="text" id="purchase_prefix"
                                     name="purchase_prefix"
                                     class="block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border-gray-300 rounded-md mt-1" />
                             </div>
-                            <div class="w-full md:w-1/3 px-3 mb-4">
+                            <div>
                                 <x-label for="purchaseReturn_prefix" :value="__('Purchase Prefix')" />
                                 <input wire:model="purchaseReturn_prefix" type="text" id="purchaseReturn_prefix"
                                     name="purchaseReturn_prefix"
                                     class="block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border-gray-300 rounded-md mt-1" />
                             </div>
-                            <div class="w-full md:w-1/3 px-3 mb-4">
+                            <div>
                                 <x-label for="purchasePayment_prefix" :value="__('Purchase Payment Prefix')" />
                                 <input wire:model="purchasePayment_prefix" type="text" id="purchasePayment_prefix"
                                     name="purchasePayment_prefix"
                                     class="block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border-gray-300 rounded-md mt-1" />
                             </div>
-                            <div class="w-full md:w-1/3 px-3 mb-4">
+                            <div>
                                 <x-label for="quotation_prefix" :value="__('Quotation Prefix')" />
                                 <input wire:model="quotation_prefix" type="text" id="quotation_prefix"
                                     name="quotation_prefix"
                                     class="block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border-gray-300 rounded-md mt-1" />
                             </div>
-                            <div class="w-full md:w-1/3 px-3 mb-4">
+                            <div>
                                 <x-label for="expense_prefix" :value="__('Expense Prefix')" />
                                 <input wire:model="expense_prefix" type="text" id="expense_prefix"
                                     name="expense_prefix"
                                     class="block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border-gray-300 rounded-md mt-1" />
                             </div>
-                            <div class="w-full md:w-1/3 px-3 mb-4">
+                            <div>
                                 <x-label for="delivery_prefix" :value="__('Delivery Prefix')" />
                                 <input wire:model="delivery_prefix" type="text" id="delivery_prefix"
                                     name="delivery_prefix"
                                     class="block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border-gray-300 rounded-md mt-1" />
                             </div>
                         </div>
-                        <div class="mb-4 w-full">
+                        <div class="my-4 w-full">
                             <x-button type="submit" wire:click="update" primary class="w-full text-center">
                                 {{ __('Save Changes') }}
                             </x-button>
@@ -274,7 +294,7 @@
                     </div>
                     <div x-show="tab === 'siteConfig'">
                         <div class="py-3 px-6 mb-2 bg-indigo-500 border-b-1 border-gray-light text-white">
-                            <h2>{{ __('Site Configuration') }}</h2>
+                            <h2 class="text-white">{{ __('Site Configuration') }}</h2>
                         </div>
                         <div class="w-full flex flex-wrap">
                             <div class="lg:w-1/2 sm:w-full px-2">
@@ -369,7 +389,7 @@
                 </form>
                 <div x-show="tab === 'mail'">
                     <div class="py-3 px-6 mb-2 bg-indigo-500 border-b-1 border-gray-light text-white">
-                        <h2>{{ __('Mail Configuration') }}</h2>
+                        <h2 class="text-white">{{ __('Mail Configuration') }}</h2>
                     </div>
                     <div class="w-full px-2">
                         <livewire:admin.settings.smtp lazy />
@@ -377,7 +397,7 @@
                 </div>
                 <div x-show="tab === 'messaging'">
                     <div class="py-3 px-6 mb-2 bg-indigo-500 border-b-1 border-gray-light text-white">
-                        <h2>{{ __('Messaging') }}</h2>
+                        <h2 class="text-white">{{ __('Messaging') }}</h2>
                     </div>
                     <div class="w-full px-2">
                         <livewire:admin.settings.messaging lazy />

@@ -25,7 +25,7 @@
                     </div>
 
                     <div>
-                        <x-label for="bg_color" :value="__('Background Color')" />
+                        <x-label for="bg_color" :value="__('Background color')" />
                         <x-input id="bg_color" class="block mt-1 w-full" type="color" name="bg_color"
                             wire:model="bg_color" />
                         <x-input-error :messages="$errors->get('bg_color')" for="bg_color" class="mt-2" />
@@ -40,7 +40,8 @@
                 </div>
                 <div class="w-full py-2 px-3">
                     <x-label for="description" :value="__('description')" />
-                    <x-trix name="description" wire:model="description" class="mt-1" />
+                    <textarea id="description" rows="3" name="description" wire:model="description"
+                        class="block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"></textarea>
                     <x-input-error :messages="$errors->get('description')" for="description" class="mt-2" />
                 </div>
                 <div class="w-full py-2 px-3">
@@ -52,7 +53,7 @@
 
                 <div class="w-full py-2 px-3">
                     <x-media-upload title="{{ __('Image') }}" name="image" wire:model="image" :file="$image"
-                        single types="PNG / JPEG / WEBP" fileTypes="image/*" />
+                        path="images/sliders/" single types="PNG / JPEG / WEBP" fileTypes="image/*" />
                 </div>
 
                 <div class="text-center py-4">

@@ -154,7 +154,7 @@
                                 <div class="mt-3">
                                     <button type="submit"
                                         class="block uppercase mx-auto shadow bg-indigo-800 hover:bg-indigo-700 focus:shadow-outline focus:outline-none text-white text-xs py-3 px-10 rounded">
-                                        Update Sale Return <i class="bi bi-check"></i>
+                                        Update Sale Return <i class="fa fa-check"></i>
                                     </button>
                                 </div>
                             </form>

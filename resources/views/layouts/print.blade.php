@@ -139,7 +139,6 @@
 
 <body>
 
-
     <div class="pageStyle">
         @yield('content')
     </div>

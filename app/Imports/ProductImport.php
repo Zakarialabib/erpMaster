@@ -46,8 +46,8 @@ class ProductImport implements ToCollection, WithHeadingRow, SkipsEmptyRows
 
             foreach ($productWarehouseData as $warehouseData) {
                 $warehouseName = $warehouseData;
-                $price = $row['price'] * 100;
-                $cost = $row['cost'] * 100;
+                $price = $row['price'];
+                $cost = $row['cost'];
 
                 $productWarehouse = ProductWarehouse::create([
                     'product_id'   => $product->id,

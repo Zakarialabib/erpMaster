@@ -23,32 +23,30 @@
             <meta itemprop="name" content="{{ $product->name }}" />
             <meta itemprop="description" content="{{ $product->description }}" />
 
-            <div class="mx-auto px-4">
-                <div class="flex flex-wrap -mx-4 mb-4">
-                    <div class="w-full md:w-1/2 px-4 mb-8 md:mb-0">
-                        <img src="{{ asset('images/products/' . $product->image) }}" alt="{{ $product->name }}"
-                            loading="lazy" class="w-full h-full object-cover">
-
-                        @if ($product?->gallery)
-                            <section class="flex items-center z-10 relative gap-[30px] lg:gap-[50px">
+            <div class="mx-auto py-6 sm:py-12 sm:px-6 lg:max-w-7xl lg:px-8">
+                <div class="relative lg:grid lg:grid-cols-2 lg:items-start lg:gap-x-8">
+                    <div class="lg:sticky mr-6">
+                        <div
+                            class="w-full h-[600px] border border-green-border flex justify-center items-center overflow-hidden relative mb-3">
+                            <img src="{{ asset('images/products/' . $product->image) }}" alt="{{ $product->name }}"
+                                loading="lazy" class="w-full h-full object-cover">
+                        </div>
+                        <div class="flex gap-2 flex-wrap">
+                            @if ($product?->gallery)
                                 <div
-                                    class="flex-1 w-[80%] grid md:grid-cols-2 sm:sm-grid-cols-1 items-center py-10 transition-all duration-500 relative">
+                                    class="flex-1 w-[80%] grid md:grid-cols-2 sm:sm-grid-cols-1 py-2 gap-4 items-center transition-all duration-500 relative">
                                     @foreach (json_decode($product->gallery) as $image)
-                                        <div
-                                            class="rounded-2xl p-0 flex items-center bg-white z-10 relative flex-col lg:gap-[50px] lg:flex-row">
-                                            <a class="block self-stretch flex-1 aspect-[580/421]" href="#">
-                                                <img class="h-full w-full object-cover rounded-2xl lg:rounded-tr-none lg:rounded-br-2xl"
-                                                    src="{{ asset('images/activities/' . $image) }}"
-                                                    alt="{{ $image }}">
-                                            </a>
+                                        <div class="block self-stretch flex-1 ">
+                                            <img class="h-full w-full object-cover rounded-2xl"
+                                                src="{{ asset('images/products/' . $image) }}"
+                                                alt="{{ $product->name }}">
                                         </div>
                                     @endforeach
                                 </div>
-                            </section>
-                        @endif
+                            @endif
+                        </div>
                     </div>
-
-                    <div class="w-full md:w-1/2 px-4">
+                    <div class="w-full mt-10 sm:mt-16 sm:px-0 lg:mt-0 px-4">
                         <div itemprop="offers" itemscope itemtype="http://schema.org/Offer">
                             <div class="pb-5 border-b">
                                 <span class="text-sm text-gray-500">
@@ -67,7 +65,7 @@
                                         <meta itemprop="brand" content="{{ $product->brand?->name }}" />
                                     </div>
                                 </span>
-                                <h2 class="my-2 max-w-xl lg:text-5xl sm:text-xl font-bold font-heading">
+                                <h2 class="my-2 lg:text-5xl sm:text-xl text-left font-bold font-heading">
                                     {{ $product->name }}
                                 </h2>
 
@@ -113,7 +111,6 @@
                                                 itemprop="price">{{ format_currency($product->warehouses->first()->pivot->price) }}</span>
                                         @endif
 
-
                                         <meta itemprop="lowPrice"
                                             content="{{ $product->warehouses->first()->pivot->old_price }}">
                                         <meta itemprop="highPrice"
@@ -137,7 +134,7 @@
                                 @endif
                             </div>
 
-                            <div class="flex mb-5 pb-5 border-b">
+                            <div class="flex pb-5 border-b">
                                 <div class="mr-6">
                                     <div
                                         class="inline-flex items-center px-4 font-semibold font-heading text-gray-500 border border-gray-200 focus:ring-blue-300 focus:border-blue-300 rounded-md">
@@ -164,10 +161,10 @@
                                         </button>
                                     </div>
                                 </div>
-                                <div>
+                                <div class="w-full">
                                     @if ($product->status == true)
                                         <button type="button"
-                                            class="block text-center text-white font-bold font-heading py-2 px-4 rounded-md uppercase bg-green-400 hover:bg-green-600 transition cursor-pointer"
+                                            class="w-full text-center text-white font-bold font-heading py-2 px-4 rounded-md uppercase bg-green-400 hover:bg-green-600 transition cursor-pointer"
                                             wire:click="AddToCart('{{ $product->id }}','{{ $product->warehouses->first()->pivot->price }}')"
                                             wire:loading.attr="disabled">
                                             {{ __('Add to cart') }}
@@ -180,9 +177,27 @@
                                 </div>
                             </div>
 
-                            <livewire:front.order-form :product="$product" lazy />
+                            <x-theme.accordion :title="__('Quick Order')">
+                                <div class="p-2">
+                                    <livewire:front.order-form :product="$product" />
+                                </div>
+                            </x-theme.accordion>
 
-                            <div class="flex items-center">
+                            <x-theme.accordion :title="__('Description')">
+                                <div class="p-2">
+                                    <livewire:utils.editor-js editor-id="myEditor" :value="$product?->description"
+                                        :read-only="true" />
+                                </div>
+                            </x-theme.accordion>
+
+                            <x-theme.accordion :title="__('How to Use')">
+                                <p class="mb-8 max-w-2xl text-gray-500 font-body">
+                                    {{ $product->usage }}
+                                </p>
+                            </x-theme.accordion>
+
+
+                            <div class="mt-5 flex items-center">
                                 <span
                                     class="mr-8 text-gray-500 font-bold font-heading uppercase">{{ __('SHARE IT') }}</span>
                                 <a class="mr-1 w-8 h-8" href="#">
@@ -197,64 +212,6 @@
                                 <a class="w-8 h-8" href="#">
                                     <i class="fab fa-whatsapp"></i>
                                 </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div x-data="{ activeTab: 'description' }" class="mx-auto px-4 border flex items-center bg-white shadow-xl">
-                    <div class="md:w-1/4 flex flex-col">
-                        <button @click="activeTab = 'description'"
-                            :class="activeTab === 'description' ? 'text-green-400' : ''"
-                            class="inline-block py-6 px-10 text-left font-bold font-heading text-gray-500 uppercase border-b-2 border-gray-100 hover:border-gray-500 focus:outline-none focus:border-gray-500">
-                            {{ __('Description') }}
-                        </button>
-
-                        @if ($product->embeded_video)
-                            <button @click="activeTab = 'video'" :class="activeTab === 'video' ? 'text-green-400' : ''"
-                                class="inline-block py-6 px-10 text-left font-bold font-heading text-gray-500 uppercase border-b-2 border-gray-100 hover:border-gray-500 focus:outline-none focus:border-gray-500">
-                                {{ __('Video') }}
-                            </button>
-                        @endif
-
-                        <button @click="activeTab = 'reviews'" :class="activeTab === 'reviews' ? 'text-green-400' : ''"
-                            class="inline-block py-6 px-10 text-left font-bold font-heading text-gray-500 uppercase border-b-2 border-gray-100 hover:border-gray-500 focus:outline-none focus:border-gray-500">
-                            {{ __('Reviews') }}
-                        </button>
-                        <button @click="activeTab = 'how-to-use'"
-                            :class="activeTab === 'how-to-use' ? 'text-green-400' : ''"
-                            class="inline-block py-6 px-10 text-left font-bold font-heading text-gray-500 uppercase border-b-2 border-gray-100 hover:border-gray-500 focus:outline-none focus:border-gray-500">
-                            {{ __('How to Use') }}
-                        </button>
-                    </div>
-                    <div class="md:w-3/4 px-2">
-                        <div x-show="activeTab === 'description'" class="px-5 mb-10">
-                            <div role="description">
-                                <livewire:utils.editor-js editor-id="myEditor" :value="$product?->description" :read-only="true" />
-                            </div>
-                        </div>
-                        @if ($product->embeded_video)
-                            <div x-show="activeTab === 'video'" class="px-5 mb-10">
-                                <div role="video">
-                                    <p class="mb-8 max-w-2xl text-gray-500 font-body">
-                                        {!! $product->embeded_video !!}
-                                    </p>
-                                </div>
-                            </div>
-                        @endif
-
-
-                        <div x-show="activeTab === 'reviews'" class="px-5 mb-10">
-                            <div role="reviews">
-                                {{--  --}}
-                            </div>
-                        </div>
-
-                        <div x-show="activeTab === 'how-to-use'" class="px-5 mb-10">
-                            <div role="how-to-use">
-                                <p class="mb-8 max-w-2xl text-gray-500 font-body">
-                                    {{ $product->usage }}
-                                </p>
                             </div>
                         </div>
                     </div>
@@ -301,17 +258,59 @@
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="text-center mx-auto px-4 mt-5">
-                <h4
-                    class="text-first-brand font-extrabold text-md sm:text-lg md:text-xl lg:text-header-2 mx-auto capitalize relative">
-                    {{ __('Related Products') }}
-                </h4>
-                <div class="bg-white my-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4 py-2 px-2">
-                    @foreach ($relatedProducts as $product)
-                        <x-product-card :product="$product" />
-                    @endforeach
+
+                <div x-data="{ activeTab: 'reviews' }" class="mt-5 mx-auto px-4 border flex items-center bg-white shadow-xl">
+                    <div class="md:w-1/4 flex flex-col">
+                        @if ($product->embeded_video)
+                            <button @click="activeTab = 'video'"
+                                :class="activeTab === 'video' ? 'text-green-400' : ''"
+                                class="inline-block py-6 px-10 text-left font-bold font-heading text-gray-500 uppercase border-b-2 border-gray-100 hover:border-gray-500 focus:outline-none focus:border-gray-500">
+                                {{ __('Video') }}
+                            </button>
+                        @endif
+
+                        <button @click="activeTab = 'reviews'"
+                            :class="activeTab === 'reviews' ? 'text-green-400' : ''"
+                            class="inline-block py-6 px-10 text-left font-bold font-heading text-gray-500 uppercase border-b-2 border-gray-100 hover:border-gray-500 focus:outline-none focus:border-gray-500">
+                            {{ __('Reviews') }}
+                        </button>
+
+                        <button @click="activeTab = 'relatedProducts'"
+                            :class="activeTab === 'relatedProducts' ? 'text-green-400' : ''"
+                            class="inline-block py-6 px-10 text-left font-bold font-heading text-gray-500 uppercase border-b-2 border-gray-100 hover:border-gray-500 focus:outline-none focus:border-gray-500">
+                            {{ __('Related Products') }}
+                        </button>
+
+                    </div>
+                    <div class="md:w-3/4 px-2">
+                        @if ($product->embeded_video)
+                            <div x-show="activeTab === 'video'" class="px-5 mb-10">
+                                <div role="video">
+                                    <p class="mb-8 max-w-2xl text-gray-500 font-body">
+                                        {!! $product->embeded_video !!}
+                                    </p>
+                                </div>
+                            </div>
+                        @endif
+
+
+                        <div x-show="activeTab === 'reviews'" class="px-5 mb-10">
+                            <div role="reviews">
+                                {{--  --}}
+                            </div>
+                        </div>
+                        
+                        <div x-show="activeTab === 'relatedProducts'" class="px-5 mb-10">
+                            <div role="relatedProducts">
+                                <div class="my-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4 py-2 px-2">
+                                    @foreach ($relatedProducts as $product)
+                                        <x-product-card :product="$product" />
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

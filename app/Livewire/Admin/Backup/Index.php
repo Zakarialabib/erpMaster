@@ -66,6 +66,13 @@ class Index extends Component
         $this->alert('success', __('Backup saved to Google Drive successfully!'));
     }
 
+    public function syncToLocal(): void
+    {
+        Artisan::call('db:production-sync');
+
+        $this->alert('success', __('Database synced.'));
+    }
+
     public function cleanBackups(): void
     {
         Artisan::call('backup:clean');

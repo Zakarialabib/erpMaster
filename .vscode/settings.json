@@ -1,0 +1,10 @@
+{
+    "testRunner.config": [
+        {
+            "directory": "docs/.vitepress",
+            "language": "typescript",
+            "testingFramework": "vitest",
+            "command": "echo \"Configure your test command here. The variable $TEST_FILE_NAME will have the file name of the test that should be executed.\""
+        }
+    ]
+}

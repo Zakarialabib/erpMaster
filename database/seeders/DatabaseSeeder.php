@@ -29,16 +29,16 @@ class DatabaseSeeder extends Seeder
             LanguagesSeeder::class,
             MenuSeeder::class,
             SliderSeeder::class,
-            BlogSeeder::class,
+            // BlogSeeder::class,
             SectionsSeeder::class,
             ShippingSeeder::class,
-            BrandSeeder::class,
-            CategoriesSeeder::class,
-            WarehouseSeeder::class,
-            ProductsSeeder::class,
-            ExpenseSeeder::class,
+            // BrandSeeder::class,
+            // CategoriesSeeder::class,
+            // WarehouseSeeder::class,
+            // ProductsSeeder::class,
+            // ExpenseSeeder::class,
             // CustomersSeeder::class,
-            SupplierSeeder::class,
+            // SupplierSeeder::class,
         ]);
     }
 }

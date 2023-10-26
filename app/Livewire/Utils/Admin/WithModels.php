@@ -11,19 +11,19 @@ use Livewire\Attributes\Computed;
 
 trait WithModels
 {
-    #[Computed(cache: true)]
+    #[Computed]
     public function customers()
     {
         return Customer::pluck('name', 'id')->toArray();
     }
 
-    #[Computed(cache: true)]
+    #[Computed]
     public function suppliers()
     {
         return Supplier::pluck('name', 'id')->toArray();
     }
 
-    #[Computed(cache: true)]
+    #[Computed]
     public function warehouses()
     {
         if (auth()->check()) {

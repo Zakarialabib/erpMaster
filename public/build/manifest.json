@@ -11,27 +11,24 @@
     "file": "assets/fa-solid-900.886c8611.woff2",
     "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-solid-900.woff2"
   },
-  "node_modules/@fortawesome/fontawesome-free/webfonts/fa-brands-400.ttf": {
-    "file": "assets/fa-brands-400.003f1154.ttf",
-    "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-brands-400.ttf"
-  },
   "node_modules/@fortawesome/fontawesome-free/webfonts/fa-regular-400.ttf": {
     "file": "assets/fa-regular-400.7d81a1a7.ttf",
     "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-regular-400.ttf"
+  },
+  "node_modules/@fortawesome/fontawesome-free/webfonts/fa-brands-400.ttf": {
+    "file": "assets/fa-brands-400.003f1154.ttf",
+    "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-brands-400.ttf"
   },
   "node_modules/@fortawesome/fontawesome-free/webfonts/fa-solid-900.ttf": {
     "file": "assets/fa-solid-900.cea79b34.ttf",
     "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-solid-900.ttf"
   },
   "resources/js/app.js": {
-    "file": "assets/app.da56dd86.js",
+    "file": "assets/app.7b15f924.js",
     "src": "resources/js/app.js",
     "isEntry": true,
-    "imports": [
-      "__commonjsHelpers.b75d9c21.js"
-    ],
     "css": [
-      "assets/app.d574f94f.css"
+      "assets/app.1ed138c3.css"
     ],
     "assets": [
       "assets/fa-brands-400.faae6fc0.woff2",
@@ -42,24 +39,13 @@
       "assets/fa-solid-900.cea79b34.ttf"
     ]
   },
-  "resources/js/editorjs.js": {
-    "file": "assets/editorjs.3dae1ff5.js",
-    "src": "resources/js/editorjs.js",
-    "isEntry": true,
-    "imports": [
-      "__commonjsHelpers.b75d9c21.js"
-    ]
-  },
-  "__commonjsHelpers.b75d9c21.js": {
-    "file": "assets/_commonjsHelpers.b75d9c21.js"
-  },
   "resources/css/app.css": {
-    "file": "assets/app.3cc8e7e8.css",
+    "file": "assets/app.fa3af240.css",
     "src": "resources/css/app.css",
     "isEntry": true
   },
   "resources/js/app.css": {
-    "file": "assets/app.d574f94f.css",
+    "file": "assets/app.1ed138c3.css",
     "src": "resources/js/app.css"
   }
 }

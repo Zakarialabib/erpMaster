@@ -169,8 +169,7 @@
                                     <i class="fas fa-paper-plane"></i>
                                     {{ __('Send to Whatsapp') }}
                                 </x-dropdown-link>
-                                <x-dropdown-link wire:click="$dispatch('editModal',{ id : '{{ $product->id }}' })"
-                                    wire:loading.attr="disabled">
+                                <x-dropdown-link :href="route('admin.product.edit' , $product->id)">
                                     <i class="fas fa-edit"></i>
                                     {{ __('Edit') }}
                                 </x-dropdown-link>
@@ -209,10 +208,6 @@
     <!-- Show Modal -->
     <livewire:admin.products.show :product="$product" lazy />
     <!-- End Show Modal -->
-
-    <!-- Edit Modal -->
-    <livewire:admin.products.edit :product="$product" lazy />
-    <!-- End Edit Modal -->
 
     <livewire:admin.products.create lazy />
 

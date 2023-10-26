@@ -116,11 +116,11 @@ class Product extends Model
 
     public function getAveragePriceAttribute(): int|float|null
     {
-        return $this->warehouses->avg('pivot.price') / 100;
+        return $this->warehouses->avg('pivot.price');
     }
 
     public function getAverageCostAttribute(): int|float|null
     {
-        return $this->warehouses->avg('pivot.cost') / 100;
+        return $this->warehouses->avg('pivot.cost');
     }
 }

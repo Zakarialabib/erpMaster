@@ -36,20 +36,9 @@ class ExportController extends Controller
     {
         $sale = Sale::where('id', $id)->firstOrFail();
 
-        $customer = Customer::where('id', $sale->customer->id)->firstOrFail();
 
-        $data = [
-            'sale'     => $sale,
-            'customer' => $customer,
-            'logo'     => $this->getCompanyLogo(),
-        ];
+        return view('admin.home', []);
 
-        $pdf = PDF::loadView('admin.sale.print', $data, [], [
-            'format'    => 'a4',
-            'watermark' => $this->setWaterMark($sale),
-        ]);
-
-        return $pdf->stream(__('Sale').$sale->reference.'.pdf');
     }
 
     public function purchaseReturns($id)

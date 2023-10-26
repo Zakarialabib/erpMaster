@@ -64,7 +64,7 @@
         <x-card>
             <div class="flex p-2 items-center gap-4">
                 <div class="bg-blue-600 text-white p-5 rounded">
-                    <i class="bi bi-trophy font-2xl"></i>
+                    <i class="fa fa-trophy font-2xl"></i>
                 </div>
                 <div>
                     <div class="text-bold">{{ format_currency($profit_amount) }}</div>
@@ -77,7 +77,7 @@
         <x-card>
             <div class="flex p-2 items-center gap-4">
                 <div class="bg-blue-600 text-white p-5 rounded">
-                    <i class="bi bi-bag font-2xl"></i>
+                    <i class="fa fa-bag font-2xl"></i>
                 </div>
                 <div>
                     <div class="text-bold">{{ format_currency($purchases_amount) }}</div>

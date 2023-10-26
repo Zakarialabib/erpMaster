@@ -101,11 +101,11 @@
             <x-sidebar.sublink title="{{ __('Contact Forms') }}" href="{{ route('admin.contacts.index') }}"
                 :active="request()->routeIs('admin.contacts.index')" />
         @endcan
-        <x-sidebar.sublink title="{{ __('Cash Register') }}" href="{{ route('admin.cash-register.index') }}" 
-                :active="request()->routeIs('admin.cash-register.index')" />
-        <x-sidebar.sublink title="{{ __('Delivery') }}" href="{{ route('admin.deliveries.index') }}" 
-                :active="request()->routeIs('admin.deliveries.index')" />
-            
+        <x-sidebar.sublink title="{{ __('Cash Register') }}" href="{{ route('admin.cash-register.index') }}"
+            :active="request()->routeIs('admin.cash-register.index')" />
+        <x-sidebar.sublink title="{{ __('Delivery') }}" href="{{ route('admin.deliveries.index') }}"
+            :active="request()->routeIs('admin.deliveries.index')" />
+
     </x-sidebar.dropdown>
 
     @can('quotation_access')
@@ -255,6 +255,9 @@
             </x-slot>
             <x-sidebar.sublink title="{{ __('Settings') }}" href="{{ route('admin.settings.index') }}"
                 :active="request()->routeIs('admin.settings.index')" />
+            <x-sidebar.sublink title="{{ __('Menu Settings') }}" href="{{ route('admin.menu-settings.index') }}"
+                :active="request()->routeIs('admin.menu-settings.index')" />
+
             @can('log_access')
                 <x-sidebar.sublink title="{{ __('Logs') }}" href="{{ route('admin.logs.index') }}" :active="request()->routeIs('admin.logs.index')" />
             @endcan

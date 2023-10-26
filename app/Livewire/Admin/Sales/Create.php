@@ -120,7 +120,7 @@ class Create extends Component
 
         if (settings('default_warehouse_id') !== null) {
             $this->warehouse_id = settings('default_warehouse_id');
-        }
+        } 
 
         if ($this->user_id && $this->warehouse_id) {
             $cashRegister = CashRegister::where('user_id', $this->user_id)
@@ -305,6 +305,8 @@ class Create extends Component
     {
         return Category::select('name', 'id')->get();
     }
+
+    
 
     public function updatedWarehouseId($value): void
     {

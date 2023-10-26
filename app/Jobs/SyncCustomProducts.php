@@ -47,7 +47,7 @@ class SyncCustomProducts implements ShouldQueue
                 'unit'              => 'pc', // change this
                 'stock_alert'       => $this->data['stock_alert'] ?? 10,
                 'order_tax'         => 0, // change this
-                'tax_type'          => 'inclusive', // change this
+                'tax_type'          => 0, // change this
             ]);
         } else {
             // Create new product

@@ -68,7 +68,7 @@
                 <div class="flex mb-5 items-center">
                     <div class="flex flex-wrap">
                         <div class="w-full md:w-1/2 px-4">
-                            
+
                             <label class="font-bold font-heading text-gray-600"
                                 for="name">{{ __('Full name') }}</label>
                             <input wire:model="name" id="name"
@@ -123,6 +123,8 @@
                                     <option value="{{ $shipping->id }}">{{ $shipping->title }}</option>
                                 @endforeach
                             </select>
+                            <x-input-error :messages="$errors->get('shipping_id')" for="shipping_id" class="mt-2" />
+
                         </div>
                         <div class="w-full md:w-1/2 px-4">
                             <label class="font-bold font-heading text-gray-600"

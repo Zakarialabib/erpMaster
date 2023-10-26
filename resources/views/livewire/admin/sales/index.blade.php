@@ -52,14 +52,14 @@
         </div>
         <div class="grid gap-4 grid-cols-2 items-center justify-center">
             <div class="w-full mb-2 flex flex-wrap ">
-                <div class="w-full md:w-1/2 px-2">
+                <div class="w-full flex-1 px-2">
                     <label>{{ __('Start Date') }} <span class="text-red-500">*</span></label>
                     <x-input wire:model.live="startDate" type="date" name="startDate" value="$startDate" />
                     @error('startDate')
                         <span class="text-danger mt-1">{{ $message }}</span>
                     @enderror
                 </div>
-                <div class="w-full md:w-1/2 px-2">
+                <div class="w-full flex-1 px-2">
                     <label>{{ __('End Date') }} <span class="text-red-500">*</span></label>
                     <x-input wire:model.live="endDate" type="date" name="endDate" value="$endDate" />
                     @error('endDate')
@@ -193,8 +193,8 @@
                                         {{ __('Print Pos') }}
                                     </x-dropdown-link>
 
-                                    <x-dropdown-link target="_blank" href="{{ route('admin.sales.pdf', $sale->id) }}"
-                                        wire:loading.attr="disabled">
+                                    <x-dropdown-link href="{{ route('admin.sale.invoice', $sale->id) }}"
+                                        target="__blank">
                                         <i class="fas fa-print"></i>
                                         {{ __('Print') }}
                                     </x-dropdown-link>

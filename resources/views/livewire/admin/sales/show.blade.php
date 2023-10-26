@@ -5,9 +5,13 @@
 
             @if ($sale != null)
                 <div class="float-right">
-                    <x-button secondary class="d-print-none" type="button" onclick="printContent()">
+                    <a  
+                    href="{{ route('admin.sale.invoice', $sale->id) }}"
+                    target="__blank"
+                    {{-- onclick="printContent()" --}}
+                    >
                         <i class="fas fa-print"></i> {{ __('Print') }}
-                    </x-button>
+                </a>
                 </div>
             @endif
         </x-slot>

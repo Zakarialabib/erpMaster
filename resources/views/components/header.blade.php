@@ -3,21 +3,21 @@
         <div class="flex justify-between items-center border-gray-100 md:space-x-10">
             <div class="flex justify-start">
                 <a href="{{ route('front.index') }}" title="{{ settings('site_title') }}">
-                    @if (file_exists(asset('images/logo.svg')))
-                        <x-picture name="images/logo.svg" :default-sizes="['width' => 376, 'height' => 176]" alt="{{ settings('site_title') }}"
+                    @if (file_exists(asset('images/logo.png')))
+                        <x-picture name="images/logo.png" :default-sizes="['width' => 376, 'height' => 176]" alt="{{ settings('site_title') }}"
                             class="h-8 w-auto sm:h-10 inline dark:hidden" width="376px" height="176px"
                             style="min-height: 70px;padding: 10px 0;" />
                     @else
                         <img class="h-8 w-auto sm:h-10 inline dark:hidden" style="min-height: 70px;padding: 10px 0;"
-                            src="{{ asset('images/logo.svg') }}" alt="{{ settings('site_title') }}">
+                            src="{{ asset('images/logo.png') }}" alt="{{ settings('site_title') }}">
                     @endif
-                    @if (file_exists(asset('images/logo.svg')))
-                        <x-picture name="images/logo.svg" :default-sizes="['width' => 376, 'height' => 176]" alt="{{ settings('site_title') }}"
+                    @if (file_exists(asset('images/logo.png')))
+                        <x-picture name="images/logo.png" :default-sizes="['width' => 376, 'height' => 176]" alt="{{ settings('site_title') }}"
                             class="h-8 w-auto sm:h-10 hidden dark:inline" width="376px" height="176px"
                             style="min-height: 70px;padding: 10px 0;" />
                     @else
                         <img class="h-8 w-auto sm:h-10 hidden dark:inline" style="min-height: 70px;padding: 10px 0;"
-                            src="{{ asset('images/logo.svg') }}" alt="{{ settings('site_title') }}">
+                            src="{{ asset('images/logo.png') }}" alt="{{ settings('site_title') }}">
                     @endif
                 </a>
             </div>
@@ -27,7 +27,7 @@
                         <button type="button"
                             class="text-base font-semibold text-gray-500 hover:text-sky-800 dark:text-slate-400 dark:hover:text-sky-400 flex flex-wrap">
                             @if (count($langs) > 1)
-                            <i class="bi bi-globe2 h-5 w-5 cursor-pointer pr-2" aria-hidden="true"></i>
+                            <i class="fa fa-globe  h-5 w-5 cursor-pointer pr-2" aria-hidden="true"></i>
                             @endif
                         </button>
                     </x-slot>
@@ -101,19 +101,19 @@
             <div class="pt-5 pb-6 px-5">
                 <div class="flex items-center justify-between">
                     <div>
-                        @if (file_exists(asset('images/logo.svg')))
-                            <x-picture name="images/logo.svg" :default-sizes="['width' => 64, 'height' => 32]" alt="{{ settings('site_title') }}"
+                        @if (file_exists(asset('images/logo.png')))
+                            <x-picture name="images/logo.png" :default-sizes="['width' => 64, 'height' => 32]" alt="{{ settings('site_title') }}"
                                 class="h-8 w-auto inline dark:hidden" width="64px" height="32px" loading="lazy" />
                         @else
-                            <img class="h-8 w-auto inline dark:hidden" src="{{ asset('images/logo.svg') }}"
+                            <img class="h-8 w-auto inline dark:hidden" src="{{ asset('images/logo.png') }}"
                                 alt="{{ settings('site_title') }}">
                         @endif
-                        @if (file_exists(asset('images/logo.svg')))
-                            <x-picture name="images/logo.svg" :default-sizes="['width' => 64, 'height' => 32]" alt="{{ settings('site_title') }}"
+                        @if (file_exists(asset('images/logo.png')))
+                            <x-picture name="images/logo.png" :default-sizes="['width' => 64, 'height' => 32]" alt="{{ settings('site_title') }}"
                                 class="h-8 w-auto hidden dark:inline" width="64px" height="32px"
                                 loading="lazy" />
                         @else
-                            <img class="h-8 w-auto hidden dark:inline" src="{{ asset('images/logo.svg') }}"
+                            <img class="h-8 w-auto hidden dark:inline" src="{{ asset('images/logo.png') }}"
                                 alt="{{ settings('site_title') }}">
                         @endif
                     </div>

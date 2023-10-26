@@ -113,7 +113,7 @@ class Create extends Component
 
         if ($this->image) {
             $imageName = Str::slug($this->name).'-'.$this->image->extension();
-            $this->image->store('products', $imageName);
+            $this->image->storeAs('products', $imageName , 'local_files');
             $this->image = $imageName;
         }
 
@@ -122,6 +122,7 @@ class Create extends Component
 
             foreach ($this->gallery as $value) {
                 $imageName = Str::slug($this->name).'-'.Str::random(5).'.'.$value->extension();
+                $value->storeAs('products', $imageName , 'local_files');
                 $gallery[] = $imageName;
             }
 
@@ -134,8 +135,8 @@ class Create extends Component
 
         foreach ($this->productWarehouse as $warehouseId => $warehouse) {
             $quantity = $warehouse['quantity'] ?? 0;
-            $price = $warehouse['price'] * 100;
-            $cost = $warehouse['cost'] * 100;
+            $price = $warehouse['price'];
+            $cost = $warehouse['cost'];
 
             ProductWarehouse::create([
                 'product_id'   => $this->product->id,

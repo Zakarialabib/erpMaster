@@ -32,7 +32,7 @@
                         <x-select-list multiple
                             class="block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border-gray-300 rounded-md mt-1"
                             required id="selectedWarehouses" name="selectedWarehouses"
-                            wire:model.live="selectedWarehouses" :options="$this->warehouses" />
+                            wire:model="selectedWarehouses" :options="$this->warehouses" />
                         <x-input-error :messages="$errors->get('selectedWarehouses')" class="mt-2" />
                     </div>
                     <div class="md:w-1/2 sm:w-full px-3">

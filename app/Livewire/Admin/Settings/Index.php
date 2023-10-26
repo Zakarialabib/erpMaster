@@ -34,6 +34,8 @@ class Index extends Component
 
     public $invoice_footer;
 
+    public $invoice_template;
+
     public $image;
 
     public $site_logo;
@@ -183,6 +185,7 @@ class Index extends Component
         $this->seo_meta_title = settings('seo_meta_title');
         $this->seo_meta_description = settings('seo_meta_description');
         $this->whatsapp_custom_message = settings('whatsapp_custom_message');
+        $this->invoice_template = settings('invoice_template');
     }
 
     public function update(): void
@@ -203,7 +206,7 @@ class Index extends Component
             $this->invoice_footer = $imageName;
         }
 
-        if ($this->site_logo) {
+        if (!$this->site_logo) {
             $imageName = 'logo';
             $this->site_logo->storeAs('images', $imageName, 'local_files');
             $this->site_logo = $imageName;
@@ -214,6 +217,8 @@ class Index extends Component
             $this->site_favicon->storeAs('images', $imageName, 'local_files');
             $this->site_favicon = $imageName;
         }
+
+        // dd($this->invoice_template);
 
         $settings = [
             'site_logo' => $this->site_logo,
@@ -258,6 +263,7 @@ class Index extends Component
             'seo_meta_title' => $this->seo_meta_title,
             'seo_meta_description' => $this->seo_meta_description,
             'whatsapp_custom_message' => $this->whatsapp_custom_message,
+            'invoice_template' => $this->invoice_template,
         ];
 
         foreach ($settings as $key => $value) {

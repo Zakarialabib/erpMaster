@@ -8,7 +8,7 @@
 
                     <div class="w-full px-10">
                         <h1
-                            class="text-first-brand font-extrabold text-[25px] leading-[35px] sm:text-[30px] sm:leading-[40px] md:text-[36px] md:leading-[46px] lg:text-header-2 mx-auto capitalize relative">
+                            class="text-left font-extrabold text-[25px] leading-[35px] sm:text-[30px] sm:leading-[40px] md:text-[36px] md:leading-[46px] lg:text-header-2 mx-auto capitalize relative">
                             {{ __('Register') }}
                         </h1>
                         <p class="text-base font-medium text-gray-500 mb-6">

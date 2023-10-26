@@ -97,7 +97,7 @@
                 <label for="is_title" class="mr-3 block">{{ __('Enable Title') }}:</label>
                 <div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
                     <input type="checkbox" name="is_title" id="is_title" wire:model="settings.is_title"
-                        @if ($settings['is_title']) checked @endif
+                        @if ($page->is_title) checked @endif
                         class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer" />
                     <label for="is_title"
                         class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"></label>
@@ -107,7 +107,7 @@
                 <label for="is_description" class="mr-3 block">{{ __('Enable Description') }}:</label>
                 <div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
                     <input type="checkbox" name="is_description" id="is_description"
-                        wire:model="settings.is_description" @if ($settings['is_description']) checked @endif
+                        wire:model="settings.is_description" @if ($page->is_description) checked @endif
                         class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer" />
                     <label for="is_description"
                         class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"></label>
@@ -117,19 +117,9 @@
                 <label for="is_sliders" class="mr-3 block">{{ __('Enable sliders') }}:</label>
                 <div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
                     <input type="checkbox" name="is_sliders" id="is_sliders" wire:model="settings.is_sliders"
-                        @if ($settings['is_sliders']) checked @endif
+                        @if ($page->is_sliders) checked @endif
                         class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer" />
                     <label for="is_sliders"
-                        class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"></label>
-                </div>
-            </div>
-            <div class="mt-4 flex items-center justify-between">
-                <label for="is_gallery" class="mr-3 block">{{ __('Enable sliders') }}:</label>
-                <div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
-                    <input type="checkbox" name="is_gallery" id="is_gallery" wire:model="settings.is_gallery"
-                        @if ($settings['is_gallery']) checked @endif
-                        class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer" />
-                    <label for="is_gallery"
                         class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"></label>
                 </div>
             </div>
@@ -139,33 +129,13 @@
 
                 <div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
                     <input type="checkbox" name="is_contact" id="is_contact" wire:model="settings.is_contact"
-                        @if ($settings['is_contact']) checked @endif
+                        @if ($page->is_contact) checked @endif
                         class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer" />
                     <label for="is_contact"
                         class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"></label>
                 </div>
-            </div>  
+            </div>
 
-            <div class="mt-4 flex items-center justify-between">
-                <label for="is_partners" class="mr-3 block">{{ __('Enable partners') }}:</label>
-                <div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
-                    <input type="checkbox" name="is_partners" id="is_partners" wire:model="settings.is_partners"
-                        @if ($settings['is_partners']) checked @endif
-                        class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer" />
-                    <label for="is_partners"
-                        class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"></label>
-                </div>
-            </div>
-            <div class="mt-4 flex items-center justify-between">
-                <label for="is_about" class="mr-3 block">{{ __('Enable About') }}:</label>
-                <div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
-                    <input type="checkbox" name="is_about" id="is_about" wire:model="settings.is_about"
-                        @if ($settings['is_about']) checked @endif
-                        class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer" />
-                    <label for="is_about"
-                        class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"></label>
-                </div>
-            </div>
             <div class="mt-4">
                 <x-label for="image" :value="__('Image')" />
                 <x-media-upload title="{{ __('Image') }}" name="image" wire:model="image" :file="$image"

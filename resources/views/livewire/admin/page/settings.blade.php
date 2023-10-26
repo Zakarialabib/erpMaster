@@ -173,7 +173,7 @@
                                         </button>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        {{ $pageSetting->page->title ?? '' }} - {{ $pageSetting->page_type->label() }}
+                                        {{ $pageSetting->page->title ?? '' }} - {{ $pageSetting->page_type->label() ?? '' }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         {{ $pageSetting->layout_type }}

@@ -41,10 +41,10 @@ class SearchProduct extends Component
         $this->showCount += 5;
     }
 
-    public function selectProduct($product): void
+    public function selectProduct($id): void
     {
         if ($this->warehouse_id !== null) {
-            $this->dispatch('productSelected', $product);
+            $this->dispatch('productSelected', $id);
         } else {
             $this->alert('error', __('Please select a warehouse!'));
         }
@@ -68,8 +68,6 @@ class SearchProduct extends Component
             $this->warehouse_id = $warehouse_id;
         } else {
             $this->warehouse_id = settings('default_warehouse_id');
-            // dd($this->w            $this->invoice_header->storeAs('uploads', $imageName, 'public');arehouse_id);
-            $this->search_results = [];
         }
     }
 
@@ -80,8 +78,8 @@ class SearchProduct extends Component
         }, 'category'])
             ->when($this->query, function ($query): void {
                 $query->where(function ($query): void {
-                    $query->where('name', 'like', '%'.$this->query.'%')
-                        ->orWhere('code', 'like', '%'.$this->query.'%');
+                    $query->where('name', 'like', '%' . $this->query . '%')
+                        ->orWhere('code', 'like', '%' . $this->query . '%');
                 });
             })
             ->when($this->category_id, function ($query): void {
@@ -112,7 +110,7 @@ class SearchProduct extends Component
 
     public function updatedQuery(): void
     {
-        if ( ! empty($this->search_results)) {
+        if (!empty($this->search_results)) {
             $this->product = $this->search_results[0];
             $this->dispatch('productSelected', $this->product);
         }

@@ -107,12 +107,6 @@ class Edit extends Component
     #[Computed]
     public function warehouses()
     {
-        if (auth()->check()) {
-            $user = auth()->user();
-
-            return Warehouse::whereIn('id', $user->warehouses->pluck('id'))->select('name', 'id')->get();
-        }
-
         return Warehouse::pluck('name', 'id')->toArray();
     }
 

@@ -1,91 +1,100 @@
-<div>
-    <x-modal wire:model="editModal">
-        <x-slot name="title">
-            {{ __('Edit Section') }}
-        </x-slot>
+    <div>
+        <x-modal wire:model="editModal">
+            <x-slot name="title">
+                {{ __('Edit Section') }}
+            </x-slot>
 
-        <x-slot name="content">
-            <!-- Validation Errors -->
-            <x-validation-errors class="mb-4" :errors="$errors" />
+            <x-slot name="content">
+                <!-- Validation Errors -->
+                <x-validation-errors class="mb-4" :errors="$errors" />
 
-            <form enctype="multipart/form-data" wire:submit="update">
-                <div class="flex flex-wrap space-y-2 px-2">
-                    <div class="lg:w-1/2 sm:w-full px-2">
-                        <x-label for="language_id" :value="__('Language')" />
-                        <x-select-list :options="$this->languages"
-                            class="block bg-white text-gray-700 rounded border border-gray-300 mb-1 text-sm w-full focus:shadow-outline-blue focus:border-blue-500"
-                            id="language_id" name="language_id" wire:model="language_id" />
-                           
-                        <x-input-error :messages="$errors->get('language_id')" for="language_id" class="mt-2" />
-                    </div>
+                <form wire:submit="update">
+                    <div class="grid grid-cols-2 gap-4 px-2">
+                        <div>
+                            <x-label for="title" :value="__('Title')" required />
+                            <x-input type="text" name="title" wire:model="title" required value="{{ old('title') }}" />
+                            <x-input-error :messages="$errors->get('title')" for="title" class="mt-2" />
+                        </div>
+                        <div>
+                            <x-label for="page" :value="__('Page')" />
+                            <select wire:model="page_id"
+                                class="p-2 leading-5 bg-white text-gray-700 rounded border border-gray-300 mb-1 text-sm w-full focus:shadow-outline-blue focus:border-blue-500  lang"
+                                name="page_id">
+                                <option value="">
+                                    {{ __('Select a Page') }}
+                                </option>
+                                @foreach ($this->pages as $page)
+                                    <option value="{{ $page->id }}" @if ($page_id === $page->id) selected @endif>
+                                        {{ $page->title }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            <x-input-error :messages="$errors->get('page_id')" for="page_id" class="mt-2" />
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">{{ __('Type') }}</label>
+                            <select wire:model="type" class="block w-full px-2 py-1 border border-gray-300 rounded-md">
+                                <option value="">
+                                    {{ __('Select a Type') }}
+                                </option>
+                                @foreach (App\Enums\PageType::values() as $key => $value)
+                                    <option value="{{ $key }}" @if ($type === $value) selected @endif>
+                                        {{ $value }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            <x-input-error :messages="$errors->get('type')" for="" class="mt-2" />
+                        </div>
+                        <div>
+                            <x-label for="featured_title" :value="__('Featured title')" />
+                            <x-input type="text" name="featured_title" wire:model="featured_title"
+                                value="{{ old('featured_title') }}" />
+                            <x-input-error :messages="$errors->get('featured_title')" for="featured_title" class="mt-2" />
+                        </div>
+                        <div>
+                            <x-label for="subtitle" :value="__('Subtitle')" />
+                            <x-input type="text" name="subtitle" wire:model="subtitle" value="{{ old('subtitle') }}" />
+                            <x-input-error :messages="$errors->get('subtitle')" for="subtitle" class="mt-2" />
+                        </div>
 
-                    <div class="lg:w-1/2 sm:w-full px-2">
-                        <x-label for="page" :value="__('Page')" />
-                        <select wire:model="page"
-                            class="p-3 leading-5 bg-white text-gray-700 rounded border border-gray-300 mb-1 text-sm w-full focus:shadow-outline-blue focus:border-blue-500  lang"
-                            name="page">
-                            <option value="" selected>{{ __('Select a Page') }}</option>
-                            <option value="1">{{ __('Home Page') }}</option>
-                            <option value="2">{{ __('About Page') }}</option>
-                            <option value="3">{{ __('Partner Page') }}</option>
-                            <option value="4">{{ __('Blog Page') }}</option>
-                            <option value="7">{{ __('Contact Page') }}</option>
-                            <option value="8">{{ __('Products Page') }}</option>
-                            <option value="9">{{ __('Privacy Page') }}</option>
-                        </select>
-                        <x-input-error :messages="$errors->get('page')" for="page" class="mt-2" />
-                    </div>
-
-                    <div class="lg:w-1/2 sm:w-full px-2">
-                        <x-label for="title" :value="__('Title')" />
-                        <x-input type="text" name="title" wire:model.lazy="title" />
-                        <x-input-error :messages="$errors->get('title')" for="title" class="mt-2" />
-                    </div>
-                    <div class="lg:w-1/2 sm:w-full px-2">
-                        <x-label for="subtitle" :value="__('Subtitle')" />
-                        <x-input type="text" name="subtitle" wire:model.lazy="subtitle" />
-                        <x-input-error :messages="$errors->get('subtitle')" for="subtitle" class="mt-2" />
-                    </div>
-                    <div class="lg:w-1/2 sm:w-full px-2">
-                        <x-label for="subtitle" :value="__('text color')" />
-                        <input wire:model.lazy="text_color" id="text_color" type="color">
-                        <x-input-error :messages="$errors->get('text_color')" for="text_color" class="mt-2" />
-                    </div>
-                    <div class="lg:w-1/2 sm:w-full px-2">
-                        <x-label for="subtitle" :value="__('background color')" />
-                        <input wire:model.lazy="bg_color" id="bg_color" type="color">
-                        <x-input-error :messages="$errors->get('bg_color')" for="bg_color" class="mt-2" />
-                    </div>
-                    <div class="w-1/3 px-2">
-                        <x-label for="is_category" :value="__('is category')" />
-                        <input wire:model.lazy="is_category" id="is_category" type="checkbox">
-                        <x-input-error :messages="$errors->get('is_category')" for="is_category" class="mt-2" />
-                    </div>
-                    <div class="w-1/3 px-2">
-                        <x-label for="is_product" :value="__('is product')" />
-                        <input wire:model.lazy="is_product" id="is_product" type="checkbox">
-                        <x-input-error :messages="$errors->get('is_product')" for="is_product" class="mt-2" />
+                        <div>
+                            <x-label for="label" :value="__('Label')" />
+                            <x-input wire:model="label" id="label" type="text" />
+                            <x-input-error :messages="$errors->get('label')" for="label" class="mt-2" />
+                        </div>
+                        <div>
+                            <x-label for="link" :value="__('Link')" />
+                            <x-input wire:model="link" id="link" type="text" />
+                            <x-input-error :messages="$errors->get('link')" for="link" class="mt-2" />
+                        </div>
+                        <div>
+                            <x-label for="bg_color" :value="__('Background color')" />
+                            <input wire:model="bg_color" id="bg_color" type="color">
+                            <x-input-error :messages="$errors->get('bg_color')" for="bg_color" class="mt-2" />
+                        </div>
                     </div>
                     <div class="w-full px-2">
                         <x-label for="description" :value="__('Description')" />
-                        <x-trix wire:model="description" name="description" />
-                        <x-input-error :messages="$errors->get('description')" for="description" class="mt-2" />
+                        <x-trix name="createDescription" wire:model="description" class="mt-1" />
                     </div>
-                    <div class="w-full px-2">
-                        <x-label for="image" :value="__('Image')" />
-                        <x-fileupload wire:model="image" :file="$image" accept="image/jpg,image/jpeg,image/png" />
-                        <p class="help-block text-info">
-                            {{ __('Upload 670X418 (Pixel) Size image for best quality. Only jpg, jpeg, png image is allowed.') }}
-                        </p>
-                        <x-input-error :messages="$errors->get('image')" for="image" class="mt-2" />
+                    <div class="grid grid-cols-2 gap-4 py-10 px-2">
+                        <div class="w-full">
+                            <img class="w-52 rounded-full" src="{{ asset('images/sections/' . $image) }}" alt="">
+                        </div>
+                        <div class="w-full">
+                            <x-media-upload title="{{ __('Image') }}" name="image" wire:model="image"
+                                path="images/sections/" :file="$image" single types="PNG / JPEG / WEBP"
+                                fileTypes="image/*" />
+                        </div>
                     </div>
-                    <div class="w-full px-3">
-                        <x-button primary type="submit" wire:loading.attr="disabled" class="w-full">
+                    <div class="w-full text-center py-4">
+                        <x-button type="submit" primary wire:loading.attr="disabled" wire:target="update"
+                            class="w-full text-center">
                             {{ __('Save') }}
                         </x-button>
                     </div>
-                </div>
-            </form>
-        </x-slot>
-    </x-modal>
-</div>
+                </form>
+            </x-slot>
+        </x-modal>
+
+    </div>

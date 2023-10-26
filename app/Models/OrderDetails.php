@@ -29,9 +29,6 @@ class OrderDetails extends Model
         'price',
         'unit_price',
         'sub_total',
-        'product_discount_amount',
-        'product_discount_type',
-        'product_tax_amount',
     ];
 
     public function product(): BelongsTo
@@ -48,7 +45,6 @@ class OrderDetails extends Model
     {
         return Attribute::make(
             get: static fn ($value): int|float => $value / 100,
-            set: static fn ($value): int|float => $value * 100,
         );
     }
 

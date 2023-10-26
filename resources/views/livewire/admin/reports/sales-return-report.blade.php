@@ -71,7 +71,7 @@
                                 class="block uppercase mx-auto shadow bg-indigo-800 hover:bg-indigo-700 focus:shadow-outline focus:outline-none text-white text-xs py-3 px-10 rounded">
                                 <span wire:target="generateReport" wire:loading class="spinner-border spinner-border-sm"
                                     role="status" aria-hidden="true"></span>
-                                <i wire:target="generateReport" wire:loading.remove class="bi bi-shuffle"></i>
+                                <i wire:target="generateReport" wire:loading.remove class="fa fa-shuffle"></i>
                                 {{ __('Filter Report') }}
                             </button>
                         </div>

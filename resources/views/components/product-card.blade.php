@@ -5,7 +5,7 @@
     <div itemprop="description" content="{{ $product->description }}"></div>
 
     <div
-        class="relative border border-gray-80 rounded-lg hover-up-all p-4 hover:border-third-brand hover:shadow-drop-shadown-1">
+        class="group relative flex flex-col overflow-hidden rounded-lg border border-slate-200 bg-white hover:border-sky-300 hover:shadow-lg hover:shadow-sky-300/50 transition duration-150">
         <a href="{{ route('front.product', $product->slug) }}"
             class="flex mx-auto mb-4 h-[180px] lg:h-[250px] rounded-t-lg"
             style="background-image: url('{{ asset('images/products/' . $product->image) }}');
@@ -22,9 +22,9 @@
         @endif
         @if ($product->category)
             <div
-                class="absolute top-3.5 md:top-5 3xl:top-7 ltr:left-3.5 rtl:right-3.5 ltr:md:left-5 rtl:md:right-5 ltr:3xl:left-7 rtl:3xl:right-7 flex flex-col gap-y-1 items-start">
+                class="absolute top-3 md:top-5 3xl:top-7 left-3 rtl:right-3 ltr:md:left-5 rtl:md:right-5 3xl:left-7 rtl:3xl:right-7 flex flex-col gap-y-1 items-start">
                 <span
-                    class="bg-indigo-600 text-white text-10px md:text-xs leading-5 rounded-md inline-block px-1.5 sm:px-1.5 xl:px-2 py-0.5 sm:py-1">
+                    class="bg-indigo-600 text-white text-10px md:text-xs leading-5 rounded-md inline-block px-1 sm:px-1 xl:px-2 py-0 sm:py-1">
                     <p><span class="hidden sm:inline">{{ $product->category->name }}</span></p>
                 </span>
             </div>

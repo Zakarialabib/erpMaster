@@ -2,9 +2,11 @@
 
 declare(strict_types=1);
 
+
 namespace App\Livewire\Admin\Section;
 
 use App\Livewire\Utils\Datatable;
+use Livewire\Attributes\On;
 use App\Models\Section;
 use Illuminate\Support\Facades\Gate;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
@@ -19,33 +21,16 @@ class Index extends Component
     use LivewireAlert;
     use WithFileUploads;
 
-    public $image;
-
     public $section;
-
-    public $model = Section::class;
-
-    public $listeners = [
-        'showModal',  'delete',
-    ];
-
-    public $showModal = false;
 
     public $deleteModal = false;
 
-    public $language_id;
+    public $model = Section::class;
 
-    protected $rules = [
-        'section.language_id' => 'required',
-        'section.page_id'     => 'required',
-        'section.title'       => 'nullable',
-        'section.subtitle'    => 'nullable',
-        'section.description' => 'nullable',
-    ];
 
     public function render()
     {
-        $query = Section::when($this->language_id, fn ($query) => $query->where('language_id', $this->language_id))->advancedFilter([
+        $query = Section::advancedFilter([
             's'               => $this->search ?: null,
             'order_column'    => $this->sortBy,
             'order_direction' => $this->sortDirection,
@@ -56,6 +41,7 @@ class Index extends Component
         return view('livewire.admin.section.index', ['sections' => $sections]);
     }
 
+    #[On('delete')]
     public function delete(): void
     {
         // abort_if(Gate::denies('section_delete'), 403);

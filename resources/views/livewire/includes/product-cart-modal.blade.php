@@ -2,7 +2,7 @@
     <!-- Button trigger Discount Modal -->
     <button type="button" wire:click="discountModal('{{ $cart_item->id }}', '{{ $cart_item->rowId }}')"
         class="border border-red-500 text-red-500 hover:text-reg-800">
-        <i class="bi bi-percent text-black"></i>
+        <i class="fa fa-percent text-black"></i>
     </button>
     <!-- Discount Modal -->
     <x-modal wire:model="discountModal">

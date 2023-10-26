@@ -19,7 +19,7 @@ class ThankYou extends Component
 
     public function mount($id): void
     {
-        $this->order = Order::findOrFail($id);
+        $this->order = Order::with('orderDetails')->findOrFail($id);
     }
 
     public function render(): View|Factory

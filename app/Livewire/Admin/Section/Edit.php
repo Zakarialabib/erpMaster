@@ -13,6 +13,7 @@ use Livewire\Attributes\Computed;
 use Livewire\WithFileUploads;
 use Livewire\Attributes\On;
 use App\Models\Language;
+use App\Models\Page;
 use Livewire\Attributes\Rule;
 
 class Edit extends Component
@@ -129,5 +130,11 @@ class Edit extends Component
     public function languages()
     {
         return Language::pluck('name', 'id')->toArray();
+    }
+  
+    #[Computed]
+    public function pages()
+    {
+        return Page::select('title', 'id')->get();
     }
 }

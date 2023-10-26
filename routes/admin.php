@@ -37,6 +37,7 @@ use App\Livewire\Admin\Language\Index as LanguageIndex;
 use App\Livewire\Admin\Language\EditTranslation;
 use App\Livewire\Admin\Permission\Index as PermissionsIndex;
 use App\Livewire\Admin\Products\Index as ProductsIndex;
+use App\Livewire\Admin\Products\Edit as EditProduct;
 use App\Livewire\Admin\Products\Barcode as BarcodeIndex;
 use App\Livewire\Admin\Reviews\Index as ReviewsIndex;
 use App\Livewire\Admin\Role\Index as RolesIndex;
@@ -63,6 +64,7 @@ use App\Livewire\Admin\Printer\Index as PrinterIndex;
 use App\Livewire\Admin\Purchase\Index as PurchasesIndex;
 use App\Livewire\Admin\Purchase\Create as CreatePurchase;
 use App\Livewire\Admin\Purchase\Edit as EditPurchase;
+use App\Livewire\Admin\Purchase\Invoice as PurchaseInvoice;
 use App\Livewire\Admin\PurchaseReturn\Index as PurchaseReturnIndex;
 use App\Livewire\Admin\Quotations\Index as QuotationsIndex;
 use App\Livewire\Admin\Quotations\Create as CreateQuotation;
@@ -70,6 +72,7 @@ use App\Livewire\Admin\Quotations\Edit as EditQuotation;
 use App\Livewire\Admin\Transfer\Index as TransferIndex;
 use App\Livewire\Admin\SaleReturn\Index as SaleReturnIndex;
 use App\Livewire\Admin\Sales\Index as SalesIndex;
+use App\Livewire\Admin\Sales\Invoice as SaleInvoice;
 use App\Livewire\Admin\Sales\Create as CreateSale;
 use App\Livewire\Admin\Sales\Edit as EditSale;
 use App\Livewire\Admin\Settings\Index as SettingsIndex;
@@ -141,6 +144,7 @@ Route::get('/product-categories', CategoryIndex::class)->name('product-categorie
 Route::get('/subcategories', SubcategoryIndex::class)->name('product-subcategories.index');
 
 Route::get('/products', ProductsIndex::class)->name('products.index');
+Route::get('/product/edit/{id}', EditProduct::class)->name('product.edit');
 
 Route::get('/products/print-barcode', BarcodeIndex::class)->name('barcode.print');
 //Generate Quotation PDF
@@ -164,6 +168,8 @@ Route::get('/purchases/pdf/{id}', [ExportController::class, 'purchase'])->name('
 Route::get('/purchases', PurchasesIndex::class)->name('purchases.index');
 Route::get('/purchase/create', CreatePurchase::class)->name('purchase.create');
 Route::get('/purchase/update/{id}', EditPurchase::class)->name('purchase.edit');
+Route::get('/purchase/print/{id}', PurchaseInvoice::class)->name('purchase.invoice');
+
 
 //Purchase Payments
 Route::get('/purchase-payments/{purchase_id}', [PurchasePaymentsController::class, 'index'])->name('purchase-payments.index');
@@ -207,6 +213,7 @@ Route::get('/sales/pos/pdf/{id}', [ExportController::class, 'salePos'])->name('s
 
 //Sales
 Route::get('/sales', SalesIndex::class)->name('sales.index');
+Route::get('/sale/print/{id}', SaleInvoice::class)->name('sale.invoice');
 Route::get('/sale/create', CreateSale::class)->name('sale.create');
 Route::get('/sale/update/{id}', EditSale::class)->name('sale.edit');
 
@@ -276,7 +283,7 @@ Route::get('/contacts', ContactsIndex::class)->name('contacts.index');
 
 Route::get('/email-settings', EmailIndex::class)->name('email-settings');
 Route::get('/faqs', FaqIndex::class)->name('faqs');
-Route::get('/menus', MenuIndex::class)->name('menus');
+Route::get('/menus', MenuIndex::class)->name('menu-settings.index');
 Route::get('/printers', PrinterIndex::class)->name('printers');
 Route::get('/subscribers', SubscriberIndex::class)->name('subscribers.index');
 

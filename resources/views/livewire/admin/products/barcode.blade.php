@@ -16,7 +16,7 @@
                     <x-table.th>{{ __('Product Name') }}</x-table.th>
                     <x-table.th>{{ __('Price') }}</x-table.th>
                     <x-table.th>
-                        {{ __('Quantity') }} <i class="bi bi-question-circle-fill text-info" data-toggle="tooltip"
+                        {{ __('Quantity') }} <i class="fa fa-question-circle-fill text-info" data-toggle="tooltip"
                             data-placement="top" title="Max Quantity: 100"></i>
                     </x-table.th>
                     <x-table.th>{{ __('Size') }}</x-table.th>
@@ -45,7 +45,7 @@
                                 <x-table.td>
                                     <x-button danger type="button" wire:click="deleteProduct({{ $product['id'] }})"
                                         class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
-                                        <i class="bi bi-trash"></i>
+                                        <i class="fa fa-trash"></i>
                                     </x-button>
                                 </x-table.td>
                             </x-table.tr>

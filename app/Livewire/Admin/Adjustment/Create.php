@@ -124,7 +124,7 @@ class Create extends Component
     }
 
     #[On('productSelected')]
-    public function productSelected(array $product): void
+    public function productSelected($product): void
     {
         switch ($this->hasAdjustments) {
             case true:

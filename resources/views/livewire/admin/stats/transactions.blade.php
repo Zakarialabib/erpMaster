@@ -1,11 +1,15 @@
 <div>
     <div class="flex flex-wrap py-3">
 
-        <div class="mb-6 flex justify-center gap-4 items-center w-full">
-            <label class="font-semibold">{{ __('Filtre by date') }}:</label>
-            <input type="date" wire:model.live="startDate" class="border rounded px-2 py-1">
-            <span class="mx-2">to</span>
-            <input type="date" wire:model.live="endDate" class="border rounded px-2 py-1">
+        <div class="mb-6 px-4 flex justify-center gap-4 items-center w-full">
+            <label class="font-semibold">{{ __('from') }}:</label>
+            <div class="flex-1">
+                <input type="date" wire:model.live="startDate" class="w-full border rounded px-2 py-1">
+            </div>
+            <span class="mx-2 font-semibold">{{ __('to') }}</span>
+            <div class="flex-1">
+                <input type="date" wire:model.live="endDate" class="w-full border rounded px-2 py-1">
+            </div>
         </div>
 
         @can('show total stats')

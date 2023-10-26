@@ -13,9 +13,9 @@
             @if ($multiple && is_array($file))
                 @foreach ($file as $key => $tempFile)
                     <div class="py-3 flex {{ !$loop->last ? 'border-b border-gray-200' : '' }}">
-                        <div class="flex items-center space-x-4 py-2">
+                        <div class="flex items-center gap-2 py-2">
                             <img src="{{ $tempFile->temporaryUrl() }}" class="w-20 h-20" />
-                            <div class="font-light text-gray-500">
+                            <div class="font-light text-gray-500 text-xs">
                                 <p>Type: {{ Str::upper($tempFile->extension()) }}</p>
                                 <p>Filename: {{ $tempFile->getClientOriginalName() }}</p>
                             </div>

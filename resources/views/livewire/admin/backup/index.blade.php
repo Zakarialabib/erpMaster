@@ -60,6 +60,10 @@
                                 {{ __('Open Drive folder') }}
                             </x-dropdown-link>
 
+                            <x-dropdown-link wire:loading.attr="disabled" type="button" wire:click="syncToLocal">
+                                {{ __('Sync to local') }}
+                            </x-dropdown-link>
+                           
                             <x-dropdown-link wire:loading.attr="disabled" type="button" wire:click="cleanBackups">
                                 {{ __('Clean Backups') }}
                             </x-dropdown-link>

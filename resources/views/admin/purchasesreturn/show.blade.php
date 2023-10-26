@@ -21,7 +21,7 @@
                         </div>
                         <a target="_blank" class="btn-secondary mfs-auto mfe-1 d-print-none"
                             href="{{ route('purchase-returns.pdf', $purchase_return->id) }}">
-                            <i class="bi bi-printer"></i> {{ __('Print') }}
+                            <i class="fa fa-printer"></i> {{ __('Print') }}
                         </a>
                     </div>
                     <div class="p-4">

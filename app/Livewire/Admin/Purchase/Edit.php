@@ -27,6 +27,7 @@ class Edit extends Component
 {
     use LivewireAlert;
     use WithModels;
+    
     public $cart_instance;
 
     public $purchase_details;
@@ -60,8 +61,6 @@ class Edit extends Component
 
     #[Rule('nullable|string|max:1000')]
     public $note;
-
-    public $suppliers;
 
     public $purchase;
 

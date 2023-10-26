@@ -23,7 +23,7 @@ class Helpers
     {
         return Product::whereHas('warehouses', static function ($query): void {
             $query->where('is_ecommerce', true)
-                ->where('qty', '>', 0)->get();
+                ->where('qty', '>', 0);
         });
     }
 

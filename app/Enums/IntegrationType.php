@@ -8,17 +8,14 @@ enum IntegrationType: int
 {
     case CUSTOM = 0;
 
-    case YOUCAN = 1;
+    case WOOCOMMERCE = 1;
 
-    case WOOCOMMERCE = 2;
-
-    case SHOPIFY = 3;
+    case SHOPIFY = 2;
 
     public function label(): string
     {
         return match ($this) {
             static::CUSTOM      => __('CUSTOM'),
-            static::YOUCAN      => __('YOUCAN'),
             static::WOOCOMMERCE => __('WOOCOMMERCE'),
             static::SHOPIFY     => __('SHOPIFY'),
         };
@@ -33,7 +30,6 @@ enum IntegrationType: int
     {
         return match ($this->name) {
             IntegrationType::CUSTOM      => 'Custom',
-            IntegrationType::YOUCAN      => 'Youcan',
             IntegrationType::WOOCOMMERCE => 'WooCommerce',
             IntegrationType::SHOPIFY     => 'Shopify',
             default                      => 'Unknown'

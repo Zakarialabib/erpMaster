@@ -17,7 +17,9 @@ use Livewire\Attributes\Rule;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use App\Livewire\Utils\Admin\WithMeta;
+use Livewire\Attributes\Layout;
 
+#[Layout('components.layouts.dashboard')]
 class Edit extends Component
 {
     use WithFileUploads;
@@ -28,13 +30,11 @@ class Edit extends Component
 
     public $productWarehouses;
 
-    public $editModal = false;
-
     #[Rule('required|string|min:3|max:255')]
     public string $name;
 
     public string $barcode_symbology;
-    
+
     public string $code;
 
     public string $slug;
@@ -45,11 +45,11 @@ class Edit extends Component
 
     public $description;
 
-    public int $tax_type;
+    public $tax_type;
 
-    public bool $featured;
+    public bool $featured = false;
 
-    public string $usage;
+    public $usage;
 
     public $embeded_video;
 
@@ -57,7 +57,7 @@ class Edit extends Component
 
     public $brand_id;
 
-    #[Rule('required', 'array', 'min:1')]
+    #[Rule('array')]
     public array $subcategories = [];
 
     #[Rule('array')]
@@ -65,11 +65,11 @@ class Edit extends Component
 
     public $image;
 
-    public array $gallery = [];
+    public $gallery = [];
 
-    public bool $best;
+    public bool $best = false;
 
-    public bool $hot;
+    public bool $hot = false;
 
     public $productWarehouse = [];
 
@@ -77,10 +77,12 @@ class Edit extends Component
     protected $rules = [
         'productWarehouse.*.quantity'    => 'integer|min:1',
         'productWarehouse.*.price'       => 'numeric',
+        'productWarehouse.*.old_price'        => 'numeric',
         'productWarehouse.*.cost'        => 'numeric',
-        'productWarehouse.*.stock_alert' => 'required|integer|min:0|max:192',
-        'options.*.type'                 => ['string', 'max:255'],
-        'options.*.value'                => ['string', 'max:255'],
+        'productWarehouse.*.stock_alert' => 'numeric',
+        'productWarehouse.*.is_ecommerce' => '',
+        'options.*.type'                 => '',
+        'options.*.value'                => '',
     ];
 
     #[On('editorjs-save')]
@@ -103,48 +105,54 @@ class Edit extends Component
         $this->options = array_values($this->options);
     }
 
-    // public function fetchSubcategories(): void
-    // {
-    //     $this->subcategories = Subcategory::where('category_id', $this->product->category_id)->get();
-    // }
-
-    #[On('editModal')]
-    public function editModal($id): void
+    public function mount($id): void
     {
-        $this->resetErrorBag();
-
-        $this->resetValidation();
-
         $this->product = Product::findOrFail($id);
 
-        // $this->fetchSubcategories();
+        $this->code = $this->product->code;
+        $this->name = $this->product->name;
+        $this->slug = $this->product->slug;
+        $this->embeded_video = $this->product->embeded_video;
+        $this->category_id = $this->product->category_id;
+        $this->brand_id = $this->product->brand_id;
+        $this->order_tax = $this->product->order_tax;
+        $this->tax_type = $this->product->tax_type;
+        $this->usage = $this->product->usage;
+        $this->unit = $this->product->unit;
+        $this->barcode_symbology = $this->product->barcode_symbology;
+        $this->meta_title = $this->product->meta_title;
+        $this->meta_description = $this->product->meta_description;
+
+        $this->subcategories = $this->product->subcategories;
 
         $this->description = $this->product->description;
 
         $this->options = $this->product->options ?? [['type' => '', 'value' => '']];
 
-        $this->productWarehouses = $this->product->warehouses()->pivot('price', 'qty', 'cost')->get();
+        $this->productWarehouses = $this->product->warehouses;
 
         $this->productWarehouse = $this->productWarehouses->mapWithKeys(static fn ($warehouse): array => [$warehouse->id => [
             'price' => $warehouse->pivot->price,
             'qty'   => $warehouse->pivot->qty,
             'cost'  => $warehouse->pivot->cost,
+            'old_price'  => $warehouse->pivot->old_price,
+            'stock_alert'  => $warehouse->pivot->stock_alert,
+            'is_ecommerce'  => $warehouse->pivot->is_ecommerce,
         ]])->toArray();
-
-        $this->editModal = true;
     }
 
     public function update(): void
     {
         $this->validate();
 
-        if ($this->slug !== $this->product->slug) {
+        if ($this->slug) {
             $this->slug = Str::slug($this->name);
         }
 
+        
         if ($this->image) {
-            $imageName = Str::slug($this->name).'-'.Str::random(5).'.'.$this->image->extension();
-            $this->image->store('products', $imageName);
+            $imageName = Str::slug($this->name) . '-' . Str::random(5) . '.' . $this->image->extension();
+            $this->image->storeAs('products', $imageName , 'local_files');
             $this->image = $imageName;
         }
 
@@ -152,7 +160,8 @@ class Edit extends Component
             $gallery = [];
 
             foreach ($this->gallery as $value) {
-                $imageName = Str::slug($this->name).'-'.Str::random(5).'.'.$value->extension();
+                $imageName = Str::slug($this->name) . '-' . Str::random(5) . '.' . $value->extension();
+                $value->storeAs('products', $imageName , 'local_files');
                 $gallery[] = $imageName;
             }
 
@@ -166,20 +175,27 @@ class Edit extends Component
                 'price' => $warehouse['price'],
                 'qty'   => $warehouse['qty'],
                 'cost'  => $warehouse['cost'],
+                'old_price'  => $warehouse['old_price'],
+                'stock_alert'  => $warehouse['stock_alert'],
+                'is_ecommerce'  => $warehouse['is_ecommerce'],
             ]);
         }
 
         $this->dispatch('refreshIndex')->to(Index::class);
 
         $this->alert('success', __('Product updated successfully.'));
-
-        $this->editModal = false;
     }
 
     #[Computed]
     public function categories()
     {
         return Category::pluck('name', 'id')->toArray();
+    }
+
+    #[Computed]
+    public function getSubcategories()
+    {
+        return Subcategory::where('category_id', $this->category_id)->get();
     }
 
     #[Computed]

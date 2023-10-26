@@ -8,12 +8,10 @@ use Livewire\Attributes\Rule;
 
 trait WithMeta
 {
-    #[Rule('max:170', message: 'The meta title a max of 170 characters.')]
-    #[Rule('min:60', message: 'The meta title field is and must a min of 60.')]
+    #[Rule('max:70', message: 'The meta title a max of 170 characters.')]
     public $meta_title = '';
 
     #[Rule('max:170', message: 'The meta description a max of 170 characters.')]
-    #[Rule('min:60', message: 'The meta description field is and must be min of 60 characters.')]
     public $meta_description = '';
 
     // $this->meta_title = Str::limit($this->title, 75);

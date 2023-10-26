@@ -15,6 +15,7 @@ use Gloudemans\Shoppingcart\Facades\Cart;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use App\Enums\PaymentStatus;
 use App\Enums\SaleStatus;
+use App\Livewire\Utils\Admin\WithModels;
 use App\Models\Product;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
@@ -25,7 +26,8 @@ use Livewire\Attributes\Rule;
 class Edit extends Component
 {
     use LivewireAlert;
-
+    use WithModels;
+    
     public $sale;
 
     public $products;

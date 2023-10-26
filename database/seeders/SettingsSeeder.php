@@ -207,6 +207,10 @@ class SettingsSeeder extends Seeder
             'key'   => 'backup_content',
             'value' => '',
         ],
+        [
+            'key'   => 'invoice_template',
+            'value' => 'invoice-1',
+        ],
     ];
 
     /**

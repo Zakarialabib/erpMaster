@@ -167,7 +167,7 @@
                                     @endcan
 
                                     <x-dropdown-link target="_blank"
-                                        href="{{ route('admin.purchases.pdf', $purchase->id) }}"
+                                        href="{{ route('admin.purchase.invoice', $purchase->id) }}"
                                         wire:loading.attr="disabled">
                                         <i class="fas fa-print"></i>
                                         {{ __('Print') }}
