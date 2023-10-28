@@ -1,3 +1,0 @@
-@livewireStyles
-
-@stack('styles')

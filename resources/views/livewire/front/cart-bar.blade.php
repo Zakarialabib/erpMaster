@@ -103,7 +103,7 @@
                                     {{ format_currency($this->cartTotal) }}
                                 </span>
                             </div>
-                            <a class="block w-full py-4 bg-green-400 hover:bg-green-600 text-center text-white font-bold font-heading uppercase rounded-md transition duration-200 shadow-md"
+                            <a class="block w-full py-4 bg-red-600 hover:bg-red-800 text-center text-white font-bold font-heading uppercase rounded-md transition duration-200 shadow-md"
                                 href="{{ route('front.checkout') }}">{{ __('Go to Checkout') }}</a>
                         </div>
                     </div>

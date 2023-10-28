@@ -57,8 +57,7 @@ class Edit extends Component
 
     public $brand_id;
 
-    #[Rule('array')]
-    public array $subcategories = [];
+    public $subcategories;
 
     #[Rule('array')]
     public array $options = [];
@@ -149,10 +148,13 @@ class Edit extends Component
             $this->slug = Str::slug($this->name);
         }
 
-        
+
         if ($this->image) {
+            $this->image = '';
+        } elseif (is_object($this->image) && method_exists($this->image, 'extension')) {
+
             $imageName = Str::slug($this->name) . '-' . Str::random(5) . '.' . $this->image->extension();
-            $this->image->storeAs('products', $imageName , 'local_files');
+            $this->image->storeAs('products', $imageName, 'local_files');
             $this->image = $imageName;
         }
 
@@ -161,7 +163,7 @@ class Edit extends Component
 
             foreach ($this->gallery as $value) {
                 $imageName = Str::slug($this->name) . '-' . Str::random(5) . '.' . $value->extension();
-                $value->storeAs('products', $imageName , 'local_files');
+                $value->storeAs('products', $imageName, 'local_files');
                 $gallery[] = $imageName;
             }
 

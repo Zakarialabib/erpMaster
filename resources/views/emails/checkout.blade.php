@@ -2,7 +2,7 @@
     
 #{{__('Hello ')}} {{ $customer->name }} {{__('Thank you for ordering from ')}} {{ settings('site_title') }}. 
     
-## {{__('Order Confirmation for ')}} 
+## {{__('Order Confirmation ')}} 
 
 {{__('Your order has been received and is now being processed.')}}
 

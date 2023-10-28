@@ -1,0 +1,56 @@
+/* Template 8 ---------------------------------- */
+.invoice_style8 {
+    --border-color: #DADADA;
+    .invoice-table {
+        --border-color: #DADADA;
+        text-align: center;
+        tbody {
+            tr {
+                &:last-child {
+                    border-bottom: 1px solid $border-color;
+                }
+            }
+        }
+        tbody,
+        tfoot {
+            background-color: #F9F9F9;
+        }
+    }
+}
+.total-table3 {
+    border: none;
+    th, td {
+        border: none;
+        padding: 5px 45px;
+        &:last-child {
+            text-align: right;
+            padding-right: 20px;
+        }
+    }
+}
+.table-style4 {
+    border: 1px solid $smoke-color;
+    thead {
+        tr {
+            border-bottom: 1px solid $smoke-dark;
+        }
+        th {
+            border-radius: 0 !important;
+        }
+    }
+    tr {
+        border-bottom: none;
+    }
+    th, td {
+        text-align: center;
+        border-right: 1px solid $border-color;
+        width: 21%;
+        &:last-child {
+            border-right: none;
+            text-align: center;
+        }
+        &:first-child {
+            width: 37%;
+        }
+    }
+}

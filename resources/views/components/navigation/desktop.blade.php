@@ -2,7 +2,7 @@
     @foreach (Helpers::getHeaderMenu() as $index => $item)
         @if ($item->type === 'link')
             <a href="{{ $item->url }}" @if ($item->new_window) target="__blank" @endif
-                class="text-base font-normal text-green-950 hover:text-green-300  dark:hover:text-green-900 hover:underline focus:underline uppercase">
+                class="text-base font-bold text-red-950 hover:text-red-400 dark:hover:text-red-900 hover:underline focus:underline uppercase">
                 @if ($item->icon)
                     <i class="{{ $item->icon }} mr-2"></i>
                 @endif
@@ -11,7 +11,7 @@
         @elseif ($item->type === 'dropdown')
             <div class="relative" x-data="{ isOpen: false }">
                 <button @click="isOpen = !isOpen"
-                    class="text-base font-normal text-green-950 hover:text-green-300  dark:hover:text-green-900 hover:underline focus:underline uppercase">
+                    class="text-base font-bold text-red-950 hover:text-red-400 dark:hover:text-red-900 hover:underline focus:underline uppercase">
                     @if ($item->icon)
                         <i class="{{ $item->icon }} mr-2"></i>
                     @endif
@@ -31,7 +31,7 @@
         @elseif ($item->type === 'megamenu')
             <div class="relative" x-data="{ isOpen: false }">
                 <button @click="isOpen = !isOpen"
-                    class="text-base font-normal text-green-950 hover:text-green-300  dark:hover:text-green-900 hover:underline focus:underline uppercase">
+                    class="text-base font-bold text-red-950 hover:text-red-300  dark:hover:text-red-900 hover:underline focus:underline uppercase">
                     @if ($item->icon)
                         <i class="{{ $item->icon }} mr-2"></i>
                     @endif
@@ -57,7 +57,7 @@
             </div>
         @elseif ($item->type === 'button')
             <button
-                class="text-base font-normal text-green-950 hover:text-green-300  dark:hover:text-green-900 hover:underline focus:underline uppercase">
+                class="text-base font-bold text-red-950 hover:text-red-300  dark:hover:text-red-900 hover:underline focus:underline uppercase">
                 @if ($item->icon)
                     <i class="{{ $item->icon }} mr-2"></i>
                 @endif

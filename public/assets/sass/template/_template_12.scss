@@ -1,0 +1,68 @@
+/* Template 12 ---------------------------------- */
+.invoice_style12 {
+    --border-color: #DADADA;
+    .big-title {
+        margin-bottom: 5px;
+    }
+    .body-shape1 {
+        top: 0;
+    }
+    .table-stripe-column {
+        --border-color: #DADADA;
+        text-align: center;
+        tbody {
+            tr {
+                &:last-child {
+                    border-bottom: 1px solid $border-color;
+                }
+            }
+        }
+        tbody,
+        tfoot {
+            background-color: #F9F9F9;
+        }
+        .bg-inherit {
+            background-color: inherit !important;
+        }
+        table-layout: fixed;
+        th, td {
+            padding: 13px 25px;
+            &:first-child {
+                width: 80px;
+                padding: 13px;
+            }
+            &:nth-last-child(-n + 3) {
+                width: unset;
+            }
+            &:nth-child(2) {
+                width: 45%;
+            }
+        }
+    }
+}
+.info-box3 {
+    background-color: $theme-color;
+    color: $white-color;
+    display: flex;
+    align-items: center;
+    padding: 18px 30px;
+    clip-path: polygon(0 0, calc(100% - 25px) 0%, 100% 100%, 0% 100%);
+    b {
+        color: $white-color;
+        font-size: 16px;
+        margin-right: 60px;
+    }
+    &.style2 {
+        text-align: right;
+        justify-content: flex-end;
+        background-color: #031C33;
+        clip-path: polygon(0 0, 100% 0, 100% 100%, 25px 100%);
+    }
+}
+
+.table-stripe4.black-color {
+    th {
+        background-color: #242437;
+        background-image: none;
+    }
+}

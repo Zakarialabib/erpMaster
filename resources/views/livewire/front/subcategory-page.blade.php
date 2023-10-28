@@ -92,7 +92,7 @@
                             <li class="mb-2">
                                 <button type="button" wire:click="filterProducts('brand', {{ $brand->id }})">
                                     <span
-                                        class="inline-block px-2 py-2 text-sm font-bold font-heading text-green-500 hover:underline">
+                                        class="inline-block px-2 py-2 text-sm font-bold font-heading text-red-600 hover:underline">
                                         {{ $brand->name }} <small> ({{ $brand->products()->active()->count() }})</small>
                                     </span>
                                 </button>
@@ -110,11 +110,11 @@
                     <h3 class="mb-8 text-2xl font-bold font-heading">{{ __('Price budget') }}</h3>
                     <div>
                         <div class="flex md:flex-col justify-between">
-                            <span class="inline-block text-lg font-bold font-heading text-green-500 hover:underline">
+                            <span class="inline-block text-lg font-bold font-heading text-red-600 hover:underline">
                                 <p class="">{{ __('Min Price') }}</p>
                                 <x-input type="text" wire:model="minPrice" placeholder="350" />
                             </span>
-                            <span class="inline-block text-lg font-bold font-heading text-green-500 hover:underline">
+                            <span class="inline-block text-lg font-bold font-heading text-red-600 hover:underline">
                                 <p class="">{{ __('Max Price') }}</p>
                                 <x-input type="text" wire:model="maxPrice" placeholder="1000" />
                             </span>
@@ -123,7 +123,7 @@
                 </div>
             </div>
             <div class="hidden lg:block w-1/4 px-3">
-                <div class="mb-6 p-4 bg-gray-50" x-data="{ openbrands: true }">
+                <div class="mb-6 p-4 bg-white" x-data="{ openbrands: true }">
                     <div class="flex justify-between mb-8">
                         <h3 class="text-xl font-bold font-heading">{{ __('Brands') }}</h3>
                         <button @click="openbrands = !openbrands">
@@ -137,7 +137,7 @@
                             <li class="mb-2">
                                 <button type="button" wire:click="filterProducts('brand', {{ $brand->id }})">
                                     <span
-                                        class="inline-block px-2 py-2 text-sm font-bold font-heading text-green-500 hover:underline">
+                                        class="inline-block px-2 py-2 text-sm font-bold font-heading text-red-600 hover:underline">
                                         {{ $brand->name }} <small> ({{ $brand->products()->active()->count() }})</small>
                                     </span>
                                 </button>
@@ -150,14 +150,14 @@
                         </div>
                     @endif
                 </div>
-                <div class="mb-6 p-4 bg-gray-50">
+                <div class="mb-6 p-4 bg-white">
                     <h3 class="mb-4 text-2xl font-bold font-heading">{{ __('Price budget') }}</h3>
                     <div class="flex flex-col justify-between  gap-2">
-                        <span class="inline-block text-lg font-bold font-heading text-green-500 hover:underline">
+                        <span class="inline-block text-lg font-bold font-heading text-red-600 hover:underline">
                             <p class="">{{ __('Min Price') }}</p>
                             <x-input type="text" wire:model="minPrice" placeholder="350" />
                         </span>
-                        <span class="inline-block text-lg font-bold font-heading text-green-500 hover:underline">
+                        <span class="inline-block text-lg font-bold font-heading text-red-600 hover:underline">
                             <p class="">{{ __('Max Price') }}</p>
                             <x-input type="text" wire:model="maxPrice" placeholder="1000" />
                         </span>

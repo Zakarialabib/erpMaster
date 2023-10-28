@@ -188,7 +188,7 @@
                 </div>
             </div>
             <div class="hidden lg:block w-1/4 px-3">
-                <div class="mb-6 p-4 bg-gray-50" x-data="{ openCategory: true }">
+                <div class="mb-6 p-4 bg-white" x-data="{ openCategory: true }">
                     <div class="flex justify-between mb-8">
                         <h3 class="text-xl font-bold font-heading">{{ __('Category') }}</h3>
                         <button @click="openCategory = !openCategory">
@@ -212,7 +212,7 @@
                         @endforeach
                     </ul>
                 </div>
-                <div class="mb-6 p-4 bg-gray-50" x-data="{ openSubcategory: true }">
+                <div class="mb-6 p-4 bg-white" x-data="{ openSubcategory: true }">
                     <div class="flex justify-between mb-8">
                         <h3 class="text-xl font-bold font-heading">{{ __('Subcategory') }}</h3>
                         <button @click="openSubcategory = !openSubcategory">
@@ -242,7 +242,7 @@
                     @endif
                 </div>
 
-                <div class="mb-6 p-4 bg-gray-50">
+                <div class="mb-6 p-4 bg-white">
                     <h3 class="mb-8 text-2xl font-bold font-heading">{{ __('Price budget') }}</h3>
                     <div>
                         <div class="flex md:flex-col justify-between">
@@ -257,7 +257,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="mb-6 p-4 bg-gray-50" x-data="{ openbrands: true }">
+                <div class="mb-6 p-4 bg-white" x-data="{ openbrands: true }">
                     <div class="flex justify-between mb-8">
                         <h3 class="text-xl font-bold font-heading">{{ __('Brands') }}</h3>
                         <button @click="openbrands = !openbrands">

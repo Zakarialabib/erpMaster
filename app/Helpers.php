@@ -68,7 +68,7 @@ class Helpers
 
     public static function categoryName($category_id)
     {
-        return Category::find($category_id)->name;
+        return Category::find($category_id)->name ?? '';
     }
 
     public static function warehouseName($warehouse_id)

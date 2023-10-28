@@ -1,14 +1,13 @@
-<footer class="w-full mt-auto bg-green-50 text-green-900">
+<footer class="w-full mt-auto bg-black text-white">
     <div class="px-6 py-6">
         <div class="grid gap-y-10 gap-x-4 sm:grid-cols-2 lg:grid-cols-3 items-center text-center justify-center">
             <div class="relative items-center align-middle text-center justify-center">
                 <ul class="flex flex-col gap-3 font-bold items-center justify-between text-center ">
-                    <img loading="lazy" src="{{ asset('images/' . settings('site_logo')) }}"
-                        alt="{{ settings('company_name') }}"
+                    <img loading="lazy" src="{{ asset('images/logo-white.svg') }}" alt="{{ settings('company_name') }}"
                         class="flex flex-col items-center justify-between text-center"
                         style="height:45%;width:45%; justify-items: center;">
                 </ul>
-                <ul class="my-6 flex items-center text-center  justify-center gap-8">
+                <ul class="my-6 flex items-center text-center justify-center gap-8">
                     <li>
                         <a href="{{ settings('social_facebook') }}" target="__blank">
                             <i class="fab fa-facebook-f"></i>
@@ -44,7 +43,7 @@
                 <div class="flex flex-col gap-y-4">
                     @foreach (Helpers::getFooterSection1Menu() as $index => $item)
                         <a href="{{ $item['url'] }}" @if ($item['new_window']) target="__blank" @endif
-                            class="text-base font-normal text-green-950 hover:text-green-300  dark:hover:text-green-900 hover:underline focus:underline uppercase">
+                            class="text-base font-normal text-white hover:text-red-600 dark:hover:text-red-900 hover:underline focus:underline uppercase">
                             {{ $item['label'] }}
                         </a>
                     @endforeach
@@ -58,7 +57,7 @@
 
                     @foreach (Helpers::getFooterSection2Menu() as $index => $item)
                         <a href="{{ $item['url'] }}" @if ($item['new_window']) target="__blank" @endif
-                            class="text-base font-normal text-green-950 hover:text-green-300  dark:hover:text-green-900 hover:underline focus:underline uppercase">
+                            class="text-base font-normal text-white hover:text-red-600  dark:hover:text-red-900 hover:underline focus:underline uppercase">
                             {{ $item['label'] }}
                         </a>
                     @endforeach
@@ -67,20 +66,20 @@
         </div>
     </div>
 
-    <div class="bg-green-800 text-white py-5 border-t-2 border-transparent">
+    <div class="bg-red-800 text-white py-2 border-t-2 border-transparent">
         <div class="px-6">
             <div class="flex flex-col items-center justify-between text-center font-bold  md:flex-row">
                 <div>
                     Copyright© <span class="curr-year">
-                        {{ date('Y') }}
+                        {{ date('Y') }} - 
                     </span>
-                    <a href="javascript:" class="text-indigo-400 transition hover:text-indigo-800">
-                        {{-- {{ settings('company_name') }} --}}
+                    <a href="javascript:" class="underline">
+                        {{ settings('company_name') }}
                     </a>
                 </div>
                 <div>
                     <span>Besoin d'aide ?</span>
-                    <a href="/contact" class="text-indigo-200 underline hover:text-indigo-50">
+                    <a href="/contact" target="__blank" class="text-white underline hover:text-red-900">
                         Contactez-nous
                     </a>
                 </div>

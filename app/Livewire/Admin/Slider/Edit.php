@@ -8,6 +8,7 @@ use Livewire\Attributes\Rule;
 use Livewire\Component;
 use Illuminate\Contracts\View\View;
 use App\Models\Slider;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Livewire\WithFileUploads;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
@@ -67,18 +68,23 @@ class Edit extends Component
     {
         $this->validate();
 
-        if ( ! $this->image) {
+        if (!$this->image) {
             $this->image = null;
         } elseif (is_object($this->image) && method_exists($this->image, 'extension')) {
-            $imageName = Str::slug($this->slider->title).'-'.Str::random(5).'.'.$this->image->extension();
-            $this->image->storeAs('public/sliders', $imageName);
-            $this->slider->image = $imageName;
+            $path = public_path() . '/images/sliders/' . basename((string) $this->image);
+            Storage::delete($path);
+
+            $fileName = Str::slug($this->title) . '.' . $this->image->extension();
+            $this->image->storeAs('sliders', $fileName, 'local_files');
+            $this->image = $fileName;
         }
 
         $this->slider->language_id = 1;
         $this->slider->description = $this->description;
 
-        $this->slider->save();
+        $this->slider->update(
+            $this->all(),
+        );
 
         $this->alert('success', __('Slider updated successfully.'));
 

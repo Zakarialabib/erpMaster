@@ -1,0 +1,87 @@
+/* Template 4 ---------------------------------- */
+.invoice_style4 {
+    padding-bottom: 60px;
+    .body-shape1 {
+        top: 0;
+    }
+    .th-header {
+        margin-top: -37px;
+        margin-bottom: 63px;
+        b {
+            font-size: 18px;
+        }
+    }
+    .big-title {
+        margin-bottom: 33px;
+    }
+    .total-table {
+        background-color: $smoke-color;
+        tr {
+            border-top: none;
+        }
+        th {
+            padding-left: 500px !important;
+        }
+    }
+    .footer-info {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background-color: $theme-color;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 20px 50px 20px 80px;
+        border-radius: 35px 0 0 0;
+        z-index: -2;
+        &:before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            left: 30px;
+            background-color: #242437;
+            z-index: -1;
+            border-radius: inherit;
+        }
+        svg {
+            margin-right: 4px;
+        }
+        p {
+            color: $white-color;
+        }
+    }
+}
+.invoice-table.style3 {
+    table-layout: fixed;
+    th:first-child, 
+    td:first-child {
+        width: unset;
+    }
+    th:nth-last-child(-n + 3), 
+    td:nth-last-child(-n + 3) {
+        width: unset;
+    }
+    th, td {
+        width: 25%;
+        &:nth-child(3) {
+            width: 100px;
+        }
+    }
+    tr {
+        border-bottom: none;
+    }
+    
+    th {
+        background-color: #242437;
+        &:last-child {
+            text-align: left;
+        }
+    }
+    td {
+        background-color: $smoke-color;
+        &:last-child {
+            text-align: left;
+        }
+    }
+}

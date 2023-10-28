@@ -30,6 +30,7 @@ class DatabaseSeeder extends Seeder
             MenuSeeder::class,
             SliderSeeder::class,
             // BlogSeeder::class,
+            PageSeeder::class,
             SectionsSeeder::class,
             ShippingSeeder::class,
             // BrandSeeder::class,

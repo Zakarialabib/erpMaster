@@ -43,7 +43,7 @@ Route::get('/docs', function () {
 });
 
 // Route::group(['middleware' => 'firewall.all'], function () {
-Route::get('/', FrontIndex::class)->name('front.index');
+// Route::get('/', FrontIndex::class)->name('front.index');
 Route::get('/catalog', FrontCatalog::class)->name('front.catalog');
 Route::get('/categories', FrontCategories::class)->name('front.categories');
 Route::get('/categorie/{slug}', [FrontController::class, 'categoryPage'])->name('front.categoryPage');
@@ -70,6 +70,8 @@ Route::middleware('guest:customer')->group(function () {
 Route::post('/uploads', [UploadController::class, 'upload'])->name('upload');
 
 Route::get('/lang/{lang}', [FrontController::class, 'changeLanguage'])->name('changelanguage');
+
+Route::get('/{slug?}', DynamicPage::class)->name('front.dynamicPage');
 
 // });
 

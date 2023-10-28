@@ -2,7 +2,7 @@
 
 <div>
     <div class="sm:mx-auto sm:w-full sm:max-w-md">
-        <a href="{{ route('front.index') }}">
+        <a href="/" wire:navigate>
             <x-theme.logo class="w-auto h-16 mx-auto text-indigo-600" />
         </a>
 

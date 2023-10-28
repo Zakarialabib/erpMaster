@@ -1,0 +1,65 @@
+/* Template 11 ---------------------------------- */
+.header-layout8 {
+    background-color: $theme-color;
+    padding: 15px 30px;
+    border-radius: 999px;
+    .big-title {
+        color: $white-color;
+        margin-bottom: -0.1em;
+    }
+    
+}
+
+.invoice_style11 {
+    --border-color: #DADADA;
+    --info-width: 186px;
+    padding-bottom: 15px;
+    .header-bottom {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        padding-right: 30px;
+        margin-top: 15px;
+        margin-bottom: 55px;
+    }
+    .body-shape1 {
+        top: 0;
+    }
+    .body-shape2 {
+        bottom: 0;
+        left: 50px;
+        line-height: 0;
+    }
+    .table-stripe-column {
+        --border-color: #DADADA;
+        text-align: center;
+        tbody {
+            tr {
+                &:last-child {
+                    border-bottom: 1px solid $border-color;
+                }
+            }
+        }
+        tbody,
+        tfoot {
+            background-color: #F9F9F9;
+        }
+        .bg-inherit {
+            background-color: inherit !important;
+        }
+        table-layout: fixed;
+        th, td {
+            padding: 13px 25px;
+            &:first-child {
+                width: 80px;
+                padding: 13px;
+            }
+            &:nth-last-child(-n + 3) {
+                width: unset;
+            }
+            &:nth-child(2) {
+                width: 50%;
+            }
+        }
+    }
+}

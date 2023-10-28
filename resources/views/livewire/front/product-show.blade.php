@@ -164,7 +164,7 @@
                                 <div class="w-full">
                                     @if ($product->status == true)
                                         <button type="button"
-                                            class="w-full text-center text-white font-bold font-heading py-2 px-4 rounded-md uppercase bg-green-400 hover:bg-green-600 transition cursor-pointer"
+                                            class="w-full text-center text-white font-bold font-heading py-2 px-4 rounded-md uppercase bg-red-600 hover:bg-red-800 transition cursor-pointer"
                                             wire:click="AddToCart('{{ $product->id }}','{{ $product->warehouses->first()->pivot->price }}')"
                                             wire:loading.attr="disabled">
                                             {{ __('Add to cart') }}
@@ -184,14 +184,14 @@
                             </x-theme.accordion>
 
                             <x-theme.accordion :title="__('Description')">
-                                <div class="p-2">
+                                <div class="py-6 px-4">
                                     <livewire:utils.editor-js editor-id="myEditor" :value="$product?->description"
                                         :read-only="true" />
                                 </div>
                             </x-theme.accordion>
 
                             <x-theme.accordion :title="__('How to Use')">
-                                <p class="mb-8 max-w-2xl text-gray-500 font-body">
+                                <p class="px-4 py-6 text-gray-500 font-body">
                                     {{ $product->usage }}
                                 </p>
                             </x-theme.accordion>
@@ -219,9 +219,9 @@
 
                 <div class="w-full px-10 mt-4 bg-green-100 border-white border-2 bg-gray-80 py-6 mx-auto shadow-md">
                     <div class="grid grid-cols-1 gap-[30px] sm:grid-cols-2 lg:grid-cols-3">
-                        <div class="flex flex-col gap-y-2">
-                            <div class="flex items-center justify-center bg-gray-60 rounded-md w-[51px] h-[51px]">
-                                <div class="w-8 h-8 overflow-hidden"> <img class="w-full h-full object-cover"
+                        <div class="flex flex-col gap-y-2 text-center">
+                            <div class="w-full flex items-center justify-center bg-white rounded-lg h-[51px] mb-2">
+                                <div class="w-10 h-10 overflow-hidden"> <img class="w-full h-full object-cover"
                                         src="{{ asset('images/delivery.svg') }}" alt="Delivery">
                                 </div>
                             </div><span class="text-header-6 font-bold text-first-brand">Fast Delivery</span>
@@ -231,9 +231,9 @@
                                 anytime and
                                 anywhere.</p>
                         </div>
-                        <div class="flex flex-col gap-y-2">
-                            <div class="flex items-center justify-center bg-gray-60 rounded-md w-[51px] h-[51px]">
-                                <div class="w-8 h-8 overflow-hidden"> <img class="w-full h-full object-cover"
+                        <div class="flex flex-col gap-y-2 text-center">
+                            <div class="w-full flex items-center justify-center bg-white rounded-lg h-[51px] mb-2">
+                                <div class="w-10 h-10 overflow-hidden"> <img class="w-full h-full object-cover"
                                         src="{{ asset('images/secure.svg') }}" alt="Secure">
                                 </div>
                             </div><span class="text-header-6 font-bold text-first-brand">Secure payment</span>
@@ -245,12 +245,13 @@
                             </p>
                         </div>
 
-                        <div class="flex flex-col gap-y-2">
-                            <div class="flex items-center justify-center bg-gray-60 rounded-md w-[51px] h-[51px]">
-                                <div class="w-8 h-8 overflow-hidden"> <img class="w-full h-full object-cover"
+                        <div class="flex flex-col gap-y-2 text-center">
+                            <div class="w-full flex items-center justify-center bg-white rounded-lg h-[51px] mb-2">
+                                <div class="w-10 h-10 overflow-hidden"> <img class="w-full h-full object-cover"
                                         src="{{ asset('images/return.svg') }}" alt="Return">
                                 </div>
-                            </div><span class="text-header-6 font-bold text-first-brand">Return &amp; Refund</span>
+                            </div>
+                            <span class="text-header-6 font-bold text-first-brand">Return &amp; Refund</span>
                             <p class="text-mini-desc font-medium text-gray-500">Knowing that there is real value to
                                 be
                                 gained
@@ -287,7 +288,7 @@
                         @if ($product->embeded_video)
                             <div x-show="activeTab === 'video'" class="px-5 mb-10">
                                 <div role="video">
-                                    <p class="mb-8 max-w-2xl text-gray-500 font-body">
+                                    <p class="mb-4 px-4 text-gray-500 font-body">
                                         {!! $product->embeded_video !!}
                                     </p>
                                 </div>
@@ -300,7 +301,7 @@
                                 {{--  --}}
                             </div>
                         </div>
-                        
+
                         <div x-show="activeTab === 'relatedProducts'" class="px-5 mb-10">
                             <div role="relatedProducts">
                                 <div class="my-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4 py-2 px-2">

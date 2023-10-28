@@ -100,7 +100,7 @@
 
                             <div class="flex flex-col gap-4">
                                 <button type="submit"
-                                    class="block w-full py-4 bg-green-500 hover:bg-green-700 text-center text-white font-bold font-heading uppercase rounded-md transition duration-200">
+                                    class="block w-full py-4 bg-red-600 hover:bg-red-800 text-center text-white font-bold font-heading uppercase rounded-md transition duration-200">
                                     {{ __('Log in') }}
                                 </button>
                                 <a class="underline text-sm text-gray-600 text-center hover:text-gray-900 font-medium"

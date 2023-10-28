@@ -63,8 +63,6 @@ class SubcategoryPage extends Component
         $this->sortingOptions = [
             'name-asc'   => __('Order Alphabetic, A-Z'),
             'name-desc'  => __('Order Alphabetic, Z-A'),
-            'price-asc'  => __('Price, low to high'),
-            'price-desc' => __('Price, high to low'),
             'date-asc'   => __('Date, new to old'),
             'date-desc'  => __('Date, old to new'),
         ];
@@ -78,24 +76,21 @@ class SubcategoryPage extends Component
     public function render(): View|Factory
     {
         $query = \App\Helpers::getEcommerceProducts()
-            ->where('subcategories', 'like', '%"'.$this->subcategory->id.'"%')
+            ->where('subcategories', 'like', '%"' . $this->subcategory->id . '"%')
             ->when($this->brand_id, fn ($query) => $query->where('brand_id', $this->brand_id));
 
         if ($this->sorting === 'name') {
-            $query->orderBy('name', 'asc');
+            $products = $query->orderBy('name', 'asc')->paginate($this->perPage);
         } elseif ($this->sorting === 'name-desc') {
-            $query->orderBy('name', 'desc');
-        } elseif ($this->sorting === 'price') {
-            $query->orderBy('price', 'asc');
-        } elseif ($this->sorting === 'price-desc') {
-            $query->orderBy('price', 'desc');
-        } elseif ($this->sorting === 'date') {
-            $query->orderBy('created_at', 'asc');
+            $products = $query->orderBy('name', 'desc')->paginate($this->perPage);
+        }  elseif ($this->sorting === 'date') {
+            $products = $query->orderBy('created_at', 'asc')->paginate($this->perPage);
         } elseif ($this->sorting === 'date-desc') {
-            $query->orderBy('created_at', 'desc');
+            $products = $query->orderBy('created_at', 'desc')->paginate($this->perPage);
+        } else {
+            $products = $query->paginate($this->perPage);
         }
 
-        $products = $query->paginate($this->perPage);
 
         return view('livewire.front.subcategory-page', [
             'products' => $products,

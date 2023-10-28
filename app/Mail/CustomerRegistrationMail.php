@@ -37,7 +37,7 @@ class CustomerRegistrationMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: (__('Welcome ').$this->customer->name.' '.__('to').' '.settings('site_name')),
+            subject: (__('Welcome ').$this->customer->name.' '.__('to').' '.settings('site_title')),
         );
     }
 }

@@ -2,7 +2,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6">
         <div class="flex justify-between items-center border-gray-100 md:space-x-10">
             <div class="flex justify-start">
-                <a href="{{ route('front.index') }}" title="{{ settings('site_title') }}">
+                <a href="" wire:navigate title="{{ settings('site_title') }}">
                     @if (file_exists(asset('images/logo.png')))
                         <x-picture name="images/logo.png" :default-sizes="['width' => 376, 'height' => 176]" alt="{{ settings('site_title') }}"
                             class="h-8 w-auto sm:h-10 inline dark:hidden" width="376px" height="176px"

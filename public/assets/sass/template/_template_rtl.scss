@@ -1,0 +1,47 @@
+/* Template RTL ---------------------------------- */
+[dir='rtl'] {
+    .invoice-buttons {
+        flex-direction: row-reverse;
+        button {
+            svg {
+                margin-left: 6px;
+                margin-right: 0;
+            }
+        }
+    }
+    .header-layout12 {
+        .big-title {
+            text-align: left;
+            font-size: 40px;
+        }
+        span {
+            text-align: left;
+        }
+    }
+    .invoice-right {
+        text-align: left;
+    }
+    .table-style9 {
+        th, td {
+            &:last-child {
+                border-right: 1px solid $smoke-color;
+                text-align: left;
+            }
+        }
+        tfoot {
+            th, td {
+                &:not(:last-child) {
+                    padding-left: 0;
+                    text-align: left;
+                }
+            }
+        }
+    }
+    .total-table2 {
+        th, td {
+            &:last-child {
+                text-align: left;
+            }
+        }
+    }
+}

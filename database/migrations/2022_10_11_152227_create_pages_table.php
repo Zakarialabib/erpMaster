@@ -23,12 +23,8 @@ return new class () extends Migration {
             $table->string('type')->nullable();
             $table->string('meta_title')->nullable();
             $table->string('meta_description')->nullable();
-            $table->tinyInteger('is_sliders')->default(false);
-            $table->tinyInteger('is_contact')->default(false);
-            $table->tinyInteger('is_offer')->default(false);
-            $table->tinyInteger('is_title')->default(true);
-            $table->tinyInteger('is_description')->default(true);
-            $table->tinyInteger('status')->default(true);
+            $table->json('settings')->nullable();
+            $table->boolean('status')->default(true);
             $table->timestamps();
             $table->softDeletes();
         });

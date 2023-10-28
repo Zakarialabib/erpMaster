@@ -23,16 +23,20 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
 
     @vite('resources/css/app.css')
 
-    @include('includes.main-css')
+    @livewireStyles
+
+    @stack('styles')
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/trix/1.3.1/trix.min.css" />
 
     <!-- Scripts -->
     @vite('resources/js/app.js')
     @livewireScriptConfig
 
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-      
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/trix/1.3.1/trix.min.js"></script>
+
     <x-livewire-alert::scripts />
-    
+
     @stack('scripts')
 
 </head>

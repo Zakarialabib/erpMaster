@@ -1,15 +1,17 @@
-<div class="px-4 py-2 bg-green-700 text-white">
+<div class="px-4 py-2 bg-red-700 text-white">
     <div class="flex items-center justify-center md:justify-between">
-        <p class="text-xs text-center font-semibold font-heading hover:text-gray-400 hover:underline">
+        <a class="text-xs text-center font-semibold font-heading hover:text-red-950 hover:underline cursor-pointer"
+            href="tel:{{ settings('company_phone') }}">
             <i class="fa fa-phone mr-2"></i> {{ settings('company_phone') }}
-        </p>
-        
-        @if (auth()->guard('customer')->check() || auth()->guard('admin')->check())
+        </a>
+
+        @if (auth()->guard('customer')->check() ||
+                auth()->guard('admin')->check())
             <x-dropdown align="right" width="56">
                 <x-slot name="trigger">
                     <div class="flex items-center text-white gap-2 px-4">
-                        <i class="fa fa-caret-down ml-2"></i> 
-                        {{  auth()->guard('customer')->user()->name ?? auth()->guard('admin')->user()->name }}
+                        <i class="fa fa-caret-down ml-2"></i>
+                        {{ auth()->guard('customer')->user()->name ??auth()->guard('admin')->user()->name }}
                     </div>
                 </x-slot>
 
@@ -23,7 +25,7 @@
                         <x-dropdown-link :href="route('admin.settings.index')">
                             {{ __('Settings') }}
                         </x-dropdown-link>
-                    @elseif (auth()->guard('customer'))  
+                    @elseif (auth()->guard('customer'))
                         <x-dropdown-link href="{{ route('front.myaccount') }}">
                             {{ __('My account') }}
                         </x-dropdown-link>
@@ -46,10 +48,10 @@
             <button class="flex-shrink-0 hidden md:block px-4">
                 <div class="flex items-center text-white space-x-2">
                     <a href="{{ route('auth.login') }}"
-                        class="mr-2 text-xs text-center font-semibold font-heading hover:text-gray-400 hover:underline">{{ __('Login') }}
+                        class="mr-2 text-xs text-center font-semibold font-heading hover:text-red-950 hover:underline cursor-pointer">{{ __('Login') }}
                     </a>
                     <a href="{{ route('auth.register') }}"
-                        class="ml-2 text-xs text-center font-semibold font-heading hover:text-gray-400 hover:underline">
+                        class="ml-2 text-xs text-center font-semibold font-heading hover:text-red-950 hover:underline cursor-pointer">
                         {{ __('Register') }}</a>
                 </div>
             </button>

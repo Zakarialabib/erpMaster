@@ -48,6 +48,7 @@ class Index extends Component
         $this->alert('success', __('Page deleted successfully.'));
     }
 
+    #[On('deleteSelected')]
     public function deleteSelected(): void
     {
         // abort_if(Gate::denies('page_delete'), 403);
@@ -74,5 +75,18 @@ class Index extends Component
             'onConfirmed'       => 'delete',
         ]);
         $this->page = $page;
+    }
+
+    public function deleteSelectedModal(): void
+    {
+        $confirmationMessage = __('Are you sure you want to delete the selected page? items can be recovered.');
+
+        $this->confirm($confirmationMessage, [
+            'toast'             => false,
+            'position'          => 'center',
+            'showConfirmButton' => true,
+            'cancelButtonText'  => __('Cancel'),
+            'onConfirmed'       => 'deleteSelected',
+        ]);
     }
 }

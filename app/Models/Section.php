@@ -56,4 +56,8 @@ class Section extends Model
     {
         return $this->belongsTo(Page::class, 'page_id');
     }
+    public function language(): BelongsTo
+    {
+        return $this->belongsTo(Language::class, 'language_id');
+    }
 }

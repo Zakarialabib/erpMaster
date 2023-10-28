@@ -8,6 +8,9 @@ use App\Enums\PageType;
 use App\Models\Page;
 use App\Models\Slider;
 use App\Models\Section;
+use App\Models\Subcategory;
+use App\Models\PageSetting;
+use App\Models\Product;
 use Livewire\Component;
 use App\Traits\LazySpinner;
 use Livewire\Attributes\Computed;
@@ -17,26 +20,49 @@ use Livewire\Attributes\Layout;
 class DynamicPage extends Component
 {
     use LazySpinner;
+
     public Page $page;
 
-    public $section;
+    public $description;
 
-    public string $description;
+    public $type;
 
-    public string $type;
+    public $tag;
 
-    public int $is_sliders;
+    public $pageSetting;
+
+    public $settings;
+
+    public $pageType;
+
+    public $item_id;
+
+    public $layout_config;
 
     public function mount(?string $slug = 'home'): void
     {
         $this->page = Page::where('slug', $slug)->firstOrFail();
-
-        $this->section = Section::where('type', $this->page->type)
-            ->where('page_id', $this->page->id)
-            ->first();
         $this->type = $this->page->type;
         $this->description = $this->page->description;
-        $this->is_sliders = $this->page->is_sliders;
+
+        if (is_string($this->page->settings)) {
+            $this->settings = json_decode((string) $this->page->settings, true);
+        } elseif (is_array($this->page->settings)) {
+            $this->settings = $this->page->settings;
+        }
+
+        $this->pageSetting = PageSetting::where('page_id', $this->page->id)
+            ->first();
+
+        if (!$this->pageSetting) {
+            return;
+        }
+
+        if (!$this->pageSetting->layout_config) {
+            return;
+        }
+
+        $this->layout_config = json_decode((string) $this->pageSetting->layout_config, true);
     }
 
     #[Computed]
@@ -44,6 +70,29 @@ class DynamicPage extends Component
     {
         return Slider::active()->take(5)->get();
     }
+
+    #[Computed]
+    public function subcategories()
+    {
+        return Subcategory::inRandomOrder()->limit(3)->get();
+    }
+
+    #[Computed]
+    public function sections()
+    {
+        return Section::active()->where('type', PageType::HOME)->get();
+    }
+    
+    
+    #[Computed]
+    public function featuredProducts()
+    {
+        return \App\Helpers::getEcommerceProducts()
+            ->inRandomOrder()
+            ->take(4)
+            ->get();
+    }
+
 
     #[Computed]
     public function aboutSection()

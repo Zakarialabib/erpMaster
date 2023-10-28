@@ -96,8 +96,6 @@ class Catalog extends Component
         $this->sortingOptions = [
             'name-asc'   => __('Order Alphabetic, A-Z'),
             'name-desc'  => __('Order Alphabetic, Z-A'),
-            'price-asc'  => __('Price, low to high'),
-            'price-desc' => __('Price, high to low'),
             'date-asc'   => __('Date, new to old'),
             'date-desc'  => __('Date, old to new'),
         ];
@@ -116,10 +114,6 @@ class Catalog extends Component
             $products = $query->orderBy('name', 'asc')->paginate($this->perPage);
         } elseif ($this->sorting === 'name-desc') {
             $products = $query->orderBy('name', 'desc')->paginate($this->perPage);
-        } elseif ($this->sorting === 'price') {
-            $products = $query->orderBy('price', 'asc')->paginate($this->perPage);
-        } elseif ($this->sorting === 'price-desc') {
-            $products = $query->orderBy('price', 'desc')->paginate($this->perPage);
         } elseif ($this->sorting === 'date') {
             $products = $query->orderBy('created_at', 'asc')->paginate($this->perPage);
         } elseif ($this->sorting === 'date-desc') {

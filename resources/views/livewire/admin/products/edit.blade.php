@@ -122,7 +122,6 @@
                                     <x-label for="is_ecommerce" :value="__('Is Ecommerce')" required />
                                     <x-input.checkbox id="is_ecommerce_{{ $warehouse->id }}" type="checkbox"
                                         name="is_ecommerce_{{ $warehouse->id }}"
-                                        @if ($productWarehouse[$warehouse->id]['is_ecommerce']) checked @endif
                                         wire:model="productWarehouse.{{ $warehouse->id }}.is_ecommerce" />
                                 </div>
                             </div>

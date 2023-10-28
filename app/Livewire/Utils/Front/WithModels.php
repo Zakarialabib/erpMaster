@@ -17,7 +17,6 @@ trait WithModels
     public function categories()
     {
         return Category::select('id', 'name', 'slug', 'image')
-            ->take($this->selectCount)
             ->get();
     }
 
@@ -25,7 +24,6 @@ trait WithModels
     public function brands()
     {
         return Brand::select('id', 'name', 'slug', 'image')
-            ->take($this->selectCount)
             ->get();
     }
 
@@ -33,7 +31,6 @@ trait WithModels
     public function subcategories()
     {
         return Subcategory::select('id', 'name', 'slug', 'image')
-            ->take($this->selectCount)
             ->get();
     }
 }

@@ -1,0 +1,67 @@
+/* Template 6 ---------------------------------- */
+.invoice_style7,
+.invoice_style6 {
+    padding-bottom: 75px;
+    .body-shape1 {
+        top: 0;
+    }
+    .body-shape2 {
+        bottom: 0;
+    }
+    .th-header {
+        margin-bottom: 35px;
+    }
+    .big-title {
+        margin-top: -0.18em;
+        margin-bottom: 15px;
+    }
+    .total-table {
+        tr:last-child {
+            background: linear-gradient(0deg, #21171F 0%, #3E4049 100%);
+            th, td {
+                color: $white-color;
+            }
+        }
+    }
+    .footer-info {
+        position: absolute;
+        right: 50px;
+        bottom: 22px;
+        text-align: right;
+        p {
+            margin-top: 10px;
+            color: $white-color;
+        }
+    }
+}
+.address-bg1 {
+    background-color: $smoke-color;
+    padding: 25px 30px;
+}
+.table-stripe4 {
+    th, td {
+        &:nth-last-child(-n + 3),
+        &:first-child {
+            width: unset;
+            text-align: left;
+        }
+        border-right: 1px solid #e0e0e0;
+        &:first-child {
+            border-left: 1px solid #e0e0e0;
+        }
+    }
+    th {
+        background-image: linear-gradient(180deg, #BED5EF -35.51%, #557497 86.64%);
+    }
+    tr {
+        border-bottom: 1px solid #E7E9ED;
+        &:nth-child(even) {
+            background-color: #E7E9ED;
+        }
+    }
+    &.theme-color {
+        th {
+            background-image: none;
+        }
+    }
+}

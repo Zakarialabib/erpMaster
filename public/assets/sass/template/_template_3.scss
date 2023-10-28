@@ -1,0 +1,46 @@
+/* Template 3 ---------------------------------- */
+.invoice_style3 {
+    .big-title {
+        font-size: 70px;
+        color: $white-color;
+        margin-top: -0.18em;
+    }
+    .body-shape1 {
+        top: 0;
+        right: 0;
+        left: unset;
+    }
+    .body-shape2 {
+        bottom: 150px;
+    }
+    .invoice-table thead th, 
+    .invoice-table thead td {
+        background: linear-gradient(180deg, #BED5EF -35.51%, #557497 86.64%);
+    }
+    .invoice-table {
+        margin-bottom: 30px;
+    }
+    .invoice-buttons {
+        margin-top: 35px;
+    }
+}
+.table-stripe-column {
+    tbody {
+        background-color: #f5f5f5;
+        th, td {
+            &:nth-child(odd) {
+                background-color: #E7E9ED;
+            }
+        }
+    }
+    th, td {
+        &:nth-last-child(-n + 3) {
+            text-align: center;
+        }
+    }
+    tr {
+        &:last-child {
+            border-bottom: none;
+        }
+    }
+}

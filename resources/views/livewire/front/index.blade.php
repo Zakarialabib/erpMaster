@@ -6,34 +6,37 @@
             <x-theme.slider :sliders="$this->sliders" />
         </section>
 
-        <div class="w-full py-5 px-4 mx-auto">
-            <div class="flex flex-col">
-                <h2
-                    class="text-first-brand font-extrabold text-md sm:text-lg md:text-xl lg:text-header-2 mx-auto capitalize relative max-w-[778px]">
-                    {{ __('Choose your favorite choice') }}
-                </h2>
+        @if ($this->subcategories)
+            <div class="w-full py-5 px-4 mx-auto">
+                <div class="flex flex-col">
+                    <h2
+                        class="text-first-brand font-extrabold text-md sm:text-lg md:text-xl lg:text-header-2 mx-auto capitalize relative max-w-[778px]">
+                        {{ __('Choose your favorite choice') }}
+                    </h2>
 
-                <div class="flex flex-wrap justify-center overflow-x-scroll gap-4 py-4">
-                    @foreach ($this->subcategories as $subcategory)
-                        <a href="{{ route('front.subcategoryPage', $subcategory->slug) }}" class="relative w-44 h-44"
-                            x-data="{ hover: false }" @mouseenter="hover = true" @mouseleave="hover = false">
-                            <div
-                                class="absolute top-0 left-0 right-0 bottom-0 rounded-full bg-white shadow-lg transform hover:scale-105 transition-all duration-300">
-                                <img class="absolute inset-0 w-full h-full object-cover rounded-full transform-gpu transition-all duration-1000 ease-in-out"
-                                    :class="{ 'rotate-0': !hover, 'rotate-360': hover }"
-                                    src="{{ asset('images/subcategories/' . $subcategory->image) }}"
-                                    alt="{{ $subcategory->name }}">
-                                <div class="absolute inset-0 flex items-center justify-center text-center">
-                                    <p class="text-md text-white  w-full font-bold bg-black opacity-75 shadow ">
-                                        {{ $subcategory->name }} {{ __('for') }}
-                                        {{ $subcategory->category?->name }}</p>
+                    <div class="flex flex-wrap justify-center overflow-x-scroll gap-4 py-4">
+                        @foreach ($this->subcategories as $subcategory)
+                            <a href="{{ route('front.subcategoryPage', $subcategory->slug) }}" class="relative w-44 h-44"
+                                x-data="{ hover: false }" @mouseenter="hover = true" @mouseleave="hover = false">
+                                <div
+                                    class="absolute top-0 left-0 right-0 bottom-0 rounded-full bg-white shadow-lg transform hover:scale-105 transition-all duration-300">
+                                    <img class="absolute inset-0 w-full h-full object-cover rounded-full transform-gpu transition-all duration-1000 ease-in-out"
+                                        :class="{ 'rotate-0': !hover, 'rotate-360': hover }"
+                                        src="{{ asset('images/subcategories/' . $subcategory->image) }}"
+                                        alt="{{ $subcategory->name }}">
+                                    <div class="absolute inset-0 flex items-center justify-center text-center">
+                                        <p class="text-md text-white  w-full font-bold bg-black opacity-75 shadow ">
+                                            {{ $subcategory->name }} {{ __('for') }}
+                                            {{ $subcategory->category?->name }}</p>
+                                    </div>
                                 </div>
-                            </div>
-                        </a>
-                    @endforeach
+                            </a>
+                        @endforeach
+                    </div>
                 </div>
             </div>
-        </div>
+        @endif
+
         <div class="w-full mx-auto px-6">
             <div x-data="{ activeTabs: 'featuredProducts' }" class="px-4 py-5 bg-white">
                 <div class="grid gap-4 xl:grid-cols-3 lg:grid-cols-3 md:grid-cols-3 sm:grid-cols-2 mb-10 ">

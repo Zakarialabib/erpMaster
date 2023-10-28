@@ -7,7 +7,7 @@
     <div
         class="group relative flex flex-col overflow-hidden rounded-lg border border-slate-200 bg-white hover:border-sky-300 hover:shadow-lg hover:shadow-sky-300/50 transition duration-150">
         <a href="{{ route('front.product', $product->slug) }}"
-            class="flex mx-auto mb-4 h-[180px] lg:h-[250px] rounded-t-lg"
+            class="flex mx-auto mb-4 w-full h-[220px] lg:h-[300px] rounded-t-lg"
             style="background-image: url('{{ asset('images/products/' . $product->image) }}');
                 background-position: center;background-size: cover;">
             <meta itemprop="image" content="{{ asset('images/products/' . $product->image) }}" />
@@ -30,12 +30,12 @@
             </div>
         @endif
         <div class="w-full flex-none text-sm flex items-center justify-center text-gray-600 py-2">
-            @if ($product->status === \App\Enums\Status::ACTIVE)
-                <div class="text-xs font-medium">
+            @if ($product->status)
+                <div class="text-md font-bold">
                     <span class="text-green-500">● {{ __('In Stock') }}</span>
                 </div>
             @else
-                <div class="text-xs font-medium">
+                <div class="text-md font-bold">
                     <span class="text-red-500">●
                         {{ __('Out of Stock') }}</span>
                 </div>
@@ -44,14 +44,14 @@
         </div>
 
         <a href="{{ route('front.product', $product->slug) }}">
-            <h4 class="font-bold text-first-brand text-header-5 tracking-[-0.02em] block text-center mb-4 text-md md:text-sm text-green-900 hover:text-green-600 uppercase"
+            <h4 class="font-bold tracking-[-0.02em] block text-center md:text-lg sm:text-md text-black hover:text-red-900 uppercase"
                 itemprop="name">
                 {{ Str::limit($product->name, 40) }}</h4>
         </a>
 
         <div itemprop="offers" itemscope itemtype="https://schema.org/Offer">
             {{-- @dd($product) --}}
-            <p class="text-center text-black hover:text-green-800 font-bold text-md mt-2">
+            <p class="text-center text-red-900 hover:text-red-800 font-bold text-md mt-2">
                 @if ($product->warehouses->first()->pivot->is_ecommerce)
                     @if ($product->warehouses->first()->pivot->is_discount && $product->discount_date >= now())
                         <span
@@ -73,7 +73,7 @@
         </div>
 
         <div class="flex justify-center">
-            <a class="my-2 block bg-green-500 hover:bg-green-800 text-center text-white font-bold text-xs py-2 px-4 rounded-md uppercase cursor-pointer tracking-wider hover:shadow-lg transition ease-in duration-300"
+            <a class="my-2 block bg-red-600 hover:bg-red-800 text-center text-white font-bold text-xs py-2 px-4 rounded-md uppercase cursor-pointer tracking-wider hover:shadow-lg transition ease-in duration-300"
                 href="{{ route('front.product', $product->slug) }}">
                 {{ __('Read more') }}
             </a>

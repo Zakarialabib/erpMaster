@@ -72,7 +72,7 @@
                             <li class="mb-2">
                                 <button type="button" wire:click="filterProducts('category', {{ $category->id }})">
                                     <span
-                                        class="inline-block px-2 py-2 text-sm font-bold font-heading text-green-500 hover:underline">
+                                        class="inline-block px-2 py-2 text-sm font-bold font-heading text-red-600 hover:underline">
                                         {{ $category->name }} <small>
                                             ({{ $category->products()->active()->count() }})
                                         </small>
@@ -99,7 +99,7 @@
                                 <button type="button"
                                     wire:click="filterProducts('subcategory', {{ $subcategory->id }})">
                                     <span
-                                        class="inline-block px-2 py-2 text-sm font-bold font-heading text-green-500 hover:underline">
+                                        class="inline-block px-2 py-2 text-sm font-bold font-heading text-red-600 hover:underline">
                                         {{ $subcategory->name }} <small>
                                             {{-- ({{ $subcategory->products()->active()->count() }}) --}}
                                         </small>
@@ -130,7 +130,7 @@
                 </div>
             </div>
             <div class="hidden lg:block w-1/4 px-3">
-                <div class="mb-6 p-4 bg-gray-50" x-data="{ openCategory: true }">
+                <div class="mb-6 p-4 bg-white" x-data="{ openCategory: true }">
                     <div class="flex justify-between mb-8">
                         <h3 class="text-xl font-bold font-heading">{{ __('Category') }}</h3>
                         <button @click="openCategory = !openCategory">
@@ -145,7 +145,7 @@
                             <li class="mb-2">
                                 <button type="button" wire:click="filterProducts('category', {{ $category->id }})">
                                     <span
-                                        class="inline-block px-2 py-2 text-sm font-bold font-heading text-green-500 hover:underline">
+                                        class="inline-block px-2 py-2 text-sm font-bold font-heading text-red-600 hover:underline">
                                         {{ $category->name }} <small>
                                             ({{ $category->products()->active()->count() }})
                                         </small>
@@ -155,7 +155,7 @@
                         @endforeach
                     </ul>
                 </div>
-                <div class="mb-6 p-4 bg-gray-50" x-data="{ openSubcategory: true }">
+                <div class="mb-6 p-4 bg-white" x-data="{ openSubcategory: true }">
                     <div class="flex justify-between mb-8">
                         <h3 class="text-xl font-bold font-heading">{{ __('Subcategory') }}</h3>
                         <button @click="openSubcategory = !openSubcategory">
@@ -171,7 +171,7 @@
                                 <button type="button"
                                     wire:click="filterProducts('subcategory', {{ $subcategory->id }})">
                                     <span
-                                        class="inline-block px-2 py-2 text-sm font-bold font-heading text-green-500 hover:underline">
+                                        class="inline-block px-2 py-2 text-sm font-bold font-heading text-red-600 hover:underline">
                                         {{ $subcategory->name }} <small>
                                             {{-- ({{ $subcategory->products()->active()->count() }}) --}}
                                         </small>
@@ -187,14 +187,14 @@
                     @endif
                 </div>
 
-                <div class="mb-6 p-4 bg-gray-50">
+                <div class="mb-6 p-4 bg-white">
                     <h3 class="mb-4 text-2xl font-bold font-heading">{{ __('Price budget') }}</h3>
                     <div class="flex md:flex-col justify-between space-y-2">
-                        <span class="inline-block text-lg font-bold font-heading text-green-500 hover:underline">
+                        <span class="inline-block text-lg font-bold font-heading text-red-600 hover:underline">
                             <p class="">{{ __('Min Price') }}</p>
                             <x-input type="text" wire:model="minPrice" placeholder="350" />
                         </span>
-                        <span class="inline-block text-lg font-bold font-heading text-green-500 hover:underline">
+                        <span class="inline-block text-lg font-bold font-heading text-red-600 hover:underline">
                             <p class="">{{ __('Max Price') }}</p>
                             <x-input type="text" wire:model="maxPrice" placeholder="1000" />
                         </span>

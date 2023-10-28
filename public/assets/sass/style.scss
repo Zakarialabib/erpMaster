@@ -1,0 +1,83 @@
+/*
+Template Name: Invar
+Template URL: http://themeholy.com/html/Invar
+Description: Invar - Invoice HTML Template
+Author: themeholy
+Author URI: https://themeforest.net/user/themeholy
+Version: 1.0.0
+*/
+/*=================================
+    CSS Index Here
+==================================*/
+/*
+
+01. Theme Base
+    1.1. Variable
+    1.2. Mixin
+    1.3. Typography
+    1.4. Container
+    1.5. Grid
+    1.5. Spacing
+02. Theme Templates
+    2.1. Global Style 
+    2.2. Template 1
+
+/*=================================
+   01. Theme Base
+==================================*/
+/*------------------- 1.1. Variable-------------------*/
+@import 'base/variable';
+
+/*------------------- 1.2. Mixin -------------------*/
+@import 'base/mixin';
+
+/*------------------- 1.3. Typography -------------------*/
+@import 'base/typography';
+
+/*------------------- 1.4. Container -------------------*/
+@import 'base/container';
+
+/*------------------- 1.5. Grid -------------------*/
+@import 'base/grid';
+
+/*------------------- 1.6. Spacing -------------------*/
+@import 'spacing/spacing';
+
+/*=================================
+   02. Theme Templates
+==================================*/
+
+/*------------------- 2.1. Global Style -------------------*/
+@import 'template/global';
+/*------------------- 2.2. Template 1 -------------------*/
+@import 'template/template_1';
+/*------------------- 2.3. Template 2 -------------------*/
+@import 'template/template_2';
+/*------------------- 2.4. Template 3 -------------------*/
+@import 'template/template_3';
+/*------------------- 2.5. Template 4 -------------------*/
+@import 'template/template_4';
+/*------------------- 2.6. Template 5 -------------------*/
+@import 'template/template_5';
+/*------------------- 2.7. Template 6 -------------------*/
+@import 'template/template_6';
+/*------------------- 2.8. Template 7 -------------------*/
+@import 'template/template_7';
+/*------------------- 2.9. Template 8 -------------------*/
+@import 'template/template_8';
+/*------------------- 2.0. Template 9 -------------------*/
+@import 'template/template_9';
+/*------------------- 2.0. Template 10 -------------------*/
+@import 'template/template_10';
+/*------------------- 2.0. Template 11 -------------------*/
+@import 'template/template_11';
+/*------------------- 2.0. Template 12 -------------------*/
+@import 'template/template_12';
+/*------------------- 2.0. Template RTL -------------------*/
+@import 'template/template_rtl';
+
+
+/*------------------- 3 Updates -------------------*/
+
+/*------------------- 3.1 Update 1 -------------------*/
+@import 'template/update_1';

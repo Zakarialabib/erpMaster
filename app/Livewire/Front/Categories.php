@@ -88,8 +88,6 @@ class Categories extends Component
         $this->sortingOptions = [
             'name-asc'   => __('Order Alphabetic, A-Z'),
             'name-desc'  => __('Order Alphabetic, Z-A'),
-            'price-asc'  => __('Price, low to high'),
-            'price-desc' => __('Price, high to low'),
             'date-asc'   => __('Date, new to old'),
             'date-desc'  => __('Date, old to new'),
         ];
@@ -107,23 +105,20 @@ class Categories extends Component
             ->when($this->category_id, fn ($query) => $query->where('category_id', $this->category_id))
             ->when($this->subcategory_id, fn ($query) => $query->whereIn('subcategories', $this->subcategory_id))
             ->when($this->brand_id, fn ($query) => $query->where('brand_id', $this->brand_id));
-
+     
         if ($this->sorting === 'name') {
-            $query->orderBy('name', 'asc');
+            $products = $query->orderBy('name', 'asc');
         } elseif ($this->sorting === 'name-desc') {
-            $query->orderBy('name', 'desc');
-        } elseif ($this->sorting === 'price') {
-            $query->orderBy('price', 'asc');
-        } elseif ($this->sorting === 'price-desc') {
-            $query->orderBy('price', 'desc');
+            $products = $query->orderBy('name', 'desc');
         } elseif ($this->sorting === 'date') {
-            $query->orderBy('created_at', 'asc');
+            $products = $query->orderBy('created_at', 'asc');
         } elseif ($this->sorting === 'date-desc') {
-            $query->orderBy('created_at', 'desc');
-        }
+            $products = $query->orderBy('created_at', 'desc');
+        } 
 
         $products = $query->paginate($this->perPage);
-
+        
+        
         return view('livewire.front.categories', [
             'products' => $products,
         ]);

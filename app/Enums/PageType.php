@@ -10,9 +10,11 @@ enum PageType: string
     case ABOUT = 'about';
     case BLOG = 'blog';
     case SERVICE = 'service';
+    case CATALOG = 'catalog';
     case PRODUCT = 'product';
-    case FAQ = 'faq';
-    case TEAM = 'team';
+    case PRODUCTS = 'products';
+    case PRIVACY = 'privacy';
+    case TERMS = 'terms';
     case CONTACT = 'contact';
 
     public function label(): string
@@ -24,8 +26,8 @@ enum PageType: string
             static::CONTACT => __('contact'),
             static::PRODUCT => __('product'),
             static::SERVICE => __('service'),
-            static::FAQ     => __('faq'),
-            static::TEAM    => __('team'),
+            static::PRIVACY     => __('privacy'),
+            static::TERMS    => __('terms'),
         };
     }
 

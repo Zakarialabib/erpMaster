@@ -1,0 +1,62 @@
+/* Template 9 ---------------------------------- */
+.invoice_style9 {
+    --border-color: #DADADA;
+    padding-bottom: 50px;
+    .invoice-table {
+        th {
+            background: linear-gradient(180deg, #01B3F2 0%, #6327ED 100%);
+        }
+    }
+    .invoice-table.style4 {
+        border: 1px solid $smoke-color;
+        border-top: none;
+        th,
+        td {
+            &:last-child {
+                border-right: 1px solid $smoke-color;
+            }
+        }
+        tr {
+            &:last-child {
+                border-bottom: 1px solid $smoke-color;
+            }
+        }
+    }
+    .table-stripe-column {
+        text-align: center;
+        tbody {
+            tr {
+                &:last-child {
+                    border-bottom: 1px solid $border-color;
+                }
+            }
+        }
+        tbody,
+        tfoot {
+            background-color: #F9F9F9;
+        }
+    }
+    .footer-info {
+        position: absolute;
+        bottom: 0;
+        left: 50px;
+        width: calc(100% - 100px);
+        background-image: linear-gradient(180deg, #01B3F2 0%, #6327ED 100%);
+        border-radius: 100px 100px 0px 0px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 15px 50px;
+        z-index: -2;
+        svg {
+            margin-right: 4px;
+        }
+        p {
+            color: $white-color;
+        }
+    }
+    .invoice-buttons a::before, 
+    .invoice-buttons button::before {
+        background: linear-gradient(180deg, #01B3F2 0%, #6327ED 100%);
+    }
+}

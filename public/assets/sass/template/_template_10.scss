@@ -1,0 +1,86 @@
+/* Template 10 ---------------------------------- */
+.invoice_style10 {
+    --border-color: #DADADA;
+    border-bottom: 10px solid;
+    border-image: linear-gradient(92.57deg, #565BED 0%, #A664E8 100%);
+    border-image-slice: 1;
+    .big-title {
+        margin-bottom: 10px;
+    }
+    .th-header {
+        p,
+        b,
+        .big-title {
+            color: $white-color;
+        }
+        .header-logo {
+            margin-top: 35px;
+        }
+    }
+    .table-style5 {
+        th {
+            background-color: transparent;
+        }
+        thead {
+            tr {
+                background-image: linear-gradient(92.57deg, #565BED 0%, #A664E8 100%);
+            }
+        }
+    }
+    .body-shape1 {
+        top: 0;
+    }
+    .invoice-buttons a::before, 
+    .invoice-buttons button::before {
+        background-image: linear-gradient(92.57deg, #565BED 0%, #A664E8 100%);
+    }
+}
+
+
+.table-style5 {
+    table-layout: fixed;
+    th, td {
+        padding: 13px 25px;
+        &:first-child {
+            width: 60px;
+            padding: 13px;
+            text-align: center;
+            background-color: #242437 !important;
+            color: $white-color;
+            border-bottom: 1px solid #242437;
+        }
+        &:nth-last-child(-n + 3) {
+            width: unset;
+        }
+        &:nth-child(2) {
+            width: 50%;
+        }
+    }
+    tbody {
+        background-color: #f5f5f5;
+        th, td {
+            &:nth-child(odd) {
+                background-color: #E7E9ED;
+            }
+        }
+    }
+    tr {
+        &:last-child {
+            border-bottom: none;
+        }
+    }
+    tbody {
+        tr {
+            &:last-child {
+                border-bottom: 1px solid $border-color;
+            }
+        }
+    }
+    tbody,
+    tfoot {
+        background-color: #F9F9F9;
+    }
+    .text-start {
+        text-align: left !important;
+    }
+}

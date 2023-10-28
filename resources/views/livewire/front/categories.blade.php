@@ -6,14 +6,14 @@
 @endsection
 
 <div>
-    <div class="w-full mt-4 px-4 mx-auto" x-data="{ showSidebar: false }"> 
+    <div class="w-full mt-4 px-4 mx-auto" x-data="{ showSidebar: false }">
         <div class="mb-4 items-center justify-between bg-white py-2">
             <div class="w-full md:px-4 sm:px-2 flex flex-wrap justify-between">
                 <ul class="flex flex-wrap items-center gap-2 py-4 md:py-2 ">
                     <li class="inline-flex">
                         <a href="/" class="text-gray-600 hover:text-blue-500">
-                            <svg class="w-5 h-auto fill-current mx-2 text-gray-400"
-                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#000000">
+                            <svg class="w-5 h-auto fill-current mx-2 text-gray-400" xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 24 24" fill="#000000">
                                 <path d="M0 0h24v24H0V0z" fill="none" />
                                 <path
                                     d="M10 19v-5h4v5c0 .55.45 1 1 1h3c.55 0 1-.45 1-1v-7h1.7c.46 0 .68-.57.33-.87L12.67 3.6c-.38-.34-.96-.34-1.34 0l-8.36 7.53c-.34.3-.13.87.33.87H5v7c0 .55.45 1 1 1h3c.55 0 1-.45 1-1z" />
@@ -23,13 +23,15 @@
                     </li>
                     <li class="inline-flex">
                         <a href="{{ URL::current() }}" class="text-gray-600 hover:text-blue-500">
-                            @if (isset($category_id)) {{ \App\Helpers::categoryName($category_id) }} @endif
+                            @if (isset($category_id))
+                                {{ \App\Helpers::categoryName($category_id) }}
+                            @endif
                         </a>
                         <span class="mx-2 h-auto text-gray-400 font-medium">/</span>
                     </li>
                     <li class="inline-flex">
                         <p class="lg:text-2xl sm:text-xl font-bold text-gray-600 hover:text-blue-500">
-                            {{ $products->count() }} {{ __('Products') }} 
+                            {{ $products->count() }} {{ __('Products') }}
                         </p>
                     </li>
                 </ul>
@@ -84,9 +86,9 @@
                     <ul x-show="openCategory">
                         @foreach ($this->categories as $category)
                             <li class="mb-2">
-                                <button type="button" wire:click="filterProducts('category', {{ $category->id }})">
+                                <button type="button" wire:click="filterProducts('category', '{{ $category->id }}')">
                                     <span
-                                        class="inline-block px-2 py-2 text-sm font-bold font-heading text-green-500 hover:underline">
+                                        class="inline-block px-2 py-2 text-sm font-bold font-heading text-red-600 hover:underline">
                                         {{ $category->name }} <small>
                                             ({{ $category->products()->active()->count() }})
                                         </small>
@@ -113,7 +115,7 @@
                                 <button type="button"
                                     wire:click="filterProducts('subcategory', {{ $subcategory->id }})">
                                     <span
-                                        class="inline-block px-2 py-2 text-sm font-bold font-heading text-green-500 hover:underline">
+                                        class="inline-block px-2 py-2 text-sm font-bold font-heading text-red-600 hover:underline">
                                         {{ $subcategory->name }}
                                     </span>
                                 </button>
@@ -155,8 +157,10 @@
                         @foreach ($this->brands as $brand)
                             <li class="mx-2 mb-2">
                                 <button type="button" wire:click="filterProducts('brand', {{ $brand->id }})">
-                                    <span class="inline-block px-2 py-2 text-sm font-bold font-heading text-green-500 hover:underline">
-                                        {{ $brand->name }} <small> ({{ $brand->products()->active()->count() }})</small>
+                                    <span
+                                        class="inline-block px-2 py-2 text-sm font-bold font-heading text-red-600 hover:underline">
+                                        {{ $brand->name }} <small>
+                                            ({{ $brand->products()->active()->count() }})</small>
                                     </span>
                                 </button>
                             </li>
@@ -170,7 +174,7 @@
                 </div>
             </div>
             <div class="hidden lg:block w-1/4 px-3">
-                <div class="mb-6 p-4 bg-gray-50" x-data="{ openCategory: true }">
+                <div class="mb-6 p-4 bg-white" x-data="{ openCategory: true }">
                     <div class="flex justify-between mb-8">
                         <h3 class="text-xl font-bold font-heading">{{ __('Category') }}</h3>
                         <button @click="openCategory = !openCategory">
@@ -183,9 +187,10 @@
                     <ul x-show="openCategory">
                         @foreach ($this->categories as $category)
                             <li class="mb-2">
-                                <button type="button" wire:click="filterProducts('category', {{ $category->id }})">
+                                <button type="button"
+                                    wire:click="filterProducts('category', '{{ $category->id }}')">
                                     <span
-                                        class="inline-block px-2 py-2 text-sm font-bold font-heading text-green-500 hover:underline">
+                                        class="inline-block px-2 py-2 text-sm font-bold font-heading text-red-600 hover:underline">
                                         {{ $category->name }} <small>
                                             ({{ $category->products()->active()->count() }})
                                         </small>
@@ -195,7 +200,7 @@
                         @endforeach
                     </ul>
                 </div>
-                <div class="mb-6 p-4 bg-gray-50" x-data="{ openSubcategory: true }">
+                <div class="mb-6 p-4 bg-white" x-data="{ openSubcategory: true }">
                     <div class="flex justify-between mb-8">
                         <h3 class="text-xl font-bold font-heading">{{ __('Subcategory') }}</h3>
                         <button @click="openSubcategory = !openSubcategory">
@@ -211,7 +216,7 @@
                                 <button type="button"
                                     wire:click="filterProducts('subcategory', {{ $subcategory->id }})">
                                     <span
-                                        class="inline-block px-2 py-2 text-sm font-bold font-heading text-green-500 hover:underline">
+                                        class="inline-block px-2 py-2 text-sm font-bold font-heading text-red-600 hover:underline">
                                         {{ $subcategory->name }}
                                     </span>
                                 </button>
@@ -225,20 +230,20 @@
                     @endif
                 </div>
 
-                <div class="mb-6 p-4 bg-gray-50">
+                <div class="mb-6 p-4 bg-white">
                     <h3 class="mb-4 text-2xl font-bold font-heading">{{ __('Price budget') }}</h3>
                     <div class="flex md:flex-col justify-between space-y-2">
-                        <span class="inline-block text-lg font-bold font-heading text-green-500 hover:underline">
+                        <span class="inline-block text-lg font-bold font-heading text-red-600 hover:underline">
                             <p class="">{{ __('Min Price') }}</p>
                             <x-input type="text" wire:model="minPrice" placeholder="350" />
                         </span>
-                        <span class="inline-block text-lg font-bold font-heading text-green-500 hover:underline">
+                        <span class="inline-block text-lg font-bold font-heading text-red-600 hover:underline">
                             <p class="">{{ __('Max Price') }}</p>
                             <x-input type="text" wire:model="maxPrice" placeholder="1000" />
                         </span>
                     </div>
                 </div>
-                <div class="mb-6 p-4 bg-gray-50" x-data="{ openbrands: true }">
+                <div class="mb-6 p-4 bg-white" x-data="{ openbrands: true }">
                     <div class="flex justify-between mb-8">
                         <h3 class="text-xl font-bold font-heading">{{ __('Brands') }}</h3>
                         <button @click="openbrands = !openbrands">
@@ -252,8 +257,10 @@
                         @foreach ($this->brands as $brand)
                             <li class="mx-2 mb-2">
                                 <button type="button" wire:click="filterProducts('brand', {{ $brand->id }})">
-                                    <span class="inline-block px-2 py-2 text-sm font-bold font-heading text-green-500 hover:underline">
-                                        {{ $brand->name }} <small> ({{ $brand->products()->active()->count() }})</small>
+                                    <span
+                                        class="inline-block px-2 py-2 text-sm font-bold font-heading text-red-600 hover:underline">
+                                        {{ $brand->name }} <small>
+                                            ({{ $brand->products()->active()->count() }})</small>
                                     </span>
                                 </button>
                             </li>
@@ -268,7 +275,8 @@
             </div>
             <div class="w-full lg:w-3/4 px-4" x-data="{ loading: false }">
                 <div class="grid gap-6 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 
- xs:grid-cols-2 mb-10" id="product-container">
+ xs:grid-cols-2 mb-10"
+                    id="product-container">
                     @forelse ($products as $product)
                         <x-product-card :product="$product" />
                     @empty

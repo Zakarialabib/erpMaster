@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Livewire\Admin\Section;
 
-use App\Models\Language;
 use App\Models\Page;
 use App\Models\Section;
 use Illuminate\Support\Str;
@@ -29,11 +28,11 @@ class Create extends Component
     #[Rule('max:255', message: 'This title is too long')]
     public $title;
 
-
+    #[Rule('nullable')]
     #[Rule('max:255', message: 'This subtitle is too long')]
     public $subtitle;
 
-
+    #[Rule('nullable')]
     #[Rule('max:255', message: 'This featured title is too long')]
     public $featured_title;
 
@@ -45,18 +44,17 @@ class Create extends Component
     #[Rule('nullable|string|max:255 ')]
     public $label;
 
-
+    #[Rule('nullable')]
     public $bg_color;
 
     #[Rule('required|unique:sections,type')]
     public $type;
 
-    #[Rule('nullable|integer')]
+    #[Rule('nullable')]
     public $page_id;
 
-    public $text_color;
-
-    public $embeded_video;
+    // public $text_color;
+    // public $embeded_video;
 
     public $createModal = false;
 
@@ -70,39 +68,37 @@ class Create extends Component
         $this->createModal = true;
     }
 
+    #[Computed]
+    public function pages()
+    {
+        return Page::active()->select('id', 'title')->get();
+    }
+
     public function render()
     {
         return view('livewire.admin.section.create');
     }
 
-    public function save(): void
+    public function store(): void
     {
         $this->validate();
 
-        if ($this->image) {
-            $imageName = Str::slug($this->title) . '.' . $this->image->extension();
-            $this->image->storeAs('sections', $imageName);
+        if ( ! $this->image) {
+            $this->image = null;
+        } elseif (is_object($this->image) && method_exists($this->image, 'extension')) {
+            $imageName = Str::slug($this->title).$this->image->extension();
+            $this->image->storeAs('sections', $imageName, 'local_files');
             $this->image = $imageName;
         }
 
-        Section::create($this->all());
+        Section::create(
+            $this->all(),
+        );
 
         $this->dispatch('refreshIndex')->to(Index::class);
 
         $this->alert('success', __('Section created successfully!'));
 
         $this->createModal = false;
-    }
-
-    #[Computed]
-    public function languages()
-    {
-        return Language::pluck('name', 'id')->toArray();
-    }
-
-    #[Computed]
-    public function pages()
-    {
-        return Page::select('title', 'id')->get();
     }
 }

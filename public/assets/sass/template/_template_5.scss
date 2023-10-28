@@ -1,0 +1,77 @@
+/* Template 5 ---------------------------------- */
+.table-stripe3 {
+    border: 1px solid $smoke-color;
+    thead {
+        tr {
+            border-bottom: 1px solid $smoke-dark;
+        }
+    }
+    tr {
+        border-bottom: 1px solid $smoke-color;
+        th, td {
+            border-right: 1px solid $border-color;
+            &:nth-child(2) {
+                text-align: left;
+            }
+            &:last-child {  
+                border-right: none;
+            }
+        }
+        &:nth-child(even) {
+            th, td {
+                background-color: $smoke-color;
+            }
+        }
+    }
+    thead {
+        th, td {
+            background-color: $smoke-dark !important;
+            border-radius: 0 !important;
+            border-top: 1px solid #E0E0E0;
+        }
+    }
+}
+
+.invoice_style5 {
+    padding-bottom: 30px;
+    .th-header {
+        margin-bottom: 35px;
+    }
+    .total-table {
+        background-color: $smoke-color;
+        tr {
+            border-top: none;
+        }
+        th {
+            padding-left: 500px !important;
+        }
+    }
+}
+
+.header-layout4,
+.header-layout5 {
+    .big-title {
+        margin-top: -0.18em;
+        margin-bottom: 15px;
+    }
+}
+
+.invoice-table.style4 {
+    --border-color: #fff;
+    th, td {
+        &:nth-last-child(-n + 3),
+        &:first-child {
+            width: unset;
+            text-align: left;
+        }
+        border-right: 1px solid $white-color;
+    }
+    td {
+        background-color: $smoke-color;
+    }
+    .blank-row {
+        td {
+            background-color: $white-color;
+        }
+    }
+}

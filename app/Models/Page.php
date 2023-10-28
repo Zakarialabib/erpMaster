@@ -25,24 +25,16 @@ class Page extends Model
     public $filterable = self::ATTRIBUTES;
 
     protected $fillable = [
-        'title',
-        'slug',
-        'description',
-        'image',
-        'type',
-        'meta_title',
-        'meta_description',
-        'is_sliders',
-        'is_contact',
-        'is_offer',
-        'is_title',
-        'is_description',
-        'status',
+        'title', 'slug', 'description',
+        'meta_title', 'meta_description',
+        'status', 'images', 'type',
+        'settings',
     ];
 
     protected $casts = [
-        'satuts' => Status::class,
-        // 'type'   => PageType::class,
+        'satuts'   => Status::class,
+        'type'     => PageType::class,
+        'settings' => 'array',
     ];
 
     public function scopeActive($query): void

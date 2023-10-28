@@ -19,7 +19,7 @@
                             <div class="row justify-content-between align-items-center">
                                 <div class="col-auto">
                                     <div class="header-logo">
-                                        <a href="{{ route('front.index') }}"><img src="{{ asset('images/logo.png') }}"
+                                        <a href="/"><img src="{{ asset('images/logo.png') }}"
                                                 alt="{{ settings('company_name') }}"></a>
                                     </div>
                                 </div>

@@ -51,7 +51,7 @@ class Brands extends Component
 
     public function filterProducts($type, $value): void
     {
-        switch($type) {
+        switch ($type) {
             case 'category':
                 $this->category_id = $value;
 
@@ -71,7 +71,7 @@ class Brands extends Component
 
     public function clearFilter($filter): void
     {
-        switch($filter) {
+        switch ($filter) {
             case 'category':
                 $this->category_id = null;
                 unset($this->selectedFilters['category']);
@@ -97,8 +97,6 @@ class Brands extends Component
         $this->sortingOptions = [
             'name-asc'   => __('Order Alphabetic, A-Z'),
             'name-desc'  => __('Order Alphabetic, Z-A'),
-            'price-asc'  => __('Price, low to high'),
-            'price-desc' => __('Price, high to low'),
             'date-asc'   => __('Date, new to old'),
             'date-desc'  => __('Date, old to new'),
         ];
@@ -119,20 +117,16 @@ class Brands extends Component
             ->when($this->brand_id, fn ($query) => $query->where('brand_id', $this->brand_id));
 
         if ($this->sorting === 'name') {
-            $query->orderBy('name', 'asc');
+            $products = $query->orderBy('name', 'asc')->paginate($this->perPage);
         } elseif ($this->sorting === 'name-desc') {
-            $query->orderBy('name', 'desc');
-        } elseif ($this->sorting === 'price') {
-            $query->orderBy('price', 'asc');
-        } elseif ($this->sorting === 'price-desc') {
-            $query->orderBy('price', 'desc');
+            $products = $query->orderBy('name', 'desc')->paginate($this->perPage);
         } elseif ($this->sorting === 'date') {
-            $query->orderBy('created_at', 'asc');
+            $products = $query->orderBy('created_at', 'asc')->paginate($this->perPage);
         } elseif ($this->sorting === 'date-desc') {
-            $query->orderBy('created_at', 'desc');
+            $products = $query->orderBy('created_at', 'desc')->paginate($this->perPage);
+        } else {
+            $products = $query->paginate($this->perPage);
         }
-
-        $products = $query->paginate($this->perPage);
 
         $this->dispatch('productsLoaded', $products->count());
 

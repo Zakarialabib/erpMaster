@@ -1,0 +1,62 @@
+/* Template 1 ---------------------------------- */
+.invoice_style1 {
+    padding-bottom: 1px;
+}
+.invoice-number {
+    margin-bottom: 0;
+}
+.invoice-date {
+    margin-bottom: 0;
+}
+.invoice {
+    &_style1 {
+        padding-bottom: 36px;
+        .logo-shape {
+            position: absolute;
+            right: 0;
+            top: 20px;
+            z-index: -3;
+        }
+        .right-shape {
+            position: absolute;
+            right: 0;
+            top: 93px;
+            z-index: -1;
+        }
+        .left-shape {
+            position: absolute;
+            top: 93px;
+            left: 0;
+            z-index: -1;
+        }
+        .header-logo {
+            margin-top: -17px;
+        }
+        .big-title {
+            font-size: 54px;
+            color: $white-color;
+            margin-top: 8px;
+        }
+        .invoice-number,
+        .invoice-date {
+            b {
+                color: $white-color;
+            }
+            font-size: 18px;
+            color: $white-color;
+        }
+        .invoice-number {
+            margin-top: 8px;
+            margin-bottom: 5px;
+        }
+        .header-bottom {
+            margin-bottom: 50px;
+        }
+        .body-shape1 {
+            width: 100%;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+        }
+    }
+}

@@ -62,7 +62,7 @@
 
                 <div class="flex my-5 items-center">
                     <span
-                        class="inline-flex mr-8 items-center justify-center w-12 h-12 rounded-full bg-green-500 text-white">2</span>
+                        class="inline-flex mr-8 items-center justify-center w-12 h-12 rounded-full bg-red-500 text-white">2</span>
                     <h3 class="text-2xl font-bold font-heading">{{ __('Shipping informations') }}</h3>
                 </div>
                 <div class="flex mb-5 items-center">
@@ -146,7 +146,7 @@
                 <h2 class="text-4xl mb-10 text-center font-bold font-heading">{{ __('Order summary') }}</h2>
                 <div class="mb-5 border-b grid lg:grid-cols-2 md:grid-cols-3 sm:grid-cols-2 gap-6 items-center">
                     @foreach ($this->cartItems as $item)
-                        <div class="w-full flex flex-col mb-10 border-2 border-green-300 shadow-sm">
+                        <div class="w-full flex flex-col mb-10 border-2 border-red-300 shadow-sm">
                             <div class="relative flex items-center justify-center bg-gray-100">
                                 @if (!empty($item->rowId))
                                     <div class="absolute top-0 right-0 bg-white p-1 text-center">
@@ -171,7 +171,7 @@
                             <div class="flex flex-col items-center mt-5 justify-center h-full">
                                 <div class="flex items-center space-x-2 mb-3">
                                     @if (!empty($item->price))
-                                        <p class="text-md text-green-600 font-bold font-heading">
+                                        <p class="text-md text-red-600 font-bold font-heading">
                                             {{ format_currency($item->price) }}
                                         </p>
                                     @endif
@@ -236,7 +236,7 @@
                     </div>
                 </div>
                 <button
-                    class="block w-full py-4 bg-green-500 hover:bg-green-700 text-center text-white font-bold font-heading uppercase rounded-md transition duration-200"
+                    class="block w-full py-4 bg-red-600 hover:bg-red-800 text-center text-white font-bold font-heading uppercase rounded-md transition duration-200"
                     type="button" wire:click="checkout" wire:loading.attr="disabled"
                     wire:loading.class="opacity-50" wire:target="checkout">
                     {{ __('Confirm Order') }}

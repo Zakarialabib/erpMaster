@@ -65,7 +65,7 @@ class Product extends Model
 
     protected $casts = [
         'options'       => 'array',
-        'subcategories' => 'array',
+        'subcategories' => 'json',
         'tax_type'  => TaxType::class,
         'status'        => Status::class,
     ];

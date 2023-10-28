@@ -11,6 +11,7 @@ use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\On;
 
 #[Layout('components.layouts.dashboard')]
 class Index extends Component
@@ -67,12 +68,41 @@ class Index extends Component
         $this->showModal = true;
     }
 
-    public function delete(Slider $slider): void
+    #[On('delete')]
+    public function delete(): void
     {
-        abort_if(Gate::denies('slider delete'), 403);
+        // abort_if(Gate::denies('slider_delete'), 403);
 
-        $slider->delete();
+        Slider::findOrFail($this->slider)->delete();
 
         $this->alert('success', __('Slider deleted successfully.'));
+    }
+
+    public function deleteSelected(): void
+    {
+        // abort_if(Gate::denies('slider_delete'), 403);
+
+        Slider::whereIn('id', $this->selected)->delete();
+
+        $this->resetSelected();
+
+        $this->alert('success', __('Slider deleted successfully.'));
+    }
+
+    public function confirmed(): void
+    {
+        $this->dispatch('delete');
+    }
+
+    public function deleteModal($slider): void
+    {
+        $this->confirm(__('Are you sure you want to delete this?'), [
+            'toast'             => false,
+            'position'          => 'center',
+            'showConfirmButton' => true,
+            'cancelButtonText'  => __('Cancel'),
+            'onConfirmed'       => 'delete',
+        ]);
+        $this->slider = $slider;
     }
 }
