@@ -12,7 +12,7 @@ use Livewire\Component;
 use Livewire\WithFileUploads;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Computed;
-use App\Livewire\Utils\Admin\WithMeta;
+use App\Livewire\Utils\WithMeta;
 use Livewire\Attributes\Rule;
 
 class Edit extends Component

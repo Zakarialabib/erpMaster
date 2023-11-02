@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Livewire\Admin\Products;
 
-use App\Livewire\Utils\Admin\WithMeta;
+use App\Livewire\Utils\WithMeta;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;

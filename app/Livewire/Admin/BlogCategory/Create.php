@@ -10,7 +10,7 @@ use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Livewire\Attributes\On;
-use App\Livewire\Utils\Admin\WithMeta;
+use App\Livewire\Utils\WithMeta;
 use Livewire\Attributes\Rule;
 
 class Create extends Component

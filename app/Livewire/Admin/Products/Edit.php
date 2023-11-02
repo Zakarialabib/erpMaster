@@ -16,7 +16,7 @@ use Livewire\Attributes\On;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
 use Livewire\WithFileUploads;
-use App\Livewire\Utils\Admin\WithMeta;
+use App\Livewire\Utils\WithMeta;
 use Livewire\Attributes\Layout;
 
 #[Layout('components.layouts.dashboard')]

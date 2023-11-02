@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Livewire\Utils\Admin;
+namespace App\Livewire\Utils;
 
 use Livewire\Attributes\Rule;
 

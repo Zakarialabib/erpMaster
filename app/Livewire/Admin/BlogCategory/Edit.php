@@ -10,7 +10,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Gate;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Attributes\On;
-use App\Livewire\Utils\Admin\WithMeta;
+use App\Livewire\Utils\WithMeta;
 use Livewire\Attributes\Rule;
 
 class Edit extends Component

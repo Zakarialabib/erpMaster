@@ -13,7 +13,7 @@ use Livewire\Component;
 use Livewire\WithFileUploads;
 use App\Traits\LazySpinner;
 use Livewire\Attributes\Rule;
-use App\Livewire\Utils\Admin\WithMeta;
+use App\Livewire\Utils\WithMeta;
 
 Should:
 #[Layout('components.layouts.dashboard')]
