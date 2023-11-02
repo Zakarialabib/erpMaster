@@ -12,15 +12,12 @@ use Illuminate\Support\Str;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Livewire\Attributes\Rule;
-use App\Livewire\Utils\WithMeta;
 
-Should:
 #[Layout('components.layouts.dashboard')]
 class Edit extends Component
 {
     use LivewireAlert;
     use WithFileUploads;
-    use WithMeta;
 
     public $page;
 
@@ -41,6 +38,12 @@ class Edit extends Component
     public $type;
 
     public $status;
+
+    #[Rule('max:70', message: 'The meta title a max of 170 characters.')]
+    public $meta_title;
+
+    #[Rule('max:170', message: 'The meta description a max of 170 characters.')]
+    public $meta_description;
 
     #[On('editorjs-save')]
     public function saveEditorState($editorJsonData): void

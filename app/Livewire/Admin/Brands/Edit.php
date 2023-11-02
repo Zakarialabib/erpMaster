@@ -12,11 +12,9 @@ use Livewire\Component;
 use Livewire\WithFileUploads;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Rule;
-use App\Livewire\Utils\WithMeta;
 
 class Edit extends Component
 {
-    use WithMeta;
     use LivewireAlert;
     use WithFileUploads;
 
@@ -36,6 +34,12 @@ class Edit extends Component
     public $image;
 
     public $origin;
+
+    #[Rule('max:70', message: 'The meta title a max of 170 characters.')]
+    public $meta_title;
+
+    #[Rule('max:170', message: 'The meta description a max of 170 characters.')]
+    public $meta_description;
 
     #[On('editModal')]
     public function editModal($id): void

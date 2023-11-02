@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Livewire\Admin\Products;
 
-use App\Livewire\Utils\WithMeta;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
@@ -23,7 +22,6 @@ class Create extends Component
 {
     use LivewireAlert;
     use WithFileUploads;
-    use WithMeta;
 
     /** @var bool */
     public $createModal = false;
@@ -44,6 +42,12 @@ class Create extends Component
     public string $slug;
 
     public string $unit;
+
+    #[Rule('max:70', message: 'The meta title a max of 170 characters.')]
+    public $meta_title;
+
+    #[Rule('max:170', message: 'The meta description a max of 170 characters.')]
+    public $meta_description;
 
     public int $order_tax;
 

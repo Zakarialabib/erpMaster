@@ -10,13 +10,11 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Gate;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Attributes\On;
-use App\Livewire\Utils\WithMeta;
 use Livewire\Attributes\Rule;
 
 class Edit extends Component
 {
     use LivewireAlert;
-    use WithMeta;
 
     public $blogcategory;
 
@@ -25,6 +23,12 @@ class Edit extends Component
 
     #[Rule('min:3', message: 'Description must be at least 3 characters')]
     public $description;
+
+    #[Rule('max:70', message: 'The meta title a max of 170 characters.')]
+    public $meta_title;
+
+    #[Rule('max:170', message: 'The meta description a max of 170 characters.')]
+    public $meta_description;
 
     public $language_id;
 

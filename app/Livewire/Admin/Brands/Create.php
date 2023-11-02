@@ -12,13 +12,11 @@ use Livewire\Attributes\On;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
 use Livewire\WithFileUploads;
-use App\Livewire\Utils\WithMeta;
 
 class Create extends Component
 {
     use LivewireAlert;
     use WithFileUploads;
-    use WithMeta;
 
     public $createModal = false;
 
@@ -37,6 +35,12 @@ class Create extends Component
     public $featured_image;
 
     public $origin;
+
+    #[Rule('max:70', message: 'The meta title a max of 170 characters.')]
+    public $meta_title;
+
+    #[Rule('max:170', message: 'The meta description a max of 170 characters.')]
+    public $meta_description;
 
     #[On('createModal')]
     public function createModal(): void

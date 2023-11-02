@@ -16,7 +16,6 @@ use Livewire\Attributes\On;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
 use Livewire\WithFileUploads;
-use App\Livewire\Utils\WithMeta;
 use Livewire\Attributes\Layout;
 
 #[Layout('components.layouts.dashboard')]
@@ -24,7 +23,6 @@ class Edit extends Component
 {
     use WithFileUploads;
     use LivewireAlert;
-    use WithMeta;
 
     public $product;
 
@@ -44,6 +42,12 @@ class Edit extends Component
     public $order_tax;
 
     public $description;
+
+    #[Rule('max:70', message: 'The meta title a max of 170 characters.')]
+    public $meta_title;
+
+    #[Rule('max:170', message: 'The meta description a max of 170 characters.')]
+    public $meta_description;
 
     public $tax_type;
 
