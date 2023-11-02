@@ -20,7 +20,7 @@ class PageFactory extends Factory
      */
     public function definition()
     {
-        $pageType = $this->faker->randomElement(['home', 'about', 'contact', 'products', 'privacy', 'terms','catalog']);
+        $pageType = $this->faker->randomElement(['home', 'about', 'contact', 'products', 'privacy', 'terms', 'catalog']);
 
         return [
             'title'            => $pageType,
@@ -32,16 +32,16 @@ class PageFactory extends Factory
             'meta_description' => $this->faker->sentence,
             'status'           => $this->faker->boolean ? 1 : 0, // 1 for true, 0 for false
             'settings'         => json_encode([
-                'is_title'               => true,
-                'is_image'               => true,
-                'is_description'         => true,
-                'is_sliders'             => true,
-                'is_gallery'             => false,
-                'is_offer'               => true,
-                'is_product'             => true,
-                'is_products'            => true,
-                'is_contact'             => true,
-                'is_about'               => true,
+                'is_title'       => true,
+                'is_image'       => true,
+                'is_description' => true,
+                'is_sliders'     => true,
+                'is_gallery'     => false,
+                'is_offer'       => true,
+                'is_product'     => true,
+                'is_products'    => true,
+                'is_contact'     => true,
+                'is_about'       => true,
             ], JSON_THROW_ON_ERROR),
         ];
     }
@@ -52,7 +52,7 @@ class PageFactory extends Factory
             // Create PageSettings for each page
             PageSetting::factory()->create([
                 // 'page_id' => $page->id,
-                'page_type' => $this->faker->randomElement(['home', 'about', 'contact', 'products', 'privacy', 'terms','catalog']),
+                'page_type' => $this->faker->randomElement(['home', 'about', 'contact', 'products', 'privacy', 'terms', 'catalog']),
                 // Set other PageSettings attributes here
                 'status'        => $this->faker->boolean,
                 'layout_type'   => $this->faker->randomElement(['row', 'col', 'wrap']),

@@ -14,9 +14,9 @@ class Show extends Component
 
     public $delivery;
 
-    public function showModal($id): void
+    public function showModal($id)
     {
-        abort_if(Gate::denies('delivery_show'), 403);
+        // abort_if(Gate::denies('delivery_show'), 403);
 
         $this->delivery = Delivery::find($id);
 

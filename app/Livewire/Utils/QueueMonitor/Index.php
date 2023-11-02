@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Livewire\Utils\QueueMonitor;
+namespace App\Livewire\Tools\QueueMonitor;
 
 use App\Models\QueueMonitor;
 use Illuminate\Support\Facades\DB;
@@ -10,41 +10,25 @@ use Livewire\Component;
 
 class Index extends Component
 {
-    public $model = QueueMonitor::class;
-
     public $search;
-
     public $sortBy = 'created_at';
-
     public $sortDirection = 'desc';
-
     public $perPage = 10;
 
     public $job_id;
-
     public $name;
-
     public $queue;
-
     public $started_at;
-
     public $finished_at;
-
     public $failed;
-
     public $attempt;
-
     public $exception_message;
-
     public $aggregatedInfo;
-
     public $totalJobsExecuted;
-
     public $totalExecutionTime;
-
     public $averageExecutionTime;
 
-    public function mount(): void
+    public function mount()
     {
         $aggregationColumns = [
             DB::raw('COUNT(*) as count'),
@@ -61,11 +45,11 @@ class Index extends Component
         $this->averageExecutionTime = ceil((float) $this->aggregatedInfo->average_time_elapsed).'s' ?? 0;
     }
 
-    public function delete(): void
+    public function delete()
     {
         $this->model->delete();
 
-        $this->dispatch('refresh');
+        $this->emit('refresh');
     }
 
     public function render()
@@ -80,6 +64,6 @@ class Index extends Component
 
         $jobs = $query->paginate($this->perPage);
 
-        return view('livewire.utils.queue-monitor.index', ['jobs' => $jobs]);
+        return view('livewire.tools.queue-monitor.index', compact('jobs'));
     }
 }

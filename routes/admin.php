@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\Admin\ExportController;
-use App\Http\Controllers\Admin\HomeController;
 use App\Http\Controllers\Admin\IntegrationController;
 use App\Http\Controllers\Admin\PurchasePaymentsController;
 use App\Http\Controllers\Admin\PurchaseReturnPaymentsController;
@@ -11,7 +10,6 @@ use App\Http\Controllers\Admin\PurchasesReturnController;
 use App\Http\Controllers\Admin\QuotationSalesController;
 use App\Http\Controllers\Admin\SalesReturnController;
 use App\Http\Controllers\Admin\SendQuotationEmailController;
-use App\Http\Controllers\Admin\SettingController;
 use App\Livewire\Admin\Dashboard;
 use App\Livewire\Admin\Users\Profile as ProfileIndex;
 use App\Livewire\Admin\Adjustment\Index as AdjustmentIndex;
@@ -90,6 +88,7 @@ use App\Livewire\Admin\Reports\PurchasesReport;
 use App\Livewire\Admin\Reports\SalesReturnReport;
 use App\Livewire\Admin\Reports\PurchasesReturnReport;
 use Illuminate\Support\Facades\Route;
+use Livewire\Livewire;
 
 /*
 |--------------------------------------------------------------------------
@@ -169,7 +168,6 @@ Route::get('/purchases', PurchasesIndex::class)->name('purchases.index');
 Route::get('/purchase/create', CreatePurchase::class)->name('purchase.create');
 Route::get('/purchase/update/{id}', EditPurchase::class)->name('purchase.edit');
 Route::get('/purchase/print/{id}', PurchaseInvoice::class)->name('purchase.invoice');
-
 
 //Purchase Payments
 Route::get('/purchase-payments/{purchase_id}', [PurchasePaymentsController::class, 'index'])->name('purchase-payments.index');
@@ -291,3 +289,8 @@ Route::get('/subscribers', SubscriberIndex::class)->name('subscribers.index');
 // Route::get('/partner', PartnerIndex::class);
 // Route::get('/purchasereturn', PurchaseReturnIndex::class);
 // Route::get('/salereturn', SaleReturnIndex::class);
+
+
+Livewire::setUpdateRoute(function ($handle) {
+    return Route::post('/custom/livewire/update', $handle);
+});

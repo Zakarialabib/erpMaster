@@ -36,9 +36,7 @@ class ExportController extends Controller
     {
         $sale = Sale::where('id', $id)->firstOrFail();
 
-
         return view('admin.home', []);
-
     }
 
     public function purchaseReturns($id)

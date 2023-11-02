@@ -91,7 +91,6 @@ class Index extends Component
         return Storage::disk('exports')->download('sales_import_sample.xls');
     }
 
-
     public function deleteSelected(): void
     {
         abort_if(Gate::denies('sale delete'), 403);

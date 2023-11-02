@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Livewire\Admin\Products;
 
 use App\Jobs\ImportJob;
-use App\Jobs\ProductJob;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Gate;
@@ -23,6 +22,7 @@ use Illuminate\Support\Str;
 use Livewire\Attributes\On;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\ProductImport;
+use Throwable;
 
 class Import extends Component
 {
@@ -85,22 +85,19 @@ class Import extends Component
         abort_if(Gate::denies('product access'), 403);
 
         try {
-      
             $this->validate([
                 'file' => 'required|mimes:xls,xlsx',
             ]);
-    
-            Excel::import(new ProductImport(), $this->file);
-    
-            $this->alert('success', __('Product imported successfully!'));
-            
-            $this->importModal = false;
 
-        } catch (\Throwable $th) {
+            Excel::import(new ProductImport(), $this->file);
+
+            $this->alert('success', __('Product imported successfully!'));
+
+            $this->importModal = false;
+        } catch (Throwable $th) {
             throw $th;
             // $this->alert('error', __('File is a '.$this->file->extension().' file.!! Please upload a valid xls/csv file..!!'));
         }
-
     }
 
     public function googleSheetImport()

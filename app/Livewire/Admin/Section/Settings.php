@@ -8,7 +8,6 @@ use App\Models\PageSetting;
 use App\Models\Section;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
-use Livewire\Attributes\Rule;
 use Livewire\Component;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 
@@ -18,13 +17,11 @@ class Settings extends Component
     use LivewireAlert;
     public $colors = ['gray', 'red', 'green', 'blue', 'indigo'];
 
-
     public $bg_color;
 
     public $text_color;
 
     public $sectionSetting;
-
 
     public $section_id;
 

@@ -8,9 +8,8 @@ use App\Enums\PageType;
 use App\Models\Page;
 use App\Models\Slider;
 use App\Models\Section;
-use App\Models\Subcategory;
+use App\Models\Category;
 use App\Models\PageSetting;
-use App\Models\Product;
 use Livewire\Component;
 use App\Traits\LazySpinner;
 use Livewire\Attributes\Computed;
@@ -54,11 +53,11 @@ class DynamicPage extends Component
         $this->pageSetting = PageSetting::where('page_id', $this->page->id)
             ->first();
 
-        if (!$this->pageSetting) {
+        if ( ! $this->pageSetting) {
             return;
         }
 
-        if (!$this->pageSetting->layout_config) {
+        if ( ! $this->pageSetting->layout_config) {
             return;
         }
 
@@ -72,9 +71,9 @@ class DynamicPage extends Component
     }
 
     #[Computed]
-    public function subcategories()
+    public function categories()
     {
-        return Subcategory::inRandomOrder()->limit(3)->get();
+        return Category::inRandomOrder()->get();
     }
 
     #[Computed]
@@ -82,8 +81,7 @@ class DynamicPage extends Component
     {
         return Section::active()->where('type', PageType::HOME)->get();
     }
-    
-    
+
     #[Computed]
     public function featuredProducts()
     {
@@ -92,7 +90,6 @@ class DynamicPage extends Component
             ->take(4)
             ->get();
     }
-
 
     #[Computed]
     public function aboutSection()

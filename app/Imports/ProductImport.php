@@ -28,7 +28,7 @@ class ProductImport implements ToCollection, WithHeadingRow, SkipsEmptyRows
                 'price'       => $row['price'],
                 'old_price'   => $row['cost'] ?? null,
                 'code'        => $row['code'] ?? Str::random(10),
-                'category_id' => Category::where('name', $row['category'])->first()->id ?? Category::create(['name' => $row['category'],'slug' => Str::slug($row['category'])])->id ?? null,
+                'category_id' => Category::where('name', $row['category'])->first()->id ?? Category::create(['name' => $row['category'], 'slug' => Str::slug($row['category'])])->id ?? null,
                 'brand_id'    => Brand::where('name', $row['brand'])->first()->id ?? Brand::create(['name' => $row['brand']])->id ?? null,
                 // 'image'       => Helpers::uploadImage($row['image'], $row['name']) ?? 'default.jpg',
                 'status'            => 0,
@@ -38,8 +38,8 @@ class ProductImport implements ToCollection, WithHeadingRow, SkipsEmptyRows
                 'tax_type'          => 0,
                 'embeded_video'     => $row['embeded_video'],
                 'subcategories'     => json_encode($row['subcategories']),
-                'meta_title'     => Str::limit($row['name']),
-                'meta_description' => Str::limit($row['description']) ?? null,
+                'meta_title'        => Str::limit($row['name']),
+                'meta_description'  => Str::limit($row['description']) ?? null,
             ]);
 
             $productWarehouseData = explode(',', $row['productwarehouse']);
@@ -52,8 +52,8 @@ class ProductImport implements ToCollection, WithHeadingRow, SkipsEmptyRows
                 $productWarehouse = ProductWarehouse::create([
                     'product_id'   => $product->id,
                     'warehouse_id' => Warehouse::where('name', $warehouseName)->first()->id ?? Warehouse::create(['name' => $warehouseName])->id ?? null,
-                    'qty'        => 0,
-                    'stock_alert'        => 0,
+                    'qty'          => 0,
+                    'stock_alert'  => 0,
                     'price'        => $price,
                     'cost'         => $cost,
                 ]);

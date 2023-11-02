@@ -22,8 +22,6 @@ class Create extends Component
     #[Rule('required|min:3|max:255')]
     public string $name;
 
-
-
     public ?string $description = null;
 
     protected $messages = [

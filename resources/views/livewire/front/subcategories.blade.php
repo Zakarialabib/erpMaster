@@ -23,7 +23,7 @@
                         <span class="mx-2 h-auto text-gray-400 font-medium">/</span>
                     </li>
                     <li class="inline-flex">
-                        <p class="lg:text-2xl sm:text-xl font-bold text-gray-600 hover:text-blue-500">
+                        <p class="lg:text-2xl sm:text-xl font-bold text-gray-600">
                             {{ $products->count() }} {{ __('Products') }}
                         </p>
                     </li>

@@ -61,10 +61,10 @@ class SubcategoryPage extends Component
         $this->subcategory = Subcategory::whereSlug($slug)->firstOrFail();
 
         $this->sortingOptions = [
-            'name-asc'   => __('Order Alphabetic, A-Z'),
-            'name-desc'  => __('Order Alphabetic, Z-A'),
-            'date-asc'   => __('Date, new to old'),
-            'date-desc'  => __('Date, old to new'),
+            'name-asc'  => __('Order Alphabetic, A-Z'),
+            'name-desc' => __('Order Alphabetic, Z-A'),
+            'date-asc'  => __('Date, new to old'),
+            'date-desc' => __('Date, old to new'),
         ];
     }
 
@@ -76,21 +76,20 @@ class SubcategoryPage extends Component
     public function render(): View|Factory
     {
         $query = \App\Helpers::getEcommerceProducts()
-            ->where('subcategories', 'like', '%"' . $this->subcategory->id . '"%')
+            ->where('subcategories', 'like', '%"'.$this->subcategory->id.'"%')
             ->when($this->brand_id, fn ($query) => $query->where('brand_id', $this->brand_id));
 
         if ($this->sorting === 'name') {
             $products = $query->orderBy('name', 'asc')->paginate($this->perPage);
         } elseif ($this->sorting === 'name-desc') {
             $products = $query->orderBy('name', 'desc')->paginate($this->perPage);
-        }  elseif ($this->sorting === 'date') {
+        } elseif ($this->sorting === 'date') {
             $products = $query->orderBy('created_at', 'asc')->paginate($this->perPage);
         } elseif ($this->sorting === 'date-desc') {
             $products = $query->orderBy('created_at', 'desc')->paginate($this->perPage);
         } else {
             $products = $query->paginate($this->perPage);
         }
-
 
         return view('livewire.front.subcategory-page', [
             'products' => $products,

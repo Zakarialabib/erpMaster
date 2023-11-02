@@ -24,9 +24,7 @@ class Settings extends Component
 
     public $colors = ['gray', 'red', 'green', 'blue', 'indigo'];
 
-
     public $selectedColor;
-
 
     public $bg_color;
 

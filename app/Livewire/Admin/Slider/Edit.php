@@ -29,17 +29,13 @@ class Edit extends Component
     #[Rule('nullable', 'max:255')]
     public $subtitle;
 
-
     public $link;
 
-
     public $bg_color;
-
 
     public $embeded_video;
 
     public $image;
-
 
     public $description;
 
@@ -68,13 +64,13 @@ class Edit extends Component
     {
         $this->validate();
 
-        if (!$this->image) {
+        if ( ! $this->image) {
             $this->image = null;
         } elseif (is_object($this->image) && method_exists($this->image, 'extension')) {
-            $path = public_path() . '/images/sliders/' . basename((string) $this->image);
+            $path = public_path().'/images/sliders/'.basename((string) $this->image);
             Storage::delete($path);
 
-            $fileName = Str::slug($this->title) . '.' . $this->image->extension();
+            $fileName = Str::slug($this->title).'.'.$this->image->extension();
             $this->image->storeAs('sliders', $fileName, 'local_files');
             $this->image = $fileName;
         }

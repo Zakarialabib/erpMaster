@@ -66,7 +66,7 @@ class Product extends Model
     protected $casts = [
         'options'       => 'array',
         'subcategories' => 'json',
-        'tax_type'  => TaxType::class,
+        'tax_type'      => TaxType::class,
         'status'        => Status::class,
     ];
 
@@ -102,9 +102,9 @@ class Product extends Model
 
     public static function ecommerceProducts()
     {
-        return static::whereHas('warehouses', static function ($query) : void {
+        return static::whereHas('warehouses', static function ($query): void {
             $query->where('is_ecommerce', 1);
-        })->with(['warehouses' => static function ($query) : void {
+        })->with(['warehouses' => static function ($query): void {
             $query->select('product_id', 'qty', 'price', 'old_price', 'is_discount', 'discount_date');
         }]);
     }

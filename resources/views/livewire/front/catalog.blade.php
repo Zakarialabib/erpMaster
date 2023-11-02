@@ -23,7 +23,7 @@
                         <span class="mx-2 h-auto text-gray-400 font-medium">/</span>
                     </li>
                     <li class="inline-flex">
-                        <p class="lg:text-2xl sm:text-xl font-bold text-gray-600 hover:text-blue-500">
+                        <p class="lg:text-2xl sm:text-xl font-bold text-gray-600">
                             {{ $products->count() }} {{ __('Products') }}
                         </p>
                     </li>
@@ -121,21 +121,7 @@
                     @endif
                 </div>
 
-                {{-- <div class="mb-6 p-4 bg-white">
-                    <h3 class="mb-8 text-2xl font-bold font-heading">{{ __('Price budget') }}</h3>
-                    <div>
-                        <div class="flex justify-between">
-                            <span class="inline-block text-lg font-bold font-heading text-blue-300">
-                                <p class="">{{ __('Min Price') }}</p>
-                                <x-input type="text" wire:model="minPrice" placeholder="350" />
-                            </span>
-                            <span class="inline-block text-lg font-bold font-heading text-blue-300">
-                                <p class="">{{ __('Max Price') }}</p>
-                                <x-input type="text" wire:model="maxPrice" placeholder="1000" />
-                            </span>
-                        </div>
-                    </div>
-                </div> --}}
+               
                 <div class="mb-6 p-4 bg-white" x-data="{ openbrands: true }">
                     <div class="flex justify-between mb-8">
                         <h3 class="text-xl font-bold font-heading">{{ __('Brands') }}</h3>

@@ -35,7 +35,6 @@ class Create extends Component
     #[Rule('numeric')]
     public $shipping_amount;
 
-
     public $note;
 
     #[Rule('required|integer|max:255')]

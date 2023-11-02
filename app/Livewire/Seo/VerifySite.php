@@ -19,13 +19,13 @@ class VerifySite extends Component
     public $siteUrl = '';
 
     public $verificationMethod = 'META';
-     // Default verification method is META
+    // Default verification method is META
     public $verificationToken = '';
-     // Store the verification token here
+    // Store the verification token here
     public $verificationStatus = '';
-     // Flag to track if the site is verified
+    // Flag to track if the site is verified
     public $webResources = [];
-     // Store the list of web resources here
+    // Store the list of web resources here
     public $verifySiteModal = false;
 
     private ?\Google\Service\SiteVerification $siteVerificationService = null;

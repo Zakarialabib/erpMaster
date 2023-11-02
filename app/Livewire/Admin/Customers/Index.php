@@ -125,5 +125,4 @@ class Index extends Component
     {
         return Storage::disk('exports')->download('customers_import_sample.xls');
     }
-
 }

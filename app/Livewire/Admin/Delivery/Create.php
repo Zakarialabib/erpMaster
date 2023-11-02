@@ -29,27 +29,19 @@ class Create extends Component
     #[Rule('required')]
     public $reference;
 
-
     public $sale_id;
-
 
     public $order_id;
 
-
     public $shipping_id;
-
 
     public $document;
 
-
     public $note;
-
 
     public $address;
 
-
     public $delivered_by;
-
 
     public $recieved_by;
 

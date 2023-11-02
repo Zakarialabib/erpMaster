@@ -19,11 +19,11 @@ class Invoice extends Component
     {
         $this->data = Purchase::findOrFail($id);
     }
-    
+
     public function render()
     {
         // abort_if(Gate::denies('purchase show'), 403);
 
-        return view('invoice.' . settings('invoice_template'));
+        return view('invoice.'.settings('invoice_template'));
     }
 }

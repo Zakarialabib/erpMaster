@@ -39,7 +39,7 @@ class Index extends Component
     public $endDate;
 
     public $filterType;
-    
+
     public $file;
 
     public $importModal = false;

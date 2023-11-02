@@ -29,7 +29,7 @@
                         <span class="mx-2 h-auto text-gray-400 font-medium">/</span>
                     </li>
                     <li class="inline-flex">
-                        <p class="lg:text-2xl sm:text-xl font-bold text-gray-600 hover:text-blue-500">
+                        <p class="lg:text-2xl sm:text-xl font-bold text-gray-600">
                             {{ $products->count() }} {{ __('Products') }}
                         </p>
                     </li>
@@ -144,28 +144,14 @@
                         </div>
                     @endif
                 </div>
-                <div class="border-t border-gray-900 mt-4 py-2"></div>
-                <div class="py-4">
-                    <h3 class="mb-8 text-2xl font-bold font-heading">{{ __('Price budget') }}</h3>
-                    <div class="flex flex-col justify-between  gap-2">
-                        <span class="inline-block text-lg font-bold font-heading text-blue-300">
-                            <p class="">{{ __('Min Price') }}</p>
-                            <x-input type="text" wire:model="minPrice" placeholder="350" />
-                        </span>
-                        <span class="inline-block text-lg font-bold font-heading text-blue-300">
-                            <p class="">{{ __('Max Price') }}</p>
-                            <x-input type="text" wire:model="maxPrice" placeholder="1000" />
-                        </span>
-                    </div>
-                </div>
+
                 <div class="border-t border-gray-900 mt-4 py-2"></div>
                 <div class="py-4" x-data="{ openbrands: true }">
                     <div class="flex justify-between mb-4">
                         <h3 class="text-xl font-bold font-heading">{{ __('Brands') }}</h3>
                         <button @click="openbrands = !openbrands">
                             <i class="fa fa-caret-down"
-                                :class="{ 'fa-caret-up': openbrands, 'fa-caret-down': !openbrands }"
-                                aria-hidden="true">
+                                :class="{ 'fa-caret-up': openbrands, 'fa-caret-down': !openbrands }" aria-hidden="true">
                             </i>
                         </button>
                     </div>
@@ -242,21 +228,6 @@
                     @endif
                 </div>
 
-                <div class="mb-6 p-4 bg-white">
-                    <h3 class="mb-8 text-2xl font-bold font-heading">{{ __('Price budget') }}</h3>
-                    <div>
-                        <div class="flex md:flex-col justify-between">
-                            <span class="inline-block text-lg font-bold font-heading text-blue-300">
-                                <p class="">{{ __('Min Price') }}</p>
-                                <x-input type="text" wire:model="minPrice" placeholder="350" />
-                            </span>
-                            <span class="inline-block text-lg font-bold font-heading text-blue-300">
-                                <p class="">{{ __('Max Price') }}</p>
-                                <x-input type="text" wire:model="maxPrice" placeholder="1000" />
-                            </span>
-                        </div>
-                    </div>
-                </div>
                 <div class="mb-6 p-4 bg-white" x-data="{ openbrands: true }">
                     <div class="flex justify-between mb-8">
                         <h3 class="text-xl font-bold font-heading">{{ __('Brands') }}</h3>
@@ -287,7 +258,8 @@
             </div>
             <div class="w-full lg:w-3/4 px-4" x-data="{ loading: false }">
                 <div class="grid gap-6 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 
- xs:grid-cols-2 mb-10" id="product-container">
+ xs:grid-cols-2 mb-10"
+                    id="product-container">
                     @forelse ($products as $product)
                         <x-product-card :product="$product" />
                     @empty

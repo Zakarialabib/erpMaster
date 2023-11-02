@@ -6,6 +6,7 @@ namespace App\Livewire\Admin\Blog;
 
 use App\Livewire\Utils\Datatable;
 use App\Models\Blog;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Gate;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Attributes\On;
@@ -17,16 +18,17 @@ class Index extends Component
 {
     use Datatable;
     use LivewireAlert;
+
     public $blog;
 
     public $deleteModal = false;
 
-    public $model = Blog::class;
+    public $model = Blog::class; 
 
     #[On('delete')]
     public function delete(): void
     {
-        abort_if(Gate::denies('blog_delete'), 403);
+        abort_if(Gate::denies('blog delete'), 403);
 
         Blog::findOrFail($this->blog)->delete();
 
@@ -35,7 +37,7 @@ class Index extends Component
 
     public function deleteSelected(): void
     {
-        abort_if(Gate::denies('blog_delete'), 403);
+        abort_if(Gate::denies('blog delete'), 403);
 
         Blog::whereIn('id', $this->selected)->delete();
 

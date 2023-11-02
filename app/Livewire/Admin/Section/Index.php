@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 namespace App\Livewire\Admin\Section;
 
 use App\Livewire\Utils\Datatable;
@@ -26,7 +25,6 @@ class Index extends Component
     public $deleteModal = false;
 
     public $model = Section::class;
-
 
     public function render()
     {

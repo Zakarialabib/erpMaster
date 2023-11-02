@@ -27,10 +27,10 @@ class Notifications extends Component
     #[Computed]
     public function lowQuantity()
     {
-       return ProductWarehouse::select('product_id', 'qty', 'stock_alert')
-        ->whereColumn('qty', '<=', 'stock_alert')
-        ->take($this->how_many)
-        ->get();
+        return ProductWarehouse::select('product_id', 'qty', 'stock_alert')
+            ->whereColumn('qty', '<=', 'stock_alert')
+            ->take($this->how_many)
+            ->get();
     }
 
     public function loadMore(): void

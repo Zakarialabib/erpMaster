@@ -73,7 +73,7 @@ class Index extends Component
 
     public function deleteSelected(): void
     {
-        abort_if(Gate::denies('delivery_delete'), 403);
+        abort_if(Gate::denies('delivery delete'), 403);
 
         Delivery::whereIn('id', $this->selected)->delete();
 
@@ -82,7 +82,7 @@ class Index extends Component
 
     public function delete(Delivery $delivery): void
     {
-        abort_if(Gate::denies('delivery_delete'), 403);
+        abort_if(Gate::denies('delivery delete'), 403);
 
         $delivery->delete();
     }

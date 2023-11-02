@@ -39,7 +39,6 @@ class Edit extends Component
     #[Rule('nullable|string|max:255')]
     public $description;
 
-
     public $warehouse_id;
 
     #[Computed]

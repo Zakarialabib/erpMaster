@@ -49,7 +49,6 @@ class Login extends Component
             session('url.intended', RouteServiceProvider::ADMIN_HOME),
             navigate: true
         );
-
     }
 
     protected function ensureIsNotRateLimited(): void

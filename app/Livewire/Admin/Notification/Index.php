@@ -54,7 +54,6 @@ class Index extends Component
         $user->notifications()->delete();
     }
 
-
     public function render()
     {
         return view('livewire.admin.notification.index');

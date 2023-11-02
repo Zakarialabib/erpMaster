@@ -125,14 +125,14 @@ class Checkout extends Component
         foreach (Cart::instance('shopping')->content() as $item) {
             $product = Product::find($item->id);
             $orderDetails = new OrderDetails([
-                'order_id'                => $order->id,
-                'product_id'              => $item->id,
-                'code'                    => $product->code,
-                'name'                    => $item->name,
-                'quantity'                => $item->qty,
-                'price'                   => $item->price * 100,
-                'unit_price'              => $product->unit_price * 100,
-                'sub_total'               => $item->qty * $product->unit_price * 100,
+                'order_id'   => $order->id,
+                'product_id' => $item->id,
+                'code'       => $product->code,
+                'name'       => $item->name,
+                'quantity'   => $item->qty,
+                'price'      => $item->price * 100,
+                'unit_price' => $product->unit_price * 100,
+                'sub_total'  => $item->qty * $product->unit_price * 100,
             ]);
 
             $orderDetails->save();

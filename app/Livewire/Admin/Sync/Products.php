@@ -43,7 +43,7 @@ class Products extends Component
     {
         $integration = Integration::where('type', $this->type)->first();
         $client = Http::withHeaders([
-            'Authorization' => 'Bearer ' . $integration->api_key,
+            'Authorization' => 'Bearer '.$integration->api_key,
         ]);
 
         if ($this->type === IntegrationType::WOOCOMMERCE) {
@@ -60,16 +60,16 @@ class Products extends Component
                 'api_secret'  => $integration->api_secret,
             ]);
         } elseif ($this->type === IntegrationType::CUSTOM) {
-            $response = $client->get($integration->store_url . '/api/products');
+            $response = $client->get($integration->store_url.'/api/products');
 
             if ($response->getStatusCode() === Response::HTTP_OK) {
                 $data = $response->json()['data'];
                 $batch = Bus::batch([
                     new SyncCustomProducts($data),
                 ])->then(function (Batch $batch): void {
-                    $this->alert('success', 'Sync from ecommerce to inventory completed' . $batch->finished());
+                    $this->alert('success', 'Sync from ecommerce to inventory completed'.$batch->finished());
                 })->catch(function (Batch $batch, Throwable $e): void {
-                    $this->alert('success', 'Sync Failed' . $e->getMessage());
+                    $this->alert('success', 'Sync Failed'.$e->getMessage());
                 })->name('sync Custom Products')->dispatch();
 
                 $this->syncModal = false;
@@ -96,10 +96,10 @@ class Products extends Component
             ]);
         } elseif ($this->type === IntegrationType::CUSTOM) {
             $client = Http::withHeaders([
-                'Authorization' => 'Bearer ' . $integration->api_key,
+                'Authorization' => 'Bearer '.$integration->api_key,
             ]);
 
-            $response = $client->get($integration->store_url . '/api/products');
+            $response = $client->get($integration->store_url.'/api/products');
             $inventoryProducts = Product::with('category')->get();
 
             $ecomProducts = $response->json()['data'];
@@ -108,7 +108,7 @@ class Products extends Component
 
             // Check which products need to be created
             foreach ($inventoryProducts as $product) {
-                if (!in_array($product->code, array_column($ecomProducts, 'code'))) {
+                if ( ! in_array($product->code, array_column($ecomProducts, 'code'))) {
                     $data[] = [
                         'name'       => $product['name'],
                         'code'       => $product['code'],
@@ -119,11 +119,11 @@ class Products extends Component
                 }
             }
 
-            $client->post($integration->store_url . '/api/products/bulk', ['data' => $data]);
+            $client->post($integration->store_url.'/api/products/bulk', ['data' => $data]);
 
-            Log::info(count($data) . ' new products created in e-commerce store.');
+            Log::info(count($data).' new products created in e-commerce store.');
 
-            return response()->json(['message' => count($data) . ' new products created in e-commerce store.']);
+            return response()->json(['message' => count($data).' new products created in e-commerce store.']);
         }
     }
 

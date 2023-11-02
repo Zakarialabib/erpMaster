@@ -26,8 +26,8 @@ enum PageType: string
             static::CONTACT => __('contact'),
             static::PRODUCT => __('product'),
             static::SERVICE => __('service'),
-            static::PRIVACY     => __('privacy'),
-            static::TERMS    => __('terms'),
+            static::PRIVACY => __('privacy'),
+            static::TERMS   => __('terms'),
         };
     }
 

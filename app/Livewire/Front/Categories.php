@@ -86,10 +86,10 @@ class Categories extends Component
     public function mount(): void
     {
         $this->sortingOptions = [
-            'name-asc'   => __('Order Alphabetic, A-Z'),
-            'name-desc'  => __('Order Alphabetic, Z-A'),
-            'date-asc'   => __('Date, new to old'),
-            'date-desc'  => __('Date, old to new'),
+            'name-asc'  => __('Order Alphabetic, A-Z'),
+            'name-desc' => __('Order Alphabetic, Z-A'),
+            'date-asc'  => __('Date, new to old'),
+            'date-desc' => __('Date, old to new'),
         ];
     }
 
@@ -105,7 +105,7 @@ class Categories extends Component
             ->when($this->category_id, fn ($query) => $query->where('category_id', $this->category_id))
             ->when($this->subcategory_id, fn ($query) => $query->whereIn('subcategories', $this->subcategory_id))
             ->when($this->brand_id, fn ($query) => $query->where('brand_id', $this->brand_id));
-     
+
         if ($this->sorting === 'name') {
             $products = $query->orderBy('name', 'asc');
         } elseif ($this->sorting === 'name-desc') {
@@ -114,11 +114,10 @@ class Categories extends Component
             $products = $query->orderBy('created_at', 'asc');
         } elseif ($this->sorting === 'date-desc') {
             $products = $query->orderBy('created_at', 'desc');
-        } 
+        }
 
         $products = $query->paginate($this->perPage);
-        
-        
+
         return view('livewire.front.categories', [
             'products' => $products,
         ]);

@@ -62,7 +62,7 @@ class SectionsSeeder extends Seeder
                 'position'       => '1',
                 'type'           => 'contact',
             ],
-          
+
         ]);
     }
 }

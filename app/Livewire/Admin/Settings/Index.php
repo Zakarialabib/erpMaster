@@ -17,7 +17,6 @@ use Livewire\WithFileUploads;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Rule;
-use Illuminate\Support\Str;
 
 #[Layout('components.layouts.dashboard')]
 class Index extends Component
@@ -83,9 +82,7 @@ class Index extends Component
     #[Rule('required|string|min:1|max:255')]
     public $default_date_format;
 
-
     public $default_client_id;
-
 
     public $default_warehouse_id;
 
@@ -133,7 +130,7 @@ class Index extends Component
     public $seo_meta_description;
 
     public $whatsapp_custom_message;
-    
+
     public function render()
     {
         return view('livewire.admin.settings.index');
@@ -206,7 +203,7 @@ class Index extends Component
             $this->invoice_footer = $imageName;
         }
 
-        if (!$this->site_logo) {
+        if ( ! $this->site_logo) {
             $imageName = 'logo';
             $this->site_logo->storeAs('images', $imageName, 'local_files');
             $this->site_logo = $imageName;
@@ -221,49 +218,49 @@ class Index extends Component
         // dd($this->invoice_template);
 
         $settings = [
-            'site_logo' => $this->site_logo,
-            'site_title' => $this->site_title,
-            'site_favicon' => $this->site_favicon,
-            'company_name' => $this->company_name,
-            'company_email' => $this->company_email,
-            'company_phone' => $this->company_phone,
-            'company_address' => $this->company_address,
-            'company_tax' => $this->company_tax,
-            'telegram_channel' => $this->telegram_channel,
-            'default_currency_id' => $this->default_currency_id,
+            'site_logo'                 => $this->site_logo,
+            'site_title'                => $this->site_title,
+            'site_favicon'              => $this->site_favicon,
+            'company_name'              => $this->company_name,
+            'company_email'             => $this->company_email,
+            'company_phone'             => $this->company_phone,
+            'company_address'           => $this->company_address,
+            'company_tax'               => $this->company_tax,
+            'telegram_channel'          => $this->telegram_channel,
+            'default_currency_id'       => $this->default_currency_id,
             'default_currency_position' => $this->default_currency_position,
-            'default_date_format' => $this->default_date_format,
-            'default_client_id' => $this->default_client_id,
-            'default_warehouse_id' => $this->default_warehouse_id,
-            'default_language' => $this->default_language,
-            'invoice_footer_text' => $this->invoice_footer_text,
-            'sale_prefix' => $this->sale_prefix,
-            'saleReturn_prefix' => $this->saleReturn_prefix,
-            'purchase_prefix' => $this->purchase_prefix,
-            'purchaseReturn_prefix' => $this->purchaseReturn_prefix,
-            'quotation_prefix' => $this->quotation_prefix,
-            'salePayment_prefix' => $this->salePayment_prefix,
-            'purchasePayment_prefix' => $this->purchasePayment_prefix,
-            'expense_prefix' => $this->expense_prefix,
-            'delivery_prefix' => $this->delivery_prefix,
-            'is_rtl' => $this->is_rtl,
-            'show_email' => $this->show_email,
-            'show_address' => $this->show_address,
-            'show_order_tax' => $this->show_order_tax,
-            'show_discount' => $this->show_discount,
-            'show_shipping' => $this->show_shipping,
-            'social_facebook' => $this->social_facebook,
-            'social_twitter' => $this->social_twitter,
-            'social_instagram' => $this->social_instagram,
-            'social_linkedin' => $this->social_linkedin,
-            'social_whatsapp' => $this->social_whatsapp,
-            'social_tiktok' => $this->social_tiktok,
-            'head_tags' => $this->head_tags,
-            'body_tags' => $this->body_tags,
-            'seo_meta_title' => $this->seo_meta_title,
-            'seo_meta_description' => $this->seo_meta_description,
-            'whatsapp_custom_message' => $this->whatsapp_custom_message,
-            'invoice_template' => $this->invoice_template,
+            'default_date_format'       => $this->default_date_format,
+            'default_client_id'         => $this->default_client_id,
+            'default_warehouse_id'      => $this->default_warehouse_id,
+            'default_language'          => $this->default_language,
+            'invoice_footer_text'       => $this->invoice_footer_text,
+            'sale_prefix'               => $this->sale_prefix,
+            'saleReturn_prefix'         => $this->saleReturn_prefix,
+            'purchase_prefix'           => $this->purchase_prefix,
+            'purchaseReturn_prefix'     => $this->purchaseReturn_prefix,
+            'quotation_prefix'          => $this->quotation_prefix,
+            'salePayment_prefix'        => $this->salePayment_prefix,
+            'purchasePayment_prefix'    => $this->purchasePayment_prefix,
+            'expense_prefix'            => $this->expense_prefix,
+            'delivery_prefix'           => $this->delivery_prefix,
+            'is_rtl'                    => $this->is_rtl,
+            'show_email'                => $this->show_email,
+            'show_address'              => $this->show_address,
+            'show_order_tax'            => $this->show_order_tax,
+            'show_discount'             => $this->show_discount,
+            'show_shipping'             => $this->show_shipping,
+            'social_facebook'           => $this->social_facebook,
+            'social_twitter'            => $this->social_twitter,
+            'social_instagram'          => $this->social_instagram,
+            'social_linkedin'           => $this->social_linkedin,
+            'social_whatsapp'           => $this->social_whatsapp,
+            'social_tiktok'             => $this->social_tiktok,
+            'head_tags'                 => $this->head_tags,
+            'body_tags'                 => $this->body_tags,
+            'seo_meta_title'            => $this->seo_meta_title,
+            'seo_meta_description'      => $this->seo_meta_description,
+            'whatsapp_custom_message'   => $this->whatsapp_custom_message,
+            'invoice_template'          => $this->invoice_template,
         ];
 
         foreach ($settings as $key => $value) {
@@ -291,7 +288,7 @@ class Index extends Component
 
         return $base64;
     }
-    
+
     #[Computed]
     public function currencies()
     {
@@ -307,6 +304,6 @@ class Index extends Component
     #[Computed]
     public function customers()
     {
-        return Customer::pluck('name', 'id')->toArray();   
+        return Customer::pluck('name', 'id')->toArray();
     }
 }

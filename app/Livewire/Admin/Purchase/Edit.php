@@ -27,7 +27,7 @@ class Edit extends Component
 {
     use LivewireAlert;
     use WithModels;
-    
+
     public $cart_instance;
 
     public $purchase_details;

@@ -94,10 +94,10 @@ class Catalog extends Component
         $this->paginationOptions = [25, 50, 100];
 
         $this->sortingOptions = [
-            'name-asc'   => __('Order Alphabetic, A-Z'),
-            'name-desc'  => __('Order Alphabetic, Z-A'),
-            'date-asc'   => __('Date, new to old'),
-            'date-desc'  => __('Date, old to new'),
+            'name-asc'  => __('Order Alphabetic, A-Z'),
+            'name-desc' => __('Order Alphabetic, Z-A'),
+            'date-asc'  => __('Date, new to old'),
+            'date-desc' => __('Date, old to new'),
         ];
     }
 

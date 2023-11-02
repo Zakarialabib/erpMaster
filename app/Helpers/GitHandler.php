@@ -11,7 +11,7 @@ class GitHandler
     public function checkForUpdates()
     {
         $branch = env('GIT_BRANCH', 'master');
-        exec('git fetch origin ' . $branch, $output, $return);
+        exec('git fetch origin '.$branch, $output, $return);
 
         if ($return === 0) {
             exec('git rev-parse HEAD', $localHead, $return);
@@ -36,11 +36,11 @@ class GitHandler
     public function fetchAndPull(): string
     {
         $branch = env('GIT_BRANCH', 'master');
-        exec('git fetch origin ' . $branch, $output, $return);
+        exec('git fetch origin '.$branch, $output, $return);
 
         if ($return === 0) {
             $this->message = sprintf('Fetched updates from origin/%s.', $branch);
-            exec('git merge origin/' . $branch, $output, $return);
+            exec('git merge origin/'.$branch, $output, $return);
 
             if ($return === 0) {
                 $this->message = sprintf('Merged updates from origin/%s.', $branch);

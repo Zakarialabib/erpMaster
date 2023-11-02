@@ -27,7 +27,7 @@ class Edit extends Component
 {
     use LivewireAlert;
     use WithModels;
-    
+
     public $sale;
 
     public $products;
@@ -62,7 +62,6 @@ class Edit extends Component
 
     #[Rule('numeric')]
     public $shipping_amount;
-
 
     public $note;
 

@@ -16,7 +16,7 @@ class OrderObserver
     public function created(Order $order): void
     {
         // Notify the admin users
-        $users = User::whereHas('roles', static function ($query) : void {
+        $users = User::whereHas('roles', static function ($query): void {
             $query->where('name', 'admin');
         })->get();
 

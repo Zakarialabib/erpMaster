@@ -41,12 +41,9 @@ class Create extends Component
     #[Rule('nullable|min:3')]
     public $description;
 
-
     public $user_id;
 
-
     public $warehouse_id;
-
 
     public $cash_register_id;
 

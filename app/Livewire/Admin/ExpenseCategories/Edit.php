@@ -23,7 +23,6 @@ class Edit extends Component
     #[Rule('min:3', message: 'This name is too short')]
     public string $name;
 
-
     public ?string $description = null;
 
     public function render()

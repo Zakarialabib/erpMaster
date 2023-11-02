@@ -25,18 +25,13 @@ class Create extends Component
     #[Rule('required|max:255')]
     public $title;
 
-
     public $subtitle;
-
 
     public $description;
 
-
     public $link;
 
-
     public $bg_color;
-
 
     public $embeded_video;
 

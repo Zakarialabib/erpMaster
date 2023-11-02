@@ -19,7 +19,6 @@ use App\Livewire\Admin\Auth\ConfirmPassword as AdminConfirmPassword;
 use App\Livewire\Auth\SocialAuth;
 use Illuminate\Support\Facades\Route;
 
-
 Route::get('login', ClientLogin::class)
     ->name('auth.login');
 

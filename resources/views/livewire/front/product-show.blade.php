@@ -217,7 +217,7 @@
                     </div>
                 </div>
 
-                <div class="w-full px-10 mt-4 bg-green-100 border-white border-2 bg-gray-80 py-6 mx-auto shadow-md">
+                <div class="w-full px-10 mt-4 border-white border-2 bg-gray-80 py-6 mx-auto shadow-md">
                     <div class="grid grid-cols-1 gap-[30px] sm:grid-cols-2 lg:grid-cols-3">
                         <div class="flex flex-col gap-y-2 text-center">
                             <div class="w-full flex items-center justify-center bg-white rounded-lg h-[51px] mb-2">

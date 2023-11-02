@@ -74,6 +74,9 @@
             <x-table.th sortable :direction="$sorts['address'] ?? null" field="address" wire:click="sortingBy('address')">
                 {{ __('Address') }}
             </x-table.th>
+            <x-table.th sortable :direction="$sorts['delivered_by'] ?? null" field="delivered_by" wire:click="sortingBy('delivered_by')">
+                {{ __('Received By') }}
+            </x-table.th>
             <x-table.th sortable :direction="$sorts['sale_id'] ?? null" field="sale_id" wire:click="sortingBy('sale_id')">
                 {{ __('Sale or Order') }}
             </x-table.th>
@@ -108,6 +111,9 @@
                         {{ $delivery->address }}
                     </x-table.td>
                     <x-table.td>
+                        {{ $delivery->recieved_by }}
+                    </x-table.td>
+                    <x-table.td>
                         @if ($delivery->order_id)
                             {{ __('Order') }} : <small>{{ $delivery->order->customer->name ?? '' }}</small> |
                             <small>{{ $delivery->order->customer->phone ?? '' }}</small>
@@ -127,13 +133,14 @@
                     </x-table.td>
                     <x-table.td>
                         <div class="flex justify-start space-x-2">
-                            <x-button success target="_blank" href="{{ route('admin.order.pdf', $delivery->id) }}"
+                            <x-button primary type="button" wire:click="$dispatch('showModal')"
                                 wire:loading.attr="disabled">
                                 <i class="fas fa-print"></i>
                             </x-button>
 
-                            <x-button primary wire:click="$dispatch('editModal',{ id : '{{ $delivery->id }}'})"
-                                type="button" wire:loading.attr="disabled">
+                            <x-button type="button" secondary
+                                wire:click="$dispatch('editModal',{ id : '{{ $delivery->id }}'})" type="button"
+                                wire:loading.attr="disabled">
                                 <i class="fas fa-edit"></i>
                             </x-button>
 
@@ -146,7 +153,7 @@
                 </x-table.tr>
             @empty
                 <x-table.tr>
-                    <x-table.td colspan="7">
+                    <x-table.td colspan="9">
                         <div class="flex justify-center items-center space-x-2">
                             <svg class="w-8 h-8 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd"
@@ -171,7 +178,7 @@
 
     <livewire:admin.delivery.create />
 
-    <livewire:admin.delivery.show :delivery="$delivery" lazy />
+    <livewire:admin.delivery.show lazy />
 
     <livewire:admin.delivery.edit :delivery="$delivery" lazy />
 

@@ -34,7 +34,8 @@
         "zakarialabib/flysystem-google-drive-ext": "^0.0.1",
         "zakarialabib/shoppingcart": "^1.0",
         "dcblogdev/laravel-db-sync": "^1.1",
-        "google/apiclient": "^2.15"
+        "google/apiclient": "^2.15",
+        "simplesoftwareio/simple-qrcode": "^4.2"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.7",

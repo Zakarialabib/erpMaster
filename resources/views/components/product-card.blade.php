@@ -24,7 +24,7 @@
             <div
                 class="absolute top-3 md:top-5 3xl:top-7 left-3 rtl:right-3 ltr:md:left-5 rtl:md:right-5 3xl:left-7 rtl:3xl:right-7 flex flex-col gap-y-1 items-start">
                 <span
-                    class="bg-indigo-600 text-white text-10px md:text-xs leading-5 rounded-md inline-block px-1 sm:px-1 xl:px-2 py-0 sm:py-1">
+                    class="bg-transparent border border-indigo-500 text-indigo-500 hover:bg-indigo-500 hover:text-white active:bg-indigo-900 focus:outline-none focus:border-indigo-900 focus:ring ring-indigo-300 md:text-xs leading-5 rounded-md inline-block px-1 sm:px-1 xl:px-2 py-0 sm:py-1">
                     <p><span class="hidden sm:inline">{{ $product->category->name }}</span></p>
                 </span>
             </div>
@@ -44,7 +44,7 @@
         </div>
 
         <a href="{{ route('front.product', $product->slug) }}">
-            <h4 class="font-bold tracking-[-0.02em] block text-center md:text-lg sm:text-md text-black hover:text-red-900 uppercase"
+            <h4 class="font-bold px-2 block text-center md:text-lg sm:text-md text-black hover:text-red-900 uppercase"
                 itemprop="name">
                 {{ Str::limit($product->name, 40) }}</h4>
         </a>

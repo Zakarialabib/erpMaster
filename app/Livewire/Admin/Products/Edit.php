@@ -41,7 +41,7 @@ class Edit extends Component
 
     public string $unit;
 
-    public int $order_tax;
+    public $order_tax;
 
     public $description;
 
@@ -74,14 +74,14 @@ class Edit extends Component
 
     /** @var array */
     protected $rules = [
-        'productWarehouse.*.quantity'    => 'integer|min:1',
-        'productWarehouse.*.price'       => 'numeric',
-        'productWarehouse.*.old_price'        => 'numeric',
-        'productWarehouse.*.cost'        => 'numeric',
-        'productWarehouse.*.stock_alert' => 'numeric',
+        'productWarehouse.*.quantity'     => 'integer|min:1',
+        'productWarehouse.*.price'        => 'numeric',
+        'productWarehouse.*.old_price'    => 'numeric',
+        'productWarehouse.*.cost'         => 'numeric',
+        'productWarehouse.*.stock_alert'  => 'numeric',
         'productWarehouse.*.is_ecommerce' => '',
-        'options.*.type'                 => '',
-        'options.*.value'                => '',
+        'options.*.type'                  => '',
+        'options.*.value'                 => '',
     ];
 
     #[On('editorjs-save')]
@@ -131,12 +131,12 @@ class Edit extends Component
         $this->productWarehouses = $this->product->warehouses;
 
         $this->productWarehouse = $this->productWarehouses->mapWithKeys(static fn ($warehouse): array => [$warehouse->id => [
-            'price' => $warehouse->pivot->price,
-            'qty'   => $warehouse->pivot->qty,
-            'cost'  => $warehouse->pivot->cost,
-            'old_price'  => $warehouse->pivot->old_price,
+            'price'        => $warehouse->pivot->price,
+            'qty'          => $warehouse->pivot->qty,
+            'cost'         => $warehouse->pivot->cost,
+            'old_price'    => $warehouse->pivot->old_price,
             'stock_alert'  => $warehouse->pivot->stock_alert,
-            'is_ecommerce'  => $warehouse->pivot->is_ecommerce,
+            'is_ecommerce' => $warehouse->pivot->is_ecommerce,
         ]])->toArray();
     }
 
@@ -148,12 +148,10 @@ class Edit extends Component
             $this->slug = Str::slug($this->name);
         }
 
-
-        if ($this->image) {
-            $this->image = '';
+        if ( ! $this->image) {
+            $this->image = null;
         } elseif (is_object($this->image) && method_exists($this->image, 'extension')) {
-
-            $imageName = Str::slug($this->name) . '-' . Str::random(5) . '.' . $this->image->extension();
+            $imageName = Str::slug($this->name).'-'.Str::random(5).'.'.$this->image->extension();
             $this->image->storeAs('products', $imageName, 'local_files');
             $this->image = $imageName;
         }
@@ -162,7 +160,7 @@ class Edit extends Component
             $gallery = [];
 
             foreach ($this->gallery as $value) {
-                $imageName = Str::slug($this->name) . '-' . Str::random(5) . '.' . $value->extension();
+                $imageName = Str::slug($this->name).'-'.Str::random(5).'.'.$value->extension();
                 $value->storeAs('products', $imageName, 'local_files');
                 $gallery[] = $imageName;
             }
@@ -174,12 +172,12 @@ class Edit extends Component
 
         foreach ($this->productWarehouse as $warehouseId => $warehouse) {
             $this->product->warehouses()->updateExistingPivot($warehouseId, [
-                'price' => $warehouse['price'],
-                'qty'   => $warehouse['qty'],
-                'cost'  => $warehouse['cost'],
-                'old_price'  => $warehouse['old_price'],
+                'price'        => $warehouse['price'],
+                'qty'          => $warehouse['qty'],
+                'cost'         => $warehouse['cost'],
+                'old_price'    => $warehouse['old_price'],
                 'stock_alert'  => $warehouse['stock_alert'],
-                'is_ecommerce'  => $warehouse['is_ecommerce'],
+                'is_ecommerce' => $warehouse['is_ecommerce'],
             ]);
         }
 

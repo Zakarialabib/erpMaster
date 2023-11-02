@@ -32,12 +32,9 @@ class Create extends Component
     #[Rule('required|numeric')]
     public $phone;
 
-
     public $city;
 
-
     public $country;
-
 
     public $address;
 

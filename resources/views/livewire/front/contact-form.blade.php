@@ -26,11 +26,11 @@
             <div>
                 <textarea id="message" wire:model="message" name="message" placeholder="Message" value="{{ old('message') }}"
                     rows="2"
-                    class="w-full h-48 bg-white rounded border border-transparent focus:border-green-500 focus:bg-white focus:ring-2 focus:ring-green-200 text-base outline-none text-gray-700 py-2 px-[30px] leading-6 transition-colors duration-200 ease-in-out"></textarea>
+                    class="w-full h-48 bg-white rounded border border-transparent focus:border-red-500 focus:bg-white focus:ring-2 focus:ring-red-200 text-base outline-none text-gray-700 py-2 px-[30px] leading-6 transition-colors duration-200 ease-in-out"></textarea>
                 <x-input-error :messages="$errors->get('message')" for="subject" class="mt-2" />
             </div>
             <button
-                class="flex items-center z-10 relative transition-all duration-200 group px-[22px] py-[15px] lg:px-[32px] lg:py-[22px] rounded-xl bg-green-800 text-white hover:bg-green-100 hover:text-green-800 text-heading-6 tracking-wide  hover:from-green-500 hover:to-green-700 active:from-green-600 active:to-green-800 focus:ring-green-300 justify-center">
+                class="flex items-center z-10 relative transition-all duration-200 group px-[22px] py-[15px] lg:px-[32px] lg:py-[22px] rounded-xl bg-red-800 text-white hover:bg-red-100 hover:text-red-800 text-heading-6 tracking-wide  hover:from-red-500 hover:to-red-700 active:from-red-600 active:to-red-800 focus:ring-red-300 justify-center">
                 <span>
                     <div wire:loading wire:target="submit">
                         <x-loading />
