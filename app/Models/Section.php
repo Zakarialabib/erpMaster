@@ -8,11 +8,13 @@ use App\Enums\PageType;
 use App\Support\HasAdvancedFilter;
 use Illuminate\Database\Eloquent\Model;
 use App\Enums\Status;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Section extends Model
 {
     use HasAdvancedFilter;
+    use HasFactory;
 
     final public const ATTRIBUTES = [
         'id',
@@ -29,7 +31,6 @@ class Section extends Model
         'title',
         'featured_title',
         'subtitle',
-        'text',
         'bg_color',
         'text_color',
         'type',

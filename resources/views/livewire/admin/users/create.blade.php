@@ -32,9 +32,9 @@
                         <x-label for="warehouse" :value="__('Warehouse')" />
                         <x-select-list multiple
                             class="block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border-gray-300 rounded-md mt-1"
-                            required id="selectedWarehouses" name="selectedWarehouses" wire:model="selectedWarehouses"
+                            required id="warehouse_id" name="warehouse_id" wire:model="warehouse_id"
                             :options="$this->warehouses" />
-                        <x-input-error :messages="$errors->get('selectedWarehouses')" class="mt-2" />
+                        <x-input-error :messages="$errors->get('warehouse_id')" class="mt-2" />
                     </div>
                     <div class="md:w-1/2 sm:w-full px-3">
                         <x-label for="password" :value="__('Password')" />

@@ -21,9 +21,8 @@ class PermissionsDemoSeeder extends Seeder
         // Reset cached roles and permissions
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
-        // create roles and assign existing permissions
         $role1 = Role::create([
-            'name'       => 'client',
+            'name'       => 'customer',
             'guard_name' => 'customer',
         ]);
 
@@ -36,5 +35,18 @@ class PermissionsDemoSeeder extends Seeder
             'password' => bcrypt('password'),
         ]);
         $customer->assignRole($role1);
+        
+        $role2 = Role::create([
+            'name'       => 'vendor',
+            'guard_name' => 'customer',
+        ]);
+
+        $customer1 = \App\Models\Customer::factory()->create([
+            'id'       => Str::uuid(),
+            'name'     => 'Vendor',
+            'email'    => 'vendor@mail.com',
+            'password' => bcrypt('password'),
+        ]);
+        $customer1->assignRole($role2);
     }
 }

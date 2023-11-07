@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
 use App\Livewire\Front\DynamicPage;
-use App\Livewire\Front\Index as FrontIndex;
+use App\Livewire\Vendor\Dashboard as VendorDashboard;
 use App\Livewire\Account\Index as AccountIndex;
 use App\Livewire\Front\Blogs as FrontBlogs;
 use App\Livewire\Front\BlogShow as FrontBlogShow;
@@ -42,8 +42,6 @@ Route::get('/docs', function () {
     return view('docs.index'); // loads /public/docs/index.html
 });
 
-// Route::group(['middleware' => 'firewall.all'], function () {
-// Route::get('/', FrontIndex::class)->name('front.index');
 Route::get('/catalog', FrontCatalog::class)->name('front.catalog');
 Route::get('/categories', FrontCategories::class)->name('front.categories');
 Route::get('/categorie/{slug}', [FrontController::class, 'categoryPage'])->name('front.categoryPage');
@@ -71,9 +69,12 @@ Route::post('/uploads', [UploadController::class, 'upload'])->name('upload');
 
 Route::get('/lang/{lang}', [FrontController::class, 'changeLanguage'])->name('changelanguage');
 
-Route::get('/{slug?}', DynamicPage::class)->name('front.dynamicPage');
 
-// });
+Route::group(['prefix' => 'vendor', 'as' => 'vendor.', 'middleware' => ['auth', 'role:vendor']], function () {
+    Route::get('/dashboard', VendorDashboard::class)->name('dashboard');
+});
+
+Route::get('/{slug?}', DynamicPage::class)->name('front.dynamicPage');
 
 // Route::fallback(function (Request $request) {
 //     return app()->make(ErrorController::class)->notFound($request);

@@ -5,8 +5,8 @@
             {{ __('Create User') }}
         </x-button>
     </x-theme.breadcrumb>
-    <div class="flex flex-wrap justify-center">
-        <div class="lg:w-1/2 md:w-1/2 sm:w-full flex flex-wrap my-2">
+    <div class="flex flex-wrap justify-center items-center">
+        <div class="md:w-1/3  sm:w-full flex flex-wrap my-2">
             <select wire:model.live="perPage"
                 class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-auto sm:text-sm border-gray-300 rounded-md focus:outline-none focus:shadow-outline-blue transition duration-150 ease-in-out">
                 @foreach ($paginationOptions as $value)
@@ -28,10 +28,18 @@
                 </p>
             @endif
         </div>
-        <div class="lg:w-1/2 md:w-1/2 sm:w-full my-2">
-            <div class="my-2">
-                <x-input wire:model.live="search" placeholder="{{ __('Search') }}" autofocus />
-            </div>
+        <div class="md:w-1/3 sm:w-full px-3">
+            <select required id="customer_group_id" name="customer_group_id" wire:model.live="customer_group_id"
+                class="block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border-gray-300 rounded-md">
+                <option value="">{{ __('Select warehouse') }}</option>
+                @foreach ($this->warehouses as $key => $value)
+                    <option value="{{ $key }}">{{ $value }}</option>
+                @endforeach
+            </select>
+            <x-input-error :messages="$errors->get('customer_group_id')" class="mt-2" />
+        </div>
+        <div class="md:w-1/3  sm:w-full">
+            <x-input wire:model.live="search" placeholder="{{ __('Search') }}" autofocus />
         </div>
     </div>
 

@@ -20,28 +20,26 @@ class Register extends Component
     #[Rule('required')]
     public $name = '';
 
-    #[Rule('required|email|unique:users,email')]
+    #[Rule('required', message: 'Email is required ')]
+    #[Rule('email' , message :'Email must be valid')]
+    #[Rule('unique:users,email')]
     public $email = '';
 
-    #[Rule('required')]
+    #[Rule('required', message: 'Password is required')]
     public $password = '';
 
-    #[Rule('required|min:8|same:passwordConfirmation')]
+    #[Rule('required')]
+    #[Rule('min:8')]
+    #[Rule('same:passwordConfirmation')]
     public $passwordConfirmation = '';
 
-    #[Rule('required|numeric')]
+    #[Rule('required')]
+    #[Rule('numeric')]
     public $phone;
 
-    public $city;
+    public $city = 'Casablanca';
 
-    // Set the default city to 'Casablanca'
-    public $country; // Set
-
-    public function mount(): void
-    {
-        $this->city = 'Casablanca';
-        $this->country = 'Morocco';
-    }
+    public $country = 'Morocco'; 
 
     public function register()
     {
@@ -57,12 +55,12 @@ class Register extends Component
             'status'   => Status::INACTIVE, // Set status to inactive by default
         ]);
 
-        $role = Role::where('name', 'client')->first();
+        $role = Role::where('name', 'customer')->first();
 
         if ( ! $role) {
             $role = Role::create([
                 'guard_name' => 'customer',
-                'name'       => 'client',
+                'name'       => 'customer',
             ]);
         }
 
@@ -73,7 +71,7 @@ class Register extends Component
         Auth::guard('customer')->login($customer, true);
 
         $homePage = match (true) {
-            $customer->hasRole('client') => '/my-account',
+            $customer->hasRole('customer') => '/myaccount',
             default                      => '/',
         };
 

@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\EmailVerificationNotificationController;
 use App\Http\Controllers\Auth\EmailVerificationPromptController;
 use App\Http\Controllers\Auth\VerifyEmailController;
@@ -18,6 +17,7 @@ use App\Livewire\Admin\Auth\ForgotPassword as AdminForgotPassword;
 use App\Livewire\Admin\Auth\ConfirmPassword as AdminConfirmPassword;
 use App\Livewire\Auth\SocialAuth;
 use Illuminate\Support\Facades\Route;
+
 
 Route::get('login', ClientLogin::class)
     ->name('auth.login');
@@ -49,7 +49,14 @@ Route::get('/login/facebook/callback', [SocialAuth::class, 'handleFacebookCallba
 Route::get('/login/google', [SocialAuth::class, 'redirectToGoogle'])->name('login.google');
 Route::get('/login/google/callback', [SocialAuth::class, 'handleGoogleCallback']);
 
-Route::middleware('guest:customer')->group(function () {
+Route::get('/logout', function () {
+    auth()->guard('customer')->logout();
+    session()->invalidate();
+    session()->regenerateToken();
+    return redirect('/home');
+})->name('logout');
+
+Route::middleware('auth')->group(function () {
     Route::get('verify-email', [EmailVerificationPromptController::class, '__invoke'])
         ->name('verification.notice');
 
@@ -66,7 +73,4 @@ Route::middleware('guest:customer')->group(function () {
 
     Route::get('admin/confirm-password', AdminConfirmPassword::class)
         ->name('admin.password.confirm');
-
-    Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
-        ->name('logout');
 });

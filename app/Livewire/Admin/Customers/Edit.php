@@ -5,12 +5,15 @@ declare(strict_types=1);
 namespace App\Livewire\Admin\Customers;
 
 use App\Models\Customer;
+use App\Models\CustomerGroup;
 use Illuminate\Support\Facades\Gate;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
 use Livewire\WithFileUploads;
+use App\Models\Role;
+use Livewire\Attributes\Computed;
 
 class Edit extends Component
 {
@@ -41,6 +44,10 @@ class Edit extends Component
 
     public $tax_number;
 
+    public $role;
+
+    public $customer_group_id;
+
     public function render()
     {
         return view('livewire.admin.customers.edit');
@@ -69,16 +76,31 @@ class Edit extends Component
 
         $this->address = $this->customer->address;
 
+        $this->customer_group_id = $this->customer->customer_group_id;
+
         $this->tax_number = $this->customer->tax_number;
 
         $this->editModal = true;
     }
 
+    #[Computed]
+    public function roles()
+    {
+        return Role::pluck('name', 'id')->toArray();
+    }
+
+    #[Computed]
+    public function customerGroups()
+    {
+        return CustomerGroup::pluck('name', 'id')->toArray();
+    }
+
     public function update(): void
     {
-        $validatedData = $this->validate();
+        $this->validate();
 
-        $this->customer->update($validatedData);
+        // dd($validatedf)
+        $this->customer->update($this->all());
 
         $this->alert('success', __('Customer updated successfully.'));
 

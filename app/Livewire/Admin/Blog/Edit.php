@@ -38,7 +38,7 @@ class Edit extends Component
 
     #[Rule('max:170', message: 'The meta description a max of 170 characters.')]
     public $meta_description;
-    
+
     public $slug;
 
     public $image;

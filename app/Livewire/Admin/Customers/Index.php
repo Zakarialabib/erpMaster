@@ -8,6 +8,7 @@ use App\Exports\CustomerExport;
 use App\Livewire\Utils\Datatable;
 use App\Imports\CustomerImport;
 use App\Models\Customer;
+use App\Models\CustomerGroup;
 use Illuminate\Support\Facades\Gate;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
@@ -17,6 +18,7 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Illuminate\Http\Response;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
 
 #[Layout('components.layouts.dashboard')]
@@ -28,21 +30,27 @@ class Index extends Component
 
     public $customer;
 
-    public $file;
+    public $customer_group_id;
 
-    public $listeners = [
-        'delete',
-    ];
+    public $file;
 
     public $importModal = false;
 
     public $model = Customer::class;
 
+    #[Computed]
+    public function customerGroups()
+    {
+        return CustomerGroup::pluck('name', 'id')->toArray();
+    }
+
     public function render(): View|Factory
     {
         abort_if(Gate::denies('customer access'), 403);
 
-        $query = Customer::advancedFilter([
+        $query = Customer::when($this->customer_group_id, function ($query): void {
+            $query->where('customer_group_id', $this->customer_group_id);
+        })->advancedFilter([
             's'               => $this->search ?: null,
             'order_column'    => $this->sortBy,
             'order_direction' => $this->sortDirection,

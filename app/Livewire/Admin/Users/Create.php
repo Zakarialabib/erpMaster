@@ -7,6 +7,7 @@ namespace App\Livewire\Admin\Users;
 use App\Models\User;
 use App\Models\Role;
 use App\Models\Warehouse;
+use App\Models\UserWarehouse;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Rule;
@@ -38,9 +39,9 @@ class Create extends Component
 
     public $address;
 
-    public $selectedWarehouses = [];
+    public $warehouse_id = [];
 
-    public $warehouse_id;
+    public $role;
 
     public function render()
     {
@@ -62,11 +63,20 @@ class Create extends Component
 
         $this->user = User::create($this->all());
 
-        $this->user->warehouses()->sync($this->selectedWarehouses);
+        $this->user->assignRole($this->role);
+
+        foreach ($this->warehouse_id as $warehouseId) {
+            UserWarehouse::create([
+                'user_id'      => $user->id,
+                'warehouse_id' => $warehouseId,
+            ]);
+        }
 
         $this->dispatch('refreshIndex')->to(Index::class);
 
         $this->alert('success', 'User created successfully!');
+
+        $this->reset('name', 'email', 'password', 'phone', 'role', 'warehouse_id');
 
         $this->createModal = false;
     }

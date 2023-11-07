@@ -6,7 +6,6 @@ namespace App\Livewire\Admin\Blog;
 
 use App\Livewire\Utils\Datatable;
 use App\Models\Blog;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Gate;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Attributes\On;
@@ -23,7 +22,7 @@ class Index extends Component
 
     public $deleteModal = false;
 
-    public $model = Blog::class; 
+    public $model = Blog::class;
 
     #[On('delete')]
     public function delete(): void

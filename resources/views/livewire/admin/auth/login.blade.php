@@ -11,13 +11,12 @@
         </p>
     </div>
 
-    <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <!-- Session Status -->
-        <x-auth-session-status class="mb-4" :status="session('status')" />
-        <!-- Validation Errors -->
-        <x-validation-errors class="mb-4" :errors="$errors" />
-
-        <form wire:submit="authenticate">
+    <form wire:submit="store">
+        <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+            <!-- Session Status -->
+            <x-auth-session-status class="mb-4" :status="session('status')" />
+            <!-- Validation Errors -->
+            <x-validation-errors class="mb-4" :errors="$errors" />
 
             <!-- Email Address -->
             <div>
@@ -64,8 +63,8 @@
             <div class="flex items-center justify-between my-4">
 
                 @if (Route::has('admin.password.request'))
-                    <a class="underline text-sm text-gray-600 hover:text-gray-900"
-                        href="/admin/forgot-password" wire:navigate>
+                    <a class="underline text-sm text-gray-600 hover:text-gray-900" href="/admin/forgot-password"
+                        wire:navigate>
                         {{ __('Forgot your password?') }}
                     </a>
                 @endif
@@ -80,7 +79,7 @@
             </div>
 
             <div class="flex flex-col gap-4">
-                <x-button type="submit" primary>
+                <x-button type="submit" primaryOutline class="flex justify-center">
                     {{ __('Log in') }}
                 </x-button>
                 <a class="underline text-sm text-gray-600 text-center hover:text-gray-900 font-medium"
@@ -88,7 +87,7 @@
                     {{ __('Don\'t have an account?') }} {{ __('Register now') }}
                 </a>
             </div>
-        </form>
-    </div>
+        </div>
+    </form>
 
 </div>

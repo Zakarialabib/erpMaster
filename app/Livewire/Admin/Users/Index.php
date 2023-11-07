@@ -7,8 +7,10 @@ namespace App\Livewire\Admin\Users;
 use App\Livewire\Utils\Datatable;
 use App\Models\Role;
 use App\Models\User;
+use App\Models\Warehouse;
 use Illuminate\Support\Facades\Gate;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
+use Livewire\Attributes\Computed;
 use Livewire\Component;
 use Livewire\Attributes\Layout;
 
@@ -26,6 +28,8 @@ class Index extends Component
 
     public $role;
 
+    public $warehouse_id;
+
     public $filterRole;
 
     public array $rules = [
@@ -39,6 +43,12 @@ class Index extends Component
         'user.tax_number' => 'nullable',
     ];
 
+    #[Computed]
+    public function warehouses()
+    {
+        return Warehouse::pluck('name', 'id')->toArray();
+    }
+
     public function filterRole($role): void
     {
         $this->filterRole = $role;
@@ -49,7 +59,9 @@ class Index extends Component
     {
         abort_if(Gate::denies('user access'), 403);
 
-        $query = User::with('roles')->advancedFilter([
+        $query = User::when($this->warehouse_id, function ($query): void {
+            $query->where('warehouse_id', $this->warehouse_id);
+        })->with('roles')->advancedFilter([
             's'               => $this->search ?: null,
             'order_column'    => $this->sortBy,
             'order_direction' => $this->sortDirection,

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Livewire\Auth;
 
 use App\Models\Customer;
+use App\Providers\RouteServiceProvider;
 use Illuminate\Support\Facades\Auth;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Attributes\Layout;
@@ -20,11 +21,13 @@ class Login extends Component
 {
     use LivewireAlert;
 
-    #[Rule(['required', 'string', 'email'])]
-    public string $email = '';
-
-    #[Rule(['required', 'string'])]
-    public string $password = '';
+    #[Rule('required', message:'Email is required ')] 
+    #[Rule('email', message:'Email must be valid')] 
+    public $email;
+    
+    
+    #[Rule('required', message: 'Password is required')]
+    public $password;
 
     #[Rule('boolean')]
     public $remember_me = false;
@@ -33,40 +36,35 @@ class Login extends Component
     {
         $this->validate();
 
-        $this->ensureIsNotRateLimited();
 
-        $customer = Customer::where('email', $this->email)->first();
+        if (Auth::guard('customer')->attempt(['email' => $this->email, 'password' => $this->password], $this->remember_me)) {
+            $customer = Customer::where(['email' => $this->email])->first();
+           
+            auth()->guard('customer')->login($customer, $this->remember_me);
 
-        if ($customer) {
-            Auth::guard('customer')->login($customer, true);
+            switch (true) {
+                case $customer->hasRole('vendor'):
+                    $homePage = RouteServiceProvider::VENDOR_HOME;
 
-            return redirect('myaccount');
+                    break;
+                default:
+                    $homePage = RouteServiceProvider::CLIENT_HOME;
+
+                    break;
+            }
+
+            session()->regenerate();
+
+            return $this->redirect(
+                session('url.intended', $homePage),
+                // navigate: true
+            );
         }
 
-        $this->addError('status', 'Creadentials not found');
+        $this->alert('error', __('These credentials do not match our records'));
     }
 
-    protected function ensureIsNotRateLimited(): void
-    {
-        if ( ! RateLimiter::tooManyAttempts($this->throttleKey(), 5)) {
-            return;
-        }
-
-        event(new Lockout(request()));
-        $seconds = RateLimiter::availableIn($this->throttleKey());
-
-        throw ValidationException::withMessages([
-            'email' => __('Authentification throttle', [
-                'seconds' => $seconds,
-                'minutes' => ceil($seconds / 60),
-            ]),
-        ]);
-    }
-
-    protected function throttleKey(): string
-    {
-        return Str::transliterate(Str::lower($this->email).'|'.request()->ip());
-    }
+  
 
     public function render()
     {

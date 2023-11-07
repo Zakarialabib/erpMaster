@@ -37,7 +37,7 @@ class Edit extends Component
     #[Rule('required|numeric')]
     public $phone;
 
-    public $roles;
+    public $role;
 
     #[Rule('nullable|string')]
     public $city;

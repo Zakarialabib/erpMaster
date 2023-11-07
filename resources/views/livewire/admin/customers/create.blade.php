@@ -11,38 +11,47 @@
                 <div class="flex flex-wrap">
                     <div class="md:w-1/2 sm:w-full px-3 mb-4 lg:mb-0">
                         <x-label for="name" :value="__('Name')" required />
-                        <x-input id="name" class="block mt-1 w-full" required type="text"
-                            wire:model="name" />
+                        <x-input id="name" class="block mt-1 w-full" required type="text" wire:model="name" />
                         <x-input-error :messages="$errors->get('name')" for="name" class="mt-2" />
                     </div>
 
                     <div class="md:w-1/2 sm:w-full px-3 mb-4 lg:mb-0">
                         <x-label for="phone" :value="__('Phone')" required />
-                        <x-input id="phone" class="block mt-1 w-full" required type="text"
-                            wire:model="phone" />
+                        <x-input id="phone" class="block mt-1 w-full" required type="text" wire:model="phone" />
                         <x-input-error :messages="$errors->get('phone')" for="phone" class="mt-2" />
+                    </div>
+                    <div class="md:w-1/2 sm:w-full px-3">
+                        <label for="role">{{ __('Customer Group') }} <span class="text-red-500">*</span></label>
+                        <x-select-list
+                            class="block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border-gray-300 rounded-md mt-1"
+                            required id="customer_group_id" name="customer_group_id" wire:model.live="customer_group_id" :options="$this->customerGroups" />
+                        <x-input-error :messages="$errors->get('customer_group_id')" class="mt-2" />
+                    </div>
+                    <div class="md:w-1/2 sm:w-full px-3">
+                        <label for="role">{{ __('Role') }} <span class="text-red-500">*</span></label>
+                        <x-select-list
+                            class="block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border-gray-300 rounded-md mt-1"
+                            required id="role" name="role" wire:model.live="role" :options="$this->roles" />
+                        <x-input-error :messages="$errors->get('role')" class="mt-2" />
                     </div>
 
                     <x-accordion title="{{ __('Details') }}">
                         <div class="flex flex-wrap -mx-2 mb-3">
                             <div class="md:w-1/2 sm:w-full px-3">
                                 <x-label for="email" :value="__('Email')" />
-                                <x-input id="email" class="block mt-1 w-full" type="email"
-                                    wire:model="email" />
+                                <x-input id="email" class="block mt-1 w-full" type="email" wire:model="email" />
                                 <x-input-error :messages="$errors->get('email')" class="mt-2" />
                             </div>
 
                             <div class="md:w-1/2 sm:w-full px-3">
                                 <x-label for="address" :value="__('Address')" />
-                                <x-input id="address" class="block mt-1 w-full" type="text"
-                                    wire:model="address" />
+                                <x-input id="address" class="block mt-1 w-full" type="text" wire:model="address" />
                                 <x-input-error :messages="$errors->get('address')" class="mt-2" />
                             </div>
 
                             <div class="md:w-1/2 sm:w-full px-3">
                                 <x-label for="city" :value="__('City')" />
-                                <x-input id="city" class="block mt-1 w-full" type="text"
-                                    wire:model="city" />
+                                <x-input id="city" class="block mt-1 w-full" type="text" wire:model="city" />
                                 <x-input-error :messages="$errors->get('city')" class="mt-2" />
                             </div>
 

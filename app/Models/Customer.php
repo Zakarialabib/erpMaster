@@ -28,6 +28,7 @@ class Customer extends Authenticatable
         'name',
         'email',
         'phone',
+        'customer_group_id',
         'city',
         'country',
         'created_at',
@@ -46,6 +47,7 @@ class Customer extends Authenticatable
     protected $fillable = [
         'id', 'name', 'phone', 'email', 'city', 'country',
         'address', 'tax_number', 'password', 'status',
+        'customer_group_id',
     ];
 
     /**
@@ -62,5 +64,10 @@ class Customer extends Authenticatable
     public function sales(): HasOne
     {
         return $this->HasOne(Sale::class);
+    }
+
+    public function customerGroup()
+    {
+        return $this->belongsTo(CustomerGroup::class);
     }
 }

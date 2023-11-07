@@ -9,7 +9,9 @@ use Illuminate\Support\Facades\Gate;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Attributes\Rule;
 use Livewire\Attributes\On;
+use Livewire\Attributes\Computed;
 use Livewire\Component;
+use App\Models\Role;
 
 class Create extends Component
 {
@@ -38,6 +40,10 @@ class Create extends Component
 
     public $tax_number;
 
+    public $customer_group_id;
+
+    public $role;
+
     #[On('createModal')]
     public function createModal(): void
     {
@@ -59,6 +65,18 @@ class Create extends Component
         $this->dispatch('refreshIndex')->to(Index::class);
 
         $this->createModal = false;
+    }
+
+    #[Computed]
+    public function customerGroups()
+    {
+        return CustomerGroup::pluck('name', 'id')->toArray();
+    }
+
+    #[Computed]
+    public function roles()
+    {
+        return Role::pluck('name', 'id')->toArray();
     }
 
     public function render()

@@ -88,7 +88,6 @@ use App\Livewire\Admin\Reports\PurchasesReport;
 use App\Livewire\Admin\Reports\SalesReturnReport;
 use App\Livewire\Admin\Reports\PurchasesReturnReport;
 use Illuminate\Support\Facades\Route;
-use Livewire\Livewire;
 
 /*
 |--------------------------------------------------------------------------
@@ -289,8 +288,3 @@ Route::get('/subscribers', SubscriberIndex::class)->name('subscribers.index');
 // Route::get('/partner', PartnerIndex::class);
 // Route::get('/purchasereturn', PurchaseReturnIndex::class);
 // Route::get('/salereturn', SaleReturnIndex::class);
-
-
-Livewire::setUpdateRoute(function ($handle) {
-    return Route::post('/custom/livewire/update', $handle);
-});
