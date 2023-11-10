@@ -147,8 +147,45 @@ class Transactions extends Component
             ->pluck('sales');
 
         $this->chart();
-        // $this->topProducts();
+
+
+        // $this->best_selling_product = $this->calculateBestSellingProduct();
+        // $this->number_of_products_sold = $this->calculateNumberOfProductsSold();
+        // $this->average_purchase_return_amount = $this->calculateAveragePurchaseReturnAmount();
+        // $this->common_return_reason = $this->findCommonReturnReason();
+        // $this->average_payment_received_per_sale = $this->calculateAveragePaymentReceivedPerSale();
+        // $this->significant_payment_changes = $this->detectSignificantPaymentChanges();
     }
+
+    // protected function calculateBestSellingProduct()
+    // {
+    //     // Your logic to determine the best-selling product
+    // }
+
+    // protected function calculateNumberOfProductsSold()
+    // {
+    //     // Your logic to calculate the total number of products sold
+    // }
+
+    // protected function calculateAveragePurchaseReturnAmount()
+    // {
+    //     // Your logic to calculate the average amount per purchase return
+    // }
+
+    // protected function findCommonReturnReason()
+    // {
+    //     // Your logic to find the most common reason for purchase returns
+    // }
+
+    // protected function calculateAveragePaymentReceivedPerSale()
+    // {
+    //     // Your logic to calculate the average payment amount received per sale
+    // }
+
+    // protected function detectSignificantPaymentChanges()
+    // {
+    //     // Your logic to detect significant changes in payment patterns
+    // }
 
     public function chart(): void
     {

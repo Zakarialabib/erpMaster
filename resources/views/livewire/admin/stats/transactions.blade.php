@@ -93,6 +93,72 @@
                     </path>
                 </x-counter-card>
             </div>
+
+            {{-- Best Selling Product --}}
+            {{-- <x-card-tooltip icon="bi bi-star" color="yellow">
+                <span class="text-2xl">{{ $best_selling_product }}</span>
+                <p>{{ __('Best Selling Product') }}</p>
+                <x-slot name="content">
+                    <p class="text-sm">
+                        {{ __('The product with the highest sales quantity.') }}
+                    </p>
+                </x-slot>
+            </x-card-tooltip> --}}
+
+            {{-- Number of Products Sold --}}
+            {{-- <x-card-tooltip icon="bi bi-box" color="purple">
+                <span class="text-2xl">{{ $number_of_products_sold }}</span>
+                <p>{{ __('Number of Products Sold') }}</p>
+                <x-slot name="content">
+                    <p class="text-sm">
+                        {{ __('Total number of products sold during the selected period.') }}
+                    </p>
+                </x-slot>
+            </x-card-tooltip> --}}
+
+            {{-- Average Purchase Return Amount --}}
+            {{-- <x-card-tooltip icon="fa fa-arrow-left" color="red">
+                <span class="text-2xl">{{ format_currency($average_purchase_return_amount) }}</span>
+                <p>{{ __('Average Purchase Return Amount') }}</p>
+                <x-slot name="content">
+                    <p class="text-sm">
+                        {{ __('Average amount refunded for purchase returns.') }}
+                    </p>
+                </x-slot>
+            </x-card-tooltip> --}}
+
+            {{-- Common Return Reason --}}
+            {{-- <x-card-tooltip icon="fa fa-exclamation-triangle" color="orange">
+                <span class="text-2xl">{{ $common_return_reason }}</span>
+                <p>{{ __('Common Return Reason') }}</p>
+                <x-slot name="content">
+                    <p class="text-sm">
+                        {{ __('The most common reason for purchase returns.') }}
+                    </p>
+                </x-slot>
+            </x-card-tooltip> --}}
+
+            {{-- Average Payment Received per Sale --}}
+            {{-- <x-card-tooltip icon="fa fa-dollar-sign" color="green">
+                <span class="text-2xl">{{ format_currency($average_payment_received_per_sale) }}</span>
+                <p>{{ __('Average Payment Received per Sale') }}</p>
+                <x-slot name="content">
+                    <p class="text-sm">
+                        {{ __('Average amount received for each completed sale.') }}
+                    </p>
+                </x-slot>
+            </x-card-tooltip> --}}
+
+            {{-- Significant Payment Changes --}}
+            {{-- <x-card-tooltip icon="fa fa-chart-line" color="blue">
+                <span class="text-2xl">{{ $significant_payment_changes }}</span>
+                <p>{{ __('Significant Payment Changes') }}</p>
+                <x-slot name="content">
+                    <p class="text-sm">
+                        {{ __('Detects any significant changes in payment patterns.') }}
+                    </p>
+                </x-slot>
+            </x-card-tooltip> --}}
         @endcan
     </div>
     <div class="flex flex-wrap">
