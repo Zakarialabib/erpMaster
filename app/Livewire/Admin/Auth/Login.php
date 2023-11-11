@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace App\Livewire\Admin\Auth;
 
+use App\Models\User;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Rule;
 use App\Providers\RouteServiceProvider;
-use Illuminate\Auth\Events\Lockout;
-use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
-use Illuminate\Validation\ValidationException;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
 
@@ -19,11 +17,11 @@ class Login extends Component
 {
     use LivewireAlert;
 
-    #[Rule('required')]
-    #[Rule('email')]
+    #[Rule('required', message: 'Email is required ')]
+    #[Rule('email', message: 'Email must be valid')]
     public $email;
 
-    #[Rule('required')]
+    #[Rule('required', message: 'Password is required')]
     public $password;
 
     #[Rule('boolean')]
@@ -33,41 +31,23 @@ class Login extends Component
     {
         $this->validate();
 
-        $throttleKey = Str::transliterate(Str::lower($this->email) . '|' . request()->ip());
+        if (auth()->guard('admin')->attempt(['email' => $this->email, 'password' => $this->password], $this->remember_me)) {
+            $user = User::where(['email' => $this->email])->first();
 
-        if (RateLimiter::tooManyAttempts($throttleKey, 5)) {
-            event(new Lockout(request()));
+            $user->setRememberToken(Str::random(60));
 
-            $seconds = RateLimiter::availableIn($throttleKey);
+            auth()->login($user, $this->remember_me);
 
-            throw ValidationException::withMessages([
-                'email' => __('Authentification throttle', [
-                    'seconds' => $seconds,
-                    'minutes' => ceil($seconds / 60),
-                ]),
-            ]);
+            session()->regenerate();
+
+            return $this->redirect(
+                RouteServiceProvider::ADMIN_HOME,
+                // navigate: true
+            );
         }
-
-        if (!auth()->attempt($this->only(['email', 'password'], $this->remember_me))) {
-            RateLimiter::hit($throttleKey);
-
-            throw ValidationException::withMessages([
-                'email' => __('Authentification failed'),
-            ]);
-        }
-
-        RateLimiter::clear($throttleKey);
-
-        session()->regenerate();
-
-        $this->redirect(
-            session('url.intended', RouteServiceProvider::ADMIN_HOME),
-            navigate: true
-        );
 
         $this->alert('error', __('These credentials do not match our records'));
     }
-
 
     public function render()
     {
