@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Livewire\Admin\Categories;
 
+use App\Livewire\Utils\Admin\HasDelete;
 use App\Livewire\Utils\Datatable;
 use App\Models\Category;
 use Illuminate\Support\Facades\Gate;
@@ -18,6 +19,7 @@ class Index extends Component
     use Datatable;
     use LivewireAlert;
     use WithFileUploads;
+    use HasDelete;
 
     /** @var mixed */
     public $category;
@@ -27,14 +29,10 @@ class Index extends Component
     /** @var array<string> */
     public $listeners = [
         'showModal',
-        'delete',
     ];
 
     /** @var bool */
     public $showModal = false;
-
-    /** @var bool */
-    public $deleteModal = false;
 
     public $model = Category::class;
 
@@ -66,41 +64,4 @@ class Index extends Component
         $this->showModal = true;
     }
 
-    public function confirmed(): void
-    {
-        $this->dispatch('delete');
-    }
-
-    public function deleteModal($category): void
-    {
-        $this->confirm(__('Are you sure you want to delete this?'), [
-            'toast'             => false,
-            'position'          => 'center',
-            'showConfirmButton' => true,
-            'cancelButtonText'  => __('Cancel'),
-            'onConfirmed'       => 'delete',
-        ]);
-        $this->category = $category;
-    }
-
-    public function deleteSelected(): void
-    {
-        abort_if(Gate::denies('category_delete'), 403);
-
-        Category::whereIn('id', $this->selected)->delete();
-
-        $this->resetSelected();
-    }
-
-    public function delete(): void
-    {
-        abort_if(Gate::denies('category_delete'), 403);
-
-        if ($this->category->products->count() > 0) {
-            $this->alert('error', __('Category has products.'));
-        } else {
-            Category::findOrFail($this->category)->delete();
-            $this->alert('success', __('Category deleted successfully.'));
-        }
-    }
 }

@@ -12,6 +12,7 @@ use App\Livewire\Front\DynamicPage;
 use App\Livewire\Vendor\Dashboard as VendorDashboard;
 use App\Livewire\Account\Index as AccountIndex;
 use App\Livewire\Front\Blogs as FrontBlogs;
+use App\Livewire\Front\DeviceShow;
 use App\Livewire\Front\BlogShow as FrontBlogShow;
 use App\Livewire\Front\Brands as FrontBrands;
 use App\Livewire\Front\BrandPage as FrontBrandPage;
@@ -57,6 +58,8 @@ Route::get('/blogs', FrontBlogs::class)->name('front.blogs');
 Route::get('/blog/{slug}', FrontBlogShow::class)->name('front.blogPage');
 
 Route::get('/page/{slug}', DynamicPage::class)->name('front.dynamicPage');
+
+Route::get('/device-model/{slug}', DeviceShow::class)->name('front.deviceshow');
 
 Route::get('/generate-sitemap', [FrontController::class, 'generateSitemaps'])->name('generate-sitemaps');
 

@@ -81,7 +81,7 @@
                                 </x-button>
                             @endcan
                             @can('brand_delete')
-                                <x-button danger wire:click="$dispatch('deleteModal',{ id : {{ $brand->id }}} )"
+                                <x-button danger wire:click="deleteModal('{{ $brand->id }}')"
                                     type="button" wire:loading.attr="disabled">
                                     <i class="fas fa-trash"></i>
                                 </x-button>
@@ -126,9 +126,9 @@
             <form wire:submit="import">
                 <div class="mb-4">
                     <div class="my-4">
-                        <x-label for="import" :value="__('Import')" />
-                        <x-input id="import" class="block mt-1 w-full" type="file" name="import"
-                            wire:model="import" />
+                        <x-label for="file" :value="__('Import')" />
+                        <x-input id="file" class="block mt-1 w-full" type="file" name="file"
+                            wire:model="file" />
                         <x-input-error :messages="$errors->get('import')" for="import" class="mt-2" />
                     </div>
 

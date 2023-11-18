@@ -20,6 +20,7 @@ use App\Livewire\Admin\Blog\Index as BlogsIndex;
 use App\Livewire\Admin\Brands\Index as BrandIndex;
 use App\Livewire\Admin\BlogCategory\Index as BlogCategoryIndex;
 use App\Livewire\Admin\Categories\Index as CategoryIndex;
+use App\Livewire\Admin\DeviceModels\Index as DeviceModelIndex;
 use App\Livewire\Admin\CashRegister\Index as CashRegisterIndex;
 use App\Livewire\Admin\Currency\Index as CurrencyIndex;
 use App\Livewire\Admin\Customers\Index as CustomersIndex;
@@ -116,6 +117,8 @@ Route::get('/currencies', CurrencyIndex::class)->name('currencies.index');
 
 //Cash Register
 Route::get('/cash-registers', CashRegisterIndex::class)->name('cash-register.index');
+
+Route::get('/device-models', DeviceModelIndex::class)->name('device-models');
 
 //Expense Category
 Route::get('/expense-categories', ExpenseCategoriesIndex::class)->name('expense-categories.index');

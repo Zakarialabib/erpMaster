@@ -6,6 +6,7 @@ namespace App\Livewire\Admin\Brands;
 
 use App\Livewire\Utils\Datatable;
 use App\Imports\BrandsImport;
+use App\Livewire\Utils\Admin\HasDelete;
 use App\Models\Brand;
 use Illuminate\Support\Facades\Gate;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
@@ -21,6 +22,7 @@ class Index extends Component
     use LivewireAlert;
     use WithFileUploads;
     use Datatable;
+    use HasDelete;
 
     /** @var mixed */
     public $brand;
@@ -30,7 +32,6 @@ class Index extends Component
     /** @var array<string> */
     public $listeners = [
         'showModal', 'importModal',
-        'delete',
     ];
 
     public $image;
@@ -39,9 +40,6 @@ class Index extends Component
 
     /** @var bool */
     public $showModal = false;
-
-    /** @var bool */
-    public $deleteModal = false;
 
     /** @var bool */
     public $importModal = false;
@@ -76,41 +74,6 @@ class Index extends Component
         $this->showModal = true;
     }
 
-    public function confirmed(): void
-    {
-        $this->dispatch('delete');
-    }
-
-    public function deleteModal($brand): void
-    {
-        $this->confirm(__('Are you sure you want to delete this?'), [
-            'toast'             => false,
-            'position'          => 'center',
-            'showConfirmButton' => true,
-            'cancelButtonText'  => __('Cancel'),
-            'onConfirmed'       => 'delete',
-        ]);
-        $this->brand = $brand;
-    }
-
-    public function deleteSelected(): void
-    {
-        abort_if(Gate::denies('brand_delete'), 403);
-
-        Brand::whereIn('id', $this->selected)->delete();
-
-        $this->resetSelected();
-    }
-
-    public function delete(): void
-    {
-        abort_if(Gate::denies('brand_delete'), 403);
-
-        Brand::findOrFail($this->brand)->delete();
-
-        $this->alert('success', __('Brand deleted successfully.'));
-    }
-
     public function importModal(): void
     {
         abort_if(Gate::denies('brand_import'), 403);
@@ -128,7 +91,7 @@ class Index extends Component
         abort_if(Gate::denies('brand_import'), 403);
 
         $this->validate([
-            'file' => 'required|mimes:xlsx',
+            'import' => 'required|mimes:xlsx',
         ]);
 
         Excel::import(new BrandsImport(), $this->file);

@@ -3,8 +3,7 @@ const defaultTheme = require('tailwindcss/defaultTheme');
 /** @type {import('tailwindcss').Config} */
 
 module.exports = {
-    mode: 'jit',
-    darkMode: "class",
+    darkMode: false,
     rtl: false,
     content: [
         './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
@@ -14,9 +13,6 @@ module.exports = {
         "./app/**/*.php",
         "./resources/**/*.html",
         "./resources/**/*.js",
-        "./resources/**/*.jsx",
-        "./resources/**/*.ts",
-        "./resources/**/*.tsx",
         "./resources/**/*.php",
     ],
 
@@ -646,13 +642,6 @@ module.exports = {
     plugins: [
         require('@tailwindcss/forms'),
         require('tailwindcss-rtl'),
-        require('tailwindcss-plugins/pagination')({
-            color: 'purple-dark',
-            linkFirst: 'mr-6 border rounded',
-            linkSecond: 'rounded-l border-l',
-            linkBeforeLast: 'rounded-r border-r',
-            linkLast: 'ml-6 border rounded',
-        }),
         require('tailwindcss-tables')({
             cellPadding: '.75rem',  // default: .75rem
             tableBorderColor: '#dee2e6',  // default: #dee2e6
