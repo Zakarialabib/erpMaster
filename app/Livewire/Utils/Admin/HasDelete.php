@@ -32,7 +32,7 @@ trait HasDelete
     {
         abort_if(Gate::denies($this->getGateDelete()), 403);
 
-        $modelClass = $this->getModelClass();
+        $modelClass = $this->model;
         $modelClass::whereIn('id', $this->selected)->delete();
 
         $this->resetSelected();
