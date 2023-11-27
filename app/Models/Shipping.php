@@ -31,9 +31,6 @@ class Shipping extends Model
     /**
      * Attributes that should be cast to their respective types (Eloquent). */
     protected $casts = [
-        'deleted_at' => 'datetime',
-        'created_at' => 'datetime:U',
-        'updated_at' => 'datetime:U',
         'cost' => 'float'
     ];
   

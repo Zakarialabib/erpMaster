@@ -5,8 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Support\HasAdvancedFilter;
-use App\Trait\GetModelByUuid;
-use App\Trait\UuidGenerator;
+use App\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -14,8 +13,7 @@ class AdsUser extends Model
 {
     use HasFactory;
     use HasAdvancedFilter;
-    use UuidGenerator;
-    use GetModelByUuid;
+    use HasUuid;
 
     public const ATTRIBUTES = [
         'id',

@@ -11,10 +11,12 @@ use Livewire\Attributes\On;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
 use Illuminate\Support\Str;
+use Livewire\WithFileUploads;
 
 class Edit extends Component
 {
     use LivewireAlert;
+    use WithFileUploads;
 
     /** @var bool */
     public $editModal = false;
@@ -67,7 +69,7 @@ class Edit extends Component
         }
 
         if ($this->image) {
-            $imageName = Str::slug($this->name).'-'.Str::random(3).'.'.$this->image->extension();
+            $imageName = Str::slug($this->name) . '-' . Str::random(3) . '.' . $this->image->extension();
             $this->image->storeAs('categories', $imageName);
             $this->image = $imageName;
         }

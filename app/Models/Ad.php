@@ -5,12 +5,11 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Support\HasAdvancedFilter;
-use App\Trait\GetModelByUuid;
-use App\Trait\UuidGenerator;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Enums\AdType;
 use App\Enums\Status;
+use App\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
@@ -18,8 +17,7 @@ class Ad extends Model
 {
     use HasFactory;
     use HasAdvancedFilter;
-    use UuidGenerator;
-    use GetModelByUuid;
+    use HasUuid;
 
     public const ATTRIBUTES = [
         'id',

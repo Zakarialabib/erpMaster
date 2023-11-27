@@ -64,7 +64,7 @@
     "Are you sure you want to update the system?": "هل أنت متأكد أنك تريد تحديث النظام؟",
     "Attribute": "يصف",
     "Authentication successful !": "دخول موفق",
-    "Authentification de la requête en cours...": "المصادقة على الطلب في الدورة...",
+    "Authentification request pending...": "المصادقة على الطلب في الدورة...",
     "Authentification throttle": "خنق المصادقة",
     "Back": "الرجوع للوراء",
     "Background Color": "لون الخلفية",

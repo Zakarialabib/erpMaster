@@ -17,7 +17,7 @@
         <meta property="product:price:currency" content="MAD">
     @endsection
 
-    <div class="my-5">
+    <div class="my-5 mx-2">
         <div itemtype="https://schema.org/Product" itemscope>
 
             <meta itemprop="name" content="{{ $product->name }}" />
@@ -25,7 +25,7 @@
 
             <div class="mx-auto py-6 sm:py-12 sm:px-6 lg:max-w-7xl lg:px-8">
                 <div class="relative lg:grid lg:grid-cols-2 lg:items-start lg:gap-x-8">
-                    <div class="lg:sticky mr-6">
+                    <div class="lg:sticky px-4">
                         <div
                             class="w-full h-[600px] border border-green-border flex justify-center items-center overflow-hidden relative mb-3">
                             <img src="{{ asset('images/products/' . $product->image) }}" alt="{{ $product->name }}"
@@ -197,7 +197,7 @@
                             </x-theme.accordion>
 
 
-                            <div class="mt-5 flex items-center">
+                            {{-- <div class="mt-5 flex items-center">
                                 <span
                                     class="mr-8 text-gray-500 font-bold font-heading uppercase">{{ __('SHARE IT') }}</span>
                                 <a class="mr-1 w-8 h-8" href="#">
@@ -212,13 +212,13 @@
                                 <a class="w-8 h-8" href="#">
                                     <i class="fab fa-whatsapp"></i>
                                 </a>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
                 </div>
 
-                <div class="w-full px-10 mt-4 border-white border-2 bg-gray-80 py-6 mx-auto shadow-md">
-                    <div class="grid grid-cols-1 gap-[30px] sm:grid-cols-2 lg:grid-cols-3">
+                <div class="w-full mt-4 border-white border-2 bg-gray-80 mx-auto shadow-md">
+                    <div class="px-10 py-6 grid grid-cols-1 gap-[30px] sm:grid-cols-2 lg:grid-cols-3">
                         <div class="flex flex-col gap-y-2 text-center">
                             <div class="w-full flex items-center justify-center bg-white rounded-lg h-[51px] mb-2">
                                 <div class="w-10 h-10 overflow-hidden"> <img class="w-full h-full object-cover"
@@ -262,7 +262,7 @@
 
 
                 <div x-data="{ activeTab: 'reviews' }" class="mt-5 mx-auto px-4 border flex items-center bg-white shadow-xl">
-                    <div class="md:w-1/4 flex flex-col">
+                    <div class="md:flex md:w-1/4 flex-col">
                         @if ($product->embeded_video)
                             <button @click="activeTab = 'video'"
                                 :class="activeTab === 'video' ? 'text-green-400' : ''"
@@ -282,9 +282,8 @@
                             class="inline-block py-6 px-10 text-left font-bold font-heading text-gray-500 uppercase border-b-2 border-gray-100 hover:border-gray-500 focus:outline-none focus:border-gray-500">
                             {{ __('Related Products') }}
                         </button>
-
                     </div>
-                    <div class="md:w-3/4 px-2">
+                    <div class="md:w-3/4 px-2  flex-col">
                         @if ($product->embeded_video)
                             <div x-show="activeTab === 'video'" class="px-5 mb-10">
                                 <div role="video">

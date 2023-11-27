@@ -408,7 +408,7 @@
                 <div class="text-center">
                     <p class="text-sm font-medium text-red-600 uppercase tracking-wide">{{ __('CMI Maroc') }}</p>
                     <h1 class="mt-2 text-3xl font-semibold text-gray-900 tracking-tight">
-                        {{ __('Authentification de la requête en cours...') }}</h1>
+                        {{ __('Authentification request pending...') }}</h1>
                     <p class="mt-2 text-base text-gray-500">
                         {{ __('Vous allez être redirigé vers la page de paiement') }}</p>
                 </div>

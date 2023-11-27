@@ -5,11 +5,13 @@
     <div itemprop="description" content="{{ $product->description }}"></div>
 
     <div
-        class="group relative flex flex-col overflow-hidden rounded-lg border border-slate-200 bg-white hover:border-sky-300 hover:shadow-lg hover:shadow-sky-300/50 transition duration-150">
+        class="group relative flex flex-col overflow-hidden rounded-lg border border-red-200 bg-white hover:border-sky-300 hover:shadow-lg hover:shadow-sky-300/50 transition duration-150">
         <a href="{{ route('front.product', $product->slug) }}"
-            class="flex mx-auto mb-4 w-full h-[220px] lg:h-[300px] rounded-t-lg"
-            style="background-image: url('{{ asset('images/products/' . $product->image) }}');
-                background-position: center;background-size: cover;">
+            class="flex mx-auto mb-4 w-full h-[220px] lg:h-[300px] rounded-t-lg">
+            <div class="aspect-h-1 aspect-w-1 overflow-hidden rounded-lg group-hover:opacity-75">
+                <img alt="Xiaomi 11T" class="h-full w-full object-cover object-center"
+                    src="{{ asset('images/products/' . $product->image) }}">
+            </div>
             <meta itemprop="image" content="{{ asset('images/products/' . $product->image) }}" />
         </a>
 
@@ -44,8 +46,7 @@
         </div>
 
         <a href="{{ route('front.product', $product->slug) }}">
-            <h4 class="font-bold px-2 block text-center md:text-lg sm:text-md text-black hover:text-red-900 uppercase"
-                itemprop="name">
+            <h4 class="px-2 block text-center md:text-md text-black hover:text-red-900 uppercase" itemprop="name">
                 {{ Str::limit($product->name, 40) }}</h4>
         </a>
 
