@@ -43,7 +43,7 @@ class CheckoutMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: __('Hello ').$this->customer->name.__(', your order has been placed'),
+            subject: __('Hello ') . $this->customer->name . ' , ' . __('your order has been placed'),
         );
     }
 }

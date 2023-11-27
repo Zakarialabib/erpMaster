@@ -88,7 +88,7 @@
                         @if ($slider->link)
                             <a href="{{ $slider->link }}"
                                 class="uppercase bg-[#fc1b1b] text-white h-12 inline-flex px-12 justify-center items-center text-sm font-oswald tracking-wider outline-none transition-colors hover:bg-[#b00303]">
-                                {{ __('Read More') }}
+                                {{ __('Read more') }}
                             </a>
                         @endif
                     </div>

@@ -78,7 +78,7 @@
                         @foreach ($this->categories as $category)
                             <li class="mb-2">
                                 <button type="button" wire:click="filterProducts('category', {{ $category->id }})">
-                                    <span class="inline-block px-4 py-2 text-sm font-bold font-heading text-blue-400">
+                                    <span class="inline-block px-4 py-2 text-sm font-bold font-heading text-red-600 hover:text-red-800">
                                         {{ $category->name }} <small>
                                             ({{ $category->products->count() }})
                                         </small>
@@ -105,7 +105,7 @@
                             <li class="mb-2">
                                 <button type="button"
                                     wire:click="filterProducts('subcategory', {{ $subcategory->id }})">
-                                    <span class="inline-block px-4 py-2 text-sm font-bold font-heading text-blue-400">
+                                    <span class="inline-block px-4 py-2 text-sm font-bold font-heading text-red-600 hover:text-red-800">
                                         {{ $subcategory->name }} <small>
                                             {{-- ({{ $subcategory->products->count() }}) --}}
                                         </small>
@@ -133,7 +133,7 @@
                         @foreach ($this->brands as $brand)
                             <li class="mx-2 mb-2">
                                 <button type="button" wire:click="filterProducts('brand', {{ $brand->id }})">
-                                    <span class="inline-block px-4 py-2 text-sm font-bold font-heading text-blue-400">
+                                    <span class="inline-block px-4 py-2 text-sm font-bold font-heading text-red-600 hover:text-red-800">
                                         {{ $brand->name }} <small> ({{ $brand->products->count() }})</small>
                                     </span>
                                 </button>

@@ -391,121 +391,119 @@
         </div>
     </div>
 
-    @pushOnce('scripts')
+    @assets
         <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-    @endPushOnce
+    @endassets
 
-    @push('scripts')
+    @script
         <script>
-            document.addEventListener('livewire:init', function() {
-                var dailyChart = new ApexCharts(document.querySelector("#daily-chart"), @json($this->dailyChartOptions));
-                dailyChart.render();
+            var dailyChart = new ApexCharts(document.querySelector("#daily-chart"), @json($this->dailyChartOptions));
+            dailyChart.render();
 
-                // Render the monthly cash flow chart
-                var monthlyChart = new ApexCharts(document.querySelector("#monthly-chart"),
-                    @json($this->monthlyChartOptions));
+            // Render the monthly cash flow chart
+            var monthlyChart = new ApexCharts(document.querySelector("#monthly-chart"),
+                @json($this->monthlyChartOptions));
 
-                monthlyChart.render();
+            monthlyChart.render();
 
-                var paymentChart = new ApexCharts(document.querySelector("#payment-chart"),
-                    @json($this->paymentChart));
-                paymentChart.render();
+            var paymentChart = new ApexCharts(document.querySelector("#payment-chart"),
+                @json($this->paymentChart));
+            paymentChart.render();
 
-                function chart(data, selector) {
-                    let tes = data;
-                    let options = {
-                        series: [{
-                                name: "Sales Total Amount",
-                                data: tes.total.sales
-                            },
-                            {
-                                name: "Sales Due Amount",
-                                data: tes.due_amount.sales
-                            },
-                            {
-                                name: "Purchase Total Amount",
-                                data: tes.total.purchase
-                            },
-                            {
-                                name: "Purchase Due Amount",
-                                data: tes.due_amount.purchase
-                            }
-                        ],
-                        chart: {
-                            height: 350,
-                            width: '100%',
-                            type: "bar",
-                            zoom: {
-                                enabled: false
-                            }
+            function chart(data, selector) {
+                let tes = data;
+                let options = {
+                    series: [{
+                            name: "Sales Total Amount",
+                            data: tes.total.sales
                         },
-                        responsive: [{
-                            breakpoint: undefined,
-                            options: {},
-                        }],
-                        plotOptions: {
-                            bar: {
-                                horizontal: false,
-                                borderRadius: 4,
-                                dataLabels: {
-                                    position: "top"
-                                }
-                            }
+                        {
+                            name: "Sales Due Amount",
+                            data: tes.due_amount.sales
                         },
-                        dataLabels: {
-                            enabled: true,
-                            offsetY: -20,
+                        {
+                            name: "Purchase Total Amount",
+                            data: tes.total.purchase
+                        },
+                        {
+                            name: "Purchase Due Amount",
+                            data: tes.due_amount.purchase
+                        }
+                    ],
+                    chart: {
+                        height: 350,
+                        width: '100%',
+                        type: "bar",
+                        zoom: {
+                            enabled: false
+                        }
+                    },
+                    responsive: [{
+                        breakpoint: undefined,
+                        options: {},
+                    }],
+                    plotOptions: {
+                        bar: {
+                            horizontal: false,
+                            borderRadius: 4,
+                            dataLabels: {
+                                position: "top"
+                            }
+                        }
+                    },
+                    dataLabels: {
+                        enabled: true,
+                        offsetY: -20,
+                        style: {
+                            fontSize: "12px",
+                            colors: ["#fff"],
+                        },
+                        formatter: function(val, opt) {
+                            return opt.w.globals.labels[opt.dataPointIndex] + ": " + val;
+                        },
+                    },
+                    stroke: {
+                        show: true,
+                        width: 1,
+                        colors: ["#fff"]
+                    },
+                    markers: {
+                        size: 5,
+                        colors: ["#1a56db"],
+                        strokeColor: "#ffffff",
+                        strokeWidth: 3
+                    },
+                    xaxis: {
+                        categories: tes.labels,
+                        labels: {
                             style: {
-                                fontSize: "12px",
-                                colors: ["#fff"],
-                            },
-                            formatter: function(val, opt) {
-                                return opt.w.globals.labels[opt.dataPointIndex] + ": " + val;
-                            },
-                        },
-                        stroke: {
-                            show: true,
-                            width: 1,
-                            colors: ["#fff"]
-                        },
-                        markers: {
-                            size: 5,
-                            colors: ["#1a56db"],
-                            strokeColor: "#ffffff",
-                            strokeWidth: 3
-                        },
-                        xaxis: {
-                            categories: tes.labels,
-                            labels: {
-                                style: {
-                                    colors: "#1a56db"
-                                }
+                                colors: "#1a56db"
                             }
+                        }
+                    },
+                    yaxis: {
+                        title: {
+                            text: "Amount",
                         },
-                        yaxis: {
-                            title: {
-                                text: "Amount",
+                    },
+                    tooltip: {
+                        y: {
+                            formatter: function(val) {
+                                return "$" + val;
                             },
                         },
-                        tooltip: {
-                            y: {
-                                formatter: function(val) {
-                                    return "$" + val;
-                                },
-                            },
-                        },
-                        legend: {
-                            position: "top",
-                            horizontalAlign: "center",
-                            offsetX: 40,
-                        },
-                    };
-                    var chart = new ApexCharts(document.querySelector(selector), options);
-                    chart.render();
-                }
-                chart({!! $charts !!}, '#chart');
-            });
+                    },
+                    legend: {
+                        position: "top",
+                        horizontalAlign: "center",
+                        offsetX: 40,
+                    },
+                };
+                var chart = new ApexCharts(document.querySelector(selector), options);
+                chart.render();
+            }
+            chart({!! $charts !!}, '#chart');
         </script>
-    @endpush
+    @endscript
 
 </div>

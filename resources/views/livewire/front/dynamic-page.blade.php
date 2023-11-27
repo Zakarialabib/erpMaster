@@ -79,7 +79,7 @@
             @endif
 
             <div class="w-full mt-4 mb-10">
-                <div class="grid md:grid-cols-5 sm:grid-cols-3 gap-10 mx-10 px-10 py-10 bg-white">
+                <div class="grid lg:grid-cols-5 md:grid-cols-3 sm:grid-cols-2 gap-10 mx-10 px-10 py-10 bg-white">
                     <div class="flex flex-col gap-y-2">
                         <div
                             class="w-full flex items-center justify-center mb-2 relative transition duration-500 ease-in-out transform hover:translate-y-[-5px">

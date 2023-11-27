@@ -51,7 +51,8 @@
                     {{ __('The total number of treasures acquired during this period.') }}
                 </p>
                 <p class="text-sm">
-                    {{ __('Successfully obtained: ') . $completed_purchases . __(' // Still on the horizon: ') . $pending_purchases }}
+                    {{ __('Successfully obtained: ') . $completed_purchases }}
+                    {{ __('Not completed yet : ') . $pending_purchases }}
                 </p>
             </x-slot>
         </x-card-tooltip>
@@ -65,7 +66,8 @@
                     {{ __('The count of items returning from their adventures.') }}
                 </p>
                 <p class="text-sm">
-                    {{ __('Total returns: ') . $total_purchase_returns . __(' // Value returned: ') . format_currency($purchase_returns_amount) }}
+                    {{ __('Total returns: ') . $total_purchase_returns }}
+                    {{ __('Value returned: ') . format_currency($purchase_returns_amount) }}
                 </p>
             </x-slot>
         </x-card-tooltip>
@@ -93,7 +95,8 @@
                     {{ __('The count of goods deciding to return to their origin.') }}
                 </p>
                 <p class="text-sm">
-                    {{ __('Total returns: ') . $total_sale_returns . __(' // Value returned: ') . format_currency($sale_returns_amount) }}
+                    {{ __('Total returns: ') . $total_sale_returns }}
+                    {{ __('Value returned: ') . format_currency($sale_returns_amount) }}
                 </p>
             </x-slot>
         </x-card-tooltip>

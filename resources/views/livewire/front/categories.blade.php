@@ -4,12 +4,13 @@
         content="@if (isset($category_id)) {{ \App\Helpers::categoryName($category_id) }} @endif">
     <meta property="og:url" content="{{ URL::current() }}">
 @endsection
+@section('title', \App\Helpers::categoryName($category_id) ?? __('Catalog'))
 
 <div>
     <div class="w-full mt-4 px-4 mx-auto" x-data="{ showSidebar: false }">
         <div class="mb-4 items-center justify-between bg-white py-2">
             <div class="w-full md:px-4 sm:px-2 flex flex-wrap justify-between">
-                <ul class="flex flex-wrap items-center gap-2 py-4 md:py-2 ">
+                <ul class="flex flex-wrap items-center gap-2 py-4 md:py-2">
                     <li class="inline-flex">
                         <a href="/" class="text-gray-600 hover:text-blue-500">
                             <svg class="w-5 h-auto fill-current mx-2 text-gray-400" xmlns="http://www.w3.org/2000/svg"
@@ -39,7 +40,6 @@
                 </ul>
 
                 <div class="w-full md:w-auto flex flex-wrap justify-center my-2 space-x-4 space-y-2">
-
                     <button type="button" @click="showSidebar = true"
                         class="flex lg:hidden items-center justify-center w-12 h-12 text-gray-600 hover:text-green-600 focus:outline-none">
                         <svg class="w-6 h-6" fill="none" stroke-linecap="round" stroke-linejoin="round"
@@ -47,22 +47,23 @@
                             <path d="M4 6h16M4 12h16M4 18h16"></path>
                         </svg>
                     </button>
+                    <div class="hidden lg:flex items-center space-x-4">
+                        <select wire:model.live="perPage" name="perPage"
+                            class="lg:px-4 md:px-2 py-2 bg-white text-gray-700 rounded border border-gray-100 text-xs focus:shadow-outline-blue focus:border-beige-500">
+                            @foreach ($paginationOptions as $value)
+                                <option value="{{ $value }}">{{ $value }}</option>
+                            @endforeach
+                        </select>
 
-                    <select wire:model.live="perPage" name="perPage"
-                        class="lg:px-4 md:px-2 py-2 bg-white text-gray-700 rounded border border-gray-100 text-xs focus:shadow-outline-blue focus:border-beige-500">
-                        @foreach ($paginationOptions as $value)
-                            <option value="{{ $value }}">{{ $value }}</option>
-                        @endforeach
-                    </select>
-
-                    <select
-                        class="lg:px-4 md:px-2 py-2 bg-white text-gray-700 rounded border border-gray-100 text-xs focus:shadow-outline-blue focus:border-beige-500"
-                        id="sortBy" wire:model="sorting">
-                        <option selected>{{ __('Choose filters') }}</option>
-                        @foreach ($sortingOptions as $value => $label)
-                            <option value="{{ $value }}">{{ $label }}</option>
-                        @endforeach
-                    </select>
+                        <select
+                            class="lg:px-4 md:px-2 py-2 bg-white text-gray-700 rounded border border-gray-100 text-xs focus:shadow-outline-blue focus:border-beige-500"
+                            id="sortBy" wire:model="sorting">
+                            <option selected>{{ __('Choose filters') }}</option>
+                            @foreach ($sortingOptions as $value => $label)
+                                <option value="{{ $value }}">{{ $label }}</option>
+                            @endforeach
+                        </select>
+                    </div>
                 </div>
             </div>
         </div>
@@ -251,13 +252,12 @@
                 </div>
             </div>
             <div class="w-full lg:w-3/4 px-4" x-data="{ loading: false }">
-                <div class="grid gap-6 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 
- xs:grid-cols-2 mb-10"
+                <div class="grid gap-6 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 xs:grid-cols-2 mb-10"
                     id="product-container">
                     @forelse ($products as $product)
                         <x-product-card :product="$product" />
                     @empty
-                        <div class="w-max">
+                        <div class="col-span-full">
                             <h3 class="text-3xl font-bold font-heading text-blue-900">
                                 {{ __('No products found') }}
                             </h3>

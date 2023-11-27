@@ -13,13 +13,3 @@
     </div>
 </div>
 
-{{-- @push('scripts')
-    <script>
-        const draggable = document.querySelector('.menu-widget');
-
-        new Sortable(draggable, {
-            animation: 150,
-            handle: '.drag-handle',
-        });
-    </script>
-@endpush --}}

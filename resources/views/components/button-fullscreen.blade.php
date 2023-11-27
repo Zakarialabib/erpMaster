@@ -35,8 +35,6 @@
                 toggleFullscreen();
             });
         }
-
-
         // });
     </script>
 @endpush

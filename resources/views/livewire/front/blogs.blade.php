@@ -33,8 +33,7 @@
                                 <h2 class="text-center uppercase mb-3 font-semibold">{{ $blog->title }}</h2>
                                 <p class="mb-2 text-sm text-gray-600">{!! $blog->content !!}</p>
 
-                                <img src="{{ $blog->image }}" class="w-100"
-                                    alt="{{ $blog->title }}">
+                                <img src="{{ $blog->image }}" class="w-100" alt="{{ $blog->title }}">
                             </div>
                         </a>
                     @empty
@@ -52,7 +51,8 @@
 
         @if (count($this->featuredBlogs) > 0)
             <div class="relative py-6 mx-auto px-6 bg-green-50 ">
-                <h2 class="uppercase mb-6 text-xl xl:text-5xl lg:text-4xl md:text-3xl sm:text-2xl leading-tight font-extrabold text-black cursor-pointer pb-10 text-center">
+                <h2
+                    class="uppercase mb-6 text-xl xl:text-5xl lg:text-4xl md:text-3xl sm:text-2xl leading-tight font-extrabold text-black cursor-pointer pb-10 text-center">
                     {{ 'Featured Articles' }}
                 </h2>
                 <div class="flex flex-wrap justify-center gap-4 py-6">
@@ -71,7 +71,7 @@
                                         {!! $blog->description !!}
                                     </p>
                                     <a href="{{ route('front.blogPage', $blog->slug) }}"
-                                        class="bottom-0 block text-center cursor-pointer border-2 border-green-600 py-2 text-sm front-bold text-green-600 transition ease-in-out duration-300 hover:bg-green-800 hover:text-green-100 focus:bg-green-800 font-semibold uppercase">{{ __('Read More') }}</a>
+                                        class="bottom-0 block text-center cursor-pointer border-2 border-green-600 py-2 text-sm front-bold text-green-600 transition ease-in-out duration-300 hover:bg-green-800 hover:text-green-100 focus:bg-green-800 font-semibold uppercase">{{ __('Read more') }}</a>
                                 </div>
                             </div>
                         </div>

@@ -24,12 +24,11 @@
             <meta itemprop="description" content="{{ $product->description }}" />
 
             <div class="mx-auto py-6 sm:py-12 sm:px-6 lg:max-w-7xl lg:px-8">
-                <div class="relative lg:grid lg:grid-cols-2 lg:items-start lg:gap-x-8">
+                <div class="lg:grid lg:grid-cols-2 lg:items-start lg:gap-x-8">
                     <div class="lg:sticky px-4">
-                        <div
-                            class="w-full h-[600px] border border-green-border flex justify-center items-center overflow-hidden relative mb-3">
+                        <div class="w-full h-[450px] flex justify-center items-center overflow-hidden relative mb-3">
                             <img src="{{ asset('images/products/' . $product->image) }}" alt="{{ $product->name }}"
-                                loading="lazy" class="w-full h-full object-cover">
+                                loading="lazy" class="w-full h-full object-cover rounded-2xl">
                         </div>
                         <div class="flex gap-2 flex-wrap">
                             @if ($product?->gallery)

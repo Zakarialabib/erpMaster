@@ -68,7 +68,7 @@
                                         {!! $blog->description !!}
                                     </p>
                                     <a href="{{ route('front.blogPage', $blog->slug) }}"
-                                        class="bottom-0 block text-center cursor-pointer border-2 border-green-600 py-2 text-sm front-bold text-green-600 transition ease-in-out duration-300 hover:bg-green-800 hover:text-green-100 focus:bg-green-800 font-semibold uppercase">{{ __('Read More') }}</a>
+                                        class="bottom-0 block text-center cursor-pointer border-2 border-green-600 py-2 text-sm front-bold text-green-600 transition ease-in-out duration-300 hover:bg-green-800 hover:text-green-100 focus:bg-green-800 font-semibold uppercase">{{ __('Read more') }}</a>
                                 </div>
                             </div>
                         </div>

@@ -7,9 +7,9 @@
     <div
         class="group relative flex flex-col overflow-hidden rounded-lg border border-red-200 bg-white hover:border-sky-300 hover:shadow-lg hover:shadow-sky-300/50 transition duration-150">
         <a href="{{ route('front.product', $product->slug) }}"
-            class="flex mx-auto mb-4 w-full h-[220px] lg:h-[300px] rounded-t-lg">
+            class="flex justify-center mx-auto mb-4 w-full md:h-[350px] sm:h-[450px] rounded-t-lg">
             <div class="aspect-h-1 aspect-w-1 overflow-hidden rounded-lg group-hover:opacity-75">
-                <img alt="Xiaomi 11T" class="h-full w-full object-cover object-center"
+                <img alt="{{ $product->name }}" class="h-full w-full object-cover object-center"
                     src="{{ asset('images/products/' . $product->image) }}">
             </div>
             <meta itemprop="image" content="{{ asset('images/products/' . $product->image) }}" />
@@ -27,7 +27,7 @@
                 class="absolute top-3 md:top-5 3xl:top-7 left-3 rtl:right-3 ltr:md:left-5 rtl:md:right-5 3xl:left-7 rtl:3xl:right-7 flex flex-col gap-y-1 items-start">
                 <span
                     class="bg-transparent border border-indigo-500 text-indigo-500 hover:bg-indigo-500 hover:text-white active:bg-indigo-900 focus:outline-none focus:border-indigo-900 focus:ring ring-indigo-300 md:text-xs leading-5 rounded-md inline-block px-1 sm:px-1 xl:px-2 py-0 sm:py-1">
-                    <p><span class="hidden sm:inline">{{ $product->category->name }}</span></p>
+                    {{ $product->category->name }}
                 </span>
             </div>
         @endif
@@ -46,7 +46,7 @@
         </div>
 
         <a href="{{ route('front.product', $product->slug) }}">
-            <h4 class="px-2 block text-center md:text-md text-black hover:text-red-900 uppercase" itemprop="name">
+            <h4 class="px-2 block text-center text-base text-black hover:text-red-900 uppercase" itemprop="name">
                 {{ Str::limit($product->name, 40) }}</h4>
         </a>
 

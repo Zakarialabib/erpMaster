@@ -133,40 +133,42 @@
         </div>
     </div>
 
-    @push('scripts')
+    @assets
         <script src="https://cdnjs.cloudflare.com/ajax/libs/quagga/0.12.1/quagga.min.js"
             integrity="sha512-bCsBoYoW6zE0aja5xcIyoCDPfT27+cGr7AOCqelttLVRGay6EKGQbR6wm6SUcUGOMGXJpj+jrIpMS6i80+kZPw=="
             crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    @endassets
 
-        <script>
-            function initQuaggaJS() {
-                Quagga.init({
-                    inputStream: {
-                        name: "Live",
-                        type: "LiveStream",
-                        target: document.querySelector('#scanner-container')
-                    },
-                    decoder: {
-                        readers: ["code_128_reader"]
-                    }
-                }, function(err) {
-                    if (err) {
-                        console.log(err);
-                        return
-                    }
-                    console.log("Initialization finished. Ready to start");
-                    Quagga.start();
-                });
-                document.querySelector("#scanner-container").classList.remove("hidden");
-            }
-
-            Quagga.onDetected(function(result) {
-                document.querySelector("#productSearch").value = result.codeResult.code;
-                document.querySelector("#scanner-container").classList.add("hidden");
-                Quagga.stop();
-                showScan = false;
+    @scripts
+    <script>
+        function initQuaggaJS() {
+            Quagga.init({
+                inputStream: {
+                    name: "Live",
+                    type: "LiveStream",
+                    target: document.querySelector('#scanner-container')
+                },
+                decoder: {
+                    readers: ["code_128_reader"]
+                }
+            }, function(err) {
+                if (err) {
+                    console.log(err);
+                    return
+                }
+                console.log("Initialization finished. Ready to start");
+                Quagga.start();
             });
-        </script>
-    @endpush
+            document.querySelector("#scanner-container").classList.remove("hidden");
+        }
+
+        Quagga.onDetected(function(result) {
+            document.querySelector("#productSearch").value = result.codeResult.code;
+            document.querySelector("#scanner-container").classList.add("hidden");
+            Quagga.stop();
+            showScan = false;
+        });
+    </script>
+    @endscript
 
 </div>

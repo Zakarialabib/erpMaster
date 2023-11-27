@@ -54,8 +54,8 @@
                     :active="request()->routeIs('admin.adjustments.index')" />
             @endcan
 
-            <x-sidebar.sublink title="{{ __('Device Models') }}" href="{{ route('admin.device-models') }}"
-            :active="request()->routeIs('admin.device-models')" />
+            {{-- <x-sidebar.sublink title="{{ __('Device Models') }}" href="{{ route('admin.device-models') }}"
+            :active="request()->routeIs('admin.device-models')" /> --}}
             
         </x-sidebar.dropdown>
     @endcan

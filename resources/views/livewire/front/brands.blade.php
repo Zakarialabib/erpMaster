@@ -1,9 +1,9 @@
 @section('meta')
     <meta itemprop="url" content="{{ URL::current() }}">
-    <meta property="og:title"
-        content="@if (isset($category_id)) {{ \App\Helpers::categoryName($category_id) }} @endif">
+    <meta property="og:title" content="@if (isset($brand_id)) {{ \App\Helpers::brandName($brand_id) }} @endif">
     <meta property="og:url" content="{{ URL::current() }}">
 @endsection
+@section('title', \App\Helpers::brandName($brand_id) ?? __('Catalog'))
 
 <div>
     <div class="w-full px-4 mx-auto">

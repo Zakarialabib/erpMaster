@@ -88,10 +88,10 @@
         </x-slot>
     </x-modal>
 
-    @push('scripts')
+    @script
         <!-- PDF Generator -->
         <script src="{{ asset('assets/js/jspdf.min.js') }}"></script>
         <script src="{{ asset('assets/js/html2canvas.min.js') }}"></script>
-    @endpush
+    @endscript
 
 </div>
