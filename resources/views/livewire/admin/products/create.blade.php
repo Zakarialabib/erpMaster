@@ -78,61 +78,58 @@
 
                         <div class="flex flex-col justify-center px-2 mt-2 w-full">
                             <h4 class="font-semibold text-center">{{ __('Initial Warehouse Stock') }}</h4>
-                            @if ($productWarehouses)
-                                @foreach ($productWarehouses as $warehouse)
-                                    <div class="w-full">
-                                        <h4 class="font-semibold text-center">{{ $warehouse->name }}</h4>
+                            @foreach ($productWarehouse as $warehouse)
+                                <div class="w-full">
+                                    <h4 class="font-semibold text-center">{{ $warehouse->name }}</h4>
+                                </div>
+                                <div class="flex items-center w-full gap-2 py-4">
+                                    <div class="flex-1">
+                                        <x-label for="price_{{ $warehouse->id }}" :value="__('Price')" required />
+                                        <input id="price_{{ $warehouse->id }}" required class="w-full" type="text"
+                                            name="price_{{ $warehouse->id }}"
+                                            wire:model="productWarehouse.{{ $warehouse->id }}.price" />
+                                        <x-input-error :messages="$errors->get('prices.' . $warehouse->id)" for="price_{{ $warehouse->id }}"
+                                            class="mt-2" />
                                     </div>
-                                    <div class="flex items-center w-full gap-2 py-4">
-                                        <div class="flex-1">
-                                            <x-label for="price_{{ $warehouse->id }}" :value="__('Price')" required />
-                                            <input id="price_{{ $warehouse->id }}" required class="w-full"
-                                                type="text" name="price_{{ $warehouse->id }}"
-                                                wire:model="productWarehouse.{{ $warehouse->id }}.price" />
-                                            <x-input-error :messages="$errors->get('prices.' . $warehouse->id)" for="price_{{ $warehouse->id }}"
-                                                class="mt-2" />
-                                        </div>
-                                        <div class="flex-1">
-                                            <x-label for="cost_{{ $warehouse->id }}" :value="__('Cost')" required />
-                                            <input type="text" required class="w-full"
-                                                wire:model="productWarehouse.{{ $warehouse->id }}.cost"
-                                                id="cost_{{ $warehouse->id }}" name="cost_{{ $warehouse->id }}" />
-                                            <x-input-error :messages="$errors->get('costs.' . $warehouse->id)" for="cost_{{ $warehouse->id }}"
-                                                class="mt-2" />
-                                        </div>
-                                        <div class="flex-1">
-                                            <x-label for="old_price_{{ $warehouse->id }}" :value="__('Old Price')"
-                                                required />
-                                            <input type="text" required class="w-full"
-                                                wire:model="productWarehouse.{{ $warehouse->id }}.old_price"
-                                                id="old_price_{{ $warehouse->id }}"
-                                                name="old_price_{{ $warehouse->id }}" />
-                                            <x-input-error :messages="$errors->get('old_price.' . $warehouse->id)" for="old_price_{{ $warehouse->id }}"
-                                                class="mt-2" />
-                                        </div>
-                                        <div class="flex-1">
-                                            <x-label for="qty_{{ $warehouse->id }}" :value="__('Quantity')" />
-                                            <input type="text" required class="w-full"
-                                                wire:model="productWarehouse.{{ $warehouse->id }}.qty"
-                                                id="qty_{{ $warehouse->id }}" name="qty_{{ $warehouse->id }}" />
-                                        </div>
-                                        <div class="flex-1">
-                                            <x-label for="stock_alert" :value="__('Stock Alert')" required />
-                                            <input type="text" required class="w-full"
-                                                wire:model="productWarehouse.{{ $warehouse->id }}.stock_alert"
-                                                id="stock_alert_{{ $warehouse->id }}"
-                                                name="stock_alert_{{ $warehouse->id }}" />
-                                            <x-input-error :messages="$errors->get('stock_alert')" for="stock_alert" class="mt-2" />
-                                        </div>
-                                        <div class="flex-1">
-                                            <x-label for="is_ecommerce" :value="__('Is Ecommerce')" required />
-                                            <x-input.checkbox id="is_ecommerce_{{ $warehouse->id }}" type="checkbox"
-                                                name="is_ecommerce_{{ $warehouse->id }}"
-                                                wire:model="productWarehouse.{{ $warehouse->id }}.is_ecommerce" />
-                                        </div>
+                                    <div class="flex-1">
+                                        <x-label for="cost_{{ $warehouse->id }}" :value="__('Cost')" required />
+                                        <input type="text" required class="w-full"
+                                            wire:model="productWarehouse.{{ $warehouse->id }}.cost"
+                                            id="cost_{{ $warehouse->id }}" name="cost_{{ $warehouse->id }}" />
+                                        <x-input-error :messages="$errors->get('costs.' . $warehouse->id)" for="cost_{{ $warehouse->id }}"
+                                            class="mt-2" />
                                     </div>
-                                @endforeach
-                            @endif
+                                    <div class="flex-1">
+                                        <x-label for="old_price_{{ $warehouse->id }}" :value="__('Old Price')" required />
+                                        <input type="text" required class="w-full"
+                                            wire:model="productWarehouse.{{ $warehouse->id }}.old_price"
+                                            id="old_price_{{ $warehouse->id }}"
+                                            name="old_price_{{ $warehouse->id }}" />
+                                        <x-input-error :messages="$errors->get('old_price.' . $warehouse->id)" for="old_price_{{ $warehouse->id }}"
+                                            class="mt-2" />
+                                    </div>
+                                    <div class="flex-1">
+                                        <x-label for="qty_{{ $warehouse->id }}" :value="__('Quantity')" />
+                                        <input type="text" required class="w-full"
+                                            wire:model="productWarehouse.{{ $warehouse->id }}.qty"
+                                            id="qty_{{ $warehouse->id }}" name="qty_{{ $warehouse->id }}" />
+                                    </div>
+                                    <div class="flex-1">
+                                        <x-label for="stock_alert" :value="__('Stock Alert')" required />
+                                        <input type="text" required class="w-full"
+                                            wire:model="productWarehouse.{{ $warehouse->id }}.stock_alert"
+                                            id="stock_alert_{{ $warehouse->id }}"
+                                            name="stock_alert_{{ $warehouse->id }}" />
+                                        <x-input-error :messages="$errors->get('stock_alert')" for="stock_alert" class="mt-2" />
+                                    </div>
+                                    <div class="flex-1">
+                                        <x-label for="is_ecommerce" :value="__('Is Ecommerce')" required />
+                                        <x-input.checkbox id="is_ecommerce_{{ $warehouse->id }}" type="checkbox"
+                                            name="is_ecommerce_{{ $warehouse->id }}"
+                                            wire:model="productWarehouse.{{ $warehouse->id }}.is_ecommerce" />
+                                    </div>
+                                </div>
+                            @endforeach
                         </div>
                         <div class="w-full px-2">
                             <x-label for="description" :value="__('Description')" />
