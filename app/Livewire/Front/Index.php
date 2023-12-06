@@ -15,11 +15,13 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
 use Livewire\Component;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Computed;
 
 #[Layout('components.layouts.guest')]
 class Index extends Component
 {
-    public function getSubcategoriesProperty(): Collection
+    #[Computed]
+    public function subcategories(): Collection
     {
         return Subcategory::inRandomOrder()->limit(3)->get();
     }

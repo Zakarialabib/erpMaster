@@ -197,7 +197,7 @@ class Edit extends Component
     }
 
     #[Computed]
-    public function getSubcategories()
+    public function subcategories()
     {
         return Subcategory::where('category_id', $this->category_id)->get();
     }
