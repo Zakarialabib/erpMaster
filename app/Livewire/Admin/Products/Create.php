@@ -77,10 +77,14 @@ class Create extends Component
 
     /** @var array */
     protected $rules = [
-        'productWarehouse.*.quantity'    => 'integer|min:1',
-        'productWarehouse.*.price'       => 'numeric',
-        'productWarehouse.*.cost'        => 'numeric',
-        'productWarehouse.*.stock_alert' => 'required|integer|min:0|max:192',
+        'productWarehouse.*.quantity'     => 'integer|min:1',
+        'productWarehouse.*.price'        => 'numeric',
+        'productWarehouse.*.old_price'    => 'numeric',
+        'productWarehouse.*.cost'         => 'numeric',
+        'productWarehouse.*.stock_alert'  => 'numeric',
+        'productWarehouse.*.is_ecommerce' => '',
+        'options.*.type'                  => '',
+        'options.*.value'                 => '',
     ];
 
     public function render()
@@ -106,6 +110,17 @@ class Create extends Component
         $this->unit = 'pcs';
         $this->featured = false;
         $this->barcode_symbology = 'C128';
+        $this->productWarehouse = [
+            [
+                'quantity'    => null,
+                'price'       => null,
+                'cost'        => null,
+                'old_price'        => null,
+                'stock_alert' => null,
+                'is_ecommerce'        => null,
+            ],
+        ];
+
         $this->createModal = true;
     }
 
