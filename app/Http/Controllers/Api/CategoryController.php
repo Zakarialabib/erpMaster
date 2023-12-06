@@ -31,20 +31,25 @@ class CategoryController extends BaseController
                 //Filters
                 $where_raw = ' 1=1 ';
 
+                //capture brand_id filter
+                // $brand_id = $request->get('brand_id') ? $request->get('brand_id')  : '';
+                // if ($brand_id !== '') {
+                //     $where_raw .= " AND (brand_id =  $brand_id)";
+                // }
                 //capture sort fields 
                 $sort_array = explode(',', $sort);
                 if (count($sort_array) > 0) {
                     // retireve ordered and limit categories list
                     $categories = Category::whereRaw($where_raw)
                         // ->orderByRaw("COALESCE($sort)")
-                        ->offset($offset)
-                        ->limit($limit)
+                        // ->offset($offset)
+                        // ->limit($limit)
                         ->get();
                 } else {
                     // retireve ordered and limit categories list
                     $categories = Category::orderBy($sort, $order)
-                        ->offset($offset)
-                        ->limit($limit)
+                        // ->offset($offset)
+                        // ->limit($limit)
                         ->get();
                 }
             } else {

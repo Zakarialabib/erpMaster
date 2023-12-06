@@ -25,8 +25,8 @@ return new class () extends Migration {
             $table->text('address')->nullable();
             $table->string('tax_number')->nullable();
             $table->string('password')->nullable();
-
             $table->foreignIdFor(CustomerGroup::class)->nullable()->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(User::class)->nullable()->constrained()->cascadeOnDelete();
             $table->boolean('status')->default(1);
             $table->rememberToken();
             $table->softDeletes();

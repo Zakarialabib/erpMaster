@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Livewire\Admin\Subcategory;
 
+use App\Livewire\Utils\Admin\HasDelete;
 use App\Models\Subcategory;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -17,26 +18,15 @@ use Livewire\Attributes\Layout;
 #[Layout('components.layouts.dashboard')]
 class Index extends Component
 {
-    use WithPagination;
     use Datatable;
     use LivewireAlert;
-
-    public $listeners = [
-        'delete',
-    ];
+    use HasDelete;
 
     public $subcategory;
-
-    public $deleteModal = false;
 
     public $image;
 
     public $model = Subcategory::class;
-
-    public function confirmed(): void
-    {
-        $this->dispatch('delete');
-    }
 
     public function render(): View|Factory
     {
@@ -51,35 +41,5 @@ class Index extends Component
         return view('livewire.admin.subcategory.index', ['subcategories' => $subcategories]);
     }
 
-    public function deleteModal($subcategory): void
-    {
-        $this->confirm(__('Are you sure you want to delete this?'), [
-            'toast'             => false,
-            'position'          => 'center',
-            'showConfirmButton' => true,
-            'cancelButtonText'  => __('Cancel'),
-            'onConfirmed'       => 'delete',
-        ]);
-        $this->subcategory = $subcategory;
-    }
-
-    public function delete(): void
-    {
-        abort_if(Gate::denies('subcategory_delete'), 403);
-
-        Subcategory::findOrFail($this->subcategory)->delete();
-
-        $this->alert('success', __('Subcategory deleted successfully.'));
-    }
-
-    public function deleteSelected(): void
-    {
-        abort_if(Gate::denies('subcategor delete'), 403);
-
-        Subcategory::whereIn('id', $this->selected)->delete();
-
-        $this->alert('success', __('Subcategory deleted successfully.'));
-
-        $this->resetSelected();
-    }
+ 
 }

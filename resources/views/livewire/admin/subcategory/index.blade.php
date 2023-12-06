@@ -75,7 +75,7 @@
                     <x-table.td>
                         <div class="flex justify-start space-x-2">
                             <x-button primary type="button"
-                                wire:click="$dispatch('editModal',{ id :  {{ $subcategory->id }} })"
+                                wire:click="$dispatch('editModal', { id :  {{ $subcategory->id }} })"
                                 wire:loading.attr="disabled">
                                 <i class="fas fa-edit"></i>
                             </x-button>

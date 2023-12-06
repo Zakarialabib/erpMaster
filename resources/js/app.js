@@ -5,6 +5,9 @@ import "../css/font.css";
 import "perfect-scrollbar/css/perfect-scrollbar.css";
 import { Livewire, Alpine } from '../../vendor/livewire/livewire/dist/livewire.esm';
 
+import ApexCharts from 'apexcharts';
+window.ApexCharts = ApexCharts;
+
 import Sortable from 'sortablejs';
 window.Sortable = Sortable;
 

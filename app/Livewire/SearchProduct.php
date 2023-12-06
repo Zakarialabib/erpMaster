@@ -7,7 +7,9 @@ namespace App\Livewire;
 use App\Models\Category;
 use App\Models\Product;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
+use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
+use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -18,7 +20,8 @@ class SearchProduct extends Component
 
     public $product;
 
-    public string $query = '';
+    #[Url(as: 'q')]
+    public $search = '';
 
     public $category_id;
 
@@ -29,12 +32,6 @@ class SearchProduct extends Component
     public int $showCount = 9;
 
     public bool $featured = false;
-
-    protected $queryString = [
-        'query',
-        'category_id' => ['except' => null],
-        'showCount'   => ['except' => 9],
-    ];
 
     public function loadMore(): void
     {
@@ -57,7 +54,8 @@ class SearchProduct extends Component
         $this->resetPage();
     }
 
-    public function getCategoriesProperty()
+    #[Computed]
+    public function categories()
     {
         return Category::pluck('name', 'id');
     }
@@ -76,10 +74,10 @@ class SearchProduct extends Component
         $query = Product::with(['warehouses' => static function ($query): void {
             $query->withPivot('qty', 'price', 'cost');
         }, 'category'])
-            ->when($this->query, function ($query): void {
+            ->when($this->search, function ($query): void {
                 $query->where(function ($query): void {
-                    $query->where('name', 'like', '%'.$this->query.'%')
-                        ->orWhere('code', 'like', '%'.$this->query.'%');
+                    $query->where('name', 'like', '%' . $this->search . '%')
+                        ->orWhere('code', 'like', '%' . $this->search . '%');
                 });
             })
             ->when($this->category_id, function ($query): void {
@@ -105,12 +103,12 @@ class SearchProduct extends Component
     public function resetQuery(): void
     {
         // Reset query, category, and featured
-        $this->reset(['query', 'category_id', 'featured', 'warehouse_id']);
+        $this->reset(['search', 'category_id', 'featured', 'warehouse_id']);
     }
 
     public function updatedQuery(): void
     {
-        if ( ! empty($this->search_results)) {
+        if (!empty($this->search_results)) {
             $this->product = $this->search_results[0];
             $this->dispatch('productSelected', $this->product);
         }

@@ -12,6 +12,7 @@ use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\On;
 
 #[Layout('components.layouts.dashboard')]
 class Index extends Component
@@ -26,10 +27,6 @@ class Index extends Component
 
     public $file;
 
-    /** @var array<string> */
-    public $listeners = [
-        'showModal',
-    ];
 
     /** @var bool */
     public $showModal = false;
@@ -51,6 +48,7 @@ class Index extends Component
         return view('livewire.admin.categories.index', ['categories' => $categories]);
     }
 
+    #[On('showModal')]
     public function showModal(Category $category): void
     {
         abort_if(Gate::denies('category access'), 403);
@@ -63,5 +61,4 @@ class Index extends Component
 
         $this->showModal = true;
     }
-
 }

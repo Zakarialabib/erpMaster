@@ -19,7 +19,7 @@ class ExpenseResource extends JsonResource
     {
         return [
             'id' => $this->resource->id,
-            'category_id' => $this->resource->category->name, // Relationship with Category model
+            'category' => new CategoryResource($this->resource->category_id),
             'user' => new UserResource(User::find($this->resource->user_id)), // Nested resource for user relationship
             'warehouse' => new WarehouseResource(Warehouse::find($this->resource->warehouse)), // Nested resource for warehouse relationship
             // 'cash_register' =>$this->resource->cashRegister ? CashRegisterResource::make($this->resource->cashRegister); // Nullable relation converted into a nested resource if necessary
@@ -28,6 +28,8 @@ class ExpenseResource extends JsonResource
             'description' => $this->resource->description,
             'amount' => (float) $this->resource->amount,
             'document' => $this->resource->document,
+            'created_at' => $this->resource->created_at,
+            'updated_at' => $this->resource->updated_at
         ];
     }
 }

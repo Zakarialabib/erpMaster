@@ -29,6 +29,7 @@ class Customer extends Authenticatable
         'email',
         'phone',
         'customer_group_id',
+        'user_id',
         'city',
         'country',
         'created_at',
@@ -47,7 +48,7 @@ class Customer extends Authenticatable
     protected $fillable = [
         'id', 'name', 'phone', 'email', 'city', 'country',
         'address', 'tax_number', 'password', 'status',
-        'customer_group_id',
+        'customer_group_id', 'user_id'
     ];
 
     /**
@@ -69,5 +70,9 @@ class Customer extends Authenticatable
     public function customerGroup()
     {
         return $this->belongsTo(CustomerGroup::class);
+    }
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

@@ -21,6 +21,7 @@ export default {
             items: [
               { text: 'Introduction', link: '/en/guide/introduction' },
               { text: 'Features', link: '/en/guide/features' },
+              { text: 'Concepts', link: '/en/guide/concepts' },
               { text: 'Installation', link: '/en/guide/installation' },
               { text: 'Configuration', link: '/en/guide/configuration' },
               { text: 'Routes', link: '/en/guide/routes' },
@@ -52,6 +53,7 @@ export default {
             items: [
               { text: 'مقدمة تعريفية', link: '/ar/guide/introduction' },
               { text: 'المميزات', link: '/ar/guide/features' },
+              { text: 'المفاهيم', link: '/ar/guide/concepts' },
               { text: 'البيئة', link: '/ar/guide/environment' },
               { text: 'التثبيت', link: '/ar/guide/installation' },
               { text: 'الاعدادات الاولية', link: '/ar/guide/configuration' },
@@ -83,6 +85,7 @@ export default {
             items: [
               { text: 'Introduction', link: '/fr/guide/introduction' },
               { text: 'Fonctionnalités', link: '/fr/guide/features' },
+              { text: 'Concepts', link: '/fr/guide/concepts' },
               { text: 'Installation', link: '/fr/guide/installation' },
               { text: 'Configuration', link: '/fr/guide/configuration' },
               { text: 'Routes', link: '/fr/guide/routes' },

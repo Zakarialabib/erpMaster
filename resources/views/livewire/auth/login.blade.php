@@ -35,7 +35,7 @@
                         <!-- Validation Errors -->
                         <x-validation-errors class="mb-4" :errors="$errors" />
 
-                        <form wire:submit="authenticate">
+                        <form wire:submit="login">
 
                             <!-- Email Address -->
                             <div>
@@ -99,7 +99,7 @@
                             </div>
 
                             <div class="flex flex-col gap-4">
-                                <button type="submit"
+                                <button wire:click="login"
                                     class="block w-full py-4 bg-red-600 hover:bg-red-800 text-center text-white font-bold font-heading uppercase rounded-md transition duration-200">
                                     {{ __('Log in') }}
                                 </button>
@@ -117,7 +117,6 @@
         <div class="w-full relative md:flex md:pb-0">
             <div style="background-image: url(https://picsum.photos/seed/picsum/1920/1080);"
                 class="flex justify-center items-center absolute pin bg-no-repeat md:bg-left w-full h-full bg-center bg-cover">
-                {{-- shadow to text , make it more bigger  --}}
                 <a href="/" wire:navigate
                     class="my-auto lg:text-6xl md:text-5xl text-4xl uppercase text-white font-extrabold font-heading opacity-75 cursor-pointer">
                     {{ settings('site_title') }}
@@ -125,5 +124,4 @@
             </div>
         </div>
     </div>
-
 </div>

@@ -43,15 +43,15 @@ class ProductController extends BaseController
                     $products = Product::with(['category', 'brand'])
                         ->whereRaw($where_raw)
                         // ->orderByRaw("COALESCE($sort)")
-                        ->offset($offset)
-                        ->limit($limit)
+                        // ->offset($offset)
+                        // ->limit($limit)
                         ->get();
                 } else {
                     // retireve ordered and limit products list
                     $products = Product::with(['category', 'brand'])
                         ->orderBy($sort, $order)
-                        ->offset($offset)
-                        ->limit($limit)
+                        // ->offset($offset)
+                        // ->limit($limit)
                         ->get();
                 }
             } else {

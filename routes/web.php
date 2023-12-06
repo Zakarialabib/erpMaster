@@ -35,7 +35,7 @@ use Livewire\Livewire;
 |
 */
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
 
 Route::get('/docs', function () {
     View::addExtension('html', 'php'); // allows .html
@@ -63,7 +63,7 @@ Route::get('/device-model/{slug}', DeviceShow::class)->name('front.deviceshow');
 
 Route::get('/generate-sitemap', [FrontController::class, 'generateSitemaps'])->name('generate-sitemaps');
 
-Route::middleware('guest:customer')->group(function () {
+Route::middleware('auth', 'role:vendor|customer')->group(function () {
     Route::get('myaccount', AccountIndex::class)->name('front.myaccount');
     Route::get('/merci-pour-votre-commande/{id}', ThankYou::class)->name('front.thankyou');
 });

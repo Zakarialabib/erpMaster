@@ -30,7 +30,7 @@ class Create extends Component
 
     public $code;
 
-    public array $gallery = [];
+    public $gallery = [];
 
     public Product $product;
 
@@ -116,7 +116,7 @@ class Create extends Component
         $this->slug = Str::slug($this->name);
 
         if ($this->image) {
-            $imageName = Str::slug($this->name).'-'.$this->image->extension();
+            $imageName = Str::slug($this->name) . '-' . $this->image->extension();
             $this->image->storeAs('products', $imageName, 'local_files');
             $this->image = $imageName;
         }
@@ -125,7 +125,7 @@ class Create extends Component
             $gallery = [];
 
             foreach ($this->gallery as $value) {
-                $imageName = Str::slug($this->name).'-'.Str::random(5).'.'.$value->extension();
+                $imageName = Str::slug($this->name) . '-' . Str::random(5) . '.' . $value->extension();
                 $value->storeAs('products', $imageName, 'local_files');
                 $gallery[] = $imageName;
             }

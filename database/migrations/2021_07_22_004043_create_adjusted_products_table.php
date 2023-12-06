@@ -26,6 +26,7 @@ return new class () extends Migration {
 
             $table->integer('quantity');
             $table->string('type');
+            
             $table->softDeletes();
             $table->timestamps();
         });

@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use App\Models\Customer;
+use App\Models\User;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Carbon\Carbon;
 
@@ -16,27 +17,21 @@ class CustomerResource extends JsonResource
      */
     public function toArray($request)
     {
-        $relations = [
-            'user' => $this->resource->user, // relationship: customer belongsTo(User::class),
-            'customerGroup' => $this->resource->group, // relationship: customer hasOne(CustomerGroup::class)
-        ];
 
         return [
-            'id' => $this->resource->id,
-            'name' => $this->resource->name,
-            'phone' => $this->resource->phone,
-            'email' => $this->resource->email,
-            'city' => $this->resource->city,
-            'country' => $this->resource->country,
-            'address' => $this->resource->address,
-            'tax_number' => $this->resource->tax_number,
-            'status' => $this->resource->status,
-            'created_at' => (string) $this->resource->created_at, // convert Carbon to string using format() method
-            'updated_at' => (string) $this->resource->updated_at,
-            'deleted_at' => $this->resource->deleted_at ? $this->resource->deleted_at->format('Y-m-d H:i:s') : null, // null if deleted_at is null,
-            'relations' => $relations,
+            'id' => $request->id,
+            'name' => $request->name,
+            'phone' => $request->phone,
+            'email' => $request->email,
+            'city' => $request->city,
+            'country' => $request->country,
+            'address' => $request->address,
+            'tax_number' => $request->tax_number,
+            'status' => $request->status,
+            'customerGroup' => $request->customerGroup->name,
+            'user' => new UserResource(User::find($request->user_id)), 
+            'created_at' => (string) $request->created_at, 
+            'updated_at' => (string) $request->updated_at,
         ];
     }
 }
-
-   

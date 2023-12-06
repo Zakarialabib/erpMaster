@@ -11,13 +11,13 @@
                 <x-slot name="trigger">
                     <div class="flex items-center text-white gap-2 px-4">
                         <i class="fa fa-caret-down ml-2"></i>
-                        {{ auth()->guard('customer')->user()->name ??auth()->guard('admin')->user()->name }}
+                        {{ auth()->guard('customer')->user()->name ?? auth()->guard('admin')->user()->name }}
                     </div>
                 </x-slot>
 
                 <x-slot name="content">
                     {{-- if admin show dashboard and settings else show logout --}}
-                    @if (Auth::guard('admin')->check())
+                    @if (auth()->guard('admin')->check())
                         <x-dropdown-link href="{{ route('admin.dashboard') }}">
                             {{ __('Dashboard') }}
                         </x-dropdown-link>
@@ -26,9 +26,11 @@
                             {{ __('Settings') }}
                         </x-dropdown-link>
                     @elseif (auth()->guard('customer'))
+                    
                         <x-dropdown-link href="{{ route('front.myaccount') }}">
                             {{ __('My account') }}
                         </x-dropdown-link>
+
                     @endif
 
                     <div class="border-t border-gray-100"></div>
@@ -50,7 +52,8 @@
                     </a>
                     <a href="{{ route('auth.register') }}"
                         class="ml-2 text-xs text-center font-semibold font-heading hover:text-red-950 hover:underline cursor-pointer">
-                        {{ __('Register') }}</a>
+                        {{ __('Register') }}
+                    </a>
                 </div>
             </button>
         @endif

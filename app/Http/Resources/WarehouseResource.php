@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\User;
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Models\Warehouse;
 
@@ -27,7 +28,7 @@ class WarehouseResource extends JsonResource
             'phone' => $warehouse->phone,
             'email' => $warehouse->email,
             'country' => $warehouse->country,
-            'user' => new UserResource(optional($this->resource->user)), // Retrieve the related user resource if present
+            'user' => new UserResource(User::find($this->resource->user_id)), // Nested resource for user relationship
             'deleted_at' => $warehouse->deleted_at,
             'created_at' => $warehouse->created_at->format('Y-m-d H:i:s'),
             'updated_at' => $warehouse->updated_at->format('Y-m-d H:i:s')

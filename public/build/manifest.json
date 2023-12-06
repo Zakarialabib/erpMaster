@@ -24,12 +24,12 @@
     "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-solid-900.woff2"
   },
   "resources/css/app.css": {
-    "file": "assets/app-68f8f875.css",
+    "file": "assets/app-f6d055af.css",
     "isEntry": true,
     "src": "resources/css/app.css"
   },
   "resources/js/app.css": {
-    "file": "assets/app-38160816.css",
+    "file": "assets/app-a04e021d.css",
     "src": "resources/js/app.css"
   },
   "resources/js/app.js": {
@@ -42,9 +42,9 @@
       "assets/fa-solid-900-cea79b34.ttf"
     ],
     "css": [
-      "assets/app-38160816.css"
+      "assets/app-a04e021d.css"
     ],
-    "file": "assets/app-94a017bf.js",
+    "file": "assets/app-a0ec4b10.js",
     "isEntry": true,
     "src": "resources/js/app.js"
   }

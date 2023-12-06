@@ -35,7 +35,8 @@
         "zakarialabib/shoppingcart": "^1.0",
         "dcblogdev/laravel-db-sync": "^1.1",
         "google/apiclient": "^2.15",
-        "simplesoftwareio/simple-qrcode": "^4.2"
+        "simplesoftwareio/simple-qrcode": "^4.2",
+        "smalot/pdfparser": "*"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.7",

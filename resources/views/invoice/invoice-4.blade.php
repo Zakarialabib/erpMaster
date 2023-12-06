@@ -219,16 +219,5 @@
             </main>
         </div>
     </div>
-
-    <!-- Jquery -->
-    <script src="{{ asset('assets/js/vendor/jquery-3.6.0.min.js') }}"></script>
-    <!-- Bootstrap -->
-    <script src="{{ asset('assets/js/bootstrap.min.js') }}"></script>
-    <!-- PDF Generator -->
-    <script src="{{ asset('assets/js/jspdf.min.js') }}"></script>
-    <script src="{{ asset('assets/js/html2canvas.min.js') }}"></script>
-    <!-- Main Js File -->
-    <script src="{{ asset('assets/js/main.js') }}"></script>
-
 </body>
 

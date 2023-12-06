@@ -39,17 +39,4 @@ class OrderResource extends JsonResource
             'user' => new UserResource(User::find($this->resource->user_id)),
         ];
     }
-
-    /**
-     * Get additional data that should be returned with the resource array, but not serialized.
-     *
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @return array
-     */
-    public function with($request)
-    {
-        return [
-        ];
-    }
 }
