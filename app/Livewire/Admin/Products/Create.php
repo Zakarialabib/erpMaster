@@ -112,6 +112,7 @@ class Create extends Component
         $this->barcode_symbology = 'C128';
         $this->productWarehouse = [
             [
+                'name' =>  Warehouse::where('status', true)->first()->name,
                 'quantity'    => null,
                 'price'       => null,
                 'cost'        => null,
