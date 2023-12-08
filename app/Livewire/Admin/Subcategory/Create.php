@@ -37,8 +37,6 @@ class Create extends Component
 
     public $language_id;
 
-    public $image;
-
     public function render(): View|Factory
     {
         abort_if(Gate::denies('subcategory create'), 403);
@@ -62,19 +60,13 @@ class Create extends Component
 
         $this->slug = Str::slug($this->name);
 
-        if ($this->image) {
-            $imageName = Str::slug($this->name).'-'.$this->image->extension();
-            $this->image->storeAs('subcategories', $imageName);
-            $this->image = $imageName;
-        }
-
         Subcategory::create($this->all());
 
         $this->alert('success', __('Subcategory created successfully.'));
 
         $this->dispatch('refreshIndex')->to(Index::class);
 
-        $this->reset(['name', 'slug', 'category_id', 'language_id', 'image']);
+        $this->reset(['name', 'slug', 'category_id', 'language_id']);
 
         $this->createModal = false;
     }

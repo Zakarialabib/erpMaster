@@ -78,12 +78,12 @@ class Edit extends Component
 
     /** @var array */
     protected $rules = [
-        'productWarehouse.*.quantity'     => 'integer|min:1',
+        'productWarehouse.*.quantity'     => 'numeric',
         'productWarehouse.*.price'        => 'numeric',
         'productWarehouse.*.old_price'    => 'numeric',
         'productWarehouse.*.cost'         => 'numeric',
         'productWarehouse.*.stock_alert'  => 'numeric',
-        'productWarehouse.*.is_ecommerce' => '',
+        'productWarehouse.*.is_ecommerce' => 'boolean',
         'options.*.type'                  => '',
         'options.*.value'                 => '',
     ];
@@ -148,14 +148,14 @@ class Edit extends Component
     {
         $this->validate();
 
-        if ($this->slug) {
+        if ($this->slug !== $this->product->slug) {
             $this->slug = Str::slug($this->name);
         }
 
-        if ( ! $this->image) {
+        if (!$this->image) {
             $this->image = null;
         } elseif (is_object($this->image) && method_exists($this->image, 'extension')) {
-            $imageName = Str::slug($this->name).'-'.Str::random(5).'.'.$this->image->extension();
+            $imageName = Str::slug($this->name) . '-' . Str::random(5) . '.' . $this->image->extension();
             $this->image->storeAs('products', $imageName, 'local_files');
             $this->image = $imageName;
         }
@@ -164,7 +164,7 @@ class Edit extends Component
             $gallery = [];
 
             foreach ($this->gallery as $value) {
-                $imageName = Str::slug($this->name).'-'.Str::random(5).'.'.$value->extension();
+                $imageName = Str::slug($this->name) . '-' . Str::random(5) . '.' . $value->extension();
                 $value->storeAs('products', $imageName, 'local_files');
                 $gallery[] = $imageName;
             }
@@ -197,7 +197,7 @@ class Edit extends Component
     }
 
     #[Computed]
-    public function subcategories()
+    public function allSubcategories()
     {
         return Subcategory::where('category_id', $this->category_id)->get();
     }

@@ -9,7 +9,6 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Gate;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Illuminate\Support\Str;
-use Livewire\WithFileUploads;
 use App\Models\Subcategory;
 use App\Models\Category;
 use App\Models\Language;
@@ -20,7 +19,6 @@ use Livewire\Attributes\Rule;
 class Edit extends Component
 {
     use LivewireAlert;
-    use WithFileUploads;
 
     public $editModal = false;
 
@@ -35,8 +33,6 @@ class Edit extends Component
     public $category_id;
 
     public $language_id;
-
-    public $image;
 
     #[On('editModal')]
     public function editModal($id): void
@@ -53,7 +49,6 @@ class Edit extends Component
         $this->slug = $this->subcategory->slug;
         $this->category_id = $this->subcategory->category_id;
         $this->language_id = $this->subcategory->language_id;
-        $this->image = $this->subcategory->image;
 
         $this->editModal = true;
     }
@@ -66,21 +61,13 @@ class Edit extends Component
             $this->slug = Str::slug($this->name);
         }
 
-        if ($this->image) {
-            $imageName = Str::slug($this->subcategory->name).'-'.$this->image->extension();
-
-            $this->image->storeAs('subcategories', $imageName);
-
-            $this->subcategory->image = $imageName;
-        }
-
         $this->subcategory->update($this->all());
 
         $this->alert('success', __('Subcategory updated successfully'));
 
         $this->dispatch('refreshIndex')->to(Index::class);
 
-        $this->reset(['name', 'slug', 'category_id', 'language_id', 'image']);
+        $this->reset(['name', 'slug', 'category_id', 'language_id']);
 
         $this->editModal = false;
     }

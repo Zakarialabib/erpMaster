@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Livewire\Admin\Products;
 
+use App\Enums\TaxType;
 use App\Models\Brand;
 use App\Models\Category;
+use App\Models\Subcategory;
 use App\Models\Product;
 use App\Models\ProductWarehouse;
 use App\Models\Warehouse;
@@ -26,22 +28,24 @@ class Create extends Component
     /** @var bool */
     public $createModal = false;
 
+    public Product $product;
+
     public $image;
 
     public $code;
 
-    public $gallery = [];
+    public $gallery;
 
-    public Product $product;
+    #[Rule('required')]
+    #[Rule('min:3')]
+    #[Rule('max:255')]
+    public $name;
 
-    #[Rule('required|string|min:3|max:255')]
-    public string $name;
+    public $barcode_symbology;
 
-    public string $barcode_symbology;
+    public $slug;
 
-    public string $slug;
-
-    public string $unit;
+    public $unit;
 
     #[Rule('max:70', message: 'The meta title a max of 170 characters.')]
     public $meta_title;
@@ -49,40 +53,42 @@ class Create extends Component
     #[Rule('max:170', message: 'The meta description a max of 170 characters.')]
     public $meta_description;
 
-    public int $order_tax;
+    public $order_tax = 9;
 
     public $description;
 
-    public int $tax_type;
+    public $tax_type;
 
-    public bool $featured;
-
-    public string $usage;
+    public $usage;
 
     public $embeded_video;
 
+    #[Rule('required')]
     public $category_id;
 
     public $brand_id;
 
-    public array $subcategories = [];
+    public $subcategories;
 
-    public array $options = [];
+    public $options;
 
-    public bool $best;
-
-    public bool $hot;
-
-    public $productWarehouse = [];
+    public $productWarehouse = [
+        'qty' => 0,
+        'price' => '',
+        'cost' => '',
+        'old_price' => '',
+        'stock_alert' => 10,
+        'is_ecommerce' => false,
+    ];
 
     /** @var array */
     protected $rules = [
-        'productWarehouse.*.quantity'     => 'integer|min:1',
-        'productWarehouse.*.price'        => 'numeric',
-        'productWarehouse.*.old_price'    => 'numeric',
-        'productWarehouse.*.cost'         => 'numeric',
-        'productWarehouse.*.stock_alert'  => 'numeric',
-        'productWarehouse.*.is_ecommerce' => '',
+        'productWarehouse.qty' => 'numeric',
+        'productWarehouse.price' => 'numeric',
+        'productWarehouse.old_price' => 'numeric',
+        'productWarehouse.cost' => 'numeric',
+        'productWarehouse.stock_alert' => 'numeric',
+        'productWarehouse.is_ecommerce' => 'boolean',
         'options.*.type'                  => '',
         'options.*.value'                 => '',
     ];
@@ -106,24 +112,11 @@ class Create extends Component
         $this->resetErrorBag();
 
         $this->resetValidation();
-        $this->order_tax = 0;
         $this->unit = 'pcs';
-        $this->featured = false;
         $this->barcode_symbology = 'C128';
-        $this->productWarehouse = [
-            [
-                'name' =>  Warehouse::where('status', true)->first()->name,
-                'quantity'    => null,
-                'price'       => null,
-                'cost'        => null,
-                'old_price'        => null,
-                'stock_alert' => null,
-                'is_ecommerce'        => null,
-            ],
-        ];
-
         $this->createModal = true;
     }
+
 
     public function create(): void
     {
@@ -150,22 +143,22 @@ class Create extends Component
         }
 
         $this->description = json_encode($this->description);
+        $this->subcategories = json_encode($this->subcategories);
 
-        Product::create($this->all());
+        $product = Product::create(
+            $this->all(),
+        );
 
-        foreach ($this->productWarehouse as $warehouseId => $warehouse) {
-            $quantity = $warehouse['quantity'] ?? 0;
-            $price = $warehouse['price'];
-            $cost = $warehouse['cost'];
-
-            ProductWarehouse::create([
-                'product_id'   => $this->product->id,
-                'warehouse_id' => $warehouseId,
-                'price'        => $price,
-                'cost'         => $cost,
-                'qty'          => $quantity,
-            ]);
-        }
+        ProductWarehouse::create([
+            'product_id'   => $product->id,
+            'warehouse_id' => $this->warehouse->id,
+            'price'        => $this->productWarehouse['price'],
+            'cost'         => $this->productWarehouse['cost'],
+            'qty'          => $this->productWarehouse['qty'] ?? 0,
+            'old_price' => $this->productWarehouse['old_price'],
+            'stock_alert' => $this->productWarehouse['stock_alert'] ?? 0,
+            'is_ecommerce' => $this->productWarehouse['is_ecommerce'] ?? false,
+        ]);
 
         $this->alert('success', __('Product created successfully'));
 
@@ -175,9 +168,21 @@ class Create extends Component
     }
 
     #[Computed]
+    public function warehouse()
+    {
+        return Warehouse::select('name', 'id')->first();
+    }
+
+    #[Computed]
     public function categories()
     {
         return Category::pluck('name', 'id')->toArray();
+    }
+
+    #[Computed]
+    public function allSubcCategries()
+    {
+        return Subcategory::where('category_id', $this->category_id)->get();
     }
 
     #[Computed]

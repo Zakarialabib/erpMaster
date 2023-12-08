@@ -23,7 +23,7 @@
                         class="block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border-gray-300 rounded-md mt-1"
                         wire:model="subcategories">
                         <option value="" disabled>{{ __('Select SubCategory') }}</option>
-                        @foreach ($this->subcategories as $subcategory)
+                        @foreach ($this->allSubcategories as $subcategory)
                             <option value="{{ $subcategory->id }}">
                                 {{ $subcategory->name }}
                             </option>
