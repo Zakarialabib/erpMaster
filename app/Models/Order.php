@@ -36,6 +36,7 @@ class Order extends Model
         'reference',
         'shipping_id',
         'customer_id',
+        'user_id',
         'tax_amount',
         'discount_amount',
         'total_amount',
@@ -63,6 +64,14 @@ class Order extends Model
         return date('Ymd').'-'.sprintf('%06d', $number);
     }
 
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(
+            related: User::class,
+            foreignKey: 'user_id',
+        );
+    }
+    
     public function customer(): BelongsTo
     {
         return $this->belongsTo(

@@ -21,48 +21,36 @@ class ProductController extends BaseController
     public function index(Request $request)
     {
         try {
-            if ($request->get('_end') !== null) {
-                //
-                $limit = $request->get('_end') ? $request->get('_end') : 10;
-                $offset = $request->get('_start') ? $request->get('_start') : 0;
-                //
-                $order = $request->get('_order') ? $request->get('_order') : 'asc';
-                $sort = $request->get('_sort') ?  $request->get('_sort') : 'id';
-                //Filters
-                $where_raw = ' 1=1 ';
+            $query = Product::query();
 
-                //capture brand_id filter
-                $brand_id = $request->get('brand_id') ? $request->get('brand_id')  : '';
-                if ($brand_id !== '') {
-                    $where_raw .= " AND (brand_id =  $brand_id)";
-                }
-                //capture sort fields 
-                $sort_array = explode(',', $sort);
-                if (count($sort_array) > 0) {
-                    // retireve ordered and limit products list
-                    $products = Product::with(['category', 'brand'])
-                        ->whereRaw($where_raw)
-                        // ->orderByRaw("COALESCE($sort)")
-                        // ->offset($offset)
-                        // ->limit($limit)
-                        ->get();
-                } else {
-                    // retireve ordered and limit products list
-                    $products = Product::with(['category', 'brand'])
-                        ->orderBy($sort, $order)
-                        // ->offset($offset)
-                        // ->limit($limit)
-                        ->get();
-                }
-            } else {
-                // retireve all products
-                $products = Product::with(['category', 'brand'])->get();
+            if ($request->has('_end')) {
+                $limit = $request->input('_end', 10);
+                $offset = $request->input('_start', 0);
+                $order = $request->input('_order', 'asc');
+                $sort = $request->input('_sort', 'id');
+
+                $query->when($request->filled('brand_id'), function ($q) use ($request) {
+                    return $q->where('brand_id', $request->input('brand_id'));
+                });
+
+                $query->when($request->has('available'), function ($q) {
+                    return $q->whereHas('warehouses', function ($query) {
+                        $query->where('qty', '>', 0);
+                    });
+                });
+
+                $query->with(['category', 'brand'])->orderBy($sort, $order)->offset($offset)->limit($limit);
             }
-            return $this->sendResponse($products, 'Product List');
+
+            $products = $query->get();
+            $productsResource = ProductResource::collection($products);
+
+            return $this->sendResponse($productsResource, 'Product List', count($products));
         } catch (\Exception $e) {
             return $this->sendError($e->getMessage());
         }
     }
+
 
     /**
      * Store a newly created resource in storage.
@@ -93,7 +81,7 @@ class ProductController extends BaseController
     public function show($id)
     {
         try {
-            $product = Product::find($id);
+            $product = new ProductResource(Product::find($id));
             if (is_null($product)) {
                 return $this->sendError('Product not found');
             } else {

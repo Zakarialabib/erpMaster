@@ -6,8 +6,11 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use App\Models\Customer;
+use App\Models\User;
+use App\Models\Shipping;
 
-return new class () extends Migration {
+return new class() extends Migration
+{
     /**
      * Run the migrations.
      *
@@ -20,7 +23,8 @@ return new class () extends Migration {
             $table->date('date');
             $table->string('reference');
             $table->foreignIdFor(Customer::class)->constrained('customers')->cascadeOnDelete();
-            $table->foreignId('shipping_id')->nullable()->constrained('shippings')->nullOnDelete();
+            $table->foreignIdFor(User::class)->nullable()->constrained('users')->cascadeOnDelete();
+            $table->foreignIdFor(Shipping::class)->nullable()->constrained('shippings')->cascadeOnDelete();
             $table->integer('tax_amount')->default(0);
             $table->integer('discount_amount')->default(0);
             $table->double('total_amount');

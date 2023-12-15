@@ -17,14 +17,12 @@ class ShippingResource extends JsonResource
     {
 
         return [
-            'id' => $this->resource->id,
-            'is_pickup' => $this->resource->is_pickup,
-            'title' => $this->resource->title,
-            'subtitle' => $this->resource->subtitle,
-            'cost' => (float) $this->resource->cost,
-            'status' => $this->resource->status,
-            'deleted_at' => $this->resource->deleted_at ? $this->resource->deleted_at->format('Y-m-d H:i:s') : null, // Use Carbon to format datetime for human readable output
-            'created_at' => $this->resource->created_at->format('Y-m-d H:i:s'),
+            'id' => $request->id,
+            'is_pickup' => $request->is_pickup,
+            'title' => $request->title,
+            'subtitle' => $request->subtitle,
+            'cost' => (float) $request->cost,
+            'status' => $request->status,
         ];
     }
 }

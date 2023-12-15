@@ -33,13 +33,13 @@ class DatabaseSeeder extends Seeder
             PageSeeder::class,
             SectionsSeeder::class,
             ShippingSeeder::class,
-            // BrandSeeder::class,
-            // CategoriesSeeder::class,
-            // WarehouseSeeder::class,
-            // ProductsSeeder::class,
-            // ExpenseSeeder::class,
-            // CustomersSeeder::class,
-            // SupplierSeeder::class,
+            BrandSeeder::class,
+            CategoriesSeeder::class,
+            WarehouseSeeder::class,
+            ProductsSeeder::class,
+            ExpenseSeeder::class,
+            CustomersSeeder::class,
+            SupplierSeeder::class,
         ]);
     }
 }

@@ -110,6 +110,7 @@ class Checkout extends Component
             'reference'      => Order::generateReference(),
             'date'           => now(),
             'shipping_id'    => $this->shipping_id,
+            'user_id'    => null,
             'customer_id'    => $customer->id,
             'payment_method' => $this->payment_method,
             // 'shipping_amount' => $shipping->cost,

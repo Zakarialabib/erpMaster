@@ -42,9 +42,6 @@
             <x-table.th>
                 <input type="checkbox" wire:model="selectPage" />
             </x-table.th>
-            <x-table.th>
-                {{ __('Image') }}
-            </x-table.th>
             <x-table.th sortable :direction="$sorts['name'] ?? null" :field="'name'" wire:click="sortingBy('name')">
                 {{ __('Name') }}
             </x-table.th>
@@ -60,11 +57,7 @@
             @forelse($subcategories as $subcategory)
                 <x-table.tr wire:loading.class.delay="opacity-50" wire:key="row-{{ $subcategory->id }}">
                     <x-table.td>
-                        <input type="checkbox" value="{{ $subcategory->id }}" wire:model="selected">
-                    </x-table.td>
-                    <x-table.td>
-                        <img src="{{ asset('images/subcategories/' . $subcategory->image) }}"
-                            alt="{{ $subcategory->name }}" class="w-10 h-10 rounded-full object-cover">
+                        <input type="checkbox" value="{{ $subcategory->id }}" wire:model.live="selected">
                     </x-table.td>
                     <x-table.td>
                         {{ $subcategory->name }}

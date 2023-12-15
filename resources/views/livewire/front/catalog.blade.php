@@ -151,7 +151,7 @@
                 <div itemscope itemtype="https://schema.org/ItemList">
                     <div class="grid gap-6 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 mb-10">
                         @forelse ($products as $product)
-                            <x-product-card :product="$product" />
+                        <x-product-card :product="$product" />
                         @empty
                             <div class="col-span-full">
                                 <h3 class="text-center text-3xl font-bold font-heading text-blue-900">

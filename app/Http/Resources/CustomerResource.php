@@ -9,29 +9,23 @@ use Carbon\Carbon;
 
 class CustomerResource extends JsonResource
 {
-    /**
-     * Transform the resource into an array.
-     *
-     * @param  \App\Models\Customer $resource
-     * @return array
-     */
+
     public function toArray($request)
     {
-
         return [
-            'id' => $request->id,
-            'name' => $request->name,
-            'phone' => $request->phone,
-            'email' => $request->email,
-            'city' => $request->city,
-            'country' => $request->country,
-            'address' => $request->address,
-            'tax_number' => $request->tax_number,
-            'status' => $request->status,
-            'customerGroup' => $request->customerGroup->name,
-            'user' => new UserResource(User::find($request->user_id)), 
-            'created_at' => (string) $request->created_at, 
-            'updated_at' => (string) $request->updated_at,
+            'id' => $this->id,
+            'name' => $this->name,
+            'phone' => $this->phone,
+            'email' => $this->email,
+            'city' => $this->city,
+            'country' => $this->country,
+            'address' => $this->address,
+            'tax_number' => $this->tax_number,
+            'status' => $this->status,
+            // 'customerGroup' => $this->customerGroup->name,
+            // 'user' => new UserResource(User::find($this->user_id)) ?? null,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
         ];
     }
 }
