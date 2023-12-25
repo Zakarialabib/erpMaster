@@ -6,8 +6,9 @@ namespace App\Http\Middleware;
 
 use App\Models\Language;
 use Closure;
-use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Http\Request;
 
 class Locale
 {
@@ -18,19 +19,29 @@ class Locale
      *
      * @return mixed
      */
-    public function handle($request, Closure $next)
+    public function handle(Request $request, Closure $next)
     {
-        if (Schema::hasTable('languages')) {
-            $language_default = Language::query()
-                ->whereIsDefault(Language::IS_DEFAULT)
-                ->first('code');
+        if (settings()->multi_language) {
+            $locale = Session::get('language');
+
+            if (!$locale) {
+                $defaultLanguage = Cache::rememberForever('default_language', function () {
+                    return Language::where('is_default', true)->value('code');
+                });
+
+                $locale = $defaultLanguage ?? config('app.locale');
+                Session::put('language', $locale);
+            }
+
+            app()->setLocale($locale);
+        } else {
+            // If multi_language is false, set the locale to the default language directly
+            $defaultLanguage = Cache::rememberForever('default_language', function () {
+                return Language::where('is_default', true)->value('code');
+            });
+
+            app()->setLocale($defaultLanguage ?? config('app.locale'));
         }
-
-        // $code = Session::get('code');
-
-        $code = request()->cookie('lang', $language_default['code'] ?? 'en');
-
-        App::setLocale($code);
 
         return $next($request);
     }

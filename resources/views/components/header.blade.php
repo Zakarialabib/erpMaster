@@ -22,25 +22,26 @@
                 </a>
             </div>
             <div class="flex items-center justify-center space-x-4 md:order-last">
-                {{-- <x-dropdown>
+                <x-dropdown>
                     <x-slot name="trigger">
                         <button type="button"
-                            class="text-base font-semibold text-gray-500 hover:text-sky-800 dark:text-slate-400 dark:hover:text-sky-400 flex flex-wrap">
-                            @if (count($langs) > 1)
-                            <i class="fa fa-globe  h-5 w-5 cursor-pointer pr-2" aria-hidden="true"></i>
+                            class="text-base font-semibold text-gray-500 hover:text-sky-800 dark:text-gray-400 dark:hover:text-sky-400 flex flex-wrap">
+                            @if (count($languages) > 1)
+                                <i class="fa fas-chevron-down h-5 w-5 cursor-pointer pr-2" aria-hidden="true"></i>
                             @endif
+                            <img src="{{ Helpers::flagImageUrl(\Illuminate\Support\Facades\App::getLocale()) }}"
+                                class="h-5 cursor-pointer" lazy>
                         </button>
                     </x-slot>
                     <x-slot name="content">
-                        @if (count($langs) > 1)
+                        @if (count($languages) > 1)
                             <ul>
-                                @foreach ($langs as $lang)
-                                    @if (\Illuminate\Support\Facades\App::getLocale() !== $lang->code)
+                                @foreach ($languages as $code => $name)
+                                    @if (\Illuminate\Support\Facades\App::getLocale() !== $code)
                                         <li class="flex">
                                             <a class="py-2 px-4 text-sm dark:hover:bg-gray-600 dark:hover:text-gray-200 w-full whitespace-nowrap"
-                                                href="{{ route('changelanguage', $lang->code) }}"
-                                                title="{{ $lang->name }}">
-                                                {{ $lang->name }}
+                                                href="{{ route('changelanguage', $code) }}" title="{{ $name }}">
+                                                {{ $name }}
                                             </a>
                                         </li>
                                     @endif
@@ -48,8 +49,7 @@
                             </ul>
                         @endif
                     </x-slot>
-
-                </x-dropdown> --}}
+                </x-dropdown>
 
 
                 {{-- <span class="text-sm text-gray-900 dark:text-slate-400">

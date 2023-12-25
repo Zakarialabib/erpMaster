@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Log;
 use Throwable;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Session;
 
 class FrontController extends Controller
 {
@@ -27,9 +28,13 @@ class FrontController extends Controller
         return view('front.index', ['products' => $products]);
     }
 
-    public function changeLanguage($locale)
+    public function changeLanguage($lang)
     {
-        Cookie::queue('lang', $locale);
+        $availableLanguages = cache()->get('languages');
+
+        if (array_key_exists($lang, $availableLanguages)) {
+            Session::put('language', $lang);
+        }
 
         return redirect()->back();
     }

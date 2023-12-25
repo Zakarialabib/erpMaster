@@ -19,19 +19,39 @@
                     </div>
                     <div class="xl:w-1/2 md:w-full px-2">
                         <x-label for="language_id" :value="__('Language')" required />
-                        <x-select-list
+
+                        @if (settings('multi_language'))
+                            <select
+                                class="block bg-white text-gray-700 rounded border border-gray-300 mb-1 text-sm w-full focus:shadow-outline-blue focus:border-blue-500"
+                                id="language_id" name="language_id" wire:model="language_id">
+                                @foreach ($languages as $id => $name)
+                                    <option value="{{ $id }}"
+                                        @if (Session::has('language') && Session::get('language') === $id) selected @endif>
+                                        {{ $name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        @else
+                            <select
+                                class="block bg-white text-gray-700 rounded border border-gray-300 mb-1 text-sm w-full focus:shadow-outline-blue focus:border-blue-500"
+                                id="language_id" name="language_id" wire:model="language_id">
+                                <option value="{{ $languages['name'] }}" selected>{{ $languages['name'] }}</option>
+                            </select>
+                        @endif
+
+                        {{-- <x-select-list
                             class="block bg-white text-gray-700 rounded border border-gray-300 mb-1 text-sm w-full focus:shadow-outline-blue focus:border-blue-500"
-                            id="language_id" name="language_id" wire:model="language_id" :options="$languages" />
+                            id="language_id" name="language_id" wire:model="language_id" :options="$languages" /> --}}
                         <x-input-error :messages="$errors->get('language_id')" for="language_id" class="mt-2" />
                     </div>
                     <div class="xl:w-1/2 md:w-full px-2">
                         <x-label for="product_id" :value="__('Product')" />
                         <x-select-list
                             class="block bg-white text-gray-700 rounded border border-gray-300 mb-1 text-sm w-full focus:shadow-outline-blue focus:border-blue-500"
-                            id="product_id" name="product_id" wire:model="product_id" :options="$this->products />
+                            id="product_id" name="product_id" wire:model="product_id" :options="$this->products" />
                         <x-input-error :messages="$errors->get('product_id')" for="product_id" class="mt-2" />
                     </div>
-                    
+
                     <div class="xl:w-1/2 md:w-full px-2">
                         <x-label for="description" :value="__('Details')" />
                         <x-input id="description" class="block mt-1 w-full" type="text" name="description"
@@ -40,7 +60,7 @@
                     </div>
                     {{-- if product_id is selected hide link --}}
 
-                    <div class="xl:w-1/2 md:w-full px-2" >
+                    <div class="xl:w-1/2 md:w-full px-2">
                         <x-label for="link" :value="__('Link')" />
                         <x-input id="link" class="block mt-1 w-full" type="text" name="link"
                             wire:model="link" />
@@ -49,8 +69,8 @@
 
                     <div class="w-full px-3">
                         <x-label for="video" :value="__('Embeded Video')" />
-                        <x-input id="embeded_video" class="block mt-1 w-full" type="text"
-                                name="embeded_video" wire:model="embeded_video" />
+                        <x-input id="embeded_video" class="block mt-1 w-full" type="text" name="embeded_video"
+                            wire:model="embeded_video" />
                         <x-input-error :messages="$errors->get('embeded_video')" for="embeded_video" class="mt-2" />
                     </div>
 

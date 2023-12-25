@@ -22,7 +22,7 @@
                         <x-label for="category_id" :value="__('Category')" required />
                         <select
                             class="block bg-white text-gray-700 rounded border border-gray-300 mb-1 text-sm w-full focus:shadow-outline-blue focus:border-blue-500"
-                            id="category_id" name="category_id"  wire:model="category_id">
+                            id="category_id" name="category_id" wire:model="category_id">
                             <option value="">{{ __('Select Category') }}</option>
                             @foreach ($this->categories as $category)
                                 <option value="{{ $category->id }}">{{ $category->name }}</option>
@@ -33,13 +33,24 @@
 
                     <div class="mt-4 px-2 w-1/2 sm:w-full">
                         <x-label for="language_id" :value="__('Language')" required />
-                        <select
-                            class="block bg-white text-gray-700 rounded border border-gray-300 mb-1 text-sm w-full focus:shadow-outline-blue focus:border-blue-500"
-                            id="language_id" name="language_id" wire:model="language_id">
-                            @foreach ($this->languages as $language)
-                                <option value="{{ $language->id }}">{{ $language->name }}</option>
-                            @endforeach
-                        </select>
+                        @if (settings('multi_language'))
+                            <select
+                                class="block bg-white text-gray-700 rounded border border-gray-300 mb-1 text-sm w-full focus:shadow-outline-blue focus:border-blue-500"
+                                id="language_id" name="language_id" wire:model="language_id">
+                                @foreach ($languages as $id => $name)
+                                    <option value="{{ $id }}"
+                                        @if (Session::has('language') && Session::get('language') === $id) selected @endif>
+                                        {{ $name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        @else
+                            <select
+                                class="block bg-white text-gray-700 rounded border border-gray-300 mb-1 text-sm w-full focus:shadow-outline-blue focus:border-blue-500"
+                                id="language_id" name="language_id" wire:model="language_id">
+                                <option value="{{ $languages['name'] }}" selected>{{ $languages['name'] }}</option>
+                            </select>
+                        @endif
                         <x-input-error :messages="$errors->get('language_id')" for="language_id" class="mt-2" />
                     </div>
 

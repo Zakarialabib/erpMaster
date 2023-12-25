@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\UserResource;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Validation\ValidationException;
 use Laravel\Sanctum\PersonalAccessToken;
@@ -14,46 +15,27 @@ use Symfony\Component\HttpFoundation\Response;
 
 class AuthController extends Controller
 {
-
-    // login should be improved to return a reponse a message if not authenticated
-    // Login failed. Status: 500 
-    // Response { type: "cors", url: "http://erpmaster.test/api/login", redirected: false, status: 500, ok: false, statusText: "Internal Server Error", headers: Headers(2), body: ReadableStream, bodyUsed: false }
-    // ​
-    // body: ReadableStream { locked: true }
-    // ​
-    // bodyUsed: true
-    // ​
-    // headers: Headers { "cache-control" → "no-cache, private", "content-type" → "text/html; charset=UTF-8" }
-    // ​
-    // ok: false
-    // ​
-    // redirected: false
-    // ​
-    // status: 500
-    // ​
-    // statusText: "Internal Server Error"
-    // ​
-    // type: "cors"
-    // ​
-    // url: "http://erpmaster.test/api/login"
     public function login(Request $request)
     {
         if (!Auth::attempt($request->only(['email', 'password']))) {
             return response()->json([
                 'message' => 'Invalid login details'
-            ], Response::HTTP_UNAUTHORIZED);
+            ], 401);
         }
-        
+
         $user = User::where('email', $request['email'])->firstOrFail();
 
-        $token = $user->createToken('authToken')->plainTextToken;
+        $token = $user->createToken('auth_token')->plainTextToken;
 
         return response()->json(['token' => $token, 'user' => $user]);
     }
 
-    public function getUserProfile(Request $request)
+    public function userProfile(Request $request)
     {
-        return response()->json($request->user());
+        $user = $request->user();
+        $userData = new UserResource($user);
+        
+        return response()->json($userData);
     }
 
     /**
@@ -77,7 +59,7 @@ class AuthController extends Controller
                 'password' => Hash::make($validatedData['password']),
             ]);
 
-            $token = $user->createToken('authToken')->plainTextToken;
+            $token = $user->createToken('auth_token')->plainTextToken;
 
             return response()->json(['token' => $token, 'user' => $user]);
         } catch (\Throwable $th) {
@@ -92,28 +74,14 @@ class AuthController extends Controller
      *
      * @return JsonResponse The JSON response.
      */
-    public function logout(): JsonResponse
+    public function logout(Request $request)
     {
+
+        $request->user()->currentAccessToken()->delete();
+
         auth()->logout();
 
         return response()->json(['message' => 'Logged out successfully']);
-    }
-
-    /**
-     * Handles token refresh.
-     *
-     * @param Request $request The request object.
-     * @return JsonResponse The JSON response.
-     */
-    public function refresh(Request $request): JsonResponse
-    {
-        auth()->logout();
-        $token = $request->user()->createToken('auth_token')->plainTextToken;
-
-        return response()->json([
-            'token' => $token,
-            'token_type' => 'Bearer',
-        ]);
     }
 
     /**

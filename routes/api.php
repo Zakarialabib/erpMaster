@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Http\Controllers\Api\ProductController as ProductApi;
 use App\Http\Controllers\Api\CustomerController as CustomerApi;
 use App\Http\Controllers\Api\CategoryController as CategoryApi;
+use App\Http\Controllers\Api\OrderController as OrderApi;
 use App\Http\Controllers\Api\UserController as UserApi;
 use App\Http\Controllers\Api\SupplierController as SupplierApi;
 use App\Http\Controllers\Api\ExpenseController as ExpenseApi;
@@ -30,32 +31,20 @@ use Illuminate\Support\Facades\Route;
 
 // Register an user and create toeken access 
 Route::post('/register', [AuthApi::class, 'register']);
-// create user access 
-Route::post('/sanctum/token', function (Request $request) {
-    $request->validate([
-        'email' => 'required|email',
-        'password' => 'required',
-        'device_name' => 'required',
-    ]);
-
-    $user = User::where('email', $request->email)->first();
-
-    if (!$user || !Hash::check($request->password, $user->password)) {
-        throw ValidationException::withMessages([
-            'email' => ['The provided credentials are incorrect.'],
-        ]);
-    }
-
-    return $user->createToken($request->device_name)->plainTextToken;
-});
-//login the user
 Route::post('/login', [AuthApi::class, 'login']);
 
-Route::apiResource('products', ProductApi::class);
-Route::apiResource('categories', CategoryApi::class);
+//login the user
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::get('/user-info', [AuthApi::class, 'userProfile']);
+    Route::apiResource('products', ProductApi::class);
+    Route::apiResource('categories', CategoryApi::class);
+    Route::apiResource('customers', CustomerApi::class);
+    Route::apiResource('orders', OrderApi::class);
+    Route::post('/logout', [AuthApi::class, 'logout']);
+});
+
 Route::apiResource('users', UserApi::class);
-Route::apiResource('customers', CustomerApi::class);
 Route::apiResource('suppliers', SupplierApi::class);
-Route::apiResource('expenses',ExpenseApi::class);
+Route::apiResource('expenses', ExpenseApi::class);
 Route::apiResource('roles', RoleApi::class);
 Route::apiResource('warehouses', WarehouseApi::class);

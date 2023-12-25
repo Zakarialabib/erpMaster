@@ -33,7 +33,7 @@ class ProductFactory extends Factory
             'slug'              => Str::slug($this->faker->name),
             'unit'              => 'pcs',
             'description'       => $this->faker->sentence,
-            'image'             => uploadImage('images/products', '640', '480'),
+            'image'             => null, // uploadImage('images/products', '1000', '1000'),
             'gallery'           => null,
             'barcode_symbology' => 'C39',
             'order_tax'         => 0,

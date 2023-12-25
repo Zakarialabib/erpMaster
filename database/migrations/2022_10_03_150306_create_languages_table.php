@@ -19,7 +19,7 @@ return new class () extends Migration {
             $table->string('name');
             $table->string('code');
             $table->boolean('rtl')->default(false);
-            $table->integer('status')->default(1);
+            $table->boolean('status')->default(true);
             $table->boolean('is_default')->default(false);
             $table->softDeletes();
             $table->timestamps();

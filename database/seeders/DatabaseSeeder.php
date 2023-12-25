@@ -28,10 +28,9 @@ class DatabaseSeeder extends Seeder
             SettingsSeeder::class,
             LanguagesSeeder::class,
             MenuSeeder::class,
-            SliderSeeder::class,
+            // SliderSeeder::class,
             // BlogSeeder::class,
             PageSeeder::class,
-            SectionsSeeder::class,
             ShippingSeeder::class,
             BrandSeeder::class,
             CategoriesSeeder::class,
@@ -40,6 +39,7 @@ class DatabaseSeeder extends Seeder
             ExpenseSeeder::class,
             CustomersSeeder::class,
             SupplierSeeder::class,
+            SectionsSeeder::class,
         ]);
     }
 }

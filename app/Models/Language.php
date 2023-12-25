@@ -33,6 +33,7 @@ class Language extends Model
     protected $fillable = [
         'name',
         'code',
+        'rtl',
         'status',
         'is_default',
     ];

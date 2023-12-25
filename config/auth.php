@@ -48,6 +48,11 @@ return [
             'driver' => 'session',
             'provider' => 'customers',
         ],
+        'api' => [
+            'driver' => 'token',
+            'provider' => 'users',
+            'hash' => false,
+        ],
     ],
 
     /*

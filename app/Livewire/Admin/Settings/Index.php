@@ -86,8 +86,8 @@ class Index extends Component
 
     public $default_warehouse_id;
 
-    #[Rule('required|string|min:1|max:255')]
-    public $default_language;
+    #[Rule('boolean')]
+    public $multi_language;
 
     public $invoice_footer_text;
 
@@ -154,7 +154,7 @@ class Index extends Component
         $this->default_date_format = settings('default_date_format');
         $this->default_client_id = settings('default_client_id');
         $this->default_warehouse_id = settings('default_warehouse_id');
-        $this->default_language = settings('default_language');
+        $this->multi_language = settings('multi_language');
         $this->invoice_footer_text = settings('invoice_footer_text');
         $this->sale_prefix = settings('sale_prefix');
         $this->saleReturn_prefix = settings('saleReturn_prefix');
@@ -232,7 +232,7 @@ class Index extends Component
             'default_date_format'       => $this->default_date_format,
             'default_client_id'         => $this->default_client_id,
             'default_warehouse_id'      => $this->default_warehouse_id,
-            'default_language'          => $this->default_language,
+            'multi_language'          => $this->multi_language,
             'invoice_footer_text'       => $this->invoice_footer_text,
             'sale_prefix'               => $this->sale_prefix,
             'saleReturn_prefix'         => $this->saleReturn_prefix,

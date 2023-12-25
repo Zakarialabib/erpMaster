@@ -17,6 +17,8 @@ use App\Models\Subscriber;
 use App\Observers\ContactObserver;
 use App\Observers\OrderFormObserver;
 use App\Observers\SubscriberObserver;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Session;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -32,7 +34,12 @@ class AppServiceProvider extends ServiceProvider
             URL::forceScheme('https');
         }
 
-        View::share('languages', $this->getLanguages());
+        if (settings('multi_language')) {
+            View::share('languages', $this->getLanguages());
+        } else {
+            // If multi_language is false, provide the default language directly
+            View::share('languages', [$this->getDefaultLanguage()]);
+        }
 
         Settings::observe(SettingsObserver::class);
         // Contact::observe(ContactObserver::class);
@@ -40,15 +47,15 @@ class AppServiceProvider extends ServiceProvider
         Subscriber::observe(SubscriberObserver::class);
         // Model::shouldBeStrict(! $this->app->isProduction());
     }
-
     private function getLanguages()
     {
-        if ( ! Schema::hasTable('languages')) {
-            return [];
-        }
-
-        return cache()->rememberForever('languages', static function () {
+        return Cache::rememberForever('languages', function () {
             return Language::pluck('name', 'code')->toArray();
         });
+    }
+
+    private function getDefaultLanguage()
+    {
+        return Language::where('is_default', true)->pluck('name', 'code')->toArray();
     }
 }

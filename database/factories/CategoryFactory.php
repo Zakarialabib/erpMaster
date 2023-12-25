@@ -27,7 +27,7 @@ class CategoryFactory extends Factory
             'code'        => Str::random(5),
             'description' => $this->faker->sentence(),
             'slug'        => $this->faker->slug(),
-            'image'       => $this->faker->image(),
+            'image'       => null,
             'status'      => $this->faker->randomElement([0, 1]),
         ];
     }

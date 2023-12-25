@@ -77,7 +77,6 @@ class Create extends Component
 
     public function initListsForFields(): void
     {
-        $this->listsForFields['languages'] = Language::pluck('name', 'id')->toArray();
         $this->listsForFields['products'] = Product::pluck('name', 'id')->toArray();
     }
 }

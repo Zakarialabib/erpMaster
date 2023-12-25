@@ -120,8 +120,8 @@ class SettingsSeeder extends Seeder
             'value' => null,
         ],
         [
-            'key'   => 'default_language',
-            'value' => 'fr',
+            'key'   => 'multi_language',
+            'value' => true,
         ],
         [
             'key'   => 'invoice_header',

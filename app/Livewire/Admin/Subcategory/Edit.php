@@ -78,12 +78,6 @@ class Edit extends Component
         return Category::select('name', 'id')->get();
     }
 
-    #[Computed]
-    public function languages()
-    {
-        return Language::select('name', 'id')->get();
-    }
-
     public function render(): View
     {
         return view('livewire.admin.subcategory.edit');

@@ -25,7 +25,7 @@ class BlogFactory extends Factory
             'title'            => $this->faker->sentence,
             'slug'             => $this->faker->slug,
             'description'      => $this->faker->paragraph,
-            'image'            => uploadImage('images/blogs', '640', '480'),
+            'image'            => null, // uploadImage('images/blogs', '640', '480'),
             'meta_title'       => $this->faker->sentence,
             'meta_description' => $this->faker->paragraph(1),
             'language_id'      => 1,
