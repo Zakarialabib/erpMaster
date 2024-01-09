@@ -18,18 +18,18 @@ class ExpenseResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => $this->resource->id,
-            'category' => new CategoryResource($this->resource->category_id),
-            'user' => new UserResource(User::find($this->resource->user_id)), // Nested resource for user relationship
-            'warehouse' => new WarehouseResource(Warehouse::find($this->resource->warehouse)), // Nested resource for warehouse relationship
-            // 'cash_register' =>$this->resource->cashRegister ? CashRegisterResource::make($this->resource->cashRegister); // Nullable relation converted into a nested resource if necessary
-            'date' => $this->resource->date,
-            'reference' => $this->resource->reference,
-            'description' => $this->resource->description,
-            'amount' => (float) $this->resource->amount,
-            'document' => $this->resource->document,
-            'created_at' => $this->resource->created_at,
-            'updated_at' => $this->resource->updated_at
+            'id' => $this->id,
+            'category' => new CategoryResource($this->category_id),
+            'user' => new UserResource(User::find($this->user_id)), // Nested resource for user relationship
+            'warehouse' => new WarehouseResource(Warehouse::find($this->warehouse)), // Nested resource for warehouse relationship
+            // 'cash_register' =>$this->cashRegister ? CashRegisterResource::make($this->cashRegister); // Nullable relation converted into a nested resource if necessary
+            'date' => $this->date,
+            'reference' => $this->reference,
+            'description' => $this->description,
+            'amount' => (float) $this->amount,
+            'document' => $this->document,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at
         ];
     }
 }

@@ -16,12 +16,6 @@ class UserController extends BaseController
      * @param  \Illuminate\Http\Request  $request
      *
      */
-    /**
-     * Retrieve a list of expenses with optional filters and pagination.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     *
-     */
     public function index(Request $request)
     {
         try {

@@ -21,19 +21,28 @@ class CustomerController extends BaseController
         try {
             $query = Customer::query();
 
-            if ($request->has('_end')) {
-                $limit = $request->input('_end', 10);
-                $offset = $request->input('_start', 0);
-                $order = $request->input('_order', 'asc');
-                $sort = $request->input('_sort', 'id');
-
-                $query->when($request->filled('user_id'), function ($q) use ($request) {
-                    return $q->where('user_id', $request->input('user_id'));
-                });
-
-                $query->orderBy($sort, $order)->offset($offset)->limit($limit);
+            // Pagination
+            if ($request->has('_limit')) {
+                $limit = $request->input('_limit', 10);
+                $offset = $request->input('_offset', 0);
+                $query->skip($offset)->take($limit);
             }
 
+            // Sorting
+            if ($request->has('_sort')) {
+                $sortField = $request->input('_sort', 'name');
+                $sortOrder = $request->input('_order', 'asc');
+                $query->orderBy($sortField, $sortOrder);
+            }
+
+            // Filtering by user_id
+            if ($request->filled('user_id')) {
+                $query->where('user_id', $request->input('user_id'));
+            }
+            // Eager loading relationships
+            $query->with(['user']);
+
+            // Get filtered and paginated products
             $customers = $query->get();
             $customerResource = CustomerResource::collection($customers);
 

@@ -23,25 +23,36 @@ class ProductController extends BaseController
         try {
             $query = Product::query();
 
-            if ($request->has('_end')) {
-                $limit = $request->input('_end', 10);
-                $offset = $request->input('_start', 0);
-                $order = $request->input('_order', 'asc');
-                $sort = $request->input('_sort', 'id');
-
-                $query->when($request->filled('brand_id'), function ($q) use ($request) {
-                    return $q->where('brand_id', $request->input('brand_id'));
-                });
-
-                $query->when($request->has('available'), function ($q) {
-                    return $q->whereHas('warehouses', function ($query) {
-                        $query->where('qty', '>', 0);
-                    });
-                });
-
-                $query->with(['category', 'brand'])->orderBy($sort, $order)->offset($offset)->limit($limit);
+            // Pagination
+            if ($request->has('_limit')) {
+                $limit = $request->input('_limit', 10);
+                $offset = $request->input('_offset', 0);
+                $query->skip($offset)->take($limit);
             }
 
+            // Sorting
+            if ($request->has('_sort')) {
+                $sortField = $request->input('_sort', 'name');
+                $sortOrder = $request->input('_order', 'asc');
+                $query->orderBy($sortField, $sortOrder);
+            }
+
+            // Filtering by brand_id
+            if ($request->filled('brand_id')) {
+                $query->where('brand_id', $request->input('brand_id'));
+            }
+
+            // Filtering by availability
+            if ($request->has('available')) {
+                $query->whereHas('warehouses', function ($q) {
+                    $q->where('qty', '>', 0);
+                });
+            }
+
+            // Eager loading relationships
+            $query->with(['category', 'brand', 'warehouses']);
+
+            // Get filtered and paginated products
             $products = $query->get();
             $productsResource = ProductResource::collection($products);
 

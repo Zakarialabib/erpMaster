@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Resources;
 
+use App\Models\Category;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ProductResource extends JsonResource
@@ -21,7 +22,8 @@ class ProductResource extends JsonResource
             'id'         => $this->id,
             'name'       => $this->name,
             'code'       => $this->code,
-            'category'   => new CategoryResource($this->whenLoaded('category')),
+            'category' => new CategoryResource(Category::find($this->category_id)) ?? null,
+
             'price'      => $this->whenPivotLoaded('warehouse', function () {
                 return $this->warehouses->first()->pivot->price;
             }),

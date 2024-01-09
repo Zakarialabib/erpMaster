@@ -1,3 +1,5 @@
+This comprehensive model documentation provides a thorough understanding of the 'Suppliers' table within our ERP software management system. It includes an overview of its purpose, usage of relationships, and details about the architecture of the table's columns.
+
 # Ad 
 
 The 'Ad' model in our ERP software serves as a container for data related to platform advertisements. It facilitates easy management, search, and sorting of ads based on attributes such as status, title, social media, type, image, URL, views, amount, notes, and user_id. Utilizing traits like HasUuid, HasFactory, and HasAdvancedFilter, along with a BelongsToMany relationship with the User model, the 'Ad' model efficiently handles ad-related information.
@@ -34,5 +36,12 @@ The 'Product' model serves as a central tool for managing and organizing informa
 
 The 'Warehouses' model is a central repository within our ERP system that stores and manages information about various locations where products are stored. The model provides a comprehensive overview of essential details, including the warehouse name, city, country, address, phone number, email, total quantity of products in stock, and the value of those products. Through well-established relationships with users, products, and price information, the 'Warehouses' model facilitates a seamless flow of data, offering a holistic view of business operations. Alongside basic attributes, the model incorporates advanced search and filtering capabilities, enhancing user accessibility to specific warehouse data based on desired criteria.
 
-# Sale
+# Customer
 
+The 'Customer' model in the context of our ERP (Enterprise Resource Planning) software management system represents a person or business entity that uses our software. It has a general purpose to store, manage and retrieve customer information such as their name, email, phone number, address, country, city, etc. This information is crucial for effective communication and support, tracking of transactions, sales and purchases, and overall relationship management with the customers in order to provide them with an optimal experience.
+
+# Supplier
+
+In conclusion, the 'Supplier' model plays a vital role in our ERP software management system by facilitating efficient storage, retrieval, and organization of data related to suppliers. It serves as a central hub for various stakeholders, enabling effective communication, relationship management, and operational efficiency. By leveraging its features and relationships with other models, we can streamline supplier-related processes and enhance the overall experience within our ERP system.
+
+# Customer

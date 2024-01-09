@@ -14,7 +14,7 @@ class OpenAi
      * @throws RequestException
      * @throws InvalidArgumentException
      */
-    public static function execute(string $prompt, int $maxTokens = 4000): string
+    public static function execute($context = null, string $message, int $maxTokens = 4000): string
     {
         // $apiKey = 'openAiApiKey';
 
@@ -29,13 +29,17 @@ class OpenAi
             'model' => 'gpt-3.5-turbo',
             'messages' => [
                 [
+                    'role' => 'system',
+                    'content' => $context,
+                ],
+                [
                     'role' => 'user',
-                    'content' => $prompt,
+                    'content' => $message,
                 ],
             ],
         ];
 
-        $response = Http::timeout(360)
+        $response = Http::timeout(480)
             ->post('http://localhost:1234/v1/chat/completions', $input_data);
         // withHeaders([
         //     'Authorization' => 'Bearer '.$apiKey,
