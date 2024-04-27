@@ -16,39 +16,11 @@ jobs:
   FTP-Deploy-Action:
     name: FTP-Deploy-Action
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
 
     steps:
     - name: 🚚 Get latest code
-      uses: actions/checkout@v3
-
-    - name: Setup PHP
-      uses: shivammathur/setup-php@v2
-      with:
-        php-version: 8.2
-        extensions: json, dom, curl, libxml, mbstring
-        coverage: none
-
-    - name: Install Pint
-      run: composer global require laravel/pint
-
-    - name: Run Pint
-      run: pint
-
-    - name: Commit linted files
-      uses: stefanzweifel/git-auto-commit-action@v4
-      with:
-        commit_message: Fix code styling
+      uses: actions/checkout@v3 
   
-    - name: Install Composer dependencies
-      run: composer install --prefer-dist --no-progress --no-suggest
-
-    - name: Run npm install and build
-      run: |
-        npm install
-        npm run build
-
     - name: Optimize Laravel
       run: php artisan optimize:clear
 
