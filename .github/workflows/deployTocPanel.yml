@@ -18,11 +18,31 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: 🚚 Get latest code
-      uses: actions/checkout@v2
-    
+      uses: actions/checkout@v3
+
+    - name: Install Composer dependencies
+      run: composer install --prefer-dist --no-progress --no-suggest
+
+    - name: Run npm install and build
+      run: |
+        npm install
+        npm run build
+
+    - name: Optimize Laravel
+      run: php artisan optimize:clear
+
+    - name: Migrate database
+      run: php artisan migrate 
+
     - name: FTP-Deploy-Action
-      uses: SamKirkland/FTP-Deploy-Action@4.3.3
+      uses: SamKirkland/FTP-Deploy-Action@v4.3.4
       with:
         server: ${{ secrets.FTP_SERVER }}
         username: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
+        port: 21
+        timeout: 60000
+        exclude: |
+          **/.git*
+          **/.git*/**
+          **/storage/**
