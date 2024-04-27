@@ -20,10 +20,11 @@ use App\Livewire\Front\Checkout as CheckoutIndex;
 use App\Livewire\Front\ProductShow;
 use App\Livewire\Front\SubcategoryPage;
 use App\Livewire\Front\ThankYou;
+use Illuminate\Support\Facades\Artisan;
 use Livewire\Livewire;
 
-require __DIR__.'/auth.php';
-require __DIR__.'/admin.php';
+require __DIR__ . '/auth.php';
+require __DIR__ . '/admin.php';
 
 Route::get('/docs', function () {
     View::addExtension('html', 'php'); // allows .html
@@ -73,3 +74,15 @@ Route::get('/{slug?}', DynamicPage::class)->name('front.dynamicPage');
 Livewire::setUpdateRoute(function ($handle) {
     return Route::post('/custom/livewire/update', $handle);
 });
+
+
+//  composer install 
+
+Route::get('/fix', function () {
+    Artisan::call('migrate');
+    return response()->json([
+        'message' => 'Composer dependencies installed successfully!',
+        'output' => Artisan::output()
+    ]);
+})->name('composer.install');
+

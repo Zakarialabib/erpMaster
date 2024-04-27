@@ -22,7 +22,6 @@ class CategoryController extends BaseController
     {
         try {
             if ($request->get('_end') !== null) {
-
                 $limit = $request->get('_end') ? $request->get('_end') : 10;
                 $offset = $request->get('_start') ? $request->get('_start') : 0;
 

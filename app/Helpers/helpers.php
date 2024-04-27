@@ -2,9 +2,16 @@
 
 declare(strict_types=1);
 
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Schema;
+
 if ( ! function_exists('settings')) {
     function settings($key = null)
     {
+        if (!Schema::hasTable('settings')) {
+            Artisan::call('migrate', ['--path' => 'database/migrations/0001_01_01_000001_create_cache_table.php']);
+        }
+
         $settings = cache()->rememberForever('settings', static function () {
             return App\Models\Settings::pluck('value', 'key');
         });

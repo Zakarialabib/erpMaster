@@ -22,18 +22,18 @@
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    
+
     @include('includes.main-css')
     @livewireScriptConfig
 
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-      
+
     <x-livewire-alert::scripts />
-    
+
 </head>
 
 <body class="antialiased bg-gray-50 text-body font-body" dir="ltr">
-    <div x-data="mainState" :class="{ dark: isDarkMode }" @resize.window="handleWindowResize" x-cloak>
+    <div @resize.window="handleWindowResize" x-cloak>
         <div class="min-h-screen">
 
             <x-navbar-pos />

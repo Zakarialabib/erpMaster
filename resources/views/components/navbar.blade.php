@@ -31,7 +31,7 @@
 
         <x-button type="button" class="hidden md:inline-flex" iconOnly secondary srText="Toggle dark mode"
             @click="toggleTheme">
-            <x-icons.moon x-show="!isDarkMode" aria-hidden="true" class="w-5 h-5" />
+            <x-icons.moon x-show="isDarkMode" aria-hidden="true" class="w-5 h-5" />
             <x-icons.sun x-show="isDarkMode" aria-hidden="true" class="w-5 h-5" />
         </x-button>
 

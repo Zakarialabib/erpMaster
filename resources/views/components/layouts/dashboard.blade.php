@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" x-data="mainState" x-init="darkMode = JSON.parse(localStorage.getItem('darkMode'));
-$watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(value)))">
+<html x-data="mainState" :class="{ dark: isDarkMode, rtl: isRtl }" class="scroll-smooth"
+    lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
     <meta charset="utf-8">
@@ -41,7 +41,7 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
 
 </head>
 
-<body class="antialiased bg-body text-body font-body" dir="ltr" :class="{ dark: isDarkMode, rtl: isRtl }">
+<body class="antialiased bg-body text-body font-body" dir="ltr" 
 
     <x-loading-mask />
     <div @resize.window="handleWindowResize">
