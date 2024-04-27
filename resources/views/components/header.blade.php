@@ -29,7 +29,7 @@
                             @if (count($languages) > 1)
                                 <i class="fa fas-chevron-down h-5 w-5 cursor-pointer pr-2" aria-hidden="true"></i>
                             @endif
-                            <img src="{{ Helpers::flagImageUrl(\Illuminate\Support\Facades\App::getLocale()) }}"
+                            <img src="{{ \App\Helpers::flagImageUrl(\Illuminate\Support\Facades\App::getLocale()) }}"
                                 class="h-5 cursor-pointer" lazy>
                         </button>
                     </x-slot>

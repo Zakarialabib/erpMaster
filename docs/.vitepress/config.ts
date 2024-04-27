@@ -5,6 +5,20 @@ export default {
   description: "Inventory and Ecommerce management system",
   lastUpdated: true,
   // logo: "/logo.svg",
+  head: [
+    [
+      'link',
+      { rel: 'preconnect', href: 'https://fonts.googleapis.com' }
+    ],
+    [
+      'link',
+      { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' }
+    ],
+    [
+      'link',
+      { href: 'https://fonts.googleapis.com/css2?family=Roboto&display=swap', rel: 'stylesheet' }
+    ]
+  ],
   locales: {
     root: {
       label: "English",
@@ -111,4 +125,5 @@ export default {
       { icon: "twitter", link: "https://twitter.com/zakarialabib" },
     ],
   },
+ 
 }

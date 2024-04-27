@@ -57,20 +57,23 @@ class GenerateResource extends Command
             return 1;
         }
 
-        if (! $this->tableExistsForModel($model)) {
+        if (!$this->tableExistsForModel($model)) {
             return 1;
         }
 
         $schema = $this->getSchemaForModel($model);
+        // $context = file_get_contents(app_path('stubs/resource.stub'));
         $prompt = $this->createAiPrompt($name, $model, $schema);
 
         $this->info('Generating AI resource, this might take a few moments...');
 
         try {
-            $resourceContent = $this->fetchAiGeneratedContent($prompt);
+            // Read the content of the stub file
+
+            $resourceContent =  $this->openAi->execute($prompt, 2000);
             $this->createResourceFile($name, $resourceContent);
         } catch (RequestException $e) {
-            $this->error('Error fetching AI-generated content: '.$e->getMessage());
+            $this->error('Error fetching AI-generated content: ' . $e->getMessage());
         }
 
         return 0;
@@ -83,7 +86,7 @@ class GenerateResource extends Command
     {
         $name = $this->argument('name');
 
-        if (! $name) {
+        if (!$name) {
             $name = $this->ask($this->promptForMissingArgumentsUsing()['name']);
         }
 
@@ -97,7 +100,7 @@ class GenerateResource extends Command
     {
         $model = $this->option('model');
 
-        if (! $model) {
+        if (!$model) {
             $model = $this->ask('Please provide the model for the resource');
         }
 
@@ -115,7 +118,7 @@ class GenerateResource extends Command
         $object = new $model;
         $table = $object->getTable();
 
-        if (! Schema::hasTable($table)) {
+        if (!Schema::hasTable($table)) {
             $this->error("The table for the provided model '{$model}' does not exist.");
 
             return false;
@@ -157,7 +160,7 @@ class GenerateResource extends Command
     {
         $model = ltrim($model, '\\');
 
-        $namespaceModel = $this->laravel->getNamespace().'Models\\'.$model;
+        $namespaceModel = $this->laravel->getNamespace() . 'Models\\' . $model;
 
         if (class_exists($namespaceModel)) {
             return $namespaceModel;
@@ -171,33 +174,25 @@ class GenerateResource extends Command
     }
 
     /**
-     * Create an AI prompt using the provided information.
+     * Create an AI prompt using the provided information and context.
      *
-     * @param  string[]  $schema The schema of the model as an array of column names
+     * @param string $name
+     * @param string $model
+     * @param array $schema
+     * @return string
      */
     private function createAiPrompt(string $name, string $model, array $schema): string
     {
         $prompt = "Generate a Laravel resource named '{$name}' for the '{$model}' model.";
-        $prompt .= "\nThe current schema of the table is as follows:\n".implode(', ', $schema);
-        $prompt .= "\nConsider generating relations too, based on the column names (like user_id) include all logic inthe method toArray.";
+        $prompt .= "\nThe current schema of the table is as follows:\n" . implode(', ', $schema);
+        $prompt .= "\nConsider generating relations too, based on the column names (like user_id) include all logic in the method toArray.";
         $prompt .= "\nProvide only class resource '{$name}' code without any explanations or additional context. (start with <?php)";
         $prompt .= "\nInclude type hints for methods and their arguments.";
+        // $prompt .= "\n\nStub File Content:\n{$context}";
 
         return $prompt;
     }
 
-    /**
-     * Fetch AI-generated content using the provided prompt.
-     *
-     * @param  string  $prompt  The AI prompt
-     * @return string The AI-generated content
-     *
-     * @throws RequestException
-     */
-    private function fetchAiGeneratedContent(string $prompt): string
-    {
-        return $this->openAi->execute($prompt, 2000);
-    }
 
     /**
      * Create a resource file using the provided name and content.
@@ -208,14 +203,14 @@ class GenerateResource extends Command
     private function createResourceFile(string $name, string $content): void
     {
         $path = app_path('Http/Resources');
-        if (! Str::endsWith($name, 'Resource')) {
+        if (!Str::endsWith($name, 'Resource')) {
             $name .= 'Resource';
         }
 
         $name = "{$name}.php";
         $filepath = "{$path}/{$name}";
 
-        if (! file_exists($path)) {
+        if (!file_exists($path)) {
             mkdir($path, 0755, true);
         }
 

@@ -64,10 +64,12 @@ class TranslateMissing extends Command
     private function fetchAiGeneratedTranslation(string $language, string $untranslatedString): string
     {
         // Modify this based on how your OpenAi service is structured
-        $prompt = "Your task is to translate from en to {$language}, your task is limited to Translate : {$untranslatedString}";
-        $prompt .= "No explanation needed, or further instructions or additional information. The response can be strictly answered word-for-word or phrase-for-phrase";
+        $prompt = "You are a translator. Your job is to translate the following text to the language from en to {$language}, Limit response word-for-word or phrase-for-phrase translation.\n";
+        $prompt .= "untranslated String: {$untranslatedString}";
 
-        return $this->openAi->execute($prompt, 2000);
+        $context = "Translate the following text from en to $language, ensuring you return only the translated content without added quotes or any other extraneous details. Importantly, any word prefixed with the symbol ':' should remain unchanged";
+
+        return $this->openAi->execute($context, $prompt, 2000);
     }
 
 

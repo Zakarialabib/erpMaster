@@ -11,10 +11,9 @@ class SuperAdmin
 {
     public function handle($request, Closure $next)
     {
-        Gate::after(static function ($user, $ability) {
-            return $user->hasRole('admin');
-            // note this returns boolean
-        });
+        Gate::before(function ($user, $ability) {
+            return $user->hasRole('admin') ? true : null;
+        }); 
 
         return redirect()->route('admin.dashboard')->with('unsuccess', "You don't have access to that section");
     }

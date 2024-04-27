@@ -4,6 +4,7 @@ namespace App\Services;
 
 use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use InvalidArgumentException;
 
 class OpenAi
@@ -14,7 +15,7 @@ class OpenAi
      * @throws RequestException
      * @throws InvalidArgumentException
      */
-    public static function execute($context = null, string $message, int $maxTokens = 4000): string
+    public static function execute($context, string $message, int $maxTokens = 15000): string
     {
         // $apiKey = 'openAiApiKey';
 
@@ -22,11 +23,13 @@ class OpenAi
         //     throw new InvalidArgumentException('OpenAI API key is not provided in the configuration file.');
         // }
 
-        $input_data = [
+        $data = [
             'temperature' => 0.7,
             'max_tokens' => $maxTokens,
             'frequency_penalty' => 0,
+            // 'repeat_penalty' => 0,
             'model' => 'gpt-3.5-turbo',
+            'stream' => true,
             'messages' => [
                 [
                     'role' => 'system',
@@ -37,22 +40,29 @@ class OpenAi
                     'content' => $message,
                 ],
             ],
+
         ];
 
-        $response = Http::timeout(480)
-            ->post('http://localhost:1234/v1/chat/completions', $input_data);
-        // withHeaders([
-        //     'Authorization' => 'Bearer '.$apiKey,
-        //     'Content-Type' => 'application/json',
-        // ])
+        $response = Http::withHeaders([
+            // 'Authorization' => 'Bearer '.$apiKey,
+            'Content-Type' => 'application/json',
+        ])->timeout(480)
+            // ->post('http://localhost:1234/v1/chat/completions', $data);
+            ->post('https://books-peru-attach-if.trycloudflare.com/v1/chat/completions', $data);
 
 
         if ($response->failed()) {
             throw new RequestException($response);
         }
 
-        $complete = $response->json();
+        $completion = $response->json();
 
-        return $complete['choices'][0]['message']['content'];
+        $content = trim($response['choices'][0]['message']['content'] ?? '');
+
+        $complet = $completion['choices'][0]['message']['content'];
+        
+        Log::info('open ai log :', [$completion, $content, $response]);
+
+        return $content;
     }
 }

@@ -41,12 +41,15 @@
             <a x-show="isRtl" aria-hidden="true" class="font-bold text-md"> RTL </a>
         </x-button>
 
-
         <ul class="flex-col md:flex-row list-none items-center md:flex">
             <x-dropdown align="right" width="56">
                 <x-slot name="trigger">
                     <x-button type="button" primary>
-                        {{ Auth::user()->name }}
+                        @if (auth()->guard('web')->check())
+                            {{ Auth::user()->name }}
+                        @elseif (!auth()->guard('admin')->check())
+                            {{ auth()->guard('admin')->name }}
+                        @endif
                     </x-button>
                 </x-slot>
 

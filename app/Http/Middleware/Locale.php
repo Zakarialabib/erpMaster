@@ -21,7 +21,7 @@ class Locale
      */
     public function handle(Request $request, Closure $next)
     {
-        if (settings()->multi_language) {
+        if (settings('multi_language')) {
             $locale = Session::get('language');
 
             if (!$locale) {

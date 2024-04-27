@@ -317,7 +317,7 @@
                                 <td class="py-1 px-2">{{ format_currency($product->totalSalesAmount) }}</td>
                                 <td class="py-1 px-2">
                                     <x-badge danger
-                                        class="text-sm">{{ Helpers::warehouseName($product->warehouse_id) }}</x-badge>
+                                        class="text-sm">{{ \App\Helpers::warehouseName($product->warehouse_id) }}</x-badge>
                                 </td>
                             </tr>
                         @endforeach
@@ -348,7 +348,7 @@
                                 <td>{{ $index }}</td>
                                 <td class="py-1 px-2">
                                     <x-badge danger
-                                        class="text-sm">{{ Helpers::warehouseName($customer->warehouse_id) }}</x-badge>
+                                        class="text-sm">{{ \App\Helpers::warehouseName($customer->warehouse_id) }}</x-badge>
                                 </td>
 
                                 <td class="py-1 px-2">{{ $customer->name }}</td>

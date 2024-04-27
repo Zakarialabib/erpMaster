@@ -2,12 +2,11 @@
 
 namespace App\Console\Commands;
 
+use App\Services\KoboldAIService;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
-use Symfony\Component\Console\Helper\ProgressBar;
 use App\Services\OpenAi;
 use Http\Client\Exception\RequestException;
-use Illuminate\Support\Str;
 use Symfony\Component\Console\Input\InputOption;
 
 class ConceptGenerator extends Command
@@ -15,30 +14,30 @@ class ConceptGenerator extends Command
     protected $signature = 'generate:concept';
     protected $description = 'Generate Markdown file with model concepts documentation';
 
-    public function __construct(private readonly OpenAi $openAi)
+    public function __construct(
+        private readonly OpenAi $openAi,
+        private readonly KoboldAIService $koboldAIService,
+    )
     {
         parent::__construct();
     }
+
     protected function configure(): void
     {
         $this->addOption('model', 'm', InputOption::VALUE_REQUIRED, 'The model for the concept');
-    }
-
-    /**
-     * Get the 'model' option or prompt the user if it's not provided.
-     */
-    private function getModelOption(): string
-    {
-        $model = $this->option('model');
-
-        if (!$model) {
-            $model = $this->ask('Please provide the model');
-        }
-
-        return $model;
+        $this->addOption('all', null, InputOption::VALUE_NONE, 'Generate concepts for all models');
     }
 
     public function handle(): void
+    {
+        if ($this->option('all')) {
+            $this->generateConceptsForAllModels();
+        } else {
+            $this->generateConceptForSingleModel();
+        }
+    }
+
+    private function generateConceptForSingleModel(): void
     {
         $modelName = $this->getModelOption();
 
@@ -49,29 +48,35 @@ class ConceptGenerator extends Command
             return;
         }
 
-        $output = $this->output;
+        $this->generateConcept($modelName, $model);
+    }
 
-        $content = "# Model Concepts Documentation\n\n";
+    private function generateConceptsForAllModels(): void
+    {
+        $modelPath = app_path('Models');
+        $modelFiles = glob("{$modelPath}/*.php");
 
-        // Use OpenAI to generate a model description
-        $modelDescription = $this->generateModelDescription($model);
+        foreach ($modelFiles as $modelFile) {
+            $modelName = pathinfo($modelFile, PATHINFO_FILENAME);
+            $model = $this->loadModel($modelName);
 
-        $content .= "## {$modelName} Model\n\n";
-        $content .= "{$modelDescription}\n\n";
-
-        $prompt = $this->createAiPrompt($modelName, $model);
-        $this->info("\nGenerating concept for model '{$modelName}'...");
-
-        try {
-            $conceptContent = $this->fetchAiGeneratedContent($prompt);
-            $this->generateMarkdownFile($modelName, $conceptContent);
-        } catch (RequestException $e) {
-            $this->error('Error fetching AI-generated content: ' . $e->getMessage());
-            return;
+            if ($model) {
+                $this->generateConcept($modelName, $model);
+            }
         }
 
+        $this->info("\nConcepts generated for all models.");
+    }
 
-        $this->info("\nConcept documentation generated successfully for model '{$modelName}'");
+    private function getModelOption(): string
+    {
+        $model = $this->option('model');
+
+        if (!$model) {
+            $model = $this->ask('Please provide the model');
+        }
+
+        return $model;
     }
 
     protected function loadModel(string $modelName)
@@ -85,18 +90,19 @@ class ConceptGenerator extends Command
         return null;
     }
 
-    protected function generateModelDescription($modelName): string
+    protected function generateModelDescription(string $modelName): string
     {
         return "This is the documentation for the {$modelName} module.";
     }
 
-    protected function createAiPrompt(string $modelName, $model): string
+    protected function generateConcept(string $modelName, $model): void
     {
         $tableName = $model->getTable();
         $modelFile = $this->getModelFilePath($modelName);
 
         if (!file_exists($modelFile)) {
-            return "Error: Model file not found for '{$modelName}'";
+            $this->error("Error: Model file not found for '{$modelName}'");
+            return;
         }
 
         $modelContent = file_get_contents($modelFile);
@@ -107,44 +113,28 @@ class ConceptGenerator extends Command
         $prompt .= "```\n";
         $prompt .= $modelContent;
         $prompt .= "\n```\n";
-        $prompt .= "\nResponse is between 1 or 2 paragraph max.";
+        $prompt .= "\nResponse is between 1 or 2 paragraphs max.";
 
-        return $prompt;
+        $context = 'We are working on a laravel project, using livewire and such technologies, the project is covering erp and crm business domain, so this md docs will help improve education';
+      
+        $response = $this->koboldAIService->processUserMessage($prompt, $context);    
+        // $conceptContent = $this->openAi->execute($context, $prompt, 15000);
+
+        $this->generateMarkdownFile($modelName, $response);
+
+        $this->info("\nConcept documentation generated successfully for model '{$modelName}'");
     }
 
     protected function getModelFilePath(string $modelName): string
     {
-        $modelPath = app_path('Models');
-        $modelFile = "{$modelPath}/{$modelName}.php";
-
-        return $modelFile;
-    }
-
-    /**
-     * Fetch AI-generated content using the provided prompt.
-     *
-     * @param  string  $prompt  The AI prompt
-     * @return string The AI-generated content
-     *
-     * @throws RequestException
-     */
-    private function fetchAiGeneratedContent(string $prompt): string
-    {
-        return $this->openAi->execute($prompt, 2000);
+        return app_path("Models/{$modelName}.php");
     }
 
     protected function generateMarkdownFile(string $modelName, string $content): void
     {
-        // File path for the concept file
         $filePath = base_path('docs/guide/concepts.md');
-
-        // Read existing content
         $existingContent = file_exists($filePath) ? File::get($filePath) : '';
-
-        // Append the new content
         $updatedContent = $existingContent . "\n" . $content;
-
-        // Write back to the file
         File::put($filePath, $updatedContent);
 
         $this->info("Updated concept file for model '{$modelName}' with new content.");

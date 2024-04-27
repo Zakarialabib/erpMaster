@@ -71,7 +71,7 @@
                             </x-table.td>
 
                             <x-table.td>
-                                <p>{{ Helpers::format_currency($product->price->price) }}</p>
+                                <p>{{ \App\Helpers::format_currency($product->price->price) }}</p>
                                 @if ($product->price)
                                     <p>
                                         {{ $product->price->latestPrice()->old_price }}DH

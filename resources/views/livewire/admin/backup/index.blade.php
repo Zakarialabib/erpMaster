@@ -185,10 +185,10 @@
                                                 <span class="bg-gray-400 rounded-full h-2 w-2"></span>
                                                 <span class="ml-3 font-medium">{{ $content['path'] }}</span>
                                                 <span class="ml-3 font-medium">
-                                                    {{ Helpers::formatBytes($content['fileSize']) }}
+                                                    {{ \App\Helpers::formatBytes($content['fileSize']) }}
                                                 </span>
                                                 <span class="ml-3 font-medium">
-                                                    Last modified: {{ Helpers::formatDate($content['lastModified']) }}
+                                                    Last modified: {{ \App\Helpers::formatDate($content['lastModified']) }}
                                                 </span>
                                             </div>
                                         </div>

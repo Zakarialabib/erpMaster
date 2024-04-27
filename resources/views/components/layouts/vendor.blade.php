@@ -7,7 +7,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>
-        @yield('title') || {{ Helpers::settings('site_title') }}
+        @yield('title') || {{ \App\Helpers::settings('site_title') }}
     </title>
     <!-- Styles -->
 

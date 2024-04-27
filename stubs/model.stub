@@ -1,0 +1,35 @@
+<?php
+
+namespace {{ namespace }};
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use App\Support\HasAdvancedFilter;
+
+class {{ class }} extends Model
+{
+    use HasFactory;
+    use HasAdvancedFilter;
+
+    /** @var array<int, string> */
+    final public const ATTRIBUTES = [
+        //
+    ];
+
+    public $orderable = self::ATTRIBUTES;
+
+    public $filterable = self::ATTRIBUTES;
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        //
+    ];
+
+    protected $casts = [
+        //
+    ];
+}

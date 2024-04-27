@@ -235,7 +235,7 @@
                                                                     <h3
                                                                         class="text-lg font-medium cursor-pointer mb-1">
                                                                         {{ $layout_config['type'] }} -
-                                                                        {{ Helpers::getSectionTitle($layout_config['item_id']) ?? '' }}
+                                                                        {{ \App\Helpers::getSectionTitle($layout_config['item_id']) ?? '' }}
                                                                     </h3>
                                                                 </div>
                                                                 <div class="space-x-2">

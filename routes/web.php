@@ -2,10 +2,8 @@
 
 declare(strict_types=1);
 
-use App\Http\Controllers\Front\ErrorController;
 use App\Http\Controllers\Front\FrontController;
 use App\Http\Controllers\Front\UploadController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
 use App\Livewire\Front\DynamicPage;
@@ -24,18 +22,8 @@ use App\Livewire\Front\SubcategoryPage;
 use App\Livewire\Front\ThankYou;
 use Livewire\Livewire;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
-
 require __DIR__ . '/auth.php';
+require __DIR__ . '/admin.php';
 
 Route::get('/docs', function () {
     View::addExtension('html', 'php'); // allows .html
