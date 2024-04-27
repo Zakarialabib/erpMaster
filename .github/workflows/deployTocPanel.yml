@@ -20,12 +20,6 @@ jobs:
     steps:
     - name: 🚚 Get latest code
       uses: actions/checkout@v4
-  
-    - name: Optimize Laravel
-      run: php artisan optimize:clear
-
-    - name: Migrate database
-      run: php artisan migrate 
 
     - name: FTP-Deploy-Action
       uses: SamKirkland/FTP-Deploy-Action@v4.3.4
