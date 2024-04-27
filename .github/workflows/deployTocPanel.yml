@@ -19,7 +19,7 @@ jobs:
 
     steps:
     - name: 🚚 Get latest code
-      uses: actions/checkout@v3 
+      uses: actions/checkout@v4
   
     - name: Optimize Laravel
       run: php artisan optimize:clear
