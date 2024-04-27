@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html x-data="mainState" :class="{ dark: isDarkMode, rtl: isRtl }" class="scroll-smooth"
-    lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html class="scroll-smooth" lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
     <meta charset="utf-8">
@@ -31,7 +30,8 @@
     </style>
 </head>
 
-<body class="antialiased bg-gray-50 text-body font-body" dir="ltr">
+<body class="antialiased bg-gray-50 text-body font-body" x-data="mainState"
+    :class="{ dark: isDarkMode, rtl: isRtl }" dir="ltr">
     <x-loading-mask />
     <div @resize.window="handleWindowResize">
         <div class="min-h-screen">
@@ -72,6 +72,7 @@
     @include('includes.main-js')
     @vite('resources/js/app.js')
 
-  
+
 </body>
+
 </html>

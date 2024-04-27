@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html x-data="mainState" class="scroll-smooth" lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html class="scroll-smooth" lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
     <meta charset="utf-8">
@@ -33,11 +33,12 @@
     @stack('scripts')
 </head>
 
-<body class="antialiased bg-gray-50 text-body font-body">
-    
-    <x-loading-mask />       
-    
-    <x-vendor-bar />       
+<body class="antialiased bg-gray-50 text-body font-body" x-data="mainState"
+    :class="{ dark: isDarkMode, rtl: isRtl }">
+
+    <x-loading-mask />
+
+    <x-vendor-bar />
 
     <main class="pt-5 flex-1">
         @yield('content')

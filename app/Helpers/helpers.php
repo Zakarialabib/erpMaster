@@ -5,11 +5,13 @@ declare(strict_types=1);
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Schema;
 
-if ( ! function_exists('settings')) {
+if (!function_exists('settings')) {
     function settings($key = null)
     {
-        if (!Schema::hasTable('settings')) {
-            Artisan::call('migrate', ['--path' => 'database/migrations/0001_01_01_000001_create_cache_table.php']);
+        if (!Schema::hasTable('cache')) {
+            Artisan::call(
+                'migrate'
+            );
         }
 
         $settings = cache()->rememberForever('settings', static function () {
@@ -24,10 +26,10 @@ if ( ! function_exists('settings')) {
     }
 }
 
-if ( ! function_exists('format_currency')) {
+if (!function_exists('format_currency')) {
     function format_currency($value, $format = true)
     {
-        if ( ! $format) {
+        if (!$format) {
             return $value;
         }
 
@@ -39,12 +41,12 @@ if ( ! function_exists('format_currency')) {
         $thousandSeparator = $currency->thousand_separator;
 
         return $position === 'prefix'
-            ? $symbol.number_format((float) $value, 2, $decimalSeparator, $thousandSeparator)
-            : number_format((float) $value, 2, $decimalSeparator, $thousandSeparator).$symbol;
+            ? $symbol . number_format((float) $value, 2, $decimalSeparator, $thousandSeparator)
+            : number_format((float) $value, 2, $decimalSeparator, $thousandSeparator) . $symbol;
     }
 }
 
-if ( ! function_exists('format_date')) {
+if (!function_exists('format_date')) {
     function format_date($value)
     {
         if ($value instanceof DateTimeInterface) {
@@ -52,7 +54,7 @@ if ( ! function_exists('format_date')) {
         }
 
         // Check if value is non-empty and is a string
-        if (empty($value) || ! is_string($value)) {
+        if (empty($value) || !is_string($value)) {
             return null;
         }
 
@@ -73,9 +75,9 @@ if ( ! function_exists('format_date')) {
     }
 }
 
-if ( ! function_exists('make_reference_id')) {
+if (!function_exists('make_reference_id')) {
     function make_reference_id(string $prefix, $number): string
     {
-        return $prefix.'-'.str_pad((string) $number, 5, '0', STR_PAD_LEFT);
+        return $prefix . '-' . str_pad((string) $number, 5, '0', STR_PAD_LEFT);
     }
 }
