@@ -1,12 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Console\Commands;
 
 use App\Services\KoboldAIService;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
 use App\Services\OpenAi;
-use Http\Client\Exception\RequestException;
 use Symfony\Component\Console\Input\InputOption;
 
 class ConceptGenerator extends Command
@@ -17,8 +18,7 @@ class ConceptGenerator extends Command
     public function __construct(
         private readonly OpenAi $openAi,
         private readonly KoboldAIService $koboldAIService,
-    )
-    {
+    ) {
         parent::__construct();
     }
 
@@ -43,8 +43,9 @@ class ConceptGenerator extends Command
 
         $model = $this->loadModel($modelName);
 
-        if (!$model) {
+        if ( ! $model) {
             $this->error("Model '{$modelName}' not found.");
+
             return;
         }
 
@@ -72,7 +73,7 @@ class ConceptGenerator extends Command
     {
         $model = $this->option('model');
 
-        if (!$model) {
+        if ( ! $model) {
             $model = $this->ask('Please provide the model');
         }
 
@@ -81,10 +82,10 @@ class ConceptGenerator extends Command
 
     protected function loadModel(string $modelName)
     {
-        $modelClass = 'App\\Models\\' . $modelName;
+        $modelClass = 'App\\Models\\'.$modelName;
 
         if (class_exists($modelClass)) {
-            return new $modelClass;
+            return new $modelClass();
         }
 
         return null;
@@ -100,8 +101,9 @@ class ConceptGenerator extends Command
         $tableName = $model->getTable();
         $modelFile = $this->getModelFilePath($modelName);
 
-        if (!file_exists($modelFile)) {
+        if ( ! file_exists($modelFile)) {
             $this->error("Error: Model file not found for '{$modelName}'");
+
             return;
         }
 
@@ -116,8 +118,8 @@ class ConceptGenerator extends Command
         $prompt .= "\nResponse is between 1 or 2 paragraphs max.";
 
         $context = 'We are working on a laravel project, using livewire and such technologies, the project is covering erp and crm business domain, so this md docs will help improve education';
-      
-        $response = $this->koboldAIService->processUserMessage($prompt, $context);    
+
+        $response = $this->koboldAIService->processUserMessage($prompt, $context);
         // $conceptContent = $this->openAi->execute($context, $prompt, 15000);
 
         $this->generateMarkdownFile($modelName, $response);
@@ -134,7 +136,7 @@ class ConceptGenerator extends Command
     {
         $filePath = base_path('docs/guide/concepts.md');
         $existingContent = file_exists($filePath) ? File::get($filePath) : '';
-        $updatedContent = $existingContent . "\n" . $content;
+        $updatedContent = $existingContent."\n".$content;
         File::put($filePath, $updatedContent);
 
         $this->info("Updated concept file for model '{$modelName}' with new content.");

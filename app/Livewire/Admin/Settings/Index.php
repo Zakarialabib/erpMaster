@@ -232,7 +232,7 @@ class Index extends Component
             'default_date_format'       => $this->default_date_format,
             'default_client_id'         => $this->default_client_id,
             'default_warehouse_id'      => $this->default_warehouse_id,
-            'multi_language'          => $this->multi_language,
+            'multi_language'            => $this->multi_language,
             'invoice_footer_text'       => $this->invoice_footer_text,
             'sale_prefix'               => $this->sale_prefix,
             'saleReturn_prefix'         => $this->saleReturn_prefix,

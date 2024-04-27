@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
@@ -16,14 +18,10 @@ use Symfony\Component\Console\Input\InputOption;
  */
 class ModelGenerator extends Command
 {
-    /**
-     * The name and signature of the console command.
-     */
+    /** The name and signature of the console command. */
     protected $name = 'generate:model';
 
-    /**
-     * The console command description.
-     */
+    /** The console command description. */
     protected $description = 'Create a new model using AI';
 
     public function __construct(private readonly OpenAi $openAi)
@@ -31,22 +29,18 @@ class ModelGenerator extends Command
         parent::__construct();
     }
 
-    /**
-     * Configure the command options.
-     */
+    /** Configure the command options. */
     protected function configure(): void
     {
         $this->addArgument('name', InputOption::VALUE_REQUIRED, 'The name of the model');
     }
 
-    /**
-     * Execute the console command.
-     */
+    /** Execute the console command. */
     public function handle(): int
     {
         $name = $this->getNameArgument();
 
-        if (!$this->tableExistsForModel($name)) {
+        if ( ! $this->tableExistsForModel($name)) {
             return 1;
         }
 
@@ -59,20 +53,18 @@ class ModelGenerator extends Command
             $modelContent = $this->fetchAiGeneratedContent($prompt);
             $this->createModelFile($name, $modelContent);
         } catch (RequestException $e) {
-            $this->error('Error fetching AI-generated content: ' . $e->getMessage());
+            $this->error('Error fetching AI-generated content: '.$e->getMessage());
         }
 
         return 0;
     }
 
-    /**
-     * Get the 'name' argument or prompt the user if it's not provided.
-     */
+    /** Get the 'name' argument or prompt the user if it's not provided. */
     private function getNameArgument(): string
     {
         $name = $this->argument('name');
 
-        if (!$name) {
+        if ( ! $name) {
             $name = $this->ask($this->promptForMissingArgumentsUsing()['name']);
         }
 
@@ -88,7 +80,7 @@ class ModelGenerator extends Command
     {
         $table = Str::snake(Str::pluralStudly(class_basename($name)));
 
-        if (!Schema::hasTable($table)) {
+        if ( ! Schema::hasTable($table)) {
             $this->error("The table for the provided model '{$name}' does not exist.");
 
             return false;
@@ -117,14 +109,14 @@ class ModelGenerator extends Command
     private function createAiPrompt(string $name, array $schema): string
     {
         $prompt = "Generate a Laravel model named '{$name}' with PHP DocBlock comments for properties, relationships, and methods.";
-        $prompt .= "\nThe current schema of the table is as follows:\n" . implode(', ', $schema);
-      
+        $prompt .= "\nThe current schema of the table is as follows:\n".implode(', ', $schema);
+
         $prompt .= "\nInclude only the 'HasAdvancedFilter' trait to be used for 'orderable' and 'filtrable'.";
         $prompt .= "\nDefine 'public const fillable', 'orderable', and 'filtrable' arrays containing the model's attributes.";
         $prompt .= "\nAdjust the 'casts' property to appropriately cast model attributes.";
-      
+
         $prompt .= "\nResults are: Providing only the final model code without any explanations or additional context. (start with <?php)";
-      
+
         return $prompt;
     }
 
@@ -153,7 +145,7 @@ class ModelGenerator extends Command
         $name = "{$name}.php";
         $filepath = "{$path}/{$name}";
 
-        if (!file_exists($path)) {
+        if ( ! file_exists($path)) {
             mkdir($path, 0755, true);
         }
 

@@ -8,14 +8,14 @@ use App\Http\Resources\OrderResource;
 use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Database\Eloquent\Builder;
+use Exception;
 
 class OrderController extends BaseController
 {
     /**
      * Retrieve a list of orders with optional filters and pagination.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
      *
      * @return \Illuminate\Http\JsonResponse
      */
@@ -45,7 +45,7 @@ class OrderController extends BaseController
             $ordersResource = OrderResource::collection($orders);
 
             return $this->sendResponse($ordersResource, __('Order List'), count($orders));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return $this->sendError($e->getMessage());
         }
     }
@@ -53,7 +53,7 @@ class OrderController extends BaseController
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
      *
      * @return \Illuminate\Http\JsonResponse
      */
@@ -67,8 +67,9 @@ class OrderController extends BaseController
             DB::commit();
 
             return $this->sendResponse($order, 'Order created successfully');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             DB::rollback();
+
             return $this->sendError($e->getMessage());
         }
     }
@@ -85,12 +86,12 @@ class OrderController extends BaseController
         try {
             $order = new OrderResource(Order::find($id));
 
-            if (!$order) {
+            if ( ! $order) {
                 return $this->sendError('Order not found');
             }
 
             return $this->sendResponse($order, 'Order retrieved successfully');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return $this->sendError($e->getMessage());
         }
     }
@@ -98,7 +99,7 @@ class OrderController extends BaseController
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
      * @param  int  $id
      *
      * @return \Illuminate\Http\JsonResponse
@@ -110,7 +111,7 @@ class OrderController extends BaseController
             $order->update($request->all());
 
             return $this->sendResponse(new OrderResource($order), 'Order updated successfully');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return $this->sendError($e->getMessage());
         }
     }
@@ -129,8 +130,9 @@ class OrderController extends BaseController
             $order->delete();
 
             return $this->sendResponse($order, 'Order deleted successfully');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             DB::rollback();
+
             return $this->sendError($e->getMessage());
         }
     }

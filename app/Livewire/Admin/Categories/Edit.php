@@ -69,7 +69,7 @@ class Edit extends Component
         }
 
         if ($this->image) {
-            $imageName = Str::slug($this->name) . '-' . Str::random(3) . '.' . $this->image->extension();
+            $imageName = Str::slug($this->name).'-'.Str::random(3).'.'.$this->image->extension();
             $this->image->storeAs('categories', $imageName);
             $this->image = $imageName;
         }

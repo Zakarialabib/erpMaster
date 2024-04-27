@@ -52,7 +52,7 @@ class Create extends Component
         $this->slug = Str::slug($this->name);
 
         if ($this->image) {
-            $imageName = Str::slug($this->name) . '-' . Str::random(3) . '.' . $this->image->extension();
+            $imageName = Str::slug($this->name).'-'.Str::random(3).'.'.$this->image->extension();
             $this->image->storeAs('categories', $imageName);
             $this->image = $imageName;
         }

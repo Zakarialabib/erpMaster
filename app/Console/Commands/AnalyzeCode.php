@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
@@ -23,8 +25,9 @@ class AnalyzeCode extends Command
     {
         $file = $this->argument('file');
 
-        if (!file_exists($file) || !is_readable($file)) {
+        if ( ! file_exists($file) || ! is_readable($file)) {
             $this->error("File '{$file}' does not exist or is not readable.");
+
             return;
         }
 
@@ -32,17 +35,18 @@ class AnalyzeCode extends Command
 
         $class = $this->getClassFromFile($file);
 
-        if (!$class) {
-            $this->error("No class found in the file.");
+        if ( ! $class) {
+            $this->error('No class found in the file.');
+
             return;
         }
 
         $methods = $this->getMethodsFromClass($class);
 
         if (empty($methods)) {
-            $this->info("No methods found in the class.");
+            $this->info('No methods found in the class.');
         } else {
-            $this->info("Methods found in the class:");
+            $this->info('Methods found in the class:');
 
             foreach ($methods as $method) {
                 $this->line("- {$method}");
@@ -57,7 +61,7 @@ class AnalyzeCode extends Command
                 $this->info("\nRecommendations for enhancements:");
                 $this->line($recommendations);
             } catch (RequestException $e) {
-                $this->error('Error fetching AI-generated content: ' . $e->getMessage());
+                $this->error('Error fetching AI-generated content: '.$e->getMessage());
             }
         }
     }
@@ -69,11 +73,11 @@ class AnalyzeCode extends Command
         $namespace = $this->getNamespace($content);
         $class = $this->getClass($content);
 
-        if (!$class) {
+        if ( ! $class) {
             return null;
         }
 
-        $fullyQualifiedClassName = $namespace ? $namespace . '\\' . $class : $class;
+        $fullyQualifiedClassName = $namespace ? $namespace.'\\'.$class : $class;
 
         return new ReflectionClass($fullyQualifiedClassName);
     }

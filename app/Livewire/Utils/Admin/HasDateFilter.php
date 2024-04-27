@@ -44,5 +44,4 @@ trait HasDateFilter
                 break;
         }
     }
- 
 }

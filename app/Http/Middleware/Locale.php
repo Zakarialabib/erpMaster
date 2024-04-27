@@ -15,7 +15,7 @@ class Locale
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
      *
      * @return mixed
      */
@@ -24,7 +24,7 @@ class Locale
         if (settings('multi_language')) {
             $locale = Session::get('language');
 
-            if (!$locale) {
+            if ( ! $locale) {
                 $defaultLanguage = Cache::rememberForever('default_language', function () {
                     return Language::where('is_default', true)->value('code');
                 });

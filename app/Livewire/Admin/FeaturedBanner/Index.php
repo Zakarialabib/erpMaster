@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Livewire\Admin\FeaturedBanner;
 
 use App\Models\FeaturedBanner;
-use App\Models\Language;
 use App\Models\Product;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;

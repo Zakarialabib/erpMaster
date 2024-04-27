@@ -1,9 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Factories;
 
 use App\Models\CustomerGroup;
-use Faker\Generator as Faker;
 
 class CustomerGroupFactory extends \Illuminate\Database\Eloquent\Factories\Factory
 {
@@ -22,9 +23,9 @@ class CustomerGroupFactory extends \Illuminate\Database\Eloquent\Factories\Facto
     public function definition()
     {
         return [
-            'name' => $this->faker->word,
+            'name'       => $this->faker->word,
             'percentage' => $this->faker->numberBetween(1, 100),
-            'status' => true,
+            'status'     => true,
         ];
     }
 }

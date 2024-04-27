@@ -28,7 +28,7 @@ class VerifySite extends Component
     // Store the list of web resources here
     public $verifySiteModal = false;
 
-    private ?\Google\Service\SiteVerification $siteVerificationService = null;
+    private ?SiteVerification $siteVerificationService = null;
 
     public function mount(): void
     {

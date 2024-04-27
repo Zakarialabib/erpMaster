@@ -35,7 +35,7 @@ class PermissionsDemoSeeder extends Seeder
             'password' => bcrypt('password'),
         ]);
         $customer->assignRole($role1);
-        
+
         $role2 = Role::create([
             'name'       => 'vendor',
             'guard_name' => 'customer',

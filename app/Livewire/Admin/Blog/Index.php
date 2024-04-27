@@ -7,9 +7,7 @@ namespace App\Livewire\Admin\Blog;
 use App\Livewire\Utils\Admin\HasDelete;
 use App\Livewire\Utils\Datatable;
 use App\Models\Blog;
-use Illuminate\Support\Facades\Gate;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
-use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\Attributes\Layout;
 
@@ -21,9 +19,9 @@ class Index extends Component
     use HasDelete;
 
     public $blog;
-    
+
     public $model = Blog::class;
-    
+
     public function render()
     {
         $query = Blog::advancedFilter([

@@ -42,7 +42,7 @@ trait HasDelete
     public function delete(): void
     {
         abort_if(Gate::denies($this->getGateDelete()), 403);
-        
+
         $this->model::findOrFail($this->value)->delete();
 
         $this->alert('success', __('Item deleted successfully.'));
@@ -51,7 +51,7 @@ trait HasDelete
     protected function getGateDelete(): string
     {
         $model = strtolower(class_basename($this->model));
-        return $model . ' delete';
-    }
 
+        return $model.' delete';
+    }
 }

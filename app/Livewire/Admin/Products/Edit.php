@@ -152,10 +152,10 @@ class Edit extends Component
             $this->slug = Str::slug($this->name);
         }
 
-        if (!$this->image) {
+        if ( ! $this->image) {
             $this->image = null;
         } elseif (is_object($this->image) && method_exists($this->image, 'extension')) {
-            $imageName = Str::slug($this->name) . '-' . Str::random(5) . '.' . $this->image->extension();
+            $imageName = Str::slug($this->name).'-'.Str::random(5).'.'.$this->image->extension();
             $this->image->storeAs('products', $imageName, 'local_files');
             $this->image = $imageName;
         }
@@ -164,7 +164,7 @@ class Edit extends Component
             $gallery = [];
 
             foreach ($this->gallery as $value) {
-                $imageName = Str::slug($this->name) . '-' . Str::random(5) . '.' . $value->extension();
+                $imageName = Str::slug($this->name).'-'.Str::random(5).'.'.$value->extension();
                 $value->storeAs('products', $imageName, 'local_files');
                 $gallery[] = $imageName;
             }

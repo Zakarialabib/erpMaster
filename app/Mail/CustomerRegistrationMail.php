@@ -16,7 +16,7 @@ class CustomerRegistrationMail extends Mailable
     use Queueable;
     use SerializesModels;
 
-    /** @var \App\Models\Customer */
+    /** @var Customer */
     public $customer;
 
     public function __construct(Customer $customer)

@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-if (!function_exists('settings')) {
+if ( ! function_exists('settings')) {
     function settings($key = null)
     {
         $settings = cache()->rememberForever('settings', static function () {
-            return \App\Models\Settings::pluck('value', 'key');
+            return App\Models\Settings::pluck('value', 'key');
         });
 
         if ($key !== null) {
@@ -17,14 +17,14 @@ if (!function_exists('settings')) {
     }
 }
 
-if (!function_exists('format_currency')) {
+if ( ! function_exists('format_currency')) {
     function format_currency($value, $format = true)
     {
-        if (!$format) {
+        if ( ! $format) {
             return $value;
         }
 
-        $currency = \App\Models\Currency::find(1); // Assuming you want to retrieve the currency from the database based on a specific condition
+        $currency = App\Models\Currency::find(1); // Assuming you want to retrieve the currency from the database based on a specific condition
 
         $position = $currency->position;
         $symbol = $currency->symbol;
@@ -32,12 +32,12 @@ if (!function_exists('format_currency')) {
         $thousandSeparator = $currency->thousand_separator;
 
         return $position === 'prefix'
-            ? $symbol . number_format((float) $value, 2, $decimalSeparator, $thousandSeparator)
-            : number_format((float) $value, 2, $decimalSeparator, $thousandSeparator) . $symbol;
+            ? $symbol.number_format((float) $value, 2, $decimalSeparator, $thousandSeparator)
+            : number_format((float) $value, 2, $decimalSeparator, $thousandSeparator).$symbol;
     }
 }
 
-if (!function_exists('format_date')) {
+if ( ! function_exists('format_date')) {
     function format_date($value)
     {
         if ($value instanceof DateTimeInterface) {
@@ -45,7 +45,7 @@ if (!function_exists('format_date')) {
         }
 
         // Check if value is non-empty and is a string
-        if (empty($value) || !is_string($value)) {
+        if (empty($value) || ! is_string($value)) {
             return null;
         }
 
@@ -57,7 +57,7 @@ if (!function_exists('format_date')) {
         $dateString = substr($value, 0, 10);
 
         try {
-            $date = \Carbon\Carbon::createFromFormat('Y-m-d', $dateString);
+            $date = Carbon\Carbon::createFromFormat('Y-m-d', $dateString);
         } catch (Exception) {
             return null; // Return null if date creation fails
         }
@@ -66,9 +66,9 @@ if (!function_exists('format_date')) {
     }
 }
 
-if (!function_exists('make_reference_id')) {
+if ( ! function_exists('make_reference_id')) {
     function make_reference_id(string $prefix, $number): string
     {
-        return $prefix . '-' . str_pad((string) $number, 5, '0', STR_PAD_LEFT);
+        return $prefix.'-'.str_pad((string) $number, 5, '0', STR_PAD_LEFT);
     }
 }

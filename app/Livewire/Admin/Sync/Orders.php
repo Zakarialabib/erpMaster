@@ -53,8 +53,8 @@ class Orders extends Component
             ]);
         } elseif ($this->type === 'custom') {
             $client = Http::withHeaders([
-                'Authorization' => 'Bearer ' . settings('custom_api_key'),
-            ])->get(settings('custom_store_url') . '/api');
+                'Authorization' => 'Bearer '.settings('custom_api_key'),
+            ])->get(settings('custom_store_url').'/api');
         }
 
         // Get the orders from the e-commerce store

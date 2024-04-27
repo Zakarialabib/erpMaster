@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
@@ -17,14 +19,10 @@ use Symfony\Component\Console\Input\InputOption;
  */
 class GenerateResource extends Command
 {
-    /**
-     * The name and signature of the console command.
-     */
+    /** The name and signature of the console command. */
     protected $signature = 'generate:resource';
 
-    /**
-     * The console command description.
-     */
+    /** The console command description. */
     protected $description = 'Create a new resource using AI';
 
     public function __construct(private readonly OpenAi $openAi)
@@ -32,18 +30,14 @@ class GenerateResource extends Command
         parent::__construct();
     }
 
-    /**
-     * Configure the command options.
-     */
+    /** Configure the command options. */
     protected function configure(): void
     {
         $this->addArgument('name', InputOption::VALUE_REQUIRED, 'The name of the resource')
             ->addOption('model', 'm', InputOption::VALUE_REQUIRED, 'The model for the resource');
     }
 
-    /**
-     * Execute the console command.
-     */
+    /** Execute the console command. */
     public function handle(): int
     {
         $name = $this->getNameArgument();
@@ -57,7 +51,7 @@ class GenerateResource extends Command
             return 1;
         }
 
-        if (!$this->tableExistsForModel($model)) {
+        if ( ! $this->tableExistsForModel($model)) {
             return 1;
         }
 
@@ -70,37 +64,33 @@ class GenerateResource extends Command
         try {
             // Read the content of the stub file
 
-            $resourceContent =  $this->openAi->execute($prompt, 2000);
+            $resourceContent = $this->openAi->execute($prompt, 2000);
             $this->createResourceFile($name, $resourceContent);
         } catch (RequestException $e) {
-            $this->error('Error fetching AI-generated content: ' . $e->getMessage());
+            $this->error('Error fetching AI-generated content: '.$e->getMessage());
         }
 
         return 0;
     }
 
-    /**
-     * Get the 'name' argument or prompt the user if it's not provided.
-     */
+    /** Get the 'name' argument or prompt the user if it's not provided. */
     private function getNameArgument(): string
     {
         $name = $this->argument('name');
 
-        if (!$name) {
+        if ( ! $name) {
             $name = $this->ask($this->promptForMissingArgumentsUsing()['name']);
         }
 
         return $name;
     }
 
-    /**
-     * Get the 'model' option or prompt the user if it's not provided.
-     */
+    /** Get the 'model' option or prompt the user if it's not provided. */
     private function getModelOption(): string
     {
         $model = $this->option('model');
 
-        if (!$model) {
+        if ( ! $model) {
             $model = $this->ask('Please provide the model for the resource');
         }
 
@@ -115,10 +105,10 @@ class GenerateResource extends Command
     private function tableExistsForModel(string $model): bool
     {
         /** @var \Illuminate\Database\Eloquent\Model $object */
-        $object = new $model;
+        $object = new $model();
         $table = $object->getTable();
 
-        if (!Schema::hasTable($table)) {
+        if ( ! Schema::hasTable($table)) {
             $this->error("The table for the provided model '{$model}' does not exist.");
 
             return false;
@@ -135,7 +125,7 @@ class GenerateResource extends Command
     private function getSchemaForModel(string $model): array
     {
         /** @var \Illuminate\Database\Eloquent\Model $object */
-        $object = new $model;
+        $object = new $model();
         $table = $object->getTable();
 
         return Schema::getColumnListing($table);
@@ -160,7 +150,7 @@ class GenerateResource extends Command
     {
         $model = ltrim($model, '\\');
 
-        $namespaceModel = $this->laravel->getNamespace() . 'Models\\' . $model;
+        $namespaceModel = $this->laravel->getNamespace().'Models\\'.$model;
 
         if (class_exists($namespaceModel)) {
             return $namespaceModel;
@@ -184,7 +174,7 @@ class GenerateResource extends Command
     private function createAiPrompt(string $name, string $model, array $schema): string
     {
         $prompt = "Generate a Laravel resource named '{$name}' for the '{$model}' model.";
-        $prompt .= "\nThe current schema of the table is as follows:\n" . implode(', ', $schema);
+        $prompt .= "\nThe current schema of the table is as follows:\n".implode(', ', $schema);
         $prompt .= "\nConsider generating relations too, based on the column names (like user_id) include all logic in the method toArray.";
         $prompt .= "\nProvide only class resource '{$name}' code without any explanations or additional context. (start with <?php)";
         $prompt .= "\nInclude type hints for methods and their arguments.";
@@ -192,7 +182,6 @@ class GenerateResource extends Command
 
         return $prompt;
     }
-
 
     /**
      * Create a resource file using the provided name and content.
@@ -203,14 +192,15 @@ class GenerateResource extends Command
     private function createResourceFile(string $name, string $content): void
     {
         $path = app_path('Http/Resources');
-        if (!Str::endsWith($name, 'Resource')) {
+
+        if ( ! Str::endsWith($name, 'Resource')) {
             $name .= 'Resource';
         }
 
         $name = "{$name}.php";
         $filepath = "{$path}/{$name}";
 
-        if (!file_exists($path)) {
+        if ( ! file_exists($path)) {
             mkdir($path, 0755, true);
         }
 

@@ -1,11 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Console\Commands;
 
 use App\Services\OpenAi;
 use Illuminate\Console\Command;
 use Illuminate\Http\Client\RequestException;
-use KKomelin\TranslatableStringExporter\Core\Exporter;
 use KKomelin\TranslatableStringExporter\Core\UntranslatedStringFinder;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Arr;
@@ -31,10 +32,11 @@ class TranslateMissing extends Command
 
         if ($untranslatedStrings === false || empty($untranslatedStrings)) {
             $this->info("No untranslated strings found for language '{$language}'.");
+
             return;
         }
 
-        $this->info("Found " . count($untranslatedStrings) . " untranslated strings for language '{$language}':");
+        $this->info('Found '.count($untranslatedStrings)." untranslated strings for language '{$language}':");
 
         foreach ($untranslatedStrings as $untranslatedString) {
             // Use OpenAI to generate translations
@@ -45,11 +47,11 @@ class TranslateMissing extends Command
                 // Update the language file with the translation
                 $this->updateLanguageFile($language, $untranslatedString, $translation);
             } catch (RequestException $e) {
-                $this->error("Error fetching AI-generated translation for '{$untranslatedString}': " . $e->getMessage());
+                $this->error("Error fetching AI-generated translation for '{$untranslatedString}': ".$e->getMessage());
             }
         }
 
-        $this->info("Translation process complete.");
+        $this->info('Translation process complete.');
     }
 
     /**
@@ -71,7 +73,6 @@ class TranslateMissing extends Command
 
         return $this->openAi->execute($context, $prompt, 2000);
     }
-
 
     /**
      * Update the language file with the translation.

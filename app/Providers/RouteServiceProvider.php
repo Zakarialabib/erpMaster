@@ -33,7 +33,6 @@ class RouteServiceProvider extends ServiceProvider
         });
 
         $this->routes(static function (): void {
-          
         });
     }
 }

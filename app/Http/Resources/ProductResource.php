@@ -19,18 +19,18 @@ class ProductResource extends JsonResource
     public function toArray($request): array
     {
         return [
-            'id'         => $this->id,
-            'name'       => $this->name,
-            'code'       => $this->code,
+            'id'       => $this->id,
+            'name'     => $this->name,
+            'code'     => $this->code,
             'category' => new CategoryResource(Category::find($this->category_id)) ?? null,
 
-            'price'      => $this->whenPivotLoaded('warehouse', function () {
+            'price' => $this->whenPivotLoaded('warehouse', function () {
                 return $this->warehouses->first()->pivot->price;
             }),
-            'old_price'  => $this->whenPivotLoaded('warehouse', function () {
+            'old_price' => $this->whenPivotLoaded('warehouse', function () {
                 return $this->warehouses->first()->pivot->old_price;
             }),
-            'quantity'   => $this->whenPivotLoaded('warehouse', function () {
+            'quantity' => $this->whenPivotLoaded('warehouse', function () {
                 return $this->warehouses->first()->pivot->qty;
             }),
             // @foreach ($product->warehouses as $warehouse)
@@ -52,8 +52,8 @@ class ProductResource extends JsonResource
             // @endforeach
 
             'image'      => $this->image ? asset("images/products/{$this->image}") : null,
-            'created_at' =>  $this->created_at,
-            'updated_at' =>  $this->updated_at,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
         ];
     }
 }

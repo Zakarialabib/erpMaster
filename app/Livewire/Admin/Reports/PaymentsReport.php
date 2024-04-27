@@ -55,7 +55,7 @@ class PaymentsReport extends Component
 
         return view('livewire.admin.reports.payments-report', [
             'information' => $this->query ? $this->query->orderBy('date', 'desc')
-                 ->when($this->payment_method, fn ($query) => $query->where('payment_method', $this->payment_method))
+                ->when($this->payment_method, fn ($query) => $query->where('payment_method', $this->payment_method))
                 ->paginate(10) : collect(),
         ]);
     }

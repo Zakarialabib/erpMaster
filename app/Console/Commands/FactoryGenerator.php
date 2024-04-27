@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
@@ -17,14 +19,10 @@ use Symfony\Component\Console\Input\InputOption;
  */
 class FactoryGenerator extends Command
 {
-    /**
-     * The name and signature of the console command.
-     */
+    /** The name and signature of the console command. */
     protected $signature = 'generate:factory';
 
-    /**
-     * The console command description.
-     */
+    /** The console command description. */
     protected $description = 'Create a new factory using AI';
 
     public function __construct(private readonly OpenAi $openAi)
@@ -32,18 +30,14 @@ class FactoryGenerator extends Command
         parent::__construct();
     }
 
-    /**
-     * Configure the command options.
-     */
+    /** Configure the command options. */
     protected function configure(): void
     {
         $this->addArgument('name', InputOption::VALUE_REQUIRED, 'The name of the factory')
             ->addOption('model', 'm', InputOption::VALUE_REQUIRED, 'The model for the factory');
     }
 
-    /**
-     * Execute the console command.
-     */
+    /** Execute the console command. */
     public function handle(): int
     {
         $name = $this->getNameArgument();
@@ -57,7 +51,7 @@ class FactoryGenerator extends Command
             return 1;
         }
 
-        if (! $this->tableExistsForModel($model)) {
+        if ( ! $this->tableExistsForModel($model)) {
             return 1;
         }
 
@@ -76,28 +70,24 @@ class FactoryGenerator extends Command
         return 0;
     }
 
-    /**
-     * Get the 'name' argument or prompt the user if it's not provided.
-     */
+    /** Get the 'name' argument or prompt the user if it's not provided. */
     private function getNameArgument(): string
     {
         $name = $this->argument('name');
 
-        if (! $name) {
+        if ( ! $name) {
             $name = $this->ask($this->promptForMissingArgumentsUsing()['name']);
         }
 
         return $name;
     }
 
-    /**
-     * Get the 'model' option or prompt the user if it's not provided.
-     */
+    /** Get the 'model' option or prompt the user if it's not provided. */
     private function getModelOption(): string
     {
         $model = $this->option('model');
 
-        if (! $model) {
+        if ( ! $model) {
             $model = $this->ask('Please provide the model for the factory');
         }
 
@@ -112,10 +102,10 @@ class FactoryGenerator extends Command
     private function tableExistsForModel(string $model): bool
     {
         /** @var \Illuminate\Database\Eloquent\Model $object */
-        $object = new $model;
+        $object = new $model();
         $table = $object->getTable();
 
-        if (! Schema::hasTable($table)) {
+        if ( ! Schema::hasTable($table)) {
             $this->error("The table for the provided model '{$model}' does not exist.");
 
             return false;
@@ -132,7 +122,7 @@ class FactoryGenerator extends Command
     private function getSchemaForModel(string $model): array
     {
         /** @var \Illuminate\Database\Eloquent\Model $object */
-        $object = new $model;
+        $object = new $model();
         $table = $object->getTable();
 
         return Schema::getColumnListing($table);
@@ -208,14 +198,15 @@ class FactoryGenerator extends Command
     private function createFactoryFile(string $name, string $content): void
     {
         $path = database_path('factories');
-        if (! Str::endsWith($name, 'Factory')) {
+
+        if ( ! Str::endsWith($name, 'Factory')) {
             $name .= 'Factory';
         }
 
         $name = "{$name}.php";
         $filepath = "{$path}/{$name}";
 
-        if (! file_exists($path)) {
+        if ( ! file_exists($path)) {
             mkdir($path, 0755, true);
         }
 

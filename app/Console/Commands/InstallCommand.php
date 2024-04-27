@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Schema;
 
@@ -41,7 +40,7 @@ class InstallCommand extends Command
         }
 
         $this->info('<fg=white;bg=green>Success!</> ErpMaster is installed...make something great!');
-        $this->info('Log in at ' . config('app.url') . '/erpMaster/login');
+        $this->info('Log in at '.config('app.url').'/erpMaster/login');
         $this->info('And don\'t forget to run `npm install && npm run dev` if you haven\'t already.');
 
         return self::SUCCESS;
@@ -65,7 +64,7 @@ class InstallCommand extends Command
         $ignore_file = base_path('.gitignore');
         file_put_contents(
             $ignore_file,
-            PHP_EOL . '/erpMaster' . PHP_EOL . '/public/erpMaster' . PHP_EOL . '/storage/backups',
+            PHP_EOL.'/erpMaster'.PHP_EOL.'/public/erpMaster'.PHP_EOL.'/storage/backups',
             FILE_APPEND
         );
     }
@@ -73,7 +72,8 @@ class InstallCommand extends Command
     protected function setupDatabase(): void
     {
         $this->comment('Making /erpMaster folder...');
-        if (!File::isDirectory(base_path('/erpMaster'))) {
+
+        if ( ! File::isDirectory(base_path('/erpMaster'))) {
             File::makeDirectory(base_path('/erpMaster'));
         }
 
@@ -102,7 +102,7 @@ class InstallCommand extends Command
     protected function migrate(): void
     {
         // Spatie creates the media table a bunch, so it needs to only be created once.
-        if (!Schema::hasTable('media')) {
+        if ( ! Schema::hasTable('media')) {
             $this->comment('Publishing Spatie\'s media config file...');
             $this->callSilent('vendor:publish', ['--provider' => 'Spatie\MediaLibrary\MediaLibraryServiceProvider', '--tag' => 'migrations']);
         } else {

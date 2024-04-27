@@ -16,7 +16,7 @@ class PaymentDue extends Notification
     /**
      * The sale instance.
      *
-     * @var \App\Models\Sale
+     * @var Sale
      */
     public $sale;
 

@@ -9,8 +9,7 @@ use App\Models\Customer;
 use App\Models\User;
 use App\Models\Shipping;
 
-return new class() extends Migration
-{
+return new class () extends Migration {
     /**
      * Run the migrations.
      *

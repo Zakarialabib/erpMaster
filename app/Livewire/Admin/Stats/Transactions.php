@@ -148,7 +148,6 @@ class Transactions extends Component
 
         $this->chart();
 
-
         // $this->best_selling_product = $this->calculateBestSellingProduct();
         // $this->number_of_products_sold = $this->calculateNumberOfProductsSold();
         // $this->average_purchase_return_amount = $this->calculateAveragePurchaseReturnAmount();

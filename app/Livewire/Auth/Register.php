@@ -21,7 +21,7 @@ class Register extends Component
     public $name = '';
 
     #[Rule('required', message: 'Email is required ')]
-    #[Rule('email' , message :'Email must be valid')]
+    #[Rule('email', message :'Email must be valid')]
     #[Rule('unique:users,email')]
     public $email = '';
 
@@ -39,7 +39,7 @@ class Register extends Component
 
     public $city = 'Casablanca';
 
-    public $country = 'Morocco'; 
+    public $country = 'Morocco';
 
     public function register()
     {
@@ -72,7 +72,7 @@ class Register extends Component
 
         $homePage = match (true) {
             $customer->hasRole('customer') => '/myaccount',
-            default                      => '/',
+            default                        => '/',
         };
 
         return $this->redirect($homePage, navigate: true);

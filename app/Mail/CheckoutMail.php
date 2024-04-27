@@ -17,10 +17,10 @@ class CheckoutMail extends Mailable
     use Queueable;
     use SerializesModels;
 
-    /** @var \App\Models\Order */
+    /** @var Order */
     public $order;
 
-    /** @var \App\Models\Customer */
+    /** @var Customer */
     public $customer;
 
     public function __construct(Order $order, Customer $customer)
@@ -43,7 +43,7 @@ class CheckoutMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: __('Hello ') . $this->customer->name . ' , ' . __('your order has been placed'),
+            subject: __('Hello ').$this->customer->name.' , '.__('your order has been placed'),
         );
     }
 }

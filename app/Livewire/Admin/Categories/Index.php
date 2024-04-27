@@ -27,7 +27,6 @@ class Index extends Component
 
     public $file;
 
-
     /** @var bool */
     public $showModal = false;
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Api;
 
 use App\Models\User;
@@ -9,17 +11,16 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Validation\ValidationException;
-use Laravel\Sanctum\PersonalAccessToken;
 use Symfony\Component\HttpFoundation\Response;
+use Throwable;
 
 class AuthController extends Controller
 {
     public function login(Request $request)
     {
-        if (!Auth::attempt($request->only(['email', 'password']))) {
+        if ( ! Auth::attempt($request->only(['email', 'password']))) {
             return response()->json([
-                'message' => 'Invalid login details'
+                'message' => 'Invalid login details',
             ], 401);
         }
 
@@ -34,7 +35,7 @@ class AuthController extends Controller
     {
         $user = $request->user();
         $userData = new UserResource($user);
-        
+
         return response()->json($userData);
     }
 
@@ -48,23 +49,23 @@ class AuthController extends Controller
     {
         try {
             $validatedData = $request->validate([
-                'name' => 'required|string|max:255',
-                'email' => 'required|string|email|max:255|unique:users',
+                'name'     => 'required|string|max:255',
+                'email'    => 'required|string|email|max:255|unique:users',
                 'password' => 'required|string|min:8',
             ]);
 
             $user = User::create([
-                'name' => $validatedData['name'],
-                'email' => $validatedData['email'],
+                'name'     => $validatedData['name'],
+                'email'    => $validatedData['email'],
                 'password' => Hash::make($validatedData['password']),
             ]);
 
             $token = $user->createToken('auth_token')->plainTextToken;
 
             return response()->json(['token' => $token, 'user' => $user]);
-        } catch (\Throwable $th) {
+        } catch (Throwable $th) {
             return response()->json([
-                'error' => $th->getMessage()
+                'error' => $th->getMessage(),
             ]);
         }
     }
@@ -76,7 +77,6 @@ class AuthController extends Controller
      */
     public function logout(Request $request)
     {
-
         $request->user()->currentAccessToken()->delete();
 
         auth()->logout();
@@ -96,10 +96,10 @@ class AuthController extends Controller
 
         $request->validate([
             'current_password' => 'required|string',
-            'new_password' => 'required|string|min:8|different:current_password',
+            'new_password'     => 'required|string|min:8|different:current_password',
         ]);
 
-        if (!Hash::check($request->input('current_password'), $user->password)) {
+        if ( ! Hash::check($request->input('current_password'), $user->password)) {
             return response()->json(['error' => 'Invalid current password'], 401);
         }
 

@@ -58,12 +58,15 @@ class ProfitLossReport extends Component
         switch ($type) {
             case 'day':
                 $this->setDateRange(now()->startOfDay(), now()->endOfDay());
+
                 break;
             case 'month':
                 $this->setDateRange(now()->startOfMonth(), now()->endOfMonth());
+
                 break;
             case 'year':
                 $this->setDateRange(now()->startOfYear(), now()->endOfYear());
+
                 break;
         }
     }

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Enums\Status;
-use App\Enums\TaxType;
 use App\Scopes\ProductScope;
 use App\Support\HasAdvancedFilter;
 use App\Traits\HasUuid;

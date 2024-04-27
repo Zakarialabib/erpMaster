@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
@@ -39,7 +41,7 @@ class DocsGen extends Command
         $modelName = $this->getModelOption();
         $model = $this->loadModel($modelName);
 
-        if (!$model) {
+        if ( ! $model) {
             return;
         }
 
@@ -58,7 +60,7 @@ class DocsGen extends Command
 
         $this->info("\nConcepts generated for all models.");
     }
-    
+
     protected function getModelFilePath(string $modelName): string
     {
         // Get the full path of the model file
@@ -80,18 +82,18 @@ class DocsGen extends Command
     {
         $model = $this->option('model');
 
-        if (!$model) {
+        if ( ! $model) {
             $model = $this->ask('Please provide the model');
         }
 
         return $model;
     }
-    
+
     protected function loadModel(string $modelName)
     {
         $modelClass = "App\\Models\\{$modelName}";
 
-        return class_exists($modelClass) ? new $modelClass : null;
+        return class_exists($modelClass) ? new $modelClass() : null;
     }
 
     protected function generateConcept(string $modelName, $model): void
@@ -100,8 +102,9 @@ class DocsGen extends Command
         $tableName = $model->getTable();
         $modelFile = $this->getModelFilePath($modelName);
 
-        if (!file_exists($modelFile)) {
+        if ( ! file_exists($modelFile)) {
             $this->error("Error: Model file not found for '{$modelName}'");
+
             return;
         }
 
@@ -127,13 +130,11 @@ class DocsGen extends Command
             // Generate Markdown file with the generated content
             $this->generateMarkdownFile($modelName, $conceptContent);
         } catch (RequestException $e) {
-            $this->error('Error fetching AI-generated content: ' . $e->getMessage());
+            $this->error('Error fetching AI-generated content: '.$e->getMessage());
         }
 
         $this->info("\nConcept documentation generated successfully for model '{$modelName}'");
     }
-
-
 
     protected function generateMarkdownFile(string $modelName, string $content): void
     {
@@ -144,7 +145,7 @@ class DocsGen extends Command
         $existingContent = file_exists($filePath) ? File::get($filePath) : '';
 
         // Append the new content and update the file
-        $updatedContent = $existingContent . "\n" . $content;
+        $updatedContent = $existingContent."\n".$content;
         File::put($filePath, $updatedContent);
 
         $this->info("Updated concept file for model '{$modelName}' with new content.");

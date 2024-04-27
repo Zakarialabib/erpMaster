@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Livewire\Admin\Subcategory;
 
 use App\Models\Category;
-use App\Models\Language;
 use App\Models\Subcategory;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;

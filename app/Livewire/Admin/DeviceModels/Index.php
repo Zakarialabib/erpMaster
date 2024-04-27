@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Livewire\Admin\DeviceModels;
 
-use App\Livewire\WithSorting;
 use App\Imports\DeviceModelImport;
 use App\Models\DeviceModel;
 use Illuminate\Contracts\View\Factory;

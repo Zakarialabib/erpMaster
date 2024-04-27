@@ -16,7 +16,6 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Log;
 use Throwable;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Session;
 
 class FrontController extends Controller

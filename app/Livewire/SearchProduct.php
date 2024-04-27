@@ -76,8 +76,8 @@ class SearchProduct extends Component
         }, 'category'])
             ->when($this->search, function ($query): void {
                 $query->where(function ($query): void {
-                    $query->where('name', 'like', '%' . $this->search . '%')
-                        ->orWhere('code', 'like', '%' . $this->search . '%');
+                    $query->where('name', 'like', '%'.$this->search.'%')
+                        ->orWhere('code', 'like', '%'.$this->search.'%');
                 });
             })
             ->when($this->category_id, function ($query): void {
@@ -108,7 +108,7 @@ class SearchProduct extends Component
 
     public function updatedQuery(): void
     {
-        if (!empty($this->search_results)) {
+        if ( ! empty($this->search_results)) {
             $this->product = $this->search_results[0];
             $this->dispatch('productSelected', $this->product);
         }

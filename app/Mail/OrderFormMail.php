@@ -15,7 +15,7 @@ class OrderFormMail extends Mailable
     use Queueable;
     use SerializesModels;
 
-    /** @var \App\Models\OrderForms */
+    /** @var OrderForms */
     public $order;
 
     public function __construct(OrderForms $order)

@@ -23,7 +23,7 @@ class ProductTelegram extends Notification
         return ['telegram'];
     }
 
-    /** @return \NotificationChannels\Telegram\TelegramMessage */
+    /** @return TelegramMessage */
     public function toTelegram(mixed $notifiable)
     {
         return TelegramMessage::create()

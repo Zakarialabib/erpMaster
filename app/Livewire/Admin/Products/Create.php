@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Livewire\Admin\Products;
 
-use App\Enums\TaxType;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Subcategory;
@@ -73,24 +72,24 @@ class Create extends Component
     public $options;
 
     public $productWarehouse = [
-        'qty' => 0,
-        'price' => '',
-        'cost' => '',
-        'old_price' => '',
-        'stock_alert' => 10,
+        'qty'          => 0,
+        'price'        => '',
+        'cost'         => '',
+        'old_price'    => '',
+        'stock_alert'  => 10,
         'is_ecommerce' => false,
     ];
 
     /** @var array */
     protected $rules = [
-        'productWarehouse.qty' => 'numeric',
-        'productWarehouse.price' => 'numeric',
-        'productWarehouse.old_price' => 'numeric',
-        'productWarehouse.cost' => 'numeric',
-        'productWarehouse.stock_alert' => 'numeric',
+        'productWarehouse.qty'          => 'numeric',
+        'productWarehouse.price'        => 'numeric',
+        'productWarehouse.old_price'    => 'numeric',
+        'productWarehouse.cost'         => 'numeric',
+        'productWarehouse.stock_alert'  => 'numeric',
         'productWarehouse.is_ecommerce' => 'boolean',
-        'options.*.type'                  => '',
-        'options.*.value'                 => '',
+        'options.*.type'                => '',
+        'options.*.value'               => '',
     ];
 
     public function render()
@@ -117,7 +116,6 @@ class Create extends Component
         $this->createModal = true;
     }
 
-
     public function create(): void
     {
         $this->validate();
@@ -125,7 +123,7 @@ class Create extends Component
         $this->slug = Str::slug($this->name);
 
         if ($this->image) {
-            $imageName = Str::slug($this->name) . '-' . $this->image->extension();
+            $imageName = Str::slug($this->name).'-'.$this->image->extension();
             $this->image->storeAs('products', $imageName, 'local_files');
             $this->image = $imageName;
         }
@@ -134,7 +132,7 @@ class Create extends Component
             $gallery = [];
 
             foreach ($this->gallery as $value) {
-                $imageName = Str::slug($this->name) . '-' . Str::random(5) . '.' . $value->extension();
+                $imageName = Str::slug($this->name).'-'.Str::random(5).'.'.$value->extension();
                 $value->storeAs('products', $imageName, 'local_files');
                 $gallery[] = $imageName;
             }
@@ -155,8 +153,8 @@ class Create extends Component
             'price'        => $this->productWarehouse['price'],
             'cost'         => $this->productWarehouse['cost'],
             'qty'          => $this->productWarehouse['qty'] ?? 0,
-            'old_price' => $this->productWarehouse['old_price'],
-            'stock_alert' => $this->productWarehouse['stock_alert'] ?? 0,
+            'old_price'    => $this->productWarehouse['old_price'],
+            'stock_alert'  => $this->productWarehouse['stock_alert'] ?? 0,
             'is_ecommerce' => $this->productWarehouse['is_ecommerce'] ?? false,
         ]);
 

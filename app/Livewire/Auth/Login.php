@@ -31,7 +31,6 @@ class Login extends Component
     {
         $this->validate();
 
-
         if (auth()->guard('customer')->attempt(['email' => $this->email, 'password' => $this->password], $this->remember_me)) {
             $customer = Customer::where(['email' => $this->email])->first();
 

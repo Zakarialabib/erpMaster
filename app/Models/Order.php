@@ -71,7 +71,7 @@ class Order extends Model
             foreignKey: 'user_id',
         );
     }
-    
+
     public function customer(): BelongsTo
     {
         return $this->belongsTo(

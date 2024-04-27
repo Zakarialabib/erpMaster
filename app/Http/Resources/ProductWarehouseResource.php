@@ -20,11 +20,11 @@ class ProductWarehouseResource extends JsonResource
     {
         return [
             'warehouse_id' => $this->warehouse_id,
-            'product_id' => $this->product_id,
-            'id'    => $request->id,
-            'qty'   => $request->qty,
-            'price' => $request->price,
-            'cost'  => $request->cost,
+            'product_id'   => $this->product_id,
+            'id'           => $request->id,
+            'qty'          => $request->qty,
+            'price'        => $request->price,
+            'cost'         => $request->cost,
         ];
     }
 }

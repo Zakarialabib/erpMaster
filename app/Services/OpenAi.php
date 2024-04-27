@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Services;
 
 use Illuminate\Http\Client\RequestException;
@@ -24,19 +26,19 @@ class OpenAi
         // }
 
         $data = [
-            'temperature' => 0.7,
-            'max_tokens' => $maxTokens,
+            'temperature'       => 0.7,
+            'max_tokens'        => $maxTokens,
             'frequency_penalty' => 0,
             // 'repeat_penalty' => 0,
-            'model' => 'gpt-3.5-turbo',
-            'stream' => true,
+            'model'    => 'gpt-3.5-turbo',
+            'stream'   => true,
             'messages' => [
                 [
-                    'role' => 'system',
+                    'role'    => 'system',
                     'content' => $context,
                 ],
                 [
-                    'role' => 'user',
+                    'role'    => 'user',
                     'content' => $message,
                 ],
             ],
@@ -50,7 +52,6 @@ class OpenAi
             // ->post('http://localhost:1234/v1/chat/completions', $data);
             ->post('https://books-peru-attach-if.trycloudflare.com/v1/chat/completions', $data);
 
-
         if ($response->failed()) {
             throw new RequestException($response);
         }
@@ -60,7 +61,7 @@ class OpenAi
         $content = trim($response['choices'][0]['message']['content'] ?? '');
 
         $complet = $completion['choices'][0]['message']['content'];
-        
+
         Log::info('open ai log :', [$completion, $content, $response]);
 
         return $content;

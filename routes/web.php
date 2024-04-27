@@ -22,8 +22,8 @@ use App\Livewire\Front\SubcategoryPage;
 use App\Livewire\Front\ThankYou;
 use Livewire\Livewire;
 
-require __DIR__ . '/auth.php';
-require __DIR__ . '/admin.php';
+require __DIR__.'/auth.php';
+require __DIR__.'/admin.php';
 
 Route::get('/docs', function () {
     View::addExtension('html', 'php'); // allows .html
@@ -59,7 +59,6 @@ Route::middleware('auth', 'role:vendor|customer')->group(function () {
 Route::post('/uploads', [UploadController::class, 'upload'])->name('upload');
 
 Route::get('/lang/{lang}', [FrontController::class, 'changeLanguage'])->name('changelanguage');
-
 
 Route::group(['prefix' => 'vendor', 'as' => 'vendor.', 'middleware' => ['auth', 'role:vendor']], function () {
     Route::get('/dashboard', VendorDashboard::class)->name('dashboard');

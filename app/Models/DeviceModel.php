@@ -10,7 +10,6 @@ use App\Support\HasAdvancedFilter;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-
 class DeviceModel extends Model
 {
     use HasFactory;

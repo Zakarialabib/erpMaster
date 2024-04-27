@@ -8,10 +8,8 @@ use App\Livewire\Utils\Admin\HasDelete;
 use App\Models\Subcategory;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
-use Illuminate\Support\Facades\Gate;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
-use Livewire\WithPagination;
 use App\Livewire\Utils\Datatable;
 use Livewire\Attributes\Layout;
 
@@ -40,6 +38,4 @@ class Index extends Component
 
         return view('livewire.admin.subcategory.index', ['subcategories' => $subcategories]);
     }
-
- 
 }

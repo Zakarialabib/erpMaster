@@ -7,7 +7,6 @@ namespace App\Providers;
 use App\Models\Language;
 use App\Models\Settings;
 use App\Observers\SettingsObserver;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
@@ -18,7 +17,6 @@ use App\Observers\ContactObserver;
 use App\Observers\OrderFormObserver;
 use App\Observers\SubscriberObserver;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Session;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -47,6 +45,7 @@ class AppServiceProvider extends ServiceProvider
         Subscriber::observe(SubscriberObserver::class);
         // Model::shouldBeStrict(! $this->app->isProduction());
     }
+
     private function getLanguages()
     {
         return Cache::rememberForever('languages', function () {

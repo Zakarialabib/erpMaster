@@ -50,7 +50,6 @@ Route::get('/login/facebook/callback', [SocialAuth::class, 'handleFacebookCallba
 Route::get('/login/google', [SocialAuth::class, 'redirectToGoogle'])->name('login.google');
 Route::get('/login/google/callback', [SocialAuth::class, 'handleGoogleCallback']);
 
-
 Route::middleware('auth')->group(function () {
     Route::get('verify-email', [EmailVerificationPromptController::class, '__invoke'])
         ->name('verification.notice');
@@ -70,16 +69,15 @@ Route::middleware('auth')->group(function () {
         ->name('admin.password.confirm');
 });
 
-
 Route::post('logout', function (Request $request) {
-
     if (Auth::guard('admin')->check()) {
         Auth::guard('admin')->logout();
-    } else if (Auth::guard('student')->check()) {
+    } elseif (Auth::guard('student')->check()) {
         auth()->guard('customer')->logout();
     }
 
     $request->session()->invalidate();
     $request->session()->regenerateToken();
+
     return redirect('/home');
 })->name('logout');
