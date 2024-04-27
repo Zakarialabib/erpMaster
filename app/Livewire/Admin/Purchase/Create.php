@@ -150,7 +150,7 @@ class Create extends Component
                 'date'                => $this->date,
                 'supplier_id'         => $this->supplier_id,
                 'warehouse_id'        => $this->warehouse_id,
-                'user_id'             => Auth::user()->id,
+                'user_id'             => Auth::guard('admin')->user()->id,
                 'tax_percentage'      => $this->tax_percentage,
                 'discount_percentage' => $this->discount_percentage,
                 'shipping_amount'     => $this->shipping_amount * 100,
@@ -212,7 +212,7 @@ class Create extends Component
                     'date'         => date('Y-m-d'),
                     'movable_type' => $product::class,
                     'movable_id'   => $product->id,
-                    'user_id'      => Auth::user()->id,
+                    'user_id'      => Auth::guard('admin')->user()->id,
                 ]);
 
                 $movement->save();
@@ -221,7 +221,7 @@ class Create extends Component
             if ($purchase->paid_amount > 0) {
                 PurchasePayment::create([
                     'date'           => date('Y-m-d'),
-                    'user_id'        => Auth::user()->id,
+                    'user_id'        => Auth::guard('admin')->user()->id,
                     'amount'         => $purchase->paid_amount,
                     'purchase_id'    => $purchase->id,
                     'payment_method' => $this->payment_method,

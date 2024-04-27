@@ -53,7 +53,7 @@ class SalesReturnController extends Controller
             $sale_return = SaleReturn::create([
                 'date'                => $request->date,
                 'customer_id'         => $request->customer_id,
-                'user_id'             => Auth::user()->id,
+                'user_id'             => Auth::guard('admin')->user()->id,
                 'tax_percentage'      => $request->tax_percentage,
                 'discount_percentage' => $request->discount_percentage,
                 'shipping_amount'     => $request->shipping_amount * 100,

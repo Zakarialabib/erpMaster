@@ -228,7 +228,7 @@ class Edit extends Component
                     'date'         => date('Y-m-d'),
                     'movable_type' => $product::class,
                     'movable_id'   => $product->id,
-                    'user_id'      => Auth::user()->id,
+                    'user_id'      => Auth::guard('admin')->user()->id,
                 ]);
 
                 $movement->save();

@@ -23,6 +23,7 @@ use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
 use Livewire\Attributes\Layout;
+use App\Livewire\Admin\CashRegister\Create as CashRegisterCreate;
 
 #[Layout('components.layouts.pos')]
 class Index extends Component
@@ -125,7 +126,7 @@ class Index extends Component
             $this->warehouse_id = settings('default_warehouse_id');
         }
 
-        $this->user_id = Auth::user()->id;
+        $this->user_id = Auth::guard('admin')->user()->id;
 
         if ($this->user_id && $this->warehouse_id) {
             $cashRegister = CashRegister::where('user_id', $this->user_id)
@@ -165,7 +166,7 @@ class Index extends Component
 
     public function store(): void
     {
-        if ( ! $this->warehouse_id) {
+        if (!$this->warehouse_id) {
             $this->alert('error', __('Please select a warehouse'));
 
             return;
@@ -240,7 +241,7 @@ class Index extends Component
                     'date'         => date('Y-m-d'),
                     'movable_type' => $product::class,
                     'movable_id'   => $product->id,
-                    'user_id'      => Auth::user()->id,
+                    'user_id'      => Auth::guard('admin')->user()->id,
                 ]);
 
                 $movement->save();
@@ -255,7 +256,7 @@ class Index extends Component
                     'cash_register_id' => $this->cash_register_id,
                     'sale_id'          => $sale->id,
                     'payment_method'   => $this->payment_method,
-                    'user_id'          => Auth::user()->id,
+                    'user_id'          => Auth::guard('admin')->user()->id,
                 ]);
             }
 

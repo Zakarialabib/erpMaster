@@ -94,7 +94,7 @@ class Create extends Component
                 'date'                => $this->date,
                 'customer_id'         => $this->customer_id,
                 'warehouse_id'        => $this->warehouse_id,
-                'user_id'             => Auth::user()->id,
+                'user_id'             => Auth::guard('admin')->user()->id,
                 'tax_percentage'      => $this->tax_percentage,
                 'discount_percentage' => $this->discount_percentage,
                 'shipping_amount'     => $this->shipping_amount * 100,

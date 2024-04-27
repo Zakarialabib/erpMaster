@@ -48,7 +48,7 @@ class PayDue extends Component
                 'amount'         => $paidAmount,
                 'purchase_id'    => $purchase->id,
                 'payment_method' => $this->payment_method,
-                'user_id'        => Auth::user()->id,
+                'user_id'        => Auth::guard('admin')->user()->id,
             ]);
 
             $purchase->update([

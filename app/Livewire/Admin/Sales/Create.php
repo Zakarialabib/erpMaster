@@ -112,7 +112,7 @@ class Create extends Component
         $this->item_discount = [];
         $this->payment_method = 'cash';
         $this->date = date('Y-m-d');
-        $this->user_id = Auth::user()->id;
+        $this->user_id = Auth::guard('admin')->user()->id;
 
         if (settings('default_client_id') !== null) {
             $this->customer_id = settings('default_client_id');
@@ -260,7 +260,7 @@ class Create extends Component
                     'date'         => date('Y-m-d'),
                     'movable_type' => $product::class,
                     'movable_id'   => $product->id,
-                    'user_id'      => Auth::user()->id,
+                    'user_id'      => Auth::guard('admin')->user()->id,
                 ]);
 
                 $movement->save();
@@ -275,7 +275,7 @@ class Create extends Component
                     'sale_id'          => $sale->id,
                     'payment_method'   => $this->payment_method,
                     'cash_register_id' => $this->cash_register_id,
-                    'user_id'          => Auth::user()->id,
+                    'user_id'          => Auth::guard('admin')->user()->id,
                 ]);
             }
 

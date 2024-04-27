@@ -87,7 +87,7 @@ class PaymentForm extends Component
                 'note'           => $this->note,
                 'sale_id'        => $this->sale_id,
                 'payment_method' => $this->payment_method,
-                'user_id'        => Auth::user()->id,
+                'user_id'        => Auth::guard('admin')->user()->id,
             ]);
 
             $sale = Sale::findOrFail($this->sale_id);

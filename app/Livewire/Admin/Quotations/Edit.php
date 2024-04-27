@@ -106,7 +106,7 @@ class Edit extends Component
                 'date'                => $this->date,
                 'reference'           => $this->reference,
                 'customer_id'         => $this->customer_id,
-                'user_id'             => Auth::user()->id,
+                'user_id'             => Auth::guard('admin')->user()->id,
                 'warehouse_id'        => $this->warehouse_id,
                 'tax_percentage'      => $this->tax_percentage,
                 'discount_percentage' => $this->discount_percentage,

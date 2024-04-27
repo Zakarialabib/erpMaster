@@ -81,7 +81,7 @@ class PaymentForm extends Component
 
             PurchasePayment::create([
                 'date'           => $this->date,
-                'user_id'        => Auth::user()->id,
+                'user_id'        => Auth::guard('admin')->user()->id,
                 'amount'         => $this->amount,
                 'note'           => $this->note ?? null,
                 'purchase_id'    => $this->purchase_id,
