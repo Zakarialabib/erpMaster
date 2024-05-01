@@ -5,8 +5,7 @@
             <i class="fa fa-phone mr-2"></i> {{ settings('company_phone') }}
         </a>
 
-        @if (auth()->guard('customer')->check() ||
-                auth()->guard('admin')->check())
+        @if (auth()->guard('customer')->check() || auth()->guard('admin')->check())
             <x-dropdown align="right" width="56">
                 <x-slot name="trigger">
                     <div class="flex items-center text-white gap-2 px-4">
@@ -26,11 +25,9 @@
                             {{ __('Settings') }}
                         </x-dropdown-link>
                     @elseif (auth()->guard('customer'))
-                    
                         <x-dropdown-link href="{{ route('front.myaccount') }}">
                             {{ __('My account') }}
                         </x-dropdown-link>
-
                     @endif
 
                     <div class="border-t border-gray-100"></div>
@@ -47,10 +44,10 @@
         @else
             <button class="flex-shrink-0 hidden md:block px-4">
                 <div class="flex items-center text-white space-x-2">
-                    <a href="{{ route('auth.login') }}"
+                    <a href="{{ route('login') }}"
                         class="mr-2 text-xs text-center font-semibold font-heading hover:text-red-950 hover:underline cursor-pointer">{{ __('Login') }}
                     </a>
-                    <a href="{{ route('auth.register') }}"
+                    <a href="{{ route('register') }}"
                         class="ml-2 text-xs text-center font-semibold font-heading hover:text-red-950 hover:underline cursor-pointer">
                         {{ __('Register') }}
                     </a>

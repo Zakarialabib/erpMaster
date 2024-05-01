@@ -40,7 +40,7 @@ class Account extends Component
 
     public function mount(): void
     {
-        $this->user = User::find(Auth::user()->id);
+        $this->user = User::find(Auth::guard('customer')->id());
         $this->name = $this->user->name;
         $this->address = $this->user->address;
         $this->phone = $this->user->phone;

@@ -1,6 +1,6 @@
 <div>
 
-    <div class="card bg-white dark:bg-dark-eval-1">
+    <div class="card bg-white">
         <div class="py-8 bg-gray-100">
             <div class="container px-4 mx-auto">
                 <div class="flex flex-wrap items-center justify-between -mx-4">
@@ -16,7 +16,7 @@
             <div class="flex flex-wrap justify-center">
                 <div class="lg:w-1/2 md:w-1/2 sm:w-full flex flex-wrap my-md-0 my-2">
                     <select wire:model="perPage"
-                        class="w-20 block p-3 leading-5 bg-white dark:bg-dark-eval-2 text-gray-700 dark:text-gray-300 rounded border border-gray-300 mb-1 text-sm focus:shadow-outline-blue focus:border-blue-300 mr-3">
+                        class="w-20 block p-3 leading-5 bg-white text-gray-700 rounded border border-gray-300 mb-1 text-sm focus:shadow-outline-blue focus:border-blue-300 mr-3">
                         @foreach ($paginationOptions as $value)
                             <option value="{{ $value }}">{{ $value }}</option>
                         @endforeach
@@ -25,7 +25,7 @@
                 <div class="lg:w-1/2 md:w-1/2 sm:w-full my-2 my-md-0">
                     <div class="">
                         <input type="text" wire:model.debounce.300ms="search"
-                            class="p-3 leading-5 bg-white dark:bg-dark-eval-2 text-gray-700 dark:text-gray-300 rounded border border-gray-300 mb-1 text-sm w-full focus:shadow-outline-blue focus:border-blue-500"
+                            class="p-3 leading-5 bg-white text-gray-700 rounded border border-gray-300 mb-1 text-sm w-full focus:shadow-outline-blue focus:border-blue-500"
                             placeholder="{{ __('Search') }}" />
                     </div>
                 </div>

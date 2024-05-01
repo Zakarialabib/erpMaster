@@ -225,7 +225,7 @@
             </div>
         </div>
 
-        <section class="py-14 dark:bg-white/[0.03] lg:py-20">
+        <section class="py-14 lg:py-20">
             <div class="px-6">
                 <div class="w-full flex flex-col items-center justify-center mb-4">
                     <div class="heading text-center rtl:lg:text-right">
@@ -239,14 +239,14 @@
                     class="Swiper blog-slider swiper-initialized swiper-horizontal swiper-pointer-events swiper-backface-hidden">
                     <div class="swiper-wrapper">
                         @foreach (\App\Helpers::getActiveBlogs() as $blog)
-                            <div class="rounded-3xl bg-white dark:bg-gray-dark">
+                            <div class="rounded-3xl bg-white">
                                 <img src="assets/images/modern-saas/marketing.png" alt="blog-3"
                                     class="h-52 w-full rounded-t-3xl object-cover">
                                 <div class="p-5 text-sm font-bold">
                                     <span
                                         class="rounded bg-indigo-600/10 py-1 px-2 text-sm font-extrabold text-indigo-600">Marketing</span>
                                     <a href="blog-details.html"
-                                        class="my-[10px] block text-lg font-extrabold leading-[23px] text-black transition line-clamp-2 hover:text-indigo-800 dark:text-white dark:hover:text-indigo-800">
+                                        class="my-[10px] block text-lg font-extrabold leading-[23px] text-black transition line-clamp-2 hover:text-indigo-800">
                                         What’s growth hacking? 8 great books to learn more about it
                                     </a>
                                     <p class="line-clamp-3">

@@ -124,7 +124,7 @@
                 <x-table.tr>
                     <x-table.td colspan="7">
                         <div class="flex justify-center items-center">
-                            <span class="text-gray-400 dark:text-gray-300">{{ __('No results found') }}</span>
+                            <span class="text-gray-400">{{ __('No results found') }}</span>
                         </div>
                     </x-table.td>
                 </x-table.tr>

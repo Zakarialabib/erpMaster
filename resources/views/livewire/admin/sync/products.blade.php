@@ -11,7 +11,7 @@
                     <div class="mt-4 px-3">
                         <x-label for="type" :value="__('Type')" />
                         <select wire:model="type" id="type" name="type"
-                            class="block bg-white dark:bg:bg-slate-200 text-gray-700 dark:text-gray-300 rounded border border-gray-300 mb-1 text-sm w-full focus:shadow-outline-blue focus:border-blue-500">
+                            class="block bg-white text-gray-700 rounded border border-gray-300 mb-1 text-sm w-full focus:shadow-outline-blue focus:border-blue-500">
                             <option value="">{{ 'Select way to sync' }}</option>
                             @foreach (\App\Enums\IntegrationType::cases() as $type)
                                 <option value="{{ $type->value }}">

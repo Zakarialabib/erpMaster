@@ -1,7 +1,7 @@
 <section class="py-5 px-6 bg-blue-800 shadow">
     <nav class="flex items-center justify-between px-3">
         <!-- Logo -->
-        <a href="{{ route('admin.dashboard') }}" class="text-xl font-semibold dark:text-gray-100">
+        <a href="{{ route('admin.dashboard') }}" class="text-xl font-semibold">
             <img class="w-24 h-auto" src="{{ asset('images/logo.png') }}" alt="Site Logo">
             <span class="sr-only">{{ config('settings.site_title') }}</span>
         </a>

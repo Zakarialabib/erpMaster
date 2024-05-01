@@ -43,7 +43,7 @@
                 <div class="flex flex-col gap-y-4">
                     @foreach (\App\Helpers::getFooterSection1Menu() as $index => $item)
                         <a href="{{ $item['url'] }}" @if ($item['new_window']) target="__blank" @endif
-                            class="text-base font-normal text-white hover:text-red-600 dark:hover:text-red-900 hover:underline focus:underline uppercase">
+                            class="text-base font-normal text-white hover:text-red-600 hover:underline focus:underline uppercase">
                             {{ $item['label'] }}
                         </a>
                     @endforeach
@@ -57,7 +57,7 @@
 
                     @foreach (\App\Helpers::getFooterSection2Menu() as $index => $item)
                         <a href="{{ $item['url'] }}" @if ($item['new_window']) target="__blank" @endif
-                            class="text-base font-normal text-white hover:text-red-600  dark:hover:text-red-900 hover:underline focus:underline uppercase">
+                            class="text-base font-normal text-white hover:text-red-600  hover:underline focus:underline uppercase">
                             {{ $item['label'] }}
                         </a>
                     @endforeach

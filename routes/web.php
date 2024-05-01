@@ -51,8 +51,9 @@ Route::get('/page/{slug}', DynamicPage::class)->name('front.dynamicPage');
 Route::get('/device-model/{slug}', DeviceShow::class)->name('front.deviceshow');
 
 Route::get('/generate-sitemap', [FrontController::class, 'generateSitemaps'])->name('generate-sitemaps');
+Route::view('/', 'welcome');
 
-Route::middleware('auth', 'role:vendor|customer')->group(function () {
+Route::middleware('auth')->group(function () {
     Route::get('myaccount', AccountIndex::class)->name('front.myaccount');
     Route::get('/merci-pour-votre-commande/{id}', ThankYou::class)->name('front.thankyou');
 });
@@ -85,4 +86,3 @@ Route::get('/fix', function () {
         'output' => Artisan::output()
     ]);
 })->name('composer.install');
-

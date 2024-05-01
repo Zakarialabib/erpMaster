@@ -44,6 +44,8 @@ class Profile extends Component
 
     public function render()
     {
+        $this->authorize('admin.users.profile');
+
         return view('livewire.admin.users.profile');
     }
 

@@ -8,43 +8,43 @@
     </x-theme.breadcrumb>
     <div class="w-full">
         <div class="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 w-full">
-            <div class="flex items-center p-4 bg-white dark:bg-dark-bg dark:text-gray-300 rounded-lg shadow-md">
+            <div class="flex items-center p-4 bg-white rounded-lg shadow-md">
                 <div>
-                    <p class="mb-2 text-lg font-medium text-gray-600 dark:text-gray-300">
+                    <p class="mb-2 text-lg font-medium text-gray-600">
                         {{ __('Purchases Total') }}
                     </p>
-                    <p class="text-3xl sm:text-lg font-bold text-indigo-700 dark:text-indigo-600">
+                    <p class="text-3xl sm:text-lg font-bold text-indigo-700">
                         {{ format_currency($this->TotalPurchases) }}
                     </p>
                 </div>
             </div>
-            <div class="flex items-center p-4 bg-white dark:bg-dark-bg dark:text-gray-300 rounded-lg shadow-md">
+            <div class="flex items-center p-4 bg-white rounded-lg shadow-md">
                 <div>
-                    <p class="mb-2 text-lg font-medium text-gray-600 dark:text-gray-300">
+                    <p class="mb-2 text-lg font-medium text-gray-600">
                         {{ __('Total Payments') }}
                     </p>
-                    <p class="text-3xl sm:text-lg font-bold text-indigo-700 dark:text-indigo-600">
+                    <p class="text-3xl sm:text-lg font-bold text-indigo-700">
                         {{ format_currency($this->TotalPayments) }}
                     </p>
                 </div>
             </div>
-            <div class="flex items-center p-4 bg-white dark:bg-dark-bg dark:text-gray-300 rounded-lg shadow-md">
+            <div class="flex items-center p-4 bg-white rounded-lg shadow-md">
                 <div>
-                    <p class="mb-2 text-lg font-medium text-gray-600 dark:text-gray-300">
+                    <p class="mb-2 text-lg font-medium text-gray-600">
                         {{ __('Total Purchase Returns') }}
                     </p>
-                    <p class="text-3xl sm:text-lg font-bold text-indigo-700 dark:text-indigo-600">
+                    <p class="text-3xl sm:text-lg font-bold text-indigo-700">
                         {{ format_currency($this->TotalPurchaseReturns) }}
                     </p>
                 </div>
             </div>
 
-            <div class="flex items-center p-4 bg-white dark:bg-dark-bg dark:text-gray-300 rounded-lg shadow-md">
+            <div class="flex items-center p-4 bg-white rounded-lg shadow-md">
                 <div>
-                    <p class="mb-2 text-lg font-medium text-gray-600 dark:text-gray-300">
+                    <p class="mb-2 text-lg font-medium text-gray-600">
                         {{ __('Due amount') }}
                     </p>
-                    <p class="text-3xl sm:text-lg font-bold text-indigo-700 dark:text-indigo-600">
+                    <p class="text-3xl sm:text-lg font-bold text-indigo-700">
                         {{ format_currency($this->TotalDue) }}
                     </p>
                 </div>
@@ -186,7 +186,7 @@
                         <x-table.tr>
                             <x-table.td>
                                 <div class="flex justify-center items-center">
-                                    <span class="text-gray-400 dark:text-gray-300">{{ __('No results found') }}</span>
+                                    <span class="text-gray-400">{{ __('No results found') }}</span>
                                 </div>
                             </x-table.td>
                         </x-table.tr>

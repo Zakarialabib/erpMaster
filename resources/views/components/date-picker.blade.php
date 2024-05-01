@@ -9,7 +9,7 @@
         @endif
 
         <input type="text"
-            class="p-3 leading-5 bg-white dark:bg:bg-slate-200 text-gray-700 dark:text-gray-300 rounded border border-gray-300 mb-1 text-sm w-full focus:shadow-outline-blue focus:border-blue-500"
+            class="p-3 leading-5 bg-white text-gray-700 rounded border border-gray-300 mb-1 text-sm w-full focus:shadow-outline-blue focus:border-blue-500"
             {{ $attributes }} data-input>
     </div>
 </div>

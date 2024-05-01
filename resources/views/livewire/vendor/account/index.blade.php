@@ -1,5 +1,5 @@
 <div>
-    <div class="card bg-white dark:bg-dark-eval-1">
+    <div class="card bg-white">
         <div class="py-8 bg-gray-100">
             <div class="container px-4 mx-auto">
                 <div class="flex flex-wrap items-center justify-between -mx-4">

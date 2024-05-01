@@ -2,8 +2,8 @@
 
 @php
 $isActiveClasses = $active
-    ? 'bg-indigo-500 dark:bg-indigo-600 text-white dark:text-white active:bg-indigo-500'
-    : 'text-gray-200 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg:bg-slate-200';
+    ? 'bg-indigo-500 text-white active:bg-indigo-500'
+    : 'text-gray-200 hover:text-gray-700 hover:bg-gray-100';
 $classes = 'flex items-center hover:text-white hover:bg-indigo-500 py-3 pr-4 rounded ' . $isActiveClasses;
 if ($collapsible) {
     $classes .= ' w-full';
@@ -37,7 +37,7 @@ if ($collapsible) {
             {{ $icon }}
         @else
             <span class="inline-block mx-4">
-                <x-icons.empty-circle class="text-gray-200 dark:text-gray-200 w-5 h-5" aria-hidden="true" />
+                <x-icons.empty-circle class="text-gray-200 w-5 h-5" aria-hidden="true" />
             </span>
         @endif
 

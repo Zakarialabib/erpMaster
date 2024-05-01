@@ -110,7 +110,7 @@
                             <div class="w-full md:w-1/3 px-3 mb-4">
                                 <x-label for="default_currency_id" :value="__('Default currency')" required />
                                 <x-select-list
-                                    class="block bg-white dark:bg:bg-slate-200 text-gray-700 dark:text-gray-300 rounded border border-gray-300 mb-1 text-sm w-full focus:shadow-outline-blue focus:border-blue-500"
+                                    class="block bg-white text-gray-700 rounded border border-gray-300 mb-1 text-sm w-full focus:shadow-outline-blue focus:border-blue-500"
                                     id="default_currency_id" name="default_currency_id"
                                     wire:model="default_currency_id" :options="$this->currencies" required />
                             </div>

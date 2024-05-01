@@ -18,7 +18,7 @@
         "laravel/framework": "^11.0",
         "laravel/socialite": "^5.9",
         "laravel/tinker": "^2.8",
-        "livewire/livewire": "^3.0.1",
+        "livewire/livewire": "^3.4",
         "maatwebsite/excel": "^3.1.55",
         "milon/barcode": "^11.0.0",
         "shopify/shopify-api": "^5.1",
@@ -34,13 +34,14 @@
         "google/apiclient": "^2.15",
         "simplesoftwareio/simple-qrcode": "^4.2",
         "smalot/pdfparser": "*",
-        "laravel/passport": "^12.0"
+        "laravel/passport": "^12.0",
+        "livewire/volt": "^1.0"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.7",
         "fakerphp/faker": "^1.9.1",
         "kkomelin/laravel-translatable-string-exporter": "^1.17",
-        "laravel/breeze": "^2.0",
+        "laravel/breeze": "*",
         "laravel/pint": "^1.0",
         "laravel/sail": "^1.18",
         "mockery/mockery": "^1.4.4",
