@@ -87,7 +87,7 @@ class Order extends Model
 
     public function orderDetails(): HasMany
     {
-        return $this->hasMany(orderDetails::class);
+        return $this->hasMany(OrderDetails::class);
     }
 
     /** get shipping amount */
