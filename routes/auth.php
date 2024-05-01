@@ -44,11 +44,11 @@ Route::get('admin/forgot-password', AdminForgotPassword::class)
 Route::get('admin/reset-password/{token}', AdminResetPassword::class)
     ->name('admin.password.reset');
 
-Route::get('/login/facebook', [SocialAuth::class, 'redirectToFacebook'])->name('login.facebook');
-Route::get('/login/facebook/callback', [SocialAuth::class, 'handleFacebookCallback']);
+// Route::get('/login/facebook', [SocialAuth::class, 'redirectToFacebook'])->name('login.facebook');
+// Route::get('/login/facebook/callback', [SocialAuth::class, 'handleFacebookCallback']);
 
-Route::get('/login/google', [SocialAuth::class, 'redirectToGoogle'])->name('login.google');
-Route::get('/login/google/callback', [SocialAuth::class, 'handleGoogleCallback']);
+// Route::get('/login/google', [SocialAuth::class, 'redirectToGoogle'])->name('login.google');
+// Route::get('/login/google/callback', [SocialAuth::class, 'handleGoogleCallback']);
 
 Route::middleware('auth')->group(function () {
     Route::get('verify-email', [EmailVerificationPromptController::class, '__invoke'])
@@ -72,7 +72,7 @@ Route::middleware('auth')->group(function () {
 Route::post('logout', function (Request $request) {
     if (Auth::guard('admin')->check()) {
         Auth::guard('admin')->logout();
-    } elseif (Auth::guard('student')->check()) {
+    } elseif (Auth::guard('customer')->check()) {
         auth()->guard('customer')->logout();
     }
 
