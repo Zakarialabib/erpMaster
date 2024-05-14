@@ -11,7 +11,6 @@ window.ApexCharts = ApexCharts;
 import Sortable from 'sortablejs';
 window.Sortable = Sortable;
 
-import editorjs from './editorjs'
 
 import PerfectScrollbar from "perfect-scrollbar";
 window.PerfectScrollbar = PerfectScrollbar;

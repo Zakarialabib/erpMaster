@@ -51,12 +51,15 @@ Route::get('/page/{slug}', DynamicPage::class)->name('front.dynamicPage');
 Route::get('/device-model/{slug}', DeviceShow::class)->name('front.deviceshow');
 
 Route::get('/generate-sitemap', [FrontController::class, 'generateSitemaps'])->name('generate-sitemaps');
-Route::view('/', 'welcome');
 
-Route::middleware('auth')->group(function () {
-    Route::get('myaccount', AccountIndex::class)->name('front.myaccount');
-    Route::get('/merci-pour-votre-commande/{id}', ThankYou::class)->name('front.thankyou');
+Route::group(['middleware' => [\Spatie\Permission\Middleware\RoleMiddleware::using('customer')]], function () {
+    Route::get('myaccount', AccountIndex::class)
+        ->name('front.myaccount');
+
+    Route::get('/merci-pour-votre-commande/{id}', ThankYou::class)
+        ->name('front.thankyou');
 });
+
 
 Route::post('/uploads', [UploadController::class, 'upload'])->name('upload');
 
@@ -76,13 +79,3 @@ Livewire::setUpdateRoute(function ($handle) {
     return Route::post('/custom/livewire/update', $handle);
 });
 
-
-//  composer install 
-
-Route::get('/fix', function () {
-    Artisan::call('migrate');
-    return response()->json([
-        'message' => 'Composer dependencies installed successfully!',
-        'output' => Artisan::output()
-    ]);
-})->name('composer.install');

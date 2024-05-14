@@ -20,7 +20,7 @@ class Authenticate extends Middleware
             return route('admin.login');
         } elseif ($request->routeIs('vendor.*')) {
             return route('vendor.dashboard');
-        } else {
+    } elseif ($request->routeIs('customer.*')) {
             return route('login');
         }
     }

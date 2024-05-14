@@ -10,15 +10,15 @@ use App\Livewire\Admin\Auth\ResetPassword as AdminResetPassword;
 use App\Livewire\Admin\Auth\ForgotPassword as AdminForgotPassword;
 use App\Livewire\Admin\Auth\ConfirmPassword as AdminConfirmPassword;
 use App\Livewire\Auth\SocialAuth;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Route;
 
 
+Route::get('/login/facebook', [SocialAuth::class, 'redirectToFacebook'])->name('login.facebook');
+Route::get('/login/facebook/callback', [SocialAuth::class, 'handleFacebookCallback']);
 
-// Route::get('/login/facebook', [SocialAuth::class, 'redirectToFacebook'])->name('login.facebook');
-// Route::get('/login/facebook/callback', [SocialAuth::class, 'handleFacebookCallback']);
-
-// Route::get('/login/google', [SocialAuth::class, 'redirectToGoogle'])->name('login.google');
-// Route::get('/login/google/callback', [SocialAuth::class, 'handleGoogleCallback']);
+Route::get('/login/google', [SocialAuth::class, 'redirectToGoogle'])->name('login.google');
+Route::get('/login/google/callback', [SocialAuth::class, 'handleGoogleCallback']);
 
 
 Route::middleware('web')->group(function () {
@@ -49,6 +49,21 @@ Route::middleware('auth')->group(function () {
     Route::get('admin/confirm-password', AdminConfirmPassword::class)
         ->name('admin.password.confirm');
 });
+
+Route::post('logout', function (Request $request) {
+    if (auth()->check()) {
+        auth()->logout();
+    } elseif (auth()->guard('customer')->check()) {
+        auth()->guard('customer')->logout();
+    } elseif (auth()->guard('admin')->check()) {
+        auth()->guard('admin')->logout();
+    }
+
+    $request->session()->invalidate();
+    $request->session()->regenerateToken();
+
+    return redirect('/home');
+})->name('logout');
 
 
 Route::get('admin/login', AdminLogin::class)
