@@ -38,7 +38,7 @@ class QuotationController extends Controller
             $quotation = Quotation::create([
                 'date'                => $request->date,
                 'customer_id'         => $request->customer_id,
-                'user_id'             => Auth::guard('admin')->user()->id,
+                'user_id'             => Auth::user()->id,
                 'tax_percentage'      => $request->tax_percentage,
                 'discount_percentage' => $request->discount_percentage,
                 'shipping_amount'     => $request->shipping_amount * 100,

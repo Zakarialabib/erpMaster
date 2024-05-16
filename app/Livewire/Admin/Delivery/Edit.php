@@ -25,7 +25,7 @@ class Edit extends Component
     /** @var mixed */
     public $delivery;
 
-    #[Rule('required|string|max:255')]
+    #[Validate('required|string|max:255')]
     public $reference;
 
     public $sale_id;

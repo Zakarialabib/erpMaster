@@ -17,6 +17,7 @@ use App\Observers\ContactObserver;
 use App\Observers\OrderFormObserver;
 use App\Observers\SubscriberObserver;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Gate;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -44,6 +45,10 @@ class AppServiceProvider extends ServiceProvider
         // Contact::observe(OrderFormObserver::class);
         Subscriber::observe(SubscriberObserver::class);
         // Model::shouldBeStrict(! $this->app->isProduction());
+
+        Gate::before(function ($user, $ability) {
+            return $user->hasRole('admin') ? true : null;
+        });
     }
 
     private function getLanguages()

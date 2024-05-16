@@ -13,14 +13,14 @@ use Livewire\Attributes\Layout;
 #[Layout('components.layouts.app')]
 class ConfirmPassword extends Component
 {
-    #[Rule(['required', 'string'])]
+    #[Validate(['required', 'string'])]
     public string $password = '';
 
     public function confirmPassword(): void
     {
         $this->validate();
 
-        if ( ! auth()->guard('web')->validate([
+        if ( ! auth()->validate([
             'email'    => auth()->user()->email,
             'password' => $this->password,
         ])) {
@@ -32,7 +32,7 @@ class ConfirmPassword extends Component
         session(['password confirmed at' => time()]);
 
         $this->redirect(
-            session('url.intended', RouteServiceProvider::ADMIN_HOME),
+            session('url.intended', '/admin/dashboard' ),
             navigate: true
         );
     }

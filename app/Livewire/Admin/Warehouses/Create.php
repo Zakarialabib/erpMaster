@@ -20,23 +20,23 @@ class Create extends Component
 
     public Warehouse $warehouse;
 
-    #[Rule('required')]
-    #[Rule('max:255')]
+    #[Validate('required')]
+    #[Validate('max:255')]
     public $name;
 
-    #[Rule('numeric')]
+    #[Validate('numeric')]
     public $phone;
 
-    #[Rule('nullable')]
-    #[Rule('max:255')]
+    #[Validate('nullable')]
+    #[Validate('max:255')]
     public $country;
 
-    #[Rule('nullable')]
-    #[Rule('max:255')]
+    #[Validate('nullable')]
+    #[Validate('max:255')]
     public $city;
 
-    #[Rule('email')]
-    #[Rule('max:255')]
+    #[Validate('email')]
+    #[Validate('max:255')]
     public $email;
 
     public function render()

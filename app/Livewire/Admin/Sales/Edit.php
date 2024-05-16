@@ -42,33 +42,33 @@ class Edit extends Component
 
     public $price;
 
-    #[Rule('integer|min:0|max:100')]
+    #[Validate('integer|min:0|max:100')]
     public $tax_percentage;
 
-    #[Rule('integer|min:0|max:100')]
+    #[Validate('integer|min:0|max:100')]
     public $discount_percentage;
 
-    #[Rule('required|integer')]
+    #[Validate('required|integer')]
     public $customer_id;
 
-    #[Rule('required|integer')]
+    #[Validate('required|integer')]
     public $warehouse_id;
 
-    #[Rule('required|numeric')]
+    #[Validate('required|numeric')]
     public $total_amount;
 
-    #[Rule('numeric')]
+    #[Validate('numeric')]
     public $paid_amount;
 
-    #[Rule('numeric')]
+    #[Validate('numeric')]
     public $shipping_amount;
 
     public $note;
 
-    #[Rule('required|integer|max:255')]
+    #[Validate('required|integer|max:255')]
     public $status;
 
-    #[Rule('required|string|max:255')]
+    #[Validate('required|string|max:255')]
     public $payment_method;
 
     public $date;
@@ -221,7 +221,7 @@ class Edit extends Component
                     'date'         => date('Y-m-d'),
                     'movable_type' => $product::class,
                     'movable_id'   => $product->id,
-                    'user_id'      => Auth::guard('admin')->user()->id,
+                    'user_id'      => Auth::user()->id,
                 ]);
 
                 $movement->save();

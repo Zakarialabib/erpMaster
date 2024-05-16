@@ -14,7 +14,7 @@
     <div class="flex flex-wrap mb-10">
         <div class="w-full lg:w-1/2 px-4">
             <form wire:submit="checkout">
-                @if (auth()->guard('customer')->check())
+                @if (auth()->check())
                     <div class="flex my-5 items-center">
                         <span
                             class="inline-flex mr-8 items-center justify-center w-12 h-12 rounded-full bg-blue-300 text-white">1</span>

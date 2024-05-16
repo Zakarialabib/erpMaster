@@ -21,7 +21,7 @@ class DocReader extends Component
     public $context;
     public $docModal = false;
 
-    #[Rule('required', 'file', 'mimes:pdf')]
+    #[Validate('required', 'file', 'mimes:pdf')]
     public $doc;
 
     #[On('docModal')]

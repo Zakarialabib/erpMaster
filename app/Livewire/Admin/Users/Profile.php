@@ -21,17 +21,17 @@ class Profile extends Component
     /** @var mixed */
     public $user;
 
-    #[Rule('required|string|max:255')]
+    #[Validate('required|string|max:255')]
 
     public $name;
 
-    #[Rule('required|email|unique:users,email')]
+    #[Validate('required|email|unique:users,email')]
     public $email;
 
-    #[Rule('required|numeric')]
+    #[Validate('required|numeric')]
     public $phone;
 
-    #[Rule('required|string|min:8')]
+    #[Validate('required|string|min:8')]
     public $password;
 
     public function mount(): void

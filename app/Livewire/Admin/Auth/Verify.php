@@ -18,7 +18,7 @@ class Verify extends Component
     {
         if (auth()->user()->hasVerifiedEmail()) {
             $this->redirect(
-                session('url.intended', RouteServiceProvider::ADMIN_HOME),
+                session('url.intended', '/admin/dashboard' ),
                 navigate: true
             );
 
@@ -31,7 +31,7 @@ class Verify extends Component
 
     public function logout(): void
     {
-        auth()->guard('admin')->logout();
+        auth()->logout();
         session()->invalidate();
         session()->regenerateToken();
         $this->redirect('/', navigate: true);

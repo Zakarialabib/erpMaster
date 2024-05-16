@@ -28,30 +28,30 @@ class Edit extends Component
 
     public $reference;
 
-    #[Rule('required')]
+    #[Validate('required')]
     public $customer_id;
 
-    #[Rule('required')]
+    #[Validate('required')]
     public $warehouse_id;
 
-    #[Rule('required|numeric')]
+    #[Validate('required|numeric')]
     public $total_amount;
 
-    #[Rule('numeric')]
+    #[Validate('numeric')]
     public $shipping_amount;
 
     public $note;
 
-    #[Rule('required|integer|max:255')]
+    #[Validate('required|integer|max:255')]
     public $status;
 
-    #[Rule('required')]
+    #[Validate('required')]
     public $date;
 
-    #[Rule('integer|min:0|max:100')]
+    #[Validate('integer|min:0|max:100')]
     public $tax_percentage;
 
-    #[Rule('integer|min:0|max:100')]
+    #[Validate('integer|min:0|max:100')]
     public $discount_percentage;
 
     public function mount($id): void
@@ -106,7 +106,7 @@ class Edit extends Component
                 'date'                => $this->date,
                 'reference'           => $this->reference,
                 'customer_id'         => $this->customer_id,
-                'user_id'             => Auth::guard('admin')->user()->id,
+                'user_id'             => Auth::user()->id,
                 'warehouse_id'        => $this->warehouse_id,
                 'tax_percentage'      => $this->tax_percentage,
                 'discount_percentage' => $this->discount_percentage,

@@ -23,34 +23,34 @@ class Create extends Component
 
     public $image;
 
-    #[Rule('required', message: 'Please provide a title')]
-    #[Rule('min:3', message: 'This title is too short')]
-    #[Rule('max:255', message: 'This title is too long')]
+    #[Validate('required', message: 'Please provide a title')]
+    #[Validate('min:3', message: 'This title is too short')]
+    #[Validate('max:255', message: 'This title is too long')]
     public $title;
 
-    #[Rule('nullable')]
-    #[Rule('max:255', message: 'This subtitle is too long')]
+    #[Validate('nullable')]
+    #[Validate('max:255', message: 'This subtitle is too long')]
     public $subtitle;
 
-    #[Rule('nullable')]
-    #[Rule('max:255', message: 'This featured title is too long')]
+    #[Validate('nullable')]
+    #[Validate('max:255', message: 'This featured title is too long')]
     public $featured_title;
 
     public $description;
 
-    #[Rule('nullable|string|max:255 ')]
+    #[Validate('nullable|string|max:255 ')]
     public $link;
 
-    #[Rule('nullable|string|max:255 ')]
+    #[Validate('nullable|string|max:255 ')]
     public $label;
 
-    #[Rule('nullable')]
+    #[Validate('nullable')]
     public $bg_color;
 
-    #[Rule('required|unique:sections,type')]
+    #[Validate('required|unique:sections,type')]
     public $type;
 
-    #[Rule('nullable')]
+    #[Validate('nullable')]
     public $page_id;
 
     // public $text_color;

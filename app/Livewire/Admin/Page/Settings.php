@@ -32,10 +32,10 @@ class Settings extends Component
 
     public $fontSizes = ['xs', 'sm', 'base', 'lg', 'xl', '2xl', '3xl', '4xl', '5xl', '9xl'];
 
-    #[Rule('required')]
+    #[Validate('required')]
     public $page_id;
 
-    #[Rule('required')]
+    #[Validate('required')]
     public $page_type;
 
     public $type;

@@ -22,8 +22,8 @@ class Create extends Component
 
     public Brand $brand;
 
-    #[Rule('required', message: 'Please provide a name')]
-    #[Rule('min:3', message: 'This name is too short')]
+    #[Validate('required', message: 'Please provide a name')]
+    #[Validate('min:3', message: 'This name is too short')]
     public string $name;
 
     public $description;
@@ -36,10 +36,10 @@ class Create extends Component
 
     public $origin;
 
-    #[Rule('max:70', message: 'The meta title a max of 170 characters.')]
+    #[Validate('max:70', message: 'The meta title a max of 170 characters.')]
     public $meta_title;
 
-    #[Rule('max:170', message: 'The meta description a max of 170 characters.')]
+    #[Validate('max:170', message: 'The meta description a max of 170 characters.')]
     public $meta_description;
 
     #[On('createModal')]

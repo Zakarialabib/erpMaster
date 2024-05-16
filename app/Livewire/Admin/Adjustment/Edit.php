@@ -27,13 +27,13 @@ class Edit extends Component
 
     public $date;
 
-    #[Rule('nullable|string|max:1000')]
+    #[Validate('nullable|string|max:1000')]
     public $note;
 
-    #[Rule('required|string|max:255')]
+    #[Validate('required|string|max:255')]
     public $reference;
 
-    #[Rule('required', message: 'Please provide warehouse')]
+    #[Validate('required', message: 'Please provide warehouse')]
     public $warehouse_id;
 
     public $quantity;

@@ -20,10 +20,10 @@ class Edit extends Component
 
     public $language;
 
-    #[Rule('required', message : 'The code field is required')]
+    #[Validate('required', message : 'The code field is required')]
     public $name;
 
-    #[Rule('required', message : 'The code field is required')]
+    #[Validate('required', message : 'The code field is required')]
     public $code;
 
     public $editModal = false;

@@ -18,29 +18,29 @@ class Account extends Component
 
     public $user;
 
-    #[Rule('required', 'string', 'max:255')]
+    #[Validate('required', 'string', 'max:255')]
     public $name;
 
-    #[Rule('required', 'لnumeric')]
+    #[Validate('required', 'لnumeric')]
     public $phone;
 
-    #[Rule('required', 'string', 'email', 'max:255')]
+    #[Validate('required', 'string', 'email', 'max:255')]
     public $email;
 
-    #[Rule('required', 'string', 'max:255')]
+    #[Validate('required', 'string', 'max:255')]
     public $address;
 
-    #[Rule('required', 'string', 'max:255')]
+    #[Validate('required', 'string', 'max:255')]
     public $city;
 
-    #[Rule('required', 'string', 'max:255')]
+    #[Validate('required', 'string', 'max:255')]
     public $country;
 
     public string $password = '';
 
     public function mount(): void
     {
-        $this->user = User::find(Auth::guard('customer')->id());
+        $this->user = User::find(Auth::id());
         $this->name = $this->user->name;
         $this->address = $this->user->address;
         $this->phone = $this->user->phone;

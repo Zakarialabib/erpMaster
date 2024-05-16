@@ -23,14 +23,14 @@ class CustomersReport extends Component
 
     public $customers;
 
-    #[Rule('required', message: 'The start date field is required.')]
-    #[Rule('date', message: 'The start date field must be a valid date.')]
-    #[Rule('before:end_date', message: 'The start date field must be before the end date field.')]
+    #[Validate('required', message: 'The start date field is required.')]
+    #[Validate('date', message: 'The start date field must be a valid date.')]
+    #[Validate('before:end_date', message: 'The start date field must be before the end date field.')]
     public $start_date;
 
-    #[Rule('required', message: 'The end date field is required.')]
-    #[Rule('date', message: 'The end date field must be a valid date.')]
-    #[Rule('after:start_date', message: 'The end date field must be after the start date field.')]
+    #[Validate('required', message: 'The end date field is required.')]
+    #[Validate('date', message: 'The end date field must be a valid date.')]
+    #[Validate('after:start_date', message: 'The end date field must be after the start date field.')]
     public $end_date;
 
     public $payment_status;

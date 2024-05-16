@@ -17,7 +17,7 @@ $login = function () {
 
     Session::regenerate();
 
-    if(Auth::guard('customer')->check()){
+    if(Auth::check()){
         $user = auth()->user();
 
         if ($user->hasRole('admin')) {
@@ -27,7 +27,7 @@ $login = function () {
         if ($user->hasRole('customer')) {
             $this->redirect('/');
         }
-    }elseif (Auth::guard('web')->check()) {
+    }elseif (Auth::check()) {
         $this->redirect('/');
     }
 

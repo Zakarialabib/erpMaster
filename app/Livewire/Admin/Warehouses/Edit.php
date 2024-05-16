@@ -20,19 +20,19 @@ class Edit extends Component
 
     public $warehouse;
 
-    #[Rule('string|required|max:255')]
+    #[Validate('string|required|max:255')]
     public $name;
 
-    #[Rule('numeric|nullable|max:255')]
+    #[Validate('numeric|nullable|max:255')]
     public $phone;
 
-    #[Rule('nullable|max:255')]
+    #[Validate('nullable|max:255')]
     public $country;
 
-    #[Rule('nullable|max:255')]
+    #[Validate('nullable|max:255')]
     public $city;
 
-    #[Rule('nullable|max:255')]
+    #[Validate('nullable|max:255')]
     public $email;
 
     public function render()

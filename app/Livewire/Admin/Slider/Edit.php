@@ -23,10 +23,10 @@ class Edit extends Component
 
     public $slider;
 
-    #[Rule('required', message: 'Title is required')]
+    #[Validate('required', message: 'Title is required')]
     public $title;
 
-    #[Rule('nullable', 'max:255')]
+    #[Validate('nullable', 'max:255')]
     public $subtitle;
 
     public $link;

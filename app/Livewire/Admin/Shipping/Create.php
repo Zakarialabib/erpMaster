@@ -21,13 +21,13 @@ class Create extends Component
 
     public bool $is_pickup = false;
 
-    #[Rule('required|max:255')]
+    #[Validate('required|max:255')]
     public string $title;
 
-    #[Rule('nullable|max:255')]
+    #[Validate('nullable|max:255')]
     public string $subtitle;
 
-    #[Rule('required|numeric')]
+    #[Validate('required|numeric')]
     public $cost;
 
     public function render()

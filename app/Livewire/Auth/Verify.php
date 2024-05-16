@@ -31,7 +31,7 @@ class Verify extends Component
 
     public function logout(): void
     {
-        auth()->guard('customer')->logout();
+        auth()->logout();
         session()->invalidate();
         session()->regenerateToken();
         $this->redirect('/', navigate: true);

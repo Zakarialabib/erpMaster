@@ -23,30 +23,30 @@ class Create extends Component
     use WithModels;
     public $cart_instance = 'quotation';
 
-    #[Rule('required')]
+    #[Validate('required')]
     public $customer_id;
 
-    #[Rule('required')]
+    #[Validate('required')]
     public $warehouse_id;
 
     // #[Rule('numeric')]
     public $total_amount;
 
-    #[Rule('numeric')]
+    #[Validate('numeric')]
     public $shipping_amount;
 
     public $note;
 
-    #[Rule('required|integer|max:255')]
+    #[Validate('required|integer|max:255')]
     public $status;
 
-    #[Rule('required')]
+    #[Validate('required')]
     public $date;
 
-    #[Rule('integer|min:0|max:100')]
+    #[Validate('integer|min:0|max:100')]
     public $tax_percentage;
 
-    #[Rule('integer|min:0|max:100')]
+    #[Validate('integer|min:0|max:100')]
     public $discount_percentage;
 
     public function proceed(): void
@@ -94,7 +94,7 @@ class Create extends Component
                 'date'                => $this->date,
                 'customer_id'         => $this->customer_id,
                 'warehouse_id'        => $this->warehouse_id,
-                'user_id'             => Auth::guard('admin')->user()->id,
+                'user_id'             => Auth::user()->id,
                 'tax_percentage'      => $this->tax_percentage,
                 'discount_percentage' => $this->discount_percentage,
                 'shipping_amount'     => $this->shipping_amount * 100,

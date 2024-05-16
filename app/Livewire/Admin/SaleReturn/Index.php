@@ -144,7 +144,7 @@ class Index extends Component
                 'note'           => $this->note ?? null,
                 'sale_id'        => $this->salereturn_id,
                 'payment_method' => $this->payment_method,
-                // 'user_id'        => Auth::guard('admin')->user()->id,
+                // 'user_id'        => Auth::user()->id,
             ]);
 
             $salereturn = SaleReturn::findOrFail($this->salereturn_id);

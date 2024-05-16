@@ -21,11 +21,11 @@ class Create extends Component
 
     public CashRegister $cashRegister;
 
-    #[Rule('required', message: 'Please provide a warehouse')]
+    #[Validate('required', message: 'Please provide a warehouse')]
     public $warehouse_id;
 
-    #[Rule('required', message: 'Please provide a cash in hand')]
-    #[Rule('numeric', message: 'Cash in hand must be numeric')]
+    #[Validate('required', message: 'Please provide a cash in hand')]
+    #[Validate('numeric', message: 'Cash in hand must be numeric')]
     public $cash_in_hand;
 
     #[On('createModal')]

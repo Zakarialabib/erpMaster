@@ -55,38 +55,38 @@ class Index extends Component
 
     public $site_favicon;
 
-    #[Rule('required|string|min:1|max:255')]
+    #[Validate('required|string|min:1|max:255')]
     public $company_name;
 
-    #[Rule('required|string|min:1|max:255')]
+    #[Validate('required|string|min:1|max:255')]
     public $company_email;
 
-    #[Rule('required|string|min:1|max:255')]
+    #[Validate('required|string|min:1|max:255')]
     public $company_phone;
 
-    #[Rule('required|string|min:1|max:255')]
+    #[Validate('required|string|min:1|max:255')]
     public $company_address;
 
-    #[Rule('nullable|string|min:0|max:255')]
+    #[Validate('nullable|string|min:0|max:255')]
     public $company_tax;
 
-    #[Rule('nullable|string|min:0|max:255')]
+    #[Validate('nullable|string|min:0|max:255')]
     public $telegram_channel;
 
-    #[Rule('required|integer|min:0|max:192')]
+    #[Validate('required|integer|min:0|max:192')]
     public $default_currency_id;
 
-    #[Rule('required|string|min:1|max:255')]
+    #[Validate('required|string|min:1|max:255')]
     public $default_currency_position;
 
-    #[Rule('required|string|min:1|max:255')]
+    #[Validate('required|string|min:1|max:255')]
     public $default_date_format;
 
     public $default_client_id;
 
     public $default_warehouse_id;
 
-    #[Rule('boolean')]
+    #[Validate('boolean')]
     public $multi_language;
 
     public $invoice_footer_text;

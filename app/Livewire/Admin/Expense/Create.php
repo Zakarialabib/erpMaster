@@ -26,19 +26,19 @@ class Create extends Component
 
     public Expense $expense;
 
-    #[Rule('required|string|max:255')]
+    #[Validate('required|string|max:255')]
     public $reference;
 
-    #[Rule('required|integer|exists:expense_categories,id')]
+    #[Validate('required|integer|exists:expense_categories,id')]
     public $category_id;
 
-    #[Rule('required|date')]
+    #[Validate('required|date')]
     public $date;
 
-    #[Rule('required|numeric')]
+    #[Validate('required|numeric')]
     public $amount;
 
-    #[Rule('nullable|min:3')]
+    #[Validate('nullable|min:3')]
     public $description;
 
     public $user_id;

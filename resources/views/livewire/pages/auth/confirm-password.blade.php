@@ -16,7 +16,7 @@ rules(['password' => ['required', 'string']]);
 $confirmPassword = function () {
     $this->validate();
 
-    if (! Auth::guard('web')->validate([
+    if (! Auth::validate([
         'email' => Auth::user()->email,
         'password' => $this->password,
     ])) {

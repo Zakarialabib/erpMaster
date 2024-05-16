@@ -13,14 +13,14 @@ use Livewire\Attributes\Layout;
 #[Layout('components.layouts.guest')]
 class ConfirmPassword extends Component
 {
-    #[Rule(['required', 'string'])]
+    #[Validate(['required', 'string'])]
     public string $password = '';
 
     public function confirmPassword(): void
     {
         $this->validate();
 
-        if ( ! auth()->guard('web')->validate([
+        if ( ! auth()->validate([
             'email'    => auth()->user()->email,
             'password' => $this->password,
         ])) {

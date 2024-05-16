@@ -19,12 +19,12 @@ class Create extends Component
 
     public CustomerGroup $customergroup;
 
-    #[Rule('required', message: 'The name field cannot be empty.')]
-    #[Rule('min:3', message: 'The name must be at least 3 characters.')]
-    #[Rule('max:255', message: 'The name may not be greater than 255 characters.')]
+    #[Validate('required', message: 'The name field cannot be empty.')]
+    #[Validate('min:3', message: 'The name must be at least 3 characters.')]
+    #[Validate('max:255', message: 'The name may not be greater than 255 characters.')]
     public $name;
 
-    #[Rule('required', message: 'The percentage field cannot be empty.')]
+    #[Validate('required', message: 'The percentage field cannot be empty.')]
     public $percentage;
 
     public function render()

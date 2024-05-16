@@ -23,13 +23,13 @@ class Create extends Component
     use LivewireAlert;
     use WithModels;
 
-    #[Rule('required|date')]
+    #[Validate('required|date')]
     public $date;
 
-    #[Rule('nullable|string|max:1000')]
+    #[Validate('nullable|string|max:1000')]
     public $note;
 
-    #[Rule('required|string|max:255')]
+    #[Validate('required|string|max:255')]
     public $reference;
 
     public $total_qty;

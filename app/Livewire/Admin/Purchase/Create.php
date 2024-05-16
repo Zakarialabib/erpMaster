@@ -33,36 +33,36 @@ class Create extends Component
 
     public $cart_item;
 
-    #[Rule('required')]
+    #[Validate('required')]
     public $warehouse_id;
 
-    #[Rule('required')]
+    #[Validate('required')]
     public $supplier_id;
 
-    #[Rule('required|integer|min:0|max:100')]
+    #[Validate('required|integer|min:0|max:100')]
     public $tax_percentage;
 
-    #[Rule('required|integer|min:0|max:100')]
+    #[Validate('required|integer|min:0|max:100')]
     public $discount_percentage;
 
-    #[Rule('required|numeric')]
+    #[Validate('required|numeric')]
     public $shipping_amount;
 
-    #[Rule('required|numeric')]
+    #[Validate('required|numeric')]
     public $total_amount;
 
-    #[Rule('required|numeric')]
+    #[Validate('required|numeric')]
     public $paid_amount;
 
-    #[Rule('required')]
+    #[Validate('required')]
     public $status;
 
-    #[Rule('required|string|max:50')]
+    #[Validate('required|string|max:50')]
     public $payment_method;
 
     public $payment_status;
 
-    #[Rule('nullable|string|max:1000')]
+    #[Validate('nullable|string|max:1000')]
     public $note;
 
     public $product;
@@ -150,7 +150,7 @@ class Create extends Component
                 'date'                => $this->date,
                 'supplier_id'         => $this->supplier_id,
                 'warehouse_id'        => $this->warehouse_id,
-                'user_id'             => Auth::guard('admin')->user()->id,
+                'user_id'             => Auth::user()->id,
                 'tax_percentage'      => $this->tax_percentage,
                 'discount_percentage' => $this->discount_percentage,
                 'shipping_amount'     => $this->shipping_amount * 100,
@@ -212,7 +212,7 @@ class Create extends Component
                     'date'         => date('Y-m-d'),
                     'movable_type' => $product::class,
                     'movable_id'   => $product->id,
-                    'user_id'      => Auth::guard('admin')->user()->id,
+                    'user_id'      => Auth::user()->id,
                 ]);
 
                 $movement->save();
@@ -221,7 +221,7 @@ class Create extends Component
             if ($purchase->paid_amount > 0) {
                 PurchasePayment::create([
                     'date'           => date('Y-m-d'),
-                    'user_id'        => Auth::guard('admin')->user()->id,
+                    'user_id'        => Auth::user()->id,
                     'amount'         => $purchase->paid_amount,
                     'purchase_id'    => $purchase->id,
                     'payment_method' => $this->payment_method,

@@ -14,7 +14,7 @@ class Index extends Component
 
     public function mount(): void
     {
-        $this->customer = auth()->guard('customer')->user();
+        $this->customer = auth()->user();
     }
 
     public function render()

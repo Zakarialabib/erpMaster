@@ -53,10 +53,6 @@ Route::middleware('auth')->group(function () {
 Route::post('logout', function (Request $request) {
     if (auth()->check()) {
         auth()->logout();
-    } elseif (auth()->guard('customer')->check()) {
-        auth()->guard('customer')->logout();
-    } elseif (auth()->guard('admin')->check()) {
-        auth()->guard('admin')->logout();
     }
 
     $request->session()->invalidate();

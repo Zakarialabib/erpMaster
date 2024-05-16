@@ -54,7 +54,7 @@ class PurchasesReturnController extends Controller
             $purchase_return = PurchaseReturn::create([
                 'date'                => $request->date,
                 'supplier_id'         => $request->supplier_id,
-                'user_id'             => Auth::guard('admin')->user()->id,
+                'user_id'             => Auth::user()->id,
                 'tax_percentage'      => $request->tax_percentage,
                 'discount_percentage' => $request->discount_percentage,
                 'shipping_amount'     => $request->shipping_amount * 100,

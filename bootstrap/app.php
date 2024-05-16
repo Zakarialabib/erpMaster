@@ -8,7 +8,6 @@ use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\{
     Locale,
-    SuperAdmin,
 };
 
 use Spatie\Permission\Middleware\{
@@ -31,16 +30,14 @@ return Application::configure(basePath: dirname(__DIR__))
         },
     )
     ->withMiddleware(function (Middleware $middleware) {
-        // Locale middleware
-        $middleware->use([
-            Locale::class,
-        ]);
-
+        // $middleware->use([
+        // ]);
+        
         $middleware->alias([
+            'local'            =>Locale::class,
             'role'               => RoleMiddleware::class,
             'permission'         => PermissionMiddleware::class,
             'role_or_permission' => RoleOrPermissionMiddleware::class,
-            'super'              => SuperAdmin::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

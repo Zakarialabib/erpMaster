@@ -21,16 +21,16 @@ class Create extends Component
 
     public BlogCategory $blogcategory;
 
-    #[Rule('required', message: 'Title is required')]
-    #[Rule('min:3', message: 'Title must be at least 3 characters')]
+    #[Validate('required', message: 'Title is required')]
+    #[Validate('min:3', message: 'Title must be at least 3 characters')]
     public $title;
 
     public $description;
 
-    #[Rule('max:70', message: 'The meta title a max of 170 characters.')]
+    #[Validate('max:70', message: 'The meta title a max of 170 characters.')]
     public $meta_title;
 
-    #[Rule('max:170', message: 'The meta description a max of 170 characters.')]
+    #[Validate('max:170', message: 'The meta description a max of 170 characters.')]
     public $meta_description;
 
     public $language_id;

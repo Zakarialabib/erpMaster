@@ -23,20 +23,20 @@ class Create extends Component
 
     public Blog $blog;
 
-    #[Rule('required', message: 'Title is required')]
+    #[Validate('required', message: 'Title is required')]
     public $title;
 
-    #[Rule('required', message: 'Category is required')]
+    #[Validate('required', message: 'Category is required')]
     public $category_id;
 
-    #[Rule('required', message: 'Description is required')]
-    #[Rule('min:3', message: 'Description must be at least 3 characters')]
+    #[Validate('required', message: 'Description is required')]
+    #[Validate('min:3', message: 'Description must be at least 3 characters')]
     public $description;
 
-    #[Rule('max:70', message: 'The meta title a max of 170 characters.')]
+    #[Validate('max:70', message: 'The meta title a max of 170 characters.')]
     public $meta_title;
 
-    #[Rule('max:170', message: 'The meta description a max of 170 characters.')]
+    #[Validate('max:170', message: 'The meta description a max of 170 characters.')]
     public $meta_description;
 
     public $slug;

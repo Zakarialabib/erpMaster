@@ -17,34 +17,34 @@ class Create extends Component
 
     public $warehouse_id;
 
-    #[Rule('required')]
+    #[Validate('required')]
     public $supplier_id;
 
-    #[Rule('required|string|max:255')]
+    #[Validate('required|string|max:255')]
     public $reference;
 
-    #[Rule('required|integer|min:0|max:100')]
+    #[Validate('required|integer|min:0|max:100')]
     public $tax_percentage;
 
-    #[Rule('required|integer|min:0|max:100')]
+    #[Validate('required|integer|min:0|max:100')]
     public $discount_percentage;
 
-    #[Rule('required|numeric')]
+    #[Validate('required|numeric')]
     public $shipping_amount;
 
-    #[Rule('required|numeric')]
+    #[Validate('required|numeric')]
     public $total_amount;
 
-    #[Rule('required|numeric')]
+    #[Validate('required|numeric')]
     public $paid_amount;
 
-    #[Rule('required|integer|max:255')]
+    #[Validate('required|integer|max:255')]
     public $status;
 
-    #[Rule('required|integer|max:255')]
+    #[Validate('required|integer|max:255')]
     public $payment_method;
 
-    #[Rule('nullable|string|max:1000')]
+    #[Validate('nullable|string|max:1000')]
     public $note;
 
     public function mount(): void

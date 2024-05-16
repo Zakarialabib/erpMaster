@@ -22,7 +22,7 @@ class Create extends Component
 
     public Slider $slider;
 
-    #[Rule('required|max:255')]
+    #[Validate('required|max:255')]
     public $title;
 
     public $subtitle;
@@ -35,7 +35,7 @@ class Create extends Component
 
     public $embeded_video;
 
-    #[Rule('required')]
+    #[Validate('required')]
     public $image;
 
     public function render()

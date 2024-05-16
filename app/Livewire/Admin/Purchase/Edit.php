@@ -32,34 +32,34 @@ class Edit extends Component
 
     public $purchase_details;
 
-    #[Rule('required')]
+    #[Validate('required')]
     public $warehouse_id;
 
-    #[Rule('required')]
+    #[Validate('required')]
     public $supplier_id;
 
-    #[Rule('required|integer|min:0|max:100')]
+    #[Validate('required|integer|min:0|max:100')]
     public $tax_percentage;
 
-    #[Rule('required|integer|min:0|max:100')]
+    #[Validate('required|integer|min:0|max:100')]
     public $discount_percentage;
 
-    #[Rule('required|numeric')]
+    #[Validate('required|numeric')]
     public $shipping_amount;
 
-    #[Rule('required|numeric')]
+    #[Validate('required|numeric')]
     public $total_amount;
 
-    #[Rule('required|numeric')]
+    #[Validate('required|numeric')]
     public $paid_amount;
 
-    #[Rule('required|string|max:50')]
+    #[Validate('required|string|max:50')]
     public $status;
 
-    #[Rule('required|string|max:50')]
+    #[Validate('required|string|max:50')]
     public $payment_method;
 
-    #[Rule('nullable|string|max:1000')]
+    #[Validate('nullable|string|max:1000')]
     public $note;
 
     public $purchase;
@@ -228,7 +228,7 @@ class Edit extends Component
                     'date'         => date('Y-m-d'),
                     'movable_type' => $product::class,
                     'movable_id'   => $product->id,
-                    'user_id'      => Auth::guard('admin')->user()->id,
+                    'user_id'      => Auth::user()->id,
                 ]);
 
                 $movement->save();

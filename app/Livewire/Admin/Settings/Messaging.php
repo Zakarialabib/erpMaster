@@ -18,10 +18,10 @@ class Messaging extends Component
 
     public $botToken;
 
-    #[Rule('required|numeric')]
+    #[Validate('required|numeric')]
     public $chatId;
 
-    #[Rule('required|min:1|max:1000')]
+    #[Validate('required|min:1|max:1000')]
     public $message;
 
     public $type;

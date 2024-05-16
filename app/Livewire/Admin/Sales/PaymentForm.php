@@ -28,25 +28,25 @@ class PaymentForm extends Component
 
     // public $reference;
 
-    #[Rule('required|date')]
+    #[Validate('required|date')]
     public $date;
 
-    #[Rule('required|numeric')]
+    #[Validate('required|numeric')]
     public $amount;
 
-    #[Rule('required|string|max:100')]
+    #[Validate('required|string|max:100')]
     public $payment_method;
 
-    #[Rule('nullable|numeric')]
+    #[Validate('nullable|numeric')]
     public $total_amount;
 
-    #[Rule('nullable|numeric')]
+    #[Validate('nullable|numeric')]
     public $due_amount;
 
-    #[Rule('nullable|numeric')]
+    #[Validate('nullable|numeric')]
     public $paid_amount;
 
-    #[Rule('nullable|string|max:1000')]
+    #[Validate('nullable|string|max:1000')]
     public $note;
 
     protected $rules = [
@@ -87,7 +87,7 @@ class PaymentForm extends Component
                 'note'           => $this->note,
                 'sale_id'        => $this->sale_id,
                 'payment_method' => $this->payment_method,
-                'user_id'        => Auth::guard('admin')->user()->id,
+                'user_id'        => Auth::user()->id,
             ]);
 
             $sale = Sale::findOrFail($this->sale_id);

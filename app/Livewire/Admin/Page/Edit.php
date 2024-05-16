@@ -23,26 +23,26 @@ class Edit extends Component
 
     public $image;
 
-    #[Rule('required', message: 'The title is required')]
-    #[Rule('min:3', message: 'The title must be at least 3 characters')]
-    #[Rule('max:255', message: 'The title must not exceed 255 characters')]
+    #[Validate('required', message: 'The title is required')]
+    #[Validate('min:3', message: 'The title must be at least 3 characters')]
+    #[Validate('max:255', message: 'The title must not exceed 255 characters')]
     public $title;
 
     public $slug;
 
     public $description;
 
-    #[Rule('array')]
+    #[Validate('array')]
     public $settings;
 
     public $type;
 
     public $status;
 
-    #[Rule('max:70', message: 'The meta title a max of 170 characters.')]
+    #[Validate('max:70', message: 'The meta title a max of 170 characters.')]
     public $meta_title;
 
-    #[Rule('max:170', message: 'The meta description a max of 170 characters.')]
+    #[Validate('max:170', message: 'The meta description a max of 170 characters.')]
     public $meta_description;
 
     #[On('editorjs-save')]

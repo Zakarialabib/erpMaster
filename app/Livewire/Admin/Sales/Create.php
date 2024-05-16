@@ -54,40 +54,40 @@ class Create extends Component
 
     public $price;
 
-    #[Rule('required', message: 'Please provide a customer ID')]
+    #[Validate('required', message: 'Please provide a customer ID')]
     public $customer_id;
 
-    #[Rule('required', message: 'Please provide a warehouse ID')]
+    #[Validate('required', message: 'Please provide a warehouse ID')]
     public $warehouse_id;
 
-    #[Rule('required', message: 'Please provide a tax percentage')]
-    #[Rule('integer', message: 'The tax percentage must be an integer')]
-    #[Rule('min:0', message: 'The tax percentage must be at least 0')]
-    #[Rule('max:100', message: 'The tax percentage must not exceed 100')]
+    #[Validate('required', message: 'Please provide a tax percentage')]
+    #[Validate('integer', message: 'The tax percentage must be an integer')]
+    #[Validate('min:0', message: 'The tax percentage must be at least 0')]
+    #[Validate('max:100', message: 'The tax percentage must not exceed 100')]
     public $tax_percentage;
 
-    #[Rule('required', message: 'Please provide a discount percentage')]
-    #[Rule('integer', message: 'The discount percentage must be an integer')]
-    #[Rule('min:0', message: 'The discount percentage must be at least 0')]
-    #[Rule('max:100', message: 'The discount percentage must not exceed 100')]
+    #[Validate('required', message: 'Please provide a discount percentage')]
+    #[Validate('integer', message: 'The discount percentage must be an integer')]
+    #[Validate('min:0', message: 'The discount percentage must be at least 0')]
+    #[Validate('max:100', message: 'The discount percentage must not exceed 100')]
     public $discount_percentage;
 
-    #[Rule('nullable', message: 'Shipping amount must be a numeric value')]
+    #[Validate('nullable', message: 'Shipping amount must be a numeric value')]
     public $shipping_amount;
 
-    #[Rule('required', message: 'Please provide a total amount')]
-    #[Rule('numeric', message: 'The total amount must be a numeric value')]
+    #[Validate('required', message: 'Please provide a total amount')]
+    #[Validate('numeric', message: 'The total amount must be a numeric value')]
     public $total_amount;
 
-    #[Rule('nullable', message: 'Paid amount must be a numeric value')]
+    #[Validate('nullable', message: 'Paid amount must be a numeric value')]
     public $paid_amount;
 
-    #[Rule('nullable', message: 'Note must be a string with a maximum length of 1000')]
-    #[Rule('string', message: 'Note must be a string')]
-    #[Rule('max:1000', message: 'Note must not exceed 1000 characters')]
+    #[Validate('nullable', message: 'Note must be a string with a maximum length of 1000')]
+    #[Validate('string', message: 'Note must be a string')]
+    #[Validate('max:1000', message: 'Note must not exceed 1000 characters')]
     public $note;
 
-    #[Rule('required|integer|max:255')]
+    #[Validate('required|integer|max:255')]
     public $status;
 
     public $payment_method = 'cash';
@@ -112,7 +112,7 @@ class Create extends Component
         $this->item_discount = [];
         $this->payment_method = 'cash';
         $this->date = date('Y-m-d');
-        $this->user_id = Auth::guard('admin')->user()->id;
+        $this->user_id = Auth::user()->id;
 
         if (settings('default_client_id') !== null) {
             $this->customer_id = settings('default_client_id');
@@ -260,7 +260,7 @@ class Create extends Component
                     'date'         => date('Y-m-d'),
                     'movable_type' => $product::class,
                     'movable_id'   => $product->id,
-                    'user_id'      => Auth::guard('admin')->user()->id,
+                    'user_id'      => Auth::user()->id,
                 ]);
 
                 $movement->save();
@@ -275,7 +275,7 @@ class Create extends Component
                     'sale_id'          => $sale->id,
                     'payment_method'   => $this->payment_method,
                     'cash_register_id' => $this->cash_register_id,
-                    'user_id'          => Auth::guard('admin')->user()->id,
+                    'user_id'          => Auth::user()->id,
                 ]);
             }
 

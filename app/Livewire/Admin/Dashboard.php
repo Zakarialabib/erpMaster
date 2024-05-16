@@ -10,6 +10,11 @@ use Livewire\Attributes\Layout;
 #[Layout('components.layouts.dashboard')]
 class Dashboard extends Component
 {
+    // public function mount()
+    // {
+    //     dd(auth());
+    // }
+
     public function render()
     {
         return view('livewire.admin.dashboard');

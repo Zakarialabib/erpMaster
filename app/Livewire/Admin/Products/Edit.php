@@ -28,7 +28,7 @@ class Edit extends Component
 
     public $productWarehouses;
 
-    #[Rule('required|string|min:3|max:255')]
+    #[Validate('required|string|min:3|max:255')]
     public string $name;
 
     public string $barcode_symbology;
@@ -43,10 +43,10 @@ class Edit extends Component
 
     public $description;
 
-    #[Rule('max:70', message: 'The meta title a max of 170 characters.')]
+    #[Validate('max:70', message: 'The meta title a max of 170 characters.')]
     public $meta_title;
 
-    #[Rule('max:170', message: 'The meta description a max of 170 characters.')]
+    #[Validate('max:170', message: 'The meta description a max of 170 characters.')]
     public $meta_description;
 
     public $tax_type;
@@ -63,7 +63,7 @@ class Edit extends Component
 
     public $subcategories;
 
-    #[Rule('array')]
+    #[Validate('array')]
     public array $options = [];
 
     public $image;

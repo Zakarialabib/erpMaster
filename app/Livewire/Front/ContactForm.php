@@ -20,21 +20,21 @@ class ContactForm extends Component
 
     public Contact $contact;
 
-    #[Rule('required', message: 'The name field is required')]
-    #[Rule('min:3', message: 'The name field must be at least 3 characters')]
-    #[Rule('max:255', message: 'The name field must not exceed 255 characters')]
+    #[Validate('required', message: 'The name field is required')]
+    #[Validate('min:3', message: 'The name field must be at least 3 characters')]
+    #[Validate('max:255', message: 'The name field must not exceed 255 characters')]
     public $name;
 
-    #[Rule('required', message: 'The email field is required')]
-    #[Rule('email', message: 'The email field must be a valid email address')]
+    #[Validate('required', message: 'The email field is required')]
+    #[Validate('email', message: 'The email field must be a valid email address')]
     public $email;
 
-    #[Rule('required', message: 'The phone number field is required')]
-    #[Rule('numeric', message: 'The phone number field must be a numeric value')]
+    #[Validate('required', message: 'The phone number field is required')]
+    #[Validate('numeric', message: 'The phone number field must be a numeric value')]
     public $phone_number;
 
-    #[Rule('required', message: 'The message field is required')]
-    #[Rule('min:3', message: 'The message field is required must be at least 3 characters')]
+    #[Validate('required', message: 'The message field is required')]
+    #[Validate('min:3', message: 'The message field is required must be at least 3 characters')]
     public $message;
 
     public $subject;

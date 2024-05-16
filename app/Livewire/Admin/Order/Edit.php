@@ -23,16 +23,16 @@ class Edit extends Component
 
     public $order;
 
-    #[Rule('required', message : 'The date field is required.')]
-    #[Rule('date', message : 'The date must be a valid date.')]
+    #[Validate('required', message : 'The date field is required.')]
+    #[Validate('date', message : 'The date must be a valid date.')]
     public $date;
 
     public $reference;
 
-    #[Rule('required', message : 'Sshipping field is required.')]
+    #[Validate('required', message : 'Sshipping field is required.')]
     public $shipping_id;
 
-    #[Rule('required', message : 'Customer field is required.')]
+    #[Validate('required', message : 'Customer field is required.')]
     public $customer_id;
 
     public $tax_amount;
@@ -41,19 +41,19 @@ class Edit extends Component
 
     public $total_amount;
 
-    #[Rule('required', message : 'The payment date field is required.')]
-    #[Rule('date', message : 'The payment date must be a valid date.')]
+    #[Validate('required', message : 'The payment date field is required.')]
+    #[Validate('date', message : 'The payment date must be a valid date.')]
     public $payment_date;
 
-    #[Rule('required', message : 'The payment method field is required.')]
+    #[Validate('required', message : 'The payment method field is required.')]
     public $payment_method;
 
-    #[Rule('required', message : 'The payment status field is required.')]
+    #[Validate('required', message : 'The payment status field is required.')]
     public $payment_status;
 
     public $delivery_id;
 
-    #[Rule('required', message : 'The status field is required.')]
+    #[Validate('required', message : 'The status field is required.')]
     public $status;
 
     public $document;

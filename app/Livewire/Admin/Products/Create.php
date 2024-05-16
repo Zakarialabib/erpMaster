@@ -35,9 +35,9 @@ class Create extends Component
 
     public $gallery;
 
-    #[Rule('required')]
-    #[Rule('min:3')]
-    #[Rule('max:255')]
+    #[Validate('required')]
+    #[Validate('min:3')]
+    #[Validate('max:255')]
     public $name;
 
     public $barcode_symbology;
@@ -46,10 +46,10 @@ class Create extends Component
 
     public $unit;
 
-    #[Rule('max:70', message: 'The meta title a max of 170 characters.')]
+    #[Validate('max:70', message: 'The meta title a max of 170 characters.')]
     public $meta_title;
 
-    #[Rule('max:170', message: 'The meta description a max of 170 characters.')]
+    #[Validate('max:170', message: 'The meta description a max of 170 characters.')]
     public $meta_description;
 
     public $order_tax = 9;
@@ -62,7 +62,7 @@ class Create extends Component
 
     public $embeded_video;
 
-    #[Rule('required')]
+    #[Validate('required')]
     public $category_id;
 
     public $brand_id;

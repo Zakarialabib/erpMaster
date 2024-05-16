@@ -27,7 +27,7 @@ class Index extends Component
 
     public $editModal = false;
 
-    #[Rule('required|max:255|unique:permissions,name')]
+    #[Validate('required|max:255|unique:permissions,name')]
     public $name;
 
     public $model = Permission::class;

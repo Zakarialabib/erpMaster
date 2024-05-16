@@ -43,10 +43,10 @@ class SocialAuth extends Component
 
         switch (true) {
             case $user->hasRole('admin'):
-                $homePage = RouteServiceProvider::ADMIN_HOME;
+                $homePage = '/admin/dashboard';
                 break;
             default:
-                $homePage = RouteServiceProvider::CLIENT_HOME;
+                $homePage = '/';
                 break;
         }
 

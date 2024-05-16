@@ -17,14 +17,14 @@ class OrderForm extends Component
 {
     use LivewireAlert;
 
-    #[Rule('required', message : 'This field is required')]
+    #[Validate('required', message : 'This field is required')]
     public $name;
 
-    #[Rule('required', message : 'This field is required')]
-    #[Rule('numeric', message : 'This field must be number')]
+    #[Validate('required', message : 'This field is required')]
+    #[Validate('numeric', message : 'This field must be number')]
     public $phone;
 
-    #[Rule('required', message : 'This field is required')]
+    #[Validate('required', message : 'This field is required')]
     public $address;
 
     public $type;

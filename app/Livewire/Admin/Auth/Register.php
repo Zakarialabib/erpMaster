@@ -17,19 +17,19 @@ use Livewire\Attributes\Rule;
 #[Layout('components.layouts.app')]
 class Register extends Component
 {
-    #[Rule('required')]
+    #[Validate('required')]
     public $name = '';
 
-    #[Rule('required|email|unique:users,email')]
+    #[Validate('required|email|unique:users,email')]
     public $email = '';
 
-    #[Rule('required')]
+    #[Validate('required')]
     public $password = '';
 
-    #[Rule('required|min:8|same:passwordConfirmation')]
+    #[Validate('required|min:8|same:passwordConfirmation')]
     public $passwordConfirmation = '';
 
-    #[Rule('required|numeric')]
+    #[Validate('required|numeric')]
     public $phone;
 
     public $city;
@@ -63,7 +63,7 @@ class Register extends Component
 
         event(new Registered($user));
 
-        Auth::guard('admin')->login($user, true);
+        Auth::login($user, true);
 
         $homePage = match (true) {
             $user->hasRole('admin') => '/admin/dashboard',

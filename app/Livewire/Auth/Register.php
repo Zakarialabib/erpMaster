@@ -17,24 +17,24 @@ use Livewire\Attributes\Rule;
 #[Layout('components.layouts.guest')]
 class Register extends Component
 {
-    #[Rule('required')]
+    #[Validate('required')]
     public $name = '';
 
-    #[Rule('required', message: 'Email is required ')]
-    #[Rule('email', message :'Email must be valid')]
-    #[Rule('unique:users,email')]
+    #[Validate('required', message: 'Email is required ')]
+    #[Validate('email', message :'Email must be valid')]
+    #[Validate('unique:users,email')]
     public $email = '';
 
-    #[Rule('required', message: 'Password is required')]
+    #[Validate('required', message: 'Password is required')]
     public $password = '';
 
-    #[Rule('required')]
-    #[Rule('min:8')]
-    #[Rule('same:passwordConfirmation')]
+    #[Validate('required')]
+    #[Validate('min:8')]
+    #[Validate('same:passwordConfirmation')]
     public $passwordConfirmation = '';
 
-    #[Rule('required')]
-    #[Rule('numeric')]
+    #[Validate('required')]
+    #[Validate('numeric')]
     public $phone;
 
     public $city = 'Casablanca';
@@ -68,7 +68,7 @@ class Register extends Component
 
         event(new Registered($customer));
 
-        Auth::guard('customer')->login($customer, true);
+        Auth::login($customer, true);
 
         $homePage = match (true) {
             $customer->hasRole('customer') => '/myaccount',

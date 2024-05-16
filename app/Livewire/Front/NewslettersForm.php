@@ -19,7 +19,7 @@ class NewslettersForm extends Component
 {
     use LivewireAlert;
 
-    #[Rule('required|email')]
+    #[Validate('required|email')]
     public $email;
 
     public function render(): View|Factory

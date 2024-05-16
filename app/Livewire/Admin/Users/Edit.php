@@ -25,27 +25,27 @@ class Edit extends Component
 
     public $user;
 
-    #[Rule('required|string|max:255')]
+    #[Validate('required|string|max:255')]
     public $name;
 
-    #[Rule('required|email')]
+    #[Validate('required|email')]
     public $email;
 
-    #[Rule('required|string|min:8')]
+    #[Validate('required|string|min:8')]
     public $password;
 
-    #[Rule('required|numeric')]
+    #[Validate('required|numeric')]
     public $phone;
 
     public $role;
 
-    #[Rule('nullable|string')]
+    #[Validate('nullable|string')]
     public $city;
 
-    #[Rule('nullable|string')]
+    #[Validate('nullable|string')]
     public $country;
 
-    #[Rule('nullable|string')]
+    #[Validate('nullable|string')]
     public $address;
 
     #[On('editModal')]

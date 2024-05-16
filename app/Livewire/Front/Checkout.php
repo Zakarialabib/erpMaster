@@ -38,23 +38,23 @@ class Checkout extends Component
 
     public $shipping_amount;
 
-    #[Rule('required')]
+    #[Validate('required')]
     public $name;
 
-    #[Rule('required|email')]
+    #[Validate('required|email')]
     public $email;
 
     public $customer;
 
-    #[Rule('required')]
+    #[Validate('required')]
     public $address;
 
-    #[Rule('required')]
+    #[Validate('required')]
     public $city;
 
     public $country = 'Maroc';
 
-    #[Rule('required|numeric')]
+    #[Validate('required|numeric')]
     public $phone;
 
     public $password;
@@ -89,7 +89,7 @@ class Checkout extends Component
         $customer = Customer::where('email', $this->email)->first();
 
         if ($customer) {
-            auth()->guard('customer')->login($customer);
+            auth()->login($customer);
         } else {
             $customer = Customer::create([
                 'name'     => $this->name,
@@ -103,7 +103,7 @@ class Checkout extends Component
 
             Mail::to($customer->email)->send(new CustomerRegistrationMail($customer));
 
-            auth()->guard('customer')->login($customer);
+            auth()->login($customer);
         }
 
         $order = Order::create([
@@ -149,9 +149,9 @@ class Checkout extends Component
     public function mount(): void
     {
         // if customer is auth we could fill propreties like email phone and such
-        if (auth()->guard('customer')->check()) {
-            // dd(auth()->guard('customer')->user());
-            $this->customer = auth()->guard('customer')->user();
+        if (auth()->check()) {
+            // dd(auth()->user());
+            $this->customer = auth()->user();
             $this->name = $this->customer->name;
             $this->email = $this->customer->email;
             $this->phone = $this->customer->phone;

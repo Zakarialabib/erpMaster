@@ -23,8 +23,8 @@ class Create extends Component
 
     public Category $category;
 
-    #[Rule('required', message: 'Please provide a name')]
-    #[Rule('min:3', message: 'This name is too short')]
+    #[Validate('required', message: 'Please provide a name')]
+    #[Validate('min:3', message: 'This name is too short')]
     public string $name;
 
     public $description;

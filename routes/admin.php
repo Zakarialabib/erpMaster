@@ -101,6 +101,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
+// Route::middleware(['role:admin'])->group(function () {
 // Dashboard
 Route::get('/dashboard', Dashboard::class)->name('dashboard');
 
@@ -291,3 +293,4 @@ Route::get('/subscribers', SubscriberIndex::class)->name('subscribers.index');
 // Route::get('/partner', PartnerIndex::class);
 // Route::get('/purchasereturn', PurchaseReturnIndex::class);
 // Route::get('/salereturn', SaleReturnIndex::class);
+// });

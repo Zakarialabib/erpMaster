@@ -24,19 +24,19 @@ class Edit extends Component
     /** @var mixed */
     public $expense;
 
-    #[Rule('required|string|max:255')]
+    #[Validate('required|string|max:255')]
     public $reference;
 
-    #[Rule('required|integer|exists:expense_categories,id')]
+    #[Validate('required|integer|exists:expense_categories,id')]
     public $category_id;
 
-    #[Rule('required|date')]
+    #[Validate('required|date')]
     public $date;
 
-    #[Rule('required|numeric')]
+    #[Validate('required|numeric')]
     public $amount;
 
-    #[Rule('nullable|string|max:255')]
+    #[Validate('nullable|string|max:255')]
     public $description;
 
     public $warehouse_id;

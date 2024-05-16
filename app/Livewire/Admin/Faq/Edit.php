@@ -24,10 +24,10 @@ class Edit extends Component
 
     public $image;
 
-    #[Rule('required|min:3|max:255', message: 'The name field cannot be empty.')]
+    #[Validate('required|min:3|max:255', message: 'The name field cannot be empty.')]
     public $name;
 
-    #[Rule('required', message: 'The percentage field cannot be empty.')]
+    #[Validate('required', message: 'The percentage field cannot be empty.')]
     public $description;
 
     #[On('editModal')]

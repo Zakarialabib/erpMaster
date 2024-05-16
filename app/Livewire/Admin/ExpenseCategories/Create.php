@@ -19,7 +19,7 @@ class Create extends Component
 
     public ExpenseCategory $expenseCategory;
 
-    #[Rule('required|min:3|max:255')]
+    #[Validate('required|min:3|max:255')]
     public string $name;
 
     public ?string $description = null;

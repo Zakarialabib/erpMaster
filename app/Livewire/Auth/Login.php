@@ -17,44 +17,38 @@ class Login extends Component
 {
     use LivewireAlert;
 
-    #[Rule('required', message: 'Email is required ')]
-    #[Rule('email', message: 'Email must be valid')]
+    #[Validate('required', message: 'Email is required ')]
+    #[Validate('email', message: 'Email must be valid')]
     public $email;
 
-    #[Rule('required', message: 'Password is required')]
+    #[Validate('required', message: 'Password is required')]
     public $password;
 
-    #[Rule('boolean')]
+    #[Validate('boolean')]
     public $remember_me = false;
 
-    public function login()
+    public function store()
     {
         $this->validate();
 
-        if (auth()->guard('customer')->attempt(['email' => $this->email, 'password' => $this->password], $this->remember_me)) {
-            $customer = Customer::where(['email' => $this->email])->first();
+        if (auth()->attempt(['email' => $this->email, 'password' => $this->password], $this->remember_me)) {
+            $user = User::where(['email' => $this->email])->first();
 
-            $customer->setRememberToken(Str::random(60));
+            $user->setRememberToken(Str::random(60));
 
-            auth()->guard('customer')->login($customer, $this->remember_me);
+            auth()->login($user, $this->remember_me);
 
-            if ($customer->hasRole('vendor')) {
-                $homePage = RouteServiceProvider::VENDOR_HOME;
-            } else {
-                $homePage = RouteServiceProvider::CLIENT_HOME;
-            }
-
-            // session()->regenerate();
+            session()->regenerate();
 
             return $this->redirect(
-                session('url.intended', $homePage),
+                '/admin/dashboard',
                 // navigate: true
             );
         }
 
         $this->alert('error', __('These credentials do not match our records'));
     }
-
+    
     public function render()
     {
         return view('livewire.auth.login');

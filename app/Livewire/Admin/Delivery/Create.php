@@ -26,7 +26,7 @@ class Create extends Component
 
     public Delivery $delivery;
 
-    #[Rule('required')]
+    #[Validate('required')]
     public $reference;
 
     public $sale_id;

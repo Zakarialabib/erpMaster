@@ -5,18 +5,18 @@
             <i class="fa fa-phone mr-2"></i> {{ settings('company_phone') }}
         </a>
 
-        @if (auth()->guard('customer')->check() || auth()->guard('admin')->check())
+        @if (auth()->check() || auth()->check())
             <x-dropdown align="right" width="56">
                 <x-slot name="trigger">
                     <div class="flex items-center text-white gap-2 px-4">
                         <i class="fa fa-caret-down ml-2"></i>
-                        {{ auth()->guard('customer')->user()->name ?? auth()->guard('admin')->user()->name }}
+                        {{ auth()->user()->name ?? auth()->user()->name }}
                     </div>
                 </x-slot>
 
                 <x-slot name="content">
                     {{-- if admin show dashboard and settings else show logout --}}
-                    @if (auth()->guard('admin')->check())
+                    @if (auth()->check())
                         <x-dropdown-link href="{{ route('admin.dashboard') }}">
                             {{ __('Dashboard') }}
                         </x-dropdown-link>
@@ -24,10 +24,10 @@
                         <x-dropdown-link :href="route('admin.settings.index')">
                             {{ __('Settings') }}
                         </x-dropdown-link>
-                    @elseif (auth()->guard('customer'))
+                    {{-- @elseif (auth()->guard('customer'))
                         <x-dropdown-link href="{{ route('front.myaccount') }}">
                             {{ __('My account') }}
-                        </x-dropdown-link>
+                        </x-dropdown-link> --}}
                     @endif
 
                     <div class="border-t border-gray-100"></div>

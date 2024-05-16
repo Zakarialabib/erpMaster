@@ -20,10 +20,10 @@ class Create extends Component
 
     public $language;
 
-    #[Rule('required|max:191')]
+    #[Validate('required|max:191')]
     public $name;
 
-    #[Rule('required')]
+    #[Validate('required')]
     public $code;
 
     public $createModal = false;

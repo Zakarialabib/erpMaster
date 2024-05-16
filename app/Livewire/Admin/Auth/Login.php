@@ -17,21 +17,21 @@ class Login extends Component
 {
     use LivewireAlert;
 
-    #[Rule('required', message: 'Email is required ')]
-    #[Rule('email', message: 'Email must be valid')]
+    #[Validate('required', message: 'Email is required ')]
+    #[Validate('email', message: 'Email must be valid')]
     public $email;
 
-    #[Rule('required', message: 'Password is required')]
+    #[Validate('required', message: 'Password is required')]
     public $password;
 
-    #[Rule('boolean')]
+    #[Validate('boolean')]
     public $remember_me = false;
 
     public function store()
     {
         $this->validate();
 
-        if (auth()->guard('admin')->attempt(['email' => $this->email, 'password' => $this->password], $this->remember_me)) {
+        if (auth()->attempt(['email' => $this->email, 'password' => $this->password], $this->remember_me)) {
             $user = User::where(['email' => $this->email])->first();
 
             $user->setRememberToken(Str::random(60));
@@ -41,7 +41,7 @@ class Login extends Component
             session()->regenerate();
 
             return $this->redirect(
-                RouteServiceProvider::ADMIN_HOME,
+                '/admin/dashboard',
                 // navigate: true
             );
         }
